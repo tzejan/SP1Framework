@@ -1,66 +1,45 @@
-#include <iostream>
-#include <windows.h>
+// This is the main file to hold everthing together
 
-void colour();
-void cursor();
-void gotoxy(int x,int y);
+#include "Framework\timer.h"
+#include "game.h"
 
+// Timer function to keep track of time and the frame rate
+StopWatch timer;
+bool g_continueGame = false;
 
+void mainLoop();
+// TODO:
+// Game loop
+// Get key state
+// structs
 
 
 
 int main()
 {
+	init();
+    mainLoop();
+    shutdown();
 
-
-	//cursor();
-    gotoxy(3,6);
-    std::cout << char(223);
-    //colour();
-
-
+	
 	return 0;
 }
 
-void colour()
+
+void mainLoop()
 {
-    const WORD colors[] =
-		{
-		0x1A, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
-		0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6
-		};
-
-	HANDLE hstdin  = GetStdHandle( STD_INPUT_HANDLE  );
-	HANDLE hstdout = GetStdHandle( STD_OUTPUT_HANDLE );
-	WORD   index   = 0;
-
-	// Remember how things were when we started
-	CONSOLE_SCREEN_BUFFER_INFO csbi;
-	GetConsoleScreenBufferInfo( hstdout, &csbi );
-
-	// Tell the user how to stop
-	SetConsoleTextAttribute( hstdout, 0xEC );
-	std::cout << "Press any key to quit.\n";
-
-	// Draw pretty colors until the user presses any key
-	while (WaitForSingleObject( hstdin, 100 ) == WAIT_TIMEOUT)
-	{
-		SetConsoleTextAttribute( hstdout, colors[ index ] );
-		std::cout << "\t\t\t\t Hello World \t\t\t\t" << std::endl;
-		if (++index > sizeof(colors)/sizeof(colors[0]))
-			index = 0;
+    while (true)                // run this loop until user wants to quit 
+	{        
+        timer.startTimer();     // Start timer to calculate how long it takes to render this frame
+        getInput();             // get keyboard input
+        if (update())           // update the game and see if the user decides to quit the game
+            return;
+        render();               // render the graphics output to screen
+        timer.waitUntil(33);    // Frame rate limiter
 	}
-	FlushConsoleInputBuffer( hstdin );
-
-	// Keep users happy
-	SetConsoleTextAttribute( hstdout, csbi.wAttributes );
+    
 }
-
-void gotoxy(int x,int y)
-{
-	COORD c={x,y};
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),c);
-}
+/*
 
 void cursor()
 {
@@ -168,14 +147,14 @@ void example(void)
     size_t converted = 0;
     mbstowcs_s(&converted, wstr, 20, str, len);
  
-    /*
-    fSuccess = WriteConsoleOutput( 
-        hNewScreenBuffer, // screen buffer to write to 
-        chiBuffer,        // buffer to copy from 
-        coordBufSize,     // col-row size of chiBuffer 
-        coordBufCoord,    // top left src cell in chiBuffer 
-        &srctWriteRect);  // dest. screen buffer rectangle 
-      */  
+    
+    //fSuccess = WriteConsoleOutput( 
+    //    hNewScreenBuffer, // screen buffer to write to 
+    //    chiBuffer,        // buffer to copy from 
+    //    coordBufSize,     // col-row size of chiBuffer 
+    //    coordBufCoord,    // top left src cell in chiBuffer 
+    //    &srctWriteRect);  // dest. screen buffer rectangle 
+        
     DWORD dwBytesWritten = 0;
     fSuccess = WriteConsoleOutputCharacter(hNewScreenBuffer, wstr, len, pos, &dwBytesWritten);
     if (! fSuccess) 
@@ -196,3 +175,4 @@ void example(void)
 
 }
 
+*/
