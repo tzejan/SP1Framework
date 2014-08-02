@@ -17,8 +17,7 @@ class StopWatch
      StopWatch() ;
      ~StopWatch();
      void startTimer();
-     void stopTimer();
-     double getElapsedTime(); // time returned in seconds
+     double getElapsedTime(); // get time in seconds since the last call to this function
      void waitUntil(long long time);  // wait until this time in milliseconds has passed
  };
 

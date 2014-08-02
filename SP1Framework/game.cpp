@@ -6,11 +6,12 @@
 #include <iostream>
 #include <iomanip>
 
+double elapsedTime;
 
 void init()
 {
     // Set precision for floating point output
-    std::cout << std::fixed << std::setprecision(5);
+    std::cout << std::fixed << std::setprecision(3);
 }
 
 void shutdown()
@@ -25,7 +26,7 @@ void getInput()
     if (keyState)
     {
         std::cout << "Escape was pressed" << std::endl;
-        g_continueGame = true;
+        g_quitGame = true;
     }
 
         
@@ -41,8 +42,7 @@ void render()
     // render time taken to calculate this frame
     gotoxy(70, 0);
     colour(0x1A);
-    timer.stopTimer();
-    std::cout << timer.getElapsedTime() << "s" << std::endl;
+    std::cout << 1.0 / elapsedTime << "fps" << std::endl;
     
 
     return;
@@ -63,7 +63,8 @@ void render()
     
     std::cout << char(223);
 }
-bool update()
+bool update(double dt)
 {
-    return g_continueGame; 
+    elapsedTime = dt;
+    return g_quitGame; 
 }

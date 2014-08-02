@@ -31,15 +31,12 @@ void StopWatch::startTimer( )
     QueryPerformanceCounter(&prevTime) ;
 }
  
-void StopWatch::stopTimer( ) 
-{
-    QueryPerformanceCounter(&currTime) ;
-}
- 
 double StopWatch::getElapsedTime() 
 {
     LARGE_INTEGER time;
+    QueryPerformanceCounter(&currTime) ;
     time.QuadPart = currTime.QuadPart - prevTime.QuadPart;
+    prevTime = currTime;
     return LIToSecs( time) ;
 }
 
