@@ -7,6 +7,7 @@
 #include <iomanip>
 
 double elapsedTime;
+bool keys[K_COUNT];
 
 void init()
 {
@@ -21,15 +22,10 @@ void shutdown()
 }
 
 void getInput()
-{
-    unsigned short keyState = GetAsyncKeyState(VK_ESCAPE);
-    if (keyState)
-    {
-        std::cout << "Escape was pressed" << std::endl;
-        g_quitGame = true;
-    }
-
-        
+{    
+    keys[K_UP] = GetAsyncKeyState(VK_UP) & 0x8000;
+    keys[K_DOWN] = GetAsyncKeyState(VK_DOWN) & 0x8000;
+    keys[K_ESCAPE] = GetAsyncKeyState(VK_ESCAPE) & 0x8000;        
 }
 void render()
 {
@@ -44,6 +40,16 @@ void render()
     colour(0x1A);
     std::cout << 1.0 / elapsedTime << "fps" << std::endl;
     
+    gotoxy(20, 20);
+    colour(0x7C);
+    if (keys[K_UP])
+    {
+        std::cout << "UP was pressed";
+    }
+    if (keys[K_DOWN])
+    {
+        std::cout << "DOWN was pressed";
+    }
 
     return;
     const WORD colors[] =
@@ -66,5 +72,10 @@ void render()
 bool update(double dt)
 {
     elapsedTime = dt;
+
+
+    if (keys[K_ESCAPE])
+        g_quitGame = true;
+
     return g_quitGame; 
 }
