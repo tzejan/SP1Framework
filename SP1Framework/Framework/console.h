@@ -5,7 +5,8 @@
 
 // Go to a specific coordinate in the console
 // Top left is origin (0,0), consoles usually have a width of 80 and height of 40
-void gotoxy(int x,int y);
+void gotoXY(int x,int y);
+void gotoXY(COORD c);
 
 // Sets the test and background to be of a specific colour
 // http://msdn.microsoft.com/en-us/library/windows/desktop/ms682088(v=vs.85).aspx#_win32_character_attributes
@@ -23,5 +24,7 @@ void colour(WORD attrib);
 // Clears the screen for this console handle
 // If no console handle is supplied, then we take the STDOUTPUT console
 void cls( HANDLE hConsole = 0);
+
+bool isKeyPressed(unsigned short key);
 
 #endif // _CONSOLE_H
