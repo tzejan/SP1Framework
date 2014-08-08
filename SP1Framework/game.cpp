@@ -52,22 +52,22 @@ void update(double dt)
     // Updating the location of the character based on the key press
     if (keyPressed[K_UP] && charLocation.Y > 0)
     {
-        Beep(1440, 30);
+        playGameSound(S_MOVE);
         charLocation.Y--; 
     }
     if (keyPressed[K_LEFT] && charLocation.X > 0)
     {
-        Beep(1440, 30);
+        playGameSound(S_MOVE);
         charLocation.X--; 
     }
     if (keyPressed[K_DOWN] && charLocation.Y < consoleSize.Y - 1)
     {
-        Beep(1440, 30);
+        playGameSound(S_MOVE);
         charLocation.Y++; 
     }
     if (keyPressed[K_RIGHT] && charLocation.X < consoleSize.X - 1)
     {
-        Beep(1440, 30);
+        playGameSound(S_MOVE);
         charLocation.X++; 
     }
 
@@ -108,4 +108,17 @@ void render()
     std::cout << (char)1;
 
     
+}
+
+
+void playGameSound(SoundType sound)
+{
+    switch (sound)
+    {
+        case S_MOVE: Beep(1440, 40);
+                    break;
+        case S_MUSIC : Beep(555, 40);
+                    break;
+
+    }
 }
