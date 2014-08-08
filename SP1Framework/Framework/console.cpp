@@ -1,9 +1,14 @@
 #include "console.h"
 #include <cstdio>
 
-void gotoxy(int x,int y)
+void gotoXY(int x,int y)
 {
 	COORD c={x,y};
+    gotoXY(c);
+}
+
+void gotoXY(COORD c)
+{
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),c);
 }
 
@@ -65,3 +70,7 @@ void cls( HANDLE hConsole )
     return;
 }
 	
+bool isKeyPressed(unsigned short key)
+{
+    return ((GetAsyncKeyState(key) & 0x8001) != 0);
+}
