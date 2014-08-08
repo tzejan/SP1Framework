@@ -11,7 +11,7 @@ const unsigned int frameTime = 1000 / FPS; // time for each frame
 
 void mainLoop();
 // TODO:
-// Game loop
+// Bug in waitUnitil. it waits for the time from getElapsedTime to waitUntil, but should be insignificant.
 // Get key state
 // structs
 
