@@ -7,6 +7,7 @@
 #include <iomanip>
 
 double elapsedTime;
+double deltaTime;
 bool keyPressed[K_COUNT];
 COORD charLocation;
 COORD consoleSize;
@@ -27,6 +28,8 @@ void init()
     // set the character to be in the center of the screen.
     charLocation.X = consoleSize.X / 2;
     charLocation.Y = consoleSize.Y / 2;
+
+    elapsedTime = 0.0;
 }
 
 void shutdown()
@@ -47,7 +50,8 @@ void getInput()
 void update(double dt)
 {
     // get the delta time
-    elapsedTime = dt;
+    elapsedTime += dt;
+    deltaTime = dt;
 
     // Updating the location of the character based on the key press
     if (keyPressed[K_UP] && charLocation.Y > 0)
@@ -92,7 +96,7 @@ void render()
 	
 	for (int i = 0; i < 12; ++i)
 	{
-		gotoXY(3*i,i);
+		gotoXY(3*i,i+1);
 		colour(colors[i]);
 		std::cout << "WOW";
 	}
@@ -100,8 +104,12 @@ void render()
     // render time taken to calculate this frame
     gotoXY(70, 0);
     colour(0x1A);
-    std::cout << 1.0 / elapsedTime << "fps" << std::endl;
-    
+    std::cout << 1.0 / deltaTime << "fps" << std::endl;
+  
+    gotoXY(0, 0);
+    colour(0x59);
+    std::cout << elapsedTime << "secs" << std::endl;
+
     // render character
     gotoXY(charLocation);
     colour(0x0C);
