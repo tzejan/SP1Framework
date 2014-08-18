@@ -27,4 +27,8 @@ void cls( HANDLE hConsole = 0);
 
 bool isKeyPressed(unsigned short key);
 
+// sets the size of the console
+// There is a certain size limitation to how big a console can be set.
+void setConsoleSize(unsigned short x, unsigned short y);
+
 #endif // _CONSOLE_H
