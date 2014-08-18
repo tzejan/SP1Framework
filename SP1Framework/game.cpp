@@ -14,6 +14,11 @@ COORD consoleSize;
 
 void init()
 {
+	Directory animdirectory(L"", L"*.txt");
+	for(int index = 0; index < animdirectory.size(); index++)
+	{
+		continue;
+	}
     // Set precision for floating point output
     std::cout << std::fixed << std::setprecision(3);
 
