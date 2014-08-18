@@ -44,6 +44,16 @@ Renders the current state of game onto screen. Go to a specific coordinate on th
 ##### shutdown()
 Code for cleaning up of game, writing of files, close files, free up memory, etc.
 
+###Other functions in the framework
+
+#### setConsoleSize()
+Sets the size of the console. The largest size depends on your screen  
+
+#### SetConsoleTitle()
+Sets the title of the console. 
+
+
+
 FAQ
 ---
 
