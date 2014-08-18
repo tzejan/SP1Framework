@@ -57,4 +57,10 @@ Sets the title of the console.
 FAQ
 ---
 
-None yet
+**How do I set the size of the console?**  
+There is a function setConsoleSize() that does this. See above
+
+**The screen flickers!**  
+Everyone else is facing the same problem, don't worry too much about it. I'm working on a solution.
+
+
