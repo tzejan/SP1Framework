@@ -22,7 +22,9 @@ title(L"Our awesome game")
 	SetConsoleScreenBufferSize(hConsole, bufferSize);
 	SetConsoleCursorInfo(hConsole,&cursorinfo);
 	GetConsoleScreenBufferInfo(hConsole,&csbi);
+
 	screenbuffer = new CHAR_INFO[screenX * screenY];
+	clearbuffer();
 }
 
 Graphics::~Graphics()
@@ -67,13 +69,8 @@ void Graphics::clearbuffer()
 	}
 }
 
-void Graphics::beginframe()
-{
-	clearbuffer();
-	//drawtoconsole();
-}
-
-void Graphics::endframe()
+void Graphics::updateconsole()
 {
 	drawtoconsole();
+	clearbuffer();
 }

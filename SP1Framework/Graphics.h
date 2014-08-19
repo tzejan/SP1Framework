@@ -26,8 +26,7 @@ public:
 	~Graphics();
 	void draw( const int x, const int y, const char c, const int color);
 	void draw( const int x, const int y, const char* string, const int color);
-	void beginframe();
-	void endframe();
+	void updateconsole();
 };
 
 #endif
