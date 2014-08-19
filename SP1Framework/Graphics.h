@@ -14,8 +14,11 @@ private:
 	const int screenX;
 	const int screenY;
 	const wchar_t* title;
+	const int cursorsize;
+	const bool cursorvisible;
 	SMALL_RECT rect;
 	COORD bufferSize;
+	CONSOLE_CURSOR_INFO cursorinfo;
 	CONSOLE_SCREEN_BUFFER_INFO csbi;
 	CHAR_INFO* screenbuffer;
 public:

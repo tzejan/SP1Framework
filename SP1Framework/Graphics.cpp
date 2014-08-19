@@ -5,6 +5,8 @@ Graphics::Graphics()
 hConsole(GetStdHandle( STD_OUTPUT_HANDLE )),
 screenX(81),
 screenY(26),
+cursorsize(1),
+cursorvisible(false),
 title(L"Our awesome game")
 {
 	rect.Bottom = 0;
@@ -13,9 +15,12 @@ title(L"Our awesome game")
 	rect.Top = screenY - 1;
 	bufferSize.X = screenX;
 	bufferSize.Y = screenY;
+	cursorinfo.dwSize = cursorsize;
+	cursorinfo.bVisible = cursorvisible;
 	SetConsoleTitle(title);
 	SetConsoleWindowInfo(hConsole,true,&rect);
 	SetConsoleScreenBufferSize(hConsole, bufferSize);
+	SetConsoleCursorInfo(hConsole,&cursorinfo);
 	GetConsoleScreenBufferInfo(hConsole,&csbi);
 	screenbuffer = new CHAR_INFO[screenX * screenY];
 }
