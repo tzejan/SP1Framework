@@ -11,6 +11,8 @@ double deltaTime;
 bool keyPressed[K_COUNT];
 COORD charLocation;
 COORD consoleSize;
+CHAR_INFO* screenBuffer = 0;
+extern HANDLE hNewScreenBuffer;
 
 void init()
 {
@@ -20,7 +22,9 @@ void init()
     SetConsoleTitle(L"SP1 Framework");
 
     // Sets the console size, this is the biggest so far.
-    setConsoleSize(79, 28);
+    setConsoleSize(79, 24);
+
+    SetConsoleCP(437);
 
     // Get console width and height
     CONSOLE_SCREEN_BUFFER_INFO csbi; /* to get buffer info */     
@@ -35,12 +39,30 @@ void init()
     charLocation.Y = consoleSize.Y / 2;
 
     elapsedTime = 0.0;
+
+    // screen buffer
+    screenBuffer = new CHAR_INFO[consoleSize.X * consoleSize.Y];
+
+    hNewScreenBuffer = CreateConsoleScreenBuffer( 
+       GENERIC_READ |           // read/write access 
+       GENERIC_WRITE, 
+       FILE_SHARE_READ | 
+       FILE_SHARE_WRITE,        // shared 
+       NULL,                    // default security attributes 
+       CONSOLE_TEXTMODE_BUFFER, // must be TEXTMODE 
+       NULL);                   // reserved; must be NULL 
+
+    SetConsoleActiveScreenBuffer(hNewScreenBuffer); 
+
+    
 }
 
 void shutdown()
 {
     // Reset to white text on black background
 	colour(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
+
+    delete [] screenBuffer;
 }
 
 void getInput()
@@ -61,23 +83,23 @@ void update(double dt)
     // Updating the location of the character based on the key press
     if (keyPressed[K_UP] && charLocation.Y > 0)
     {
-        Beep(1440, 30);
+        //Beep(1440, 30);
         charLocation.Y--; 
     }
     if (keyPressed[K_LEFT] && charLocation.X > 0)
     {
-        Beep(1440, 30);
-        charLocation.X--; 
+        //Beep(1440, 30);
+        charLocation.X--;
     }
     if (keyPressed[K_DOWN] && charLocation.Y < consoleSize.Y - 1)
     {
-        Beep(1440, 30);
-        charLocation.Y++; 
+        //Beep(1440, 30);
+        charLocation.Y++;
     }
     if (keyPressed[K_RIGHT] && charLocation.X < consoleSize.X - 1)
     {
-        Beep(1440, 30);
-        charLocation.X++; 
+        //Beep(1440, 30);
+        charLocation.X++;
     }
 
     // quits the game if player hits the escape key
@@ -87,6 +109,10 @@ void update(double dt)
 
 void render()
 {
+    colour(0x0F);
+    cls();
+    renderToBuffer();
+    return;
     // clear previous screen
     colour(0x0F);
     cls();
@@ -104,16 +130,17 @@ void render()
 		gotoXY(3*i,i+1);
 		colour(colors[i]);
 		std::cout << "WOW";
+        //writeToConsole(3*i, i+1, L"WOW");
 	}
 
     // render time taken to calculate this frame
-    gotoXY(70, 0);
-    colour(0x1A);
-    std::cout << 1.0 / deltaTime << "fps" << std::endl;
+    //gotoXY(70, 0);
+    //colour(0x1A);
+    //std::cout << 1.0 / deltaTime << "fps" << std::endl;
   
-    gotoXY(0, 0);
-    colour(0x59);
-    std::cout << elapsedTime << "secs" << std::endl;
+    //gotoXY(0, 0);
+    //colour(0x59);
+    //std::cout << elapsedTime << "secs" << std::endl;
 
     // render character
     gotoXY(charLocation);
@@ -121,4 +148,15 @@ void render()
     std::cout << (char)1;
 
     
+}
+
+void renderToBuffer()
+{
+    for (int i = 0; i < consoleSize.X * consoleSize.Y -1; ++i)
+    {
+        screenBuffer[i].Char.AsciiChar = (unsigned char)(elapsedTime*i);
+        screenBuffer[i].Attributes = (WORD)i%256;
+    }
+    
+    writeToConsole(screenBuffer);
 }

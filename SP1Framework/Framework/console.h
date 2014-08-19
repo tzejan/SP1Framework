@@ -31,4 +31,7 @@ bool isKeyPressed(unsigned short key);
 // There is a certain size limitation to how big a console can be set.
 void setConsoleSize(unsigned short x, unsigned short y);
 
+void writeToConsole(unsigned short x, unsigned short y, LPCWSTR str);
+void writeToConsole(const CHAR_INFO* lpBuffer);
+
 #endif // _CONSOLE_H
