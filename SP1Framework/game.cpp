@@ -5,56 +5,28 @@
 #include "Framework\console.h"
 #include <iostream>
 #include <iomanip>
+#include <sstream>
+
+// Console size, width by height
+COORD ConsoleSize = {80, 25};
 
 double elapsedTime;
 double deltaTime;
 bool keyPressed[K_COUNT];
+
+
+// Game specific variables here
 COORD charLocation;
-COORD consoleSize;
-CHAR_INFO* screenBuffer = 0;
-extern HANDLE hNewScreenBuffer;
 
 void init()
 {
     // Set precision for floating point output
-    std::cout << std::fixed << std::setprecision(3);
-
-    SetConsoleTitle(L"SP1 Framework");
-
-    // Sets the console size, this is the biggest so far.
-    setConsoleSize(79, 24);
-
-    SetConsoleCP(437);
-
-    // Get console width and height
-    CONSOLE_SCREEN_BUFFER_INFO csbi; /* to get buffer info */     
-
-    /* get the number of character cells in the current buffer */ 
-    GetConsoleScreenBufferInfo( GetStdHandle( STD_OUTPUT_HANDLE ), &csbi );
-    consoleSize.X = csbi.srWindow.Right + 1;
-    consoleSize.Y = csbi.srWindow.Bottom + 1;
-
-    // set the character to be in the center of the screen.
-    charLocation.X = consoleSize.X / 2;
-    charLocation.Y = consoleSize.Y / 2;
-
     elapsedTime = 0.0;
 
-    // screen buffer
-    screenBuffer = new CHAR_INFO[consoleSize.X * consoleSize.Y];
+    initConsole(ConsoleSize, "SP1 Framework");
 
-    hNewScreenBuffer = CreateConsoleScreenBuffer( 
-       GENERIC_READ |           // read/write access 
-       GENERIC_WRITE, 
-       FILE_SHARE_READ | 
-       FILE_SHARE_WRITE,        // shared 
-       NULL,                    // default security attributes 
-       CONSOLE_TEXTMODE_BUFFER, // must be TEXTMODE 
-       NULL);                   // reserved; must be NULL 
-
-    SetConsoleActiveScreenBuffer(hNewScreenBuffer); 
-
-    
+    charLocation.X = ConsoleSize.X / 2;
+    charLocation.Y = ConsoleSize.Y / 2;
 }
 
 void shutdown()
@@ -62,7 +34,7 @@ void shutdown()
     // Reset to white text on black background
 	colour(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 
-    delete [] screenBuffer;
+    shutDownConsole();
 }
 
 void getInput()
@@ -91,12 +63,12 @@ void update(double dt)
         //Beep(1440, 30);
         charLocation.X--;
     }
-    if (keyPressed[K_DOWN] && charLocation.Y < consoleSize.Y - 1)
+    if (keyPressed[K_DOWN] && charLocation.Y < ConsoleSize.Y - 1)
     {
         //Beep(1440, 30);
         charLocation.Y++;
     }
-    if (keyPressed[K_RIGHT] && charLocation.X < consoleSize.X - 1)
+    if (keyPressed[K_RIGHT] && charLocation.X < ConsoleSize.X - 1)
     {
         //Beep(1440, 30);
         charLocation.X++;
@@ -108,55 +80,45 @@ void update(double dt)
 }
 
 void render()
-{
-    colour(0x0F);
-    cls();
-    renderToBuffer();
-    return;
-    // clear previous screen
-    colour(0x0F);
-    cls();
+{    
+    // Clears the buffer with this colour attribute
+    clearBuffer(0x1F);
 
-    //render the game
-
-    //render test screen code (not efficient at all)
+    // Set up sample colours, and output shadings
     const WORD colors[] =   {
 	                        0x1A, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
 	                        0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6
 	                        };
 	
+    COORD c;
 	for (int i = 0; i < 12; ++i)
 	{
-		gotoXY(3*i,i+1);
+		c.X = 5*i;
+        c.Y = i+1;
 		colour(colors[i]);
-		std::cout << "WOW";
-        //writeToConsole(3*i, i+1, L"WOW");
+		writeToBuffer(c, " °±²Û", colors[i]);
 	}
 
-    // render time taken to calculate this frame
-    //gotoXY(70, 0);
-    //colour(0x1A);
-    //std::cout << 1.0 / deltaTime << "fps" << std::endl;
-  
-    //gotoXY(0, 0);
-    //colour(0x59);
-    //std::cout << elapsedTime << "secs" << std::endl;
+    // displays the framerate
+    std::ostringstream ss;
+    ss << std::fixed << std::setprecision(3);
+    ss << 1.0 / deltaTime << "fps";
+    c.X = ConsoleSize.X-9;
+    c.Y = 0;
+    writeToBuffer(c, ss.str(), 0x0C);
 
-    // render character
-    gotoXY(charLocation);
-    colour(0x0C);
-    std::cout << (char)1;
+    // displays the elapsed time
+    ss.str("");
+    ss << elapsedTime << "secs";
+    c.X = 0;
+    c.Y = 0;
+    writeToBuffer(c, ss.str(), 0x59);
+
+
+    // Draw the location of the character
+    writeToBuffer(charLocation, (char)1, 0x0C);
 
     
-}
-
-void renderToBuffer()
-{
-    for (int i = 0; i < consoleSize.X * consoleSize.Y -1; ++i)
-    {
-        screenBuffer[i].Char.AsciiChar = (unsigned char)(elapsedTime*i);
-        screenBuffer[i].Attributes = (WORD)i%256;
-    }
-    
-    writeToConsole(screenBuffer);
+    // Writes the buffer to the console, hence you will see what you have written
+    flushBufferToConsole();
 }

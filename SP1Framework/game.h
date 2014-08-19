@@ -22,6 +22,4 @@ void update(double dt);     // update the game and the state of the game
 void render();              // renders the current state of the game to the console
 void shutdown();            // do clean up, free memory
 
-
-void renderToBuffer();
 #endif // _GAME_H

@@ -1,8 +1,10 @@
 #include "console.h"
 #include <cstdio>
 
-
-HANDLE hNewScreenBuffer; 
+// Set a screen buffer for us to write to before flushing it to the screen
+HANDLE hScreenBuffer = INVALID_HANDLE_VALUE; 
+CHAR_INFO* screenDataBuffer = 0;
+extern COORD ConsoleSize;
 
 void gotoXY(int x,int y)
 {
@@ -74,59 +76,17 @@ bool isKeyPressed(unsigned short key)
     return ((GetAsyncKeyState(key) & 0x8001) != 0);
 }
 
-// sets the size of the console
-void setConsoleSize(unsigned short x, unsigned short y)
+
+void initConsole(COORD consoleSize, LPCSTR lpConsoleTitle)
 {
-    SMALL_RECT windowSize = {0, 0, x, y};
+    // Use the ascii version for the consoleTitle
+    SetConsoleTitleA(lpConsoleTitle);
+    SetConsoleCP(437);
+    
+    // set up screen buffer
+    screenDataBuffer = new CHAR_INFO[consoleSize.X * consoleSize.Y];
 
-    HANDLE hConsole = GetStdHandle( STD_OUTPUT_HANDLE );
-    bool bSuccess = SetConsoleWindowInfo(hConsole, TRUE, &windowSize);
-	PERR( bSuccess, "SetConsoleWindowInfo" );
-}
-
-void writeToConsole(unsigned short x, unsigned short y, LPCWSTR str, WORD attribute)
-{
-    HANDLE hConsole = GetStdHandle( STD_OUTPUT_HANDLE );
-    COORD c = {x,y};
-    DWORD charsWritten;
-    CHAR_INFO lpBuffer[30]; 
-    COORD buffSize = {30,30};
-    WriteConsoleOutputCharacter(hConsole, str, lstrlen(str), c, &charsWritten);
-    //WriteConsoleOutput(hConsole, &lpBuffer, buffSize, c, &attribute, lstrlen(str), c, &charsWritten);
-
-}
-
-void writeToConsole(const CHAR_INFO* lpBuffer)
-{
-    //HANDLE hConsole = GetStdHandle( STD_OUTPUT_HANDLE );
-    COORD buffSize = {80,25};
-    COORD c = {0,0};
-    SMALL_RECT WriteRegion = {0, 0, 79, 24};
-    // WriteConsoleOutputA for ASCII text
-    WriteConsoleOutputA(hNewScreenBuffer, lpBuffer, buffSize, c, &WriteRegion);
-}
-
-//http://www.cplusplus.com/forum/windows/121444/
-//
-// write to  a CHAR_INFO buffer, CHAR_INFO contains the actual character and the attributes of the character
-// then wrote this buffer to the console output.
-//
-
-void writing()
-{
-     HANDLE hStdout, hNewScreenBuffer; 
-    SMALL_RECT srctReadRect; 
-    SMALL_RECT srctWriteRect; 
-    CHAR_INFO chiBuffer[160]; // [2][80]; 
-    COORD coordBufSize; 
-    COORD coordBufCoord; 
-    BOOL fSuccess; 
- 
-    // Get a handle to the STDOUT screen buffer to copy from and 
-    // create a new screen buffer to copy to. 
- 
-    hStdout = GetStdHandle(STD_OUTPUT_HANDLE); 
-    hNewScreenBuffer = CreateConsoleScreenBuffer( 
+    hScreenBuffer = CreateConsoleScreenBuffer( 
        GENERIC_READ |           // read/write access 
        GENERIC_WRITE, 
        FILE_SHARE_READ | 
@@ -134,80 +94,78 @@ void writing()
        NULL,                    // default security attributes 
        CONSOLE_TEXTMODE_BUFFER, // must be TEXTMODE 
        NULL);                   // reserved; must be NULL 
-    if (hStdout == INVALID_HANDLE_VALUE || 
-            hNewScreenBuffer == INVALID_HANDLE_VALUE) 
+
+    SetConsoleActiveScreenBuffer(hScreenBuffer); 
+    // Sets the console size
+    setConsoleSize(consoleSize.X, consoleSize.Y);
+}
+
+void shutDownConsole()
+{
+    delete [] screenDataBuffer;
+    SetConsoleActiveScreenBuffer(GetStdHandle(STD_OUTPUT_HANDLE));
+}
+
+CHAR_INFO* getScreenDataBuffer()
+{
+    return screenDataBuffer;
+}
+
+void flushBufferToConsole()
+{
+    COORD c = {0,0};
+    SMALL_RECT WriteRegion = {0, 0, ConsoleSize.X-1, ConsoleSize.Y-1};
+    // WriteConsoleOutputA for ASCII text
+    WriteConsoleOutputA(hScreenBuffer, screenDataBuffer, ConsoleSize, c, &WriteRegion);
+}
+
+// sets the size of the console
+void setConsoleSize(unsigned short consoleWidth, unsigned short consoleHeight)
+{
+    SMALL_RECT windowSize = {0, 0, consoleWidth-1, consoleHeight-1};
+    COORD buffSize = {consoleWidth, consoleHeight};
+
+    HANDLE hConsole = hScreenBuffer;//GetStdHandle( STD_OUTPUT_HANDLE );
+    BOOL bSuccess = SetConsoleWindowInfo(hConsole, TRUE, &windowSize);
+    PERR( bSuccess, "SetConsoleWindowInfo" );
+    bSuccess = SetConsoleScreenBufferSize(hConsole, buffSize);
+	PERR( bSuccess, "SetConsoleWindowInfo" );
+}
+void clearBuffer(WORD attribute)
+{
+    size_t buffSize = ConsoleSize.X * ConsoleSize.Y;
+    for (size_t i = 0; i < buffSize; ++i)
     {
-        printf("CreateConsoleScreenBuffer failed - (%d)\n", GetLastError()); 
-        return;
+        screenDataBuffer[i].Char.AsciiChar = ' ';
+        screenDataBuffer[i].Attributes = attribute;
     }
- 
-    // Make the new screen buffer the active screen buffer. 
- 
-    if (! SetConsoleActiveScreenBuffer(hNewScreenBuffer) ) 
+}
+void writeToBuffer(COORD c, LPCSTR str, WORD attribute)
+{    
+    size_t index = c.X + ConsoleSize.X * c.Y;
+    size_t length = strlen(str);
+    for (size_t i = 0; i < length; ++i)
     {
-        printf("SetConsoleActiveScreenBuffer failed - (%d)\n", GetLastError()); 
-        return;
+        screenDataBuffer[index+i].Char.AsciiChar = *(str+i);
+        screenDataBuffer[index+i].Attributes = attribute;
     }
- 
-    // Set the source rectangle. 
- 
-    srctReadRect.Top = 0;    // top left: row 0, col 0 
-    srctReadRect.Left = 0; 
-    srctReadRect.Bottom = 1; // bot. right: row 1, col 79 
-    srctReadRect.Right = 79; 
- 
-    // The temporary buffer size is 2 rows x 80 columns. 
- 
-    coordBufSize.Y = 2; 
-    coordBufSize.X = 80; 
- 
-    // The top left destination cell of the temporary buffer is 
-    // row 0, col 0. 
- 
-    coordBufCoord.X = 0; 
-    coordBufCoord.Y = 0; 
- 
-    // Copy the block from the screen buffer to the temp. buffer. 
- 
-    fSuccess = ReadConsoleOutput( 
-       hStdout,        // screen buffer to read from 
-       chiBuffer,      // buffer to copy into 
-       coordBufSize,   // col-row size of chiBuffer 
-       coordBufCoord,  // top left dest. cell in chiBuffer 
-       &srctReadRect); // screen buffer source rectangle 
-    if (! fSuccess) 
-    {
-        printf("ReadConsoleOutput failed - (%d)\n", GetLastError()); 
-        return;
-    }
- 
-    // Set the destination rectangle. 
- 
-    srctWriteRect.Top = 10;    // top lt: row 10, col 0 
-    srctWriteRect.Left = 0; 
-    srctWriteRect.Bottom = 11; // bot. rt: row 11, col 79 
-    srctWriteRect.Right = 79; 
- 
-    // Copy from the temporary buffer to the new screen buffer. 
- 
-    fSuccess = WriteConsoleOutput( 
-        hNewScreenBuffer, // screen buffer to write to 
-        chiBuffer,        // buffer to copy from 
-        coordBufSize,     // col-row size of chiBuffer 
-        coordBufCoord,    // top left src cell in chiBuffer 
-        &srctWriteRect);  // dest. screen buffer rectangle 
-    if (! fSuccess) 
-    {
-        printf("WriteConsoleOutput failed - (%d)\n", GetLastError()); 
-        return;
-    }
-    Sleep(5000); 
- 
-    // Restore the original active screen buffer. 
- 
-    if (! SetConsoleActiveScreenBuffer(hStdout)) 
-    {
-        printf("SetConsoleActiveScreenBuffer failed - (%d)\n", GetLastError()); 
-        return;
-    }
+}
+
+void writeToBuffer(COORD c, std::string s, WORD attribute)
+{
+    writeToBuffer(c, s.c_str(), attribute);
+}
+
+void writeToBuffer(COORD c, char ch, WORD attribute)
+{
+    screenDataBuffer[c.X + ConsoleSize.X * c.Y].Char.AsciiChar = ch;
+    screenDataBuffer[c.X + ConsoleSize.X * c.Y].Attributes = attribute;
+}
+
+void writeToConsole(const CHAR_INFO* lpBuffer)
+{
+    COORD c = {0,0};
+    SMALL_RECT WriteRegion = {0, 0, ConsoleSize.X-1, ConsoleSize.Y-1};
+    // WriteConsoleOutputA for ASCII text
+    WriteConsoleOutputA(hScreenBuffer, screenDataBuffer, ConsoleSize, c, &WriteRegion);
 }
