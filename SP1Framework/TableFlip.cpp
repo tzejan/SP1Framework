@@ -8,7 +8,7 @@ int CurrentFramePerSec = 0;
 bool GameStarts = false;
 bool gameends = false;
 
-gamestate updateTableFlip(double dt)
+gamestate updateTableFlip(Graphics* console)
 {
 	if(isKeyPressed(VK_ESCAPE))
 	{
@@ -21,14 +21,15 @@ gamestate updateTableFlip(double dt)
 	if(GameStarts == true)
 	{
 		playTableFlip();
+		drawTableFlip(console);
 		return TABLE_FLIP;
 	}
 	if(gameends)
 	{
-		gamestate state = (gamestate)(rand() % 2 + 1);
+		gamestate state = (gamestate)(rand() % numofminigames + 1);
 		return state;
 	}
-
+	drawTableFlip(console);
 	return TABLE_FLIP;
 }
 

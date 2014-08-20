@@ -18,6 +18,8 @@ enum gamestate
 	MAXSTATES
 };
 
+const int numofminigames = MAXSTATES - 2;
+
 
 void init();                // initialize your variables, allocate memory, etc
 void update(double dt);     // update the game and the state of the game

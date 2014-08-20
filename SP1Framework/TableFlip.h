@@ -13,7 +13,7 @@ using std::cout;
 using std::cin;
 using std::endl;
 
-gamestate updateTableFlip(double dt);
+gamestate updateTableFlip(Graphics* console);
 void drawTableFlip(Graphics* TableFlip);
 void playTableFlip();
 

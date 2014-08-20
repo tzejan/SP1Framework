@@ -3,17 +3,27 @@
 
 #include "game.h"
 #include "Framework\console.h"
+#include "Graphics.h"
 
 class Scream
 {
 private:
+	//variables
 	bool gameends;
-	bool gamestarts;
+	bool paused;
+	int power;
+	int opposingForce;
+	int currFrame;
+	int pauseDelay;
+	Graphics& console;
+	//functions
+	bool play();
+
 public:
-	Scream();
+	Scream(Graphics& console);
 	~Scream();
-	gamestate updateScream();
-	void drawScream();
+	gamestate update();
+	void draw();
 };
 
 #endif
