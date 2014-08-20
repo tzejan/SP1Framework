@@ -6,6 +6,7 @@ int checkleft = 0;
 int checkright = 0;
 int CurrentFramePerSec = 0;
 bool GameStarts = false;
+bool gameends = false;
 
 gamestate updateTableFlip(double dt)
 {
@@ -21,6 +22,11 @@ gamestate updateTableFlip(double dt)
 	{
 		playTableFlip();
 		return TABLE_FLIP;
+	}
+	if(gameends)
+	{
+		gamestate state = (gamestate)(rand() % 2 + 1);
+		return state;
 	}
 
 	return TABLE_FLIP;
