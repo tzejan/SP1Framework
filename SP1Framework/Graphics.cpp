@@ -3,8 +3,8 @@
 Graphics::Graphics()
 	:
 hConsole(GetStdHandle( STD_OUTPUT_HANDLE )),
-screenX(81),
-screenY(26),
+screenX(100),
+screenY(50),
 cursorsize(1),
 cursorvisible(false),
 title(L"Our awesome game")
@@ -45,6 +45,12 @@ void Graphics::draw(const int x, const int y, const char* string, const int colo
 	int yoff = 0;
 	for(int index = 0; string[index]; index++)
 	{
+		if(string[index] == '\n')
+		{
+			xoff = 0;
+			yoff++;
+			continue;
+		}
 		draw(x + xoff, y + yoff, string[index], color);
 		xoff++;
 		if(xoff == screenX)
@@ -57,7 +63,8 @@ void Graphics::draw(const int x, const int y, const char* string, const int colo
 
 void Graphics::drawtoconsole()
 {
-	WriteConsoleOutput(hConsole,screenbuffer,csbi.dwSize,csbi.dwCursorPosition,&(csbi.srWindow));
+	SMALL_RECT rect = {0,0,screenX - 1,screenY - 1};
+	WriteConsoleOutput(hConsole,screenbuffer,csbi.dwSize,csbi.dwCursorPosition,&rect);
 }
 
 void Graphics::clearbuffer()

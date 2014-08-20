@@ -5,37 +5,39 @@
 #include "Framework\console.h"
 #include <iostream>
 #include <iomanip>
+#include "Graphics.h"
 
 double elapsedTime;
 double deltaTime;
 bool keyPressed[K_COUNT];
 COORD charLocation;
 COORD consoleSize;
+Graphics console;
 
 void init()
 {
-    // Set precision for floating point output
-    std::cout << std::fixed << std::setprecision(3);
+    //// Set precision for floating point output
+    //std::cout << std::fixed << std::setprecision(3);
 
-    // Get console width and height
-    CONSOLE_SCREEN_BUFFER_INFO csbi; /* to get buffer info */     
+    //// Get console width and height
+    //CONSOLE_SCREEN_BUFFER_INFO csbi; /* to get buffer info */     
 
-    /* get the number of character cells in the current buffer */ 
-    GetConsoleScreenBufferInfo( GetStdHandle( STD_OUTPUT_HANDLE ), &csbi );
-    consoleSize.X = csbi.srWindow.Right + 1;
-    consoleSize.Y = csbi.srWindow.Bottom + 1;
+    ///* get the number of character cells in the current buffer */ 
+    //GetConsoleScreenBufferInfo( GetStdHandle( STD_OUTPUT_HANDLE ), &csbi );
+    //consoleSize.X = csbi.srWindow.Right + 1;
+    //consoleSize.Y = csbi.srWindow.Bottom + 1;
 
-    // set the character to be in the center of the screen.
-    charLocation.X = consoleSize.X / 2;
-    charLocation.Y = consoleSize.Y / 2;
+    //// set the character to be in the center of the screen.
+    //charLocation.X = consoleSize.X / 2;
+    //charLocation.Y = consoleSize.Y / 2;
 
     elapsedTime = 0.0;
 }
 
 void shutdown()
 {
-    // Reset to white text on black background
-	colour(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
+ //   // Reset to white text on black background
+	//colour(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 }
 
 void getInput()
@@ -64,12 +66,12 @@ void update(double dt)
         Beep(1440, 30);
         charLocation.X--; 
     }
-    if (keyPressed[K_DOWN] && charLocation.Y < consoleSize.Y - 1)
+    if (keyPressed[K_DOWN] /*&& charLocation.Y < consoleSize.Y - 1*/)
     {
         Beep(1440, 30);
         charLocation.Y++; 
     }
-    if (keyPressed[K_RIGHT] && charLocation.X < consoleSize.X - 1)
+    if (keyPressed[K_RIGHT] /*&& charLocation.X < consoleSize.X - 1*/)
     {
         Beep(1440, 30);
         charLocation.X++; 
@@ -82,38 +84,39 @@ void update(double dt)
 
 void render()
 {
-    // clear previous screen
-    colour(0x0F);
-    cls();
+ //   // clear previous screen
+ //   colour(0x0F);
+ //   cls();
 
-    //render the game
+ //   //render the game
 
-    //render test screen code (not efficient at all)
-    const WORD colors[] =   {
-	                        0x1A, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
-	                        0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6
-	                        };
-	
-	for (int i = 0; i < 12; ++i)
-	{
-		gotoXY(3*i,i+1);
-		colour(colors[i]);
-		std::cout << "WOW";
-	}
+ //   //render test screen code (not efficient at all)
+ //   const WORD colors[] =   {
+	//                        0x1A, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
+	//                        0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6
+	//                        };
+	//
+	//for (int i = 0; i < 12; ++i)
+	//{
+	//	gotoXY(3*i,i+1);
+	//	colour(colors[i]);
+	//	std::cout << "WOW";
+	//}
 
-    // render time taken to calculate this frame
-    gotoXY(70, 0);
-    colour(0x1A);
-    std::cout << 1.0 / deltaTime << "fps" << std::endl;
-  
-    gotoXY(0, 0);
-    colour(0x59);
-    std::cout << elapsedTime << "secs" << std::endl;
+ //   // render time taken to calculate this frame
+ //   gotoXY(70, 0);
+ //   colour(0x1A);
+ //   std::cout << 1.0 / deltaTime << "fps" << std::endl;
+ // 
+ //   gotoXY(0, 0);
+ //   colour(0x59);
+ //   std::cout << elapsedTime << "secs" << std::endl;
 
-    // render character
-    gotoXY(charLocation);
-    colour(0x0C);
-    std::cout << (char)1;
-
+ //   // render character
+ //   gotoXY(charLocation);
+ //   colour(0x0C);
+ //   std::cout << (char)1;
+	console.draw(charLocation.X,charLocation.Y,1,0x1A);
+	console.updateconsole();
     
 }
