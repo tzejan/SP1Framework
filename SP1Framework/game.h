@@ -2,7 +2,6 @@
 #define _GAME_H
 
 #include "Framework\timer.h"
-#include "Directory.h"
 
 extern StopWatch g_timer;
 extern bool g_quitGame;
