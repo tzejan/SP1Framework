@@ -3,23 +3,22 @@
 #include "Framework\timer.h"
 #include "game.h"
 
-
 StopWatch g_timer;            // Timer function to keep track of time and the frame rate
 bool g_quitGame = false;      // Set to true if you want to quit the game
-const unsigned char FPS = 5; // FPS of this game
+bool PlayGame = false;
+const unsigned char FPS = 8; // FPS of this game
 const unsigned int frameTime = 1000 / FPS; // time for each frame
-
 void mainLoop();
 
 // TODO:
-// Bug in waitUnitil. it waits for the time from getElapsedTime to waitUntil, but should be insignificant.
+// Bug in waitUntil. it waits for the time from getElapsedTime to waitUntil, but should be insignificant.
 
 int main()
 {
 	init();      // initialize your variables
-    mainLoop();  // main loop
+	/*title();*/
+	mainLoop(); 
     shutdown();  // do clean up, if any. free memory.
-	
 	return 0;
 }
 
@@ -27,6 +26,7 @@ int main()
 // at a specific frame rate
 void mainLoop()
 {
+
     g_timer.startTimer();    // Start timer to calculate how long it takes to render this frame
     while (!g_quitGame)      // run this loop until user wants to quit 
 	{        

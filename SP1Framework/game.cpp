@@ -5,115 +5,197 @@
 #include "Framework\console.h"
 #include <iostream>
 #include <iomanip>
+#include <fstream>
+#include <string>
+using std::cout;
+using std::cin;
+using std::endl;
 
 double elapsedTime;
 double deltaTime;
+double checkTime;
 bool keyPressed[K_COUNT];
 COORD charLocation;
+COORD charFlippingGuy;
+COORD charFlippingGuy2;
+COORD charFlippingGuy3;
+COORD charTable;
+COORD charTable2;
+COORD charTableN;
+COORD charTable2N;
+COORD Instructions;
+COORD Instructions2;
 COORD consoleSize;
+int LeftPower;
+int RightPower;
 
 void init()
 {
-    // Set precision for floating point output
-    std::cout << std::fixed << std::setprecision(3);
+	// Set precision for floating point output
+	std::cout << std::fixed << std::setprecision(3);
 
-    // Get console width and height
-    CONSOLE_SCREEN_BUFFER_INFO csbi; /* to get buffer info */     
+	// Get console width and height
+	CONSOLE_SCREEN_BUFFER_INFO csbi; /* to get buffer info */     
 
-    /* get the number of character cells in the current buffer */ 
-    GetConsoleScreenBufferInfo( GetStdHandle( STD_OUTPUT_HANDLE ), &csbi );
-    consoleSize.X = csbi.srWindow.Right + 1;
-    consoleSize.Y = csbi.srWindow.Bottom + 1;
+	/* get the number of character cells in the current buffer */ 
+	GetConsoleScreenBufferInfo( GetStdHandle( STD_OUTPUT_HANDLE ), &csbi );
+	consoleSize.X = csbi.srWindow.Right;
+	consoleSize.Y = csbi.srWindow.Bottom;
 
-    // set the character to be in the center of the screen.
-    charLocation.X = consoleSize.X / 2;
-    charLocation.Y = consoleSize.Y / 2;
+	// set the character to be in the center of the screen.
+	Instructions.X = ((consoleSize.X /2)-17);
+	Instructions.Y = (consoleSize.Y/2)+9;
 
-    elapsedTime = 0.0;
+	Instructions2.X = ((consoleSize.X /2)-27);
+	Instructions2.Y = (consoleSize.Y/2)+10;
+
+	charLocation.X = (consoleSize.X / 2);
+	charLocation.Y = (consoleSize.Y / 2);
+
+	charTable.X = (consoleSize.X/2)-34;
+	charTable.Y = (consoleSize.Y/2);
+
+	charTable2.X = (consoleSize.X/2)-34;
+	charTable2.Y = (consoleSize.Y/2)+1;
+
+	charTableN.X = (consoleSize.X/2)+34;
+	charTableN.Y = (consoleSize.Y/2);
+
+	charTable2N.X = (consoleSize.X/2)+34;
+	charTable2N.Y = (consoleSize.Y/2)+1;
+
+	charFlippingGuy.X = (consoleSize.X/2)-38;
+	charFlippingGuy.Y = (consoleSize.Y/2)-1;
+
+	charFlippingGuy2.X = (consoleSize.X/2)-38;
+	charFlippingGuy2.Y = (consoleSize.Y/2);
+
+	charFlippingGuy3.X = (consoleSize.X/2)-38;
+	charFlippingGuy3.Y = (consoleSize.Y/2)+1;
+
+	elapsedTime = 0.0;
 }
 
 void shutdown()
 {
-    // Reset to white text on black background
+	// Reset to white text on black background
 	colour(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 }
 
 void getInput()
 {    
-    keyPressed[K_UP] = isKeyPressed(VK_UP);
-    keyPressed[K_DOWN] = isKeyPressed(VK_DOWN);
-    keyPressed[K_LEFT] = isKeyPressed(VK_LEFT);
-    keyPressed[K_RIGHT] = isKeyPressed(VK_RIGHT);
-    keyPressed[K_ESCAPE] = isKeyPressed(VK_ESCAPE);
+	keyPressed[K_LEFT] = isKeyPressed(VK_LEFT);
+	keyPressed[K_RIGHT] = isKeyPressed(VK_RIGHT);
+	keyPressed[K_ENTER] = isKeyPressed(VK_RETURN);
+	keyPressed[K_ESCAPE] = isKeyPressed(VK_ESCAPE);
 }
 
 void update(double dt)
 {
-    // get the delta time
-    elapsedTime += dt;
-    deltaTime = dt;
+	// get the delta time
+	elapsedTime += dt;
+	deltaTime = dt;
 
-    // Updating the location of the character based on the key press
-    if (keyPressed[K_UP] && charLocation.Y > 0)
-    {
-        Beep(1440, 30);
-        charLocation.Y--; 
-    }
-    if (keyPressed[K_LEFT] && charLocation.X > 0)
-    {
-        Beep(1440, 30);
-        charLocation.X--; 
-    }
-    if (keyPressed[K_DOWN] && charLocation.Y < consoleSize.Y - 1)
-    {
-        Beep(1440, 30);
-        charLocation.Y++; 
-    }
-    if (keyPressed[K_RIGHT] && charLocation.X < consoleSize.X - 1)
-    {
-        Beep(1440, 30);
-        charLocation.X++; 
-    }
+	if(PlayGame == false)
+	{
+		system("pause");
+		if (keyPressed[K_ENTER])
+		{
+			PlayGame = true;
+		}
+	}
 
-    // quits the game if player hits the escape key
-    if (keyPressed[K_ESCAPE])
-        g_quitGame = true;    
+	// Updating the location of the character based on the key press
+	if (elapsedTime <= 7)
+	{
+		if (keyPressed[K_LEFT])
+		{
+			Beep(1440, 30);
+			LeftPower = LeftPower + 1;
+		}
+		if (keyPressed[K_RIGHT])
+		{
+			Beep(1440, 30);
+			RightPower = RightPower + 1;
+		}
+	}
+
+	// quits the game if player hits the escape key
+	if (keyPressed[K_ESCAPE])
+		g_quitGame = true;  	
 }
 
 void render()
 {
-    // clear previous screen
-    colour(0x0F);
-    cls();
+	// clear previous screen
+	colour(0x0A);
+	cls();
 
-    //render the game
+	// render time taken to calculate this frame
+	gotoXY(72, 0);
+	colour(0x1A);
+	std::cout << 1.0 / deltaTime << "fps" << std::endl;
 
-    //render test screen code (not efficient at all)
-    const WORD colors[] =   {
-	                        0x1A, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
-	                        0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6
-	                        };
-	
-	for (int i = 0; i < 12; ++i)
+	gotoXY(0, 0);
+	colour(0x1A);
+	std::cout << checkTime << "secs" << std::endl;
+
+	gotoXY(68, 1);
+	colour(0x60);
+	std::cout << RightPower << "RightPower" << std::endl;
+
+	gotoXY(0, 1);
+	colour(0x60);
+	std::cout << LeftPower << "LeftPower" << std::endl;
+
+	if(elapsedTime > 7)
 	{
-		gotoXY(3*i,i+1);
-		colour(colors[i]);
-		std::cout << "WOW";
+		gotoXY(23,14);
+		colour(0x58);
+		cout << "Your table has flipped over " << (RightPower+LeftPower)<< " tables!" << endl;
 	}
 
-    // render time taken to calculate this frame
-    gotoXY(70, 0);
-    colour(0x1A);
-    std::cout << 1.0 / deltaTime << "fps" << std::endl;
-  
-    gotoXY(0, 0);
-    colour(0x59);
-    std::cout << elapsedTime << "secs" << std::endl;
+	// render character
+	if(elapsedTime <=7)
+	{
+		gotoXY(charTable);
+		colour(0x58);
+		cout << "-------" << endl;
 
-    // render character
-    gotoXY(charLocation);
-    colour(0x0C);
-    std::cout << (char)1;
+		gotoXY(charTable2);
+		colour(0x58);
+		cout << "|     |" << endl;
+	}
 
-    
+	gotoXY(charFlippingGuy);
+	colour(0x48);
+	cout << "  o" << endl;
+
+	gotoXY(charFlippingGuy2);
+	colour(0x48);
+	cout << " / =" << endl;
+
+	gotoXY(charFlippingGuy3);
+	colour(0x48);
+	cout << "|| " << endl;
+
+	if(elapsedTime > 7)
+	{
+		gotoXY(charTableN);
+		colour(0x58);
+		cout << "|     |" << endl;
+
+		gotoXY(charTable2N);
+		colour(0x58);
+		cout << "-------" << endl;
+	}
+
+	gotoXY(Instructions);
+	colour(0x20);
+	cout << "----------Instuctions----------" << endl;
+
+	gotoXY(Instructions2);
+	colour(0x20);
+	cout << "Press the left and right button as much as you can!" << endl;
 }
+
