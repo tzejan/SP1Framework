@@ -7,8 +7,12 @@ int checkright = 0;
 int CurrentFramePerSec = 0;
 bool GameStarts = false;
 
-void updateTableFlip()
+gamestate updateTableFlip(double dt)
 {
+	if(isKeyPressed(VK_ESCAPE))
+	{
+		return MAIN_MENU;
+	}
 	if(isKeyPressed(VK_RETURN))
 	{
 		GameStarts = true;
@@ -16,7 +20,10 @@ void updateTableFlip()
 	if(GameStarts == true)
 	{
 		playTableFlip();
+		return TABLE_FLIP;
 	}
+
+	return TABLE_FLIP;
 }
 
 void playTableFlip()
