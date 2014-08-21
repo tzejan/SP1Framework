@@ -6,21 +6,6 @@
 
 extern StopWatch g_timer;
 extern bool g_quitGame;
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
->>>>>>> parent of fffa12d... Stuff
-enum Keys
-{
-    K_UP,
-    K_DOWN,
-    K_LEFT,
-    K_RIGHT,
-    K_ESCAPE,
-    K_COUNT
-=======
 enum gamestate
 {
 	MAIN_MENU,
@@ -30,7 +15,6 @@ enum gamestate
 	SUBMARINE,
 	QUIT_GAME,
 	MAXSTATES
->>>>>>> origin/master
 };
 
 const int numofminigames = MAXSTATES - 2;
