@@ -44,7 +44,7 @@ gamestate Scream::update()
 		draw();
 		if(gameends)
 		{
-			gamestate state = (gamestate)(rand() % numofminigames + 1);
+			gamestate state = (gamestate)(rand() % numofminigames);
 			return state;
 		}
 		return SCREAM;

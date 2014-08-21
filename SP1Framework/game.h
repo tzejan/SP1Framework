@@ -8,12 +8,12 @@ extern StopWatch g_timer;
 extern bool g_quitGame;
 enum gamestate
 {
-	MAIN_MENU,
 	TABLE_FLIP,
 	TOILET_ROLL,
 	SCREAM,
 	SUBMARINE,
 	QUIT_GAME,
+	MAIN_MENU,
 	MAXSTATES
 };
 
