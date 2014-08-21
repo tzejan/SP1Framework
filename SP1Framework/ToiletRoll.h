@@ -4,19 +4,29 @@
 #include "game.h"
 #include "Framework\console.h"
 #include "Graphics.h"
+#include <fstream>
+#include <string>
 
 class toiletroll
 {
 private:
-	int CurrentFramePerSec;
+	int CurrentFrame;
 	bool GameStarts;
 	bool gameends;
+	int y;
+	int rx;
+	int lx;
+	char score;
+	std::ifstream tr, rh, lh;
+	std::string trs, rhs, lhs;
 
 public:
-	gamestate update();
+	gamestate update(Graphics&);
 	void play();
-	void draw();
+	void read();
+	void draw(Graphics&);
 	toiletroll();
 };
+
 
 #endif
