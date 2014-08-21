@@ -14,7 +14,7 @@ Graphics console;
 //Create a pointer to store the location of the scream object
 Scream* scream;
 
-gamestate state = TABLE_FLIP;
+gamestate state = SCREAM;
 void init()
 {
 	scream = NULL;
@@ -26,6 +26,7 @@ void shutdown()
 
 void update(double dt)
 {
+	updateinput();
 	switch(state)
 	{
 	case MAIN_MENU:

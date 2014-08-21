@@ -4,9 +4,8 @@ Scream::Scream(Graphics& console)
 	:
 console(console),
 power(0),
-opposingForce(0),
+resistance(0),
 currFrame(0),
-pauseDelay(0),
 paused(true),
 gameends(false)
 {
@@ -22,16 +21,10 @@ void Scream::draw()
 
 gamestate Scream::update()
 {
-	if(isKeyPressed(VK_RETURN) && pauseDelay == 0)
+	if(isKeyPressed(VK_RETURN))
 	{
 		paused = !paused;
-		pauseDelay = 5;
 	}
-	if(pauseDelay != 0)
-	{
-		pauseDelay--;
-	}
-	//will only update the current frame once unpaused
 	if(paused)
 	{
 		console.draw(10,10,"Paused",0x1A);

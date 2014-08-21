@@ -12,9 +12,8 @@ private:
 	bool gameends;
 	bool paused;
 	int power;
-	int opposingForce;
+	int resistance;
 	int currFrame;
-	int pauseDelay;
 	Graphics& console;
 	//functions
 	bool play();
