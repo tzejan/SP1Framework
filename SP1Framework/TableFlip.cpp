@@ -10,6 +10,7 @@ bool gameends = false;
 
 gamestate updateTableFlip(Graphics* console)
 {
+	//does user input
 	if(isKeyPressed(VK_ESCAPE))
 	{
 		return MAIN_MENU;
@@ -18,9 +19,16 @@ gamestate updateTableFlip(Graphics* console)
 	{
 		GameStarts = true;
 	}
+
+
 	if(GameStarts == true)
 	{
 		playTableFlip();
+		drawTableFlip(console);
+		return TABLE_FLIP;
+	}
+	else
+	{
 		drawTableFlip(console);
 		return TABLE_FLIP;
 	}
@@ -29,8 +37,7 @@ gamestate updateTableFlip(Graphics* console)
 		gamestate state = (gamestate)(rand() % numofminigames + 1);
 		return state;
 	}
-	drawTableFlip(console);
-	return TABLE_FLIP;
+
 }
 
 void playTableFlip()
