@@ -8,10 +8,7 @@ extern StopWatch g_timer;
 extern bool g_quitGame;
 
 <<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> parent of fffa12d... Stuff
 enum Keys
 {
     K_UP,
@@ -19,6 +16,7 @@ enum Keys
     K_LEFT,
     K_RIGHT,
     K_ESCAPE,
+	K_ENTER,
     K_COUNT
 =======
 enum gamestate
