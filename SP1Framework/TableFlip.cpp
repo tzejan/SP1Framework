@@ -6,9 +6,14 @@ int checkleft = 0;
 int checkright = 0;
 int CurrentFramePerSec = 0;
 bool GameStarts = false;
+bool gameends = false;
 
-void updateTableFlip()
+gamestate updateTableFlip(Graphics* console)
 {
+	if(isKeyPressed(VK_ESCAPE))
+	{
+		return MAIN_MENU;
+	}
 	if(isKeyPressed(VK_RETURN))
 	{
 		GameStarts = true;
@@ -16,7 +21,16 @@ void updateTableFlip()
 	if(GameStarts == true)
 	{
 		playTableFlip();
+		drawTableFlip(console);
+		return TABLE_FLIP;
 	}
+	if(gameends)
+	{
+		gamestate state = (gamestate)(rand() % numofminigames + 1);
+		return state;
+	}
+	drawTableFlip(console);
+	return TABLE_FLIP;
 }
 
 void playTableFlip()
