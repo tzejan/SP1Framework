@@ -13,8 +13,7 @@ filetype(searchpattern)
 	int index;
 	do
 	{
-		std::wstring buffer = filepath;
-		buffer += FindData.cFileName;
+		std::wstring buffer = FindData.cFileName;
 		FileList.push_back(buffer);
 	}while (FindNextFile(hFind, &FindData) > 0);
 }

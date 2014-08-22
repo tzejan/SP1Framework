@@ -3,7 +3,7 @@
 Graphics::Graphics()
 	:
 hConsole(GetStdHandle( STD_OUTPUT_HANDLE )),
-screenX(100),
+screenX(80),
 screenY(60),
 cursorsize(1),
 cursorvisible(false),
