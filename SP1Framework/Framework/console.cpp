@@ -69,8 +69,34 @@ void cls( HANDLE hConsole )
     PERR( bSuccess, "SetConsoleCursorPosition" );
     return;
 }
-	
-bool isKeyPressed(unsigned short key)
+
+bool keyAlreadyPressed[256];
+
+bool isKeyHold(unsigned short key)
 {
     return ((GetAsyncKeyState(key) & 0x8001) != 0);
+}
+
+void updateinput()
+{
+	for(int index = 0; index < 256; index++)
+	{
+		if(keyAlreadyPressed[index] && !isKeyHold(index))
+		{
+			keyAlreadyPressed[index] = false;
+		}
+	}
+}
+
+bool isKeyPressed(unsigned short key)
+{
+	if(!keyAlreadyPressed[key] && isKeyHold(key))
+	{
+		keyAlreadyPressed[key] = true;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }

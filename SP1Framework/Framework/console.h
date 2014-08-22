@@ -26,5 +26,7 @@ void colour(WORD attrib);
 void cls( HANDLE hConsole = 0);
 
 bool isKeyPressed(unsigned short key);
+void updateinput();
+bool isKeyToggle(unsigned short key);
 
 #endif // _CONSOLE_H
