@@ -8,18 +8,15 @@
 #include "Graphics.h"
 #include "TableFlip.h"
 #include "Scream.h"
-#include "ToiletRoll.h"
 
 double elapsedTime;
 double deltaTime;
 Graphics console;
-toiletroll play;
-
 
 //Create a pointer to store the location of the scream object
 Scream* scream;
 
-gamestate state = TOILET_ROLL;
+gamestate state = TABLE_FLIP;
 void init()
 {
 	scream = NULL;
@@ -42,7 +39,7 @@ void update(double dt)
 		state = updateTableFlip(&console);
 		break;
 	case TOILET_ROLL:
-		state = play.update(console);
+		//run toiletroll minigame();
 		break;
 	case SCREAM:
 		//create the scream object if it doesn't exist
