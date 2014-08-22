@@ -19,19 +19,25 @@
     <Filter Include="Source Files\Framework">
       <UniqueIdentifier>{37c19c94-9502-4b2b-b3f1-70fa908b49af}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Minigames">
+      <UniqueIdentifier>{32b28d2a-2699-4f76-a3d3-7012a109389a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI&amp;Game">
+      <UniqueIdentifier>{3cd04a50-e5a3-43c1-94f2-095ae97d346c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UI&amp;Game">
+      <UniqueIdentifier>{0dbde28f-e68e-40a8-be6f-76e172c74836}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Minigames">
+      <UniqueIdentifier>{63b262cf-f91f-4d74-a427-5f42ccc75414}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Framework\console.cpp">
       <Filter>Source Files\Framework</Filter>
     </ClCompile>
     <ClCompile Include="Framework\timer.cpp">
       <Filter>Source Files\Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="game.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Directory.cpp">
       <Filter>Source Files\Framework</Filter>
@@ -39,19 +45,25 @@
     <ClCompile Include="Graphics.cpp">
       <Filter>Source Files\Framework</Filter>
     </ClCompile>
-    <ClCompile Include="TableFlip.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Scream.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ToiletRoll.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MainMenu.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Minigames</Filter>
     </ClCompile>
     <ClCompile Include="subgame.cpp">
+      <Filter>Source Files\Minigames</Filter>
+    </ClCompile>
+    <ClCompile Include="TableFlip.cpp">
+      <Filter>Source Files\Minigames</Filter>
+    </ClCompile>
+    <ClCompile Include="ToiletRoll.cpp">
+      <Filter>Source Files\Minigames</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Source Files\UI&amp;Game</Filter>
+    </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>Source Files\UI&amp;Game</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -62,29 +74,29 @@
     <ClInclude Include="Framework\timer.h">
       <Filter>Header Files\Framework</Filter>
     </ClInclude>
-    <ClInclude Include="game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Directory.h">
       <Filter>Header Files\Framework</Filter>
     </ClInclude>
     <ClInclude Include="Graphics.h">
       <Filter>Header Files\Framework</Filter>
     </ClInclude>
-    <ClInclude Include="TableFlip.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scream.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ToiletRoll.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="game.h">
+      <Filter>Header Files\UI&amp;Game</Filter>
     </ClInclude>
     <ClInclude Include="MainMenu.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\UI&amp;Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Scream.h">
+      <Filter>Header Files\Minigames</Filter>
     </ClInclude>
     <ClInclude Include="subgame.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Minigames</Filter>
+    </ClInclude>
+    <ClInclude Include="TableFlip.h">
+      <Filter>Header Files\Minigames</Filter>
+    </ClInclude>
+    <ClInclude Include="ToiletRoll.h">
+      <Filter>Header Files\Minigames</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

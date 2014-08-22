@@ -18,7 +18,7 @@ Graphics console;
 Scream* scream;
 toiletroll* toilet;
 
-gamestate state = TOILET_ROLL;
+gamestate state = SUBMARINE;
 void init()
 {
 	updateinput();
@@ -47,7 +47,7 @@ void update(double dt)
 		state = updateTableFlip(&console);
 		break;
 	case SUBMARINE:
-		//state =;
+		state = playsubgamemain(&console);
 		break;
 	case TOILET_ROLL:
 		//create the toiletroll object if it doesn't exist

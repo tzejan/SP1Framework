@@ -104,12 +104,17 @@ int enemiesapp[15]={};//dictates when the enemy with appear.
 	  }
  }
 
-void playsubgamemain(Graphics* console) 
+gamestate playsubgamemain(Graphics* console) 
 {
+	if(isKeyPressed(VK_ESCAPE))
+	{
+		return MAIN_MENU;
+	}
 	playsubcontrolsmechanics(console);
 	playgamestate(console);
 	console->draw(5,30,subdrawarray[1].c_str(),0x1A);
 	console->draw(43,30,subdrawarray[1].c_str(),0x1A);
 	console->draw(80,30,subdrawarray[1].c_str(),0x1A);
+	return SUBMARINE;
 }
 

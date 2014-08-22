@@ -4,7 +4,8 @@
 #include "Directory.h"
 #include <fstream>
 #include "Framework\console.h"
+#include "game.h"
 
 void initialisesubdrawings();
-void playsubgamemain(Graphics*);
+gamestate playsubgamemain(Graphics*);
 void playsubcontrolsmechanics(Graphics*);
