@@ -105,7 +105,7 @@ void render()
     ss << 1.0 / deltaTime << "fps";
     c.X = ConsoleSize.X-9;
     c.Y = 0;
-    writeToBuffer(c, ss.str(), 0x0C);
+    writeToBuffer(c, ss.str());
 
     // displays the elapsed time
     ss.str("");
