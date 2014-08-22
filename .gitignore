@@ -5,5 +5,3 @@ Release/
 *.suo
 *.user
 ipch/
-SP1Framework/Framework/
-SP1Framework/game.cpp
