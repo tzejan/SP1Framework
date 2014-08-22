@@ -61,6 +61,6 @@ FAQ
 There is a function setConsoleSize() that does this. See above
 
 **The screen flickers!**  
-Everyone else is facing the same problem, don't worry too much about it. I'm working on a solution.
+Everyone else is facing the same problem, don't worry too much about it. I have a solution ready in the other branch. You must make sure that all your rendering code is in the render() function. Your code for output and for checking the state should be kept separate in order to use the new code.
 
 
