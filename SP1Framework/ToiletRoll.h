@@ -19,13 +19,14 @@ private:
 	char score;
 	std::ifstream tr, rh, lh;
 	std::string trs, rhs, lhs;
+	Graphics& console;
 
 public:
-	gamestate update(Graphics&);
+	gamestate update();
 	void play();
 	void read();
-	void draw(Graphics&);
-	toiletroll();
+	void draw();
+	toiletroll(Graphics&);
 };
 
 

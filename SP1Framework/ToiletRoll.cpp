@@ -1,6 +1,8 @@
 #include "ToiletRoll.h"
 
-toiletroll::toiletroll()
+toiletroll::toiletroll(Graphics& console)
+	:
+console(console)
 {
 	int CurrentFrame = 0;
 	bool GameStarts = false;
@@ -12,13 +14,13 @@ toiletroll::toiletroll()
 	read();
 }
 
-gamestate toiletroll::update(Graphics& console)
+gamestate toiletroll::update()
 {
 	if(isKeyPressed(VK_ESCAPE))
 	{
 		return MAIN_MENU;
 	}
-	draw(console);
+	draw();
 	play();
 	
 	if(CurrentFrame >= 728 && isKeyPressed(VK_RETURN))
@@ -105,7 +107,7 @@ void toiletroll::read()
 	lhs.pop_back();
 }
 
-void toiletroll::draw(Graphics& console)
+void toiletroll::draw()
 {
 	
 
