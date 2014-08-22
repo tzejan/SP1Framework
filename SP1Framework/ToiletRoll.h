@@ -16,7 +16,7 @@ private:
 	int y;
 	int rx;
 	int lx;
-	char score;
+	int score;
 	std::ifstream tr, rh, lh;
 	std::string trs, rhs, lhs;
 	Graphics& console;

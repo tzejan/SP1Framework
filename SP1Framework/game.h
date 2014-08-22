@@ -8,14 +8,14 @@ extern StopWatch g_timer;
 extern bool g_quitGame;
 enum gamestate
 {
-	INTRO,
-	GAME_SELECT,
-	OPTIONS,
 	TABLE_FLIP,
 	TOILET_ROLL,
 	SCREAM,
 	SUBMARINE,
 	QUIT_GAME,
+	GAME_SELECT,
+	OPTIONS,
+	INTRO,
 	MAIN_MENU,
 	MAXSTATES
 };

@@ -4,13 +4,13 @@ toiletroll::toiletroll(Graphics& console)
 	:
 console(console)
 {
-	int CurrentFrame = 0;
-	bool GameStarts = false;
-	bool gameends = false;
-	int y = 0;
-	int rx = 60;
-	int lx = 25;
-	char score = '0';
+	CurrentFrame = 0;
+	GameStarts = false;
+	gameends = false;
+	y = 0;
+	rx = 60;
+	lx = 25;
+	score = 0;
 	read();
 }
 
@@ -29,7 +29,7 @@ gamestate toiletroll::update()
 	}
 	else
 	{
-	return TOILET_ROLL;
+		return TOILET_ROLL;
 	}
 }
 
@@ -37,12 +37,12 @@ void toiletroll::play()
 {
 	if (CurrentFrame >= 370)
 	{
-		if(isKeyPressed(VK_RIGHT))
+		if(isKeyHold(VK_RIGHT))
 		{
 			rx = 55;
 		}
 
-		if(isKeyPressed(VK_LEFT))
+		if(isKeyHold(VK_LEFT))
 		{
 			lx = 30;
 		}
@@ -163,7 +163,9 @@ void toiletroll::draw()
 
 	if(CurrentFrame >= 370 && CurrentFrame <= 728)
 	{
-		console.draw(50,20, score, 0x0F);
+		char buffer[10];
+		sprintf(buffer,"%d",score);
+		console.draw(50,20, buffer, 0x0F);
 	}
 
 	if(CurrentFrame >= 370 && CurrentFrame <= 619)
@@ -204,8 +206,9 @@ void toiletroll::draw()
 
 	if(CurrentFrame >= 728)
 	{
-		console.draw(41,20, "You have scored:", 0x0F);
-		console.draw(59,20, score, 0x0F);
+		char buffer[256];
+		sprintf(buffer,"You have scored: %d",score);
+		console.draw(41,20, buffer, 0x0F);
 		console.draw(37,22, "Press Enter to continune...", 0x0F);
 	}
 	rx = 60;

@@ -4,20 +4,28 @@
 #include "game.h"
 #include "Framework\console.h"
 #include <iostream>
+#include "MainMenu.h"
+#include"ToiletRoll.h"
 #include "Graphics.h"
 #include "TableFlip.h"
 #include "Scream.h"
+#include "subgame.h"
 
 
 Graphics console;
 
 //Create a pointer to store the location of the scream object
 Scream* scream;
+toiletroll* toilet;
 
-gamestate state = SCREAM;
+gamestate state = TOILET_ROLL;
 void init()
 {
+	updateinput();
+	ini();
+	initialisesubdrawings();
 	scream = NULL;
+	toilet = NULL;
 }
 
 void shutdown()
@@ -29,15 +37,31 @@ void update(double dt)
 	updateinput();
 	switch(state)
 	{
+	case INTRO:
+		Intro(console);
+		break;
 	case MAIN_MENU:
-		//run main menu();
-		g_quitGame = true;
+		MainMenu(console);
 		break;
 	case TABLE_FLIP:
 		state = updateTableFlip(&console);
 		break;
+	case SUBMARINE:
+		//state =;
+		break;
 	case TOILET_ROLL:
-		//run toiletroll minigame();
+		//create the toiletroll object if it doesn't exist
+		if(toilet == NULL)
+		{
+			toilet = new toiletroll(console);
+		}
+		state = toilet->update();
+		//deletes the toiletroll once the game changes state and makes the scream pointer NULL again
+		if(state != TOILET_ROLL)
+		{
+			delete toilet;
+			toilet = NULL;
+		}
 		break;
 	case SCREAM:
 		//create the scream object if it doesn't exist

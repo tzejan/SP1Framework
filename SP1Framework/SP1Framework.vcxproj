@@ -81,7 +81,9 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Scream.cpp" />
+    <ClCompile Include="subgame.cpp" />
     <ClCompile Include="TableFlip.cpp" />
     <ClCompile Include="ToiletRoll.cpp" />
   </ItemGroup>
@@ -91,7 +93,9 @@
     <ClInclude Include="Framework\timer.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="Graphics.h" />
+    <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Scream.h" />
+    <ClInclude Include="subgame.h" />
     <ClInclude Include="TableFlip.h" />
     <ClInclude Include="ToiletRoll.h" />
   </ItemGroup>
