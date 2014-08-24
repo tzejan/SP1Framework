@@ -172,33 +172,61 @@ void PatternAlgorithm1()
 	}
 	spawn = false;
 }
+int RowSpace=0;
 void PatternAlgorithm2()
 {
 	//WORM INVASION :D
-				for(int x=0;x<5;++x)
-			{
-				int RowSpaces=rand()%3;
-				if(RowSpaces==1)
-				{
+	if(RowSpace%2==0)
+	{
+		for(int x=0;x<5;++x)
+		{
+			
 				fruits[x].fruitcheck[0]=true;
 				fruits[x].character[0]='~';
 				fruits[x].color[0]=4;
-				}
-				else
-				{
-				fruits[x].fruitcheck[0]=false;
-				fruits[x].character[0]='G';
-				fruits[x].color[0]=4;
-				
-				}
-			}
+		}
+			int EscapePlan=rand()%3;
 			
+			fruits[EscapePlan].fruitcheck[0]=false;
+		
+		
+		
+	}
+	else
+	{
+		for(int x=0;x<5;++x)
+		{
+				fruits[x].fruitcheck[0]=false;
+		}
+		
+	}
+
+	RowSpace+=1;
+
+	if(WormCollection==1)
+			{
+				g_quitGame=true;
+			}
 }
 
 
-
+int Shift=0;
 void PatternAlgorithm3()
 {
+	//Swirl
+	fruits[Shift].fruitcheck[0]=true;
+	fruits[Shift].character[0]='O';
+	fruits[Shift].color[0]=2;
+	if(Shift<4)
+	{
+		Shift++;
+	}
+
+	else
+	{
+		Shift=0;
+	}
+
 
 }
 void gameplay()
@@ -263,7 +291,7 @@ void render()
 	gotoXY(player.location.X,player.location.Y);
 	cout << "\\_/"<<endl;
 
-	
+
 
 	//Movement of fruits (Printing new location)
 
