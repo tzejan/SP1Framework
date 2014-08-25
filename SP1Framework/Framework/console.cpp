@@ -151,7 +151,7 @@ void writeToBuffer(COORD c, LPCSTR str, WORD attribute)
     }
 }
 
-void writeToBuffer(COORD c, std::string s, WORD attribute)
+void writeToBuffer(COORD c, std::string& s, WORD attribute)
 {
     writeToBuffer(c, s.c_str(), attribute);
 }
