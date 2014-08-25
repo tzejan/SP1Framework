@@ -1,6 +1,5 @@
 // This is the main file for the game logic and function
-//
-//
+//This is a test just ignore.
 #include "game.h"
 #include "Framework\console.h"
 #include <iostream>
