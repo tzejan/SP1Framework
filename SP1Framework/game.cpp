@@ -7,10 +7,20 @@
 #include <conio.h>
 #include <ctime>
 #include <cstdlib>
+#include <string>
+#include <fstream>
+#include <cstdio>
+#include <vector>
+#include <windows.h>
 
+using std::stoi;
 using std::cout;
 using std::cin;
 using std::endl;
+using std::string;
+using std::fstream;
+using std::ifstream;
+using std::ofstream;
 
 double refresh = 0;
 double elapsedTime;
@@ -512,9 +522,9 @@ void options()
 void scoreboard()
 {
 	system("cls");
-	colour(FOREGROUND_RED);
+	colour(FOREGROUND_GREEN);
 
-	cout << "****        **********  ********         *******         **********  *******        " <<
+		cout << "****        **********  ********         *******         **********  *******        " <<
 		endl << "****        **********  ********         ****  ****      **********  **** ****       " <<
 		endl << "****        ****        ****  ****       ****    ****    ****        ****   ****      " <<
 		endl << "****        ********    ***********      ****     ****   ********    ****  *****       " <<
@@ -531,8 +541,124 @@ void scoreboard()
 		endl << "                                ****  *****   ****     ****  ****     ****    **** ****     ****    *****        " <<
 		endl << "                                ****  ******  *****  *****   ****      ****   ****  ****    ****  ******          " <<
 		endl << "                                ***********     *********    ****       ****  ****   *****  **********             " <<
-		endl <<
-		endl;
+		endl << endl;
+
+		int first, second, third, forth, fifth;
+		ifstream indata1;
+		ofstream outdata1;
+		string data1;
+		indata1.open("score1.txt");
+		outdata1.open("temp1.txt");
+		while (!indata1.eof())
+		{
+			getline(indata1, data1);
+			first = stoi(data1);
+		}
+
+		ifstream indata2;
+		ofstream outdata2;
+		string data2;
+		indata2.open("score2.txt");
+		outdata2.open("temp2.txt");
+		while (!indata2.eof())
+		{
+			getline (indata2, data2);
+			second = stoi(data2);
+		}
+
+		ifstream indata3;
+		ofstream outdata3;
+		string data3;
+		indata3.open("score3.txt");
+		outdata3.open("temp3.txt");
+		while (!indata3.eof())
+		{
+			getline (indata3, data3);
+			third = stoi(data3);
+		}
+
+		ifstream indata4;
+		ofstream outdata4;
+		string data4;
+		indata4.open("score4.txt");
+		outdata4.open("temp4.txt");
+		while (!indata4.eof())
+		{
+			getline (indata4, data4);
+			forth = stoi(data4);
+		}
+
+		ifstream indata5;
+		ofstream outdata5;
+		string data5;
+		indata5.open("score5.txt");
+		outdata5.open("temp5.txt");
+		while (!indata5.eof())
+		{
+			getline (indata5, data5);
+			fifth = stoi(data5);
+		}	
+		
+	int highscore[5] = {first, second, third, forth, fifth};
+	int subsitute = 0;
+	int subsitute2 = 0;
+	int size = sizeof(highscore)/sizeof(highscore[0]);
+	//cout << size;
+	for(int a = 0; a < size; a++)
+	{
+		if(score > highscore[a])
+		{
+			subsitute = highscore[a];
+			highscore[a] = score;
+			score = 0;
+		}
+		else if(subsitute > highscore[a])
+		{
+			subsitute2 = highscore[a];
+			highscore[a] = subsitute;
+			subsitute = 0;
+		}
+		else if(subsitute2 > highscore[a])
+		{
+			subsitute = highscore[a];
+			highscore[a] = subsitute2;
+			subsitute2 = 0;
+		}
+		cout << highscore[a] <<endl;
+	}
+
+	outdata1 << highscore[0];
+	outdata2 << highscore[1];
+	outdata3 << highscore[2];
+	outdata4 << highscore[3];
+	outdata5 << highscore[4];
+
+	indata1.close ();
+	indata2.close ();
+	indata3.close ();
+	indata4.close ();
+	indata5.close ();
+
+	outdata1.close ();
+	outdata2.close ();
+	outdata3.close ();
+	outdata4.close ();
+	outdata5.close ();
+
+	remove("score1.txt");
+	rename("temp1.txt", "score1.txt");
+
+	remove("score2.txt");
+	rename("temp2.txt", "score2.txt");
+
+	remove("score3.txt");
+	rename("temp3.txt", "score3.txt");
+
+	remove("score4.txt");
+	rename("temp4.txt", "score4.txt");
+
+	remove("score5.txt");
+	rename("temp5.txt", "score5.txt");
 
 	exit(1);
 }
