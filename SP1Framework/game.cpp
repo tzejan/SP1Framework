@@ -113,7 +113,7 @@ void update(double dt)
 	deltaTime = dt;
 	refresh += dt;
 
-	if(refresh > 1)
+	if(refresh > 0.2)
 	{
 		collision = false;
 		gameplay();
@@ -220,6 +220,7 @@ void PatternAlgorithm2()
 
 
 int Shift=0;
+int Shift1=5;
 void PatternAlgorithm3()
 {
 	//Swirl
@@ -235,8 +236,10 @@ void PatternAlgorithm3()
 	{
 		Shift=0;
 	}
-
-
+}
+void PatternAlgorith4()
+{
+	
 }
 void gameplay()
 {
