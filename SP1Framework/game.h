@@ -25,6 +25,8 @@ void printMap();
 void options();
 void scoreboard();
 void startscreen();
+void difficulty();
+void modes();
 void endscreen();
 void effects();
 void getcolumn();
@@ -41,14 +43,25 @@ struct basket
 {
 	COORD location;
 };
-
+enum diff
+{
+	EASY=1,
+	NORMAL,
+	HARD,
+	GOD,
+};
 enum state 
 { 
 	GAME = 1,
 	OPTIONS,
 	SCOREBOARD,
 	HOME, 
-	END 
+	gootohell,
+	ONE=1,
+	TWO,
+	THREE,
+	END
 };
+
 
 #endif // _GAME_H

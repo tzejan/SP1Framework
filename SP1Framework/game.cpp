@@ -81,12 +81,6 @@ void init()
 	}
 }
 
-void shutdown()
-{
-	// Reset to white text on black background
-	colour(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
-}
-
 void getInput()
 {    
 	keyPressed[K_LEFT] = isKeyPressed(VK_LEFT);
@@ -186,10 +180,7 @@ void PatternAlgorithm2()
 		}
 			int EscapePlan=rand()%3;
 			
-			fruits[EscapePlan].fruitcheck[0]=false;
-		
-		
-		
+			fruits[EscapePlan].fruitcheck[0]=false;	
 	}
 	else
 	{
@@ -264,8 +255,19 @@ void gameplay()
 	//Spawning process
 
 	if(spawn == true)
-	{
-		PatternAlgorithm2();
+	{ 
+		if(ONE)
+		{
+		    PatternAlgorithm1();
+		}
+	    else if(TWO)
+		{
+			PatternAlgorithm2();
+		}
+		else if(THREE)
+		{
+			PatternAlgorithm3();
+		}
 	}
 
 	else if (spawn == false)
@@ -409,7 +411,7 @@ void startscreen()
 			if(input == 1)
 			{
 				system("cls");
-GAME:play();
+GAME:modes();
 				system("pause");
 			}
 
@@ -443,11 +445,59 @@ HOME:endscreen();
 		}
 	}
 }
+void modes()
+{
+	cout << "[1] NORMAL" << endl;
+	cout << "[2] WORM INVASION" << endl;
+	cout << "[3] SWIRL" << endl<< endl;
+	cout<<"PLS PRESS 5 TO GO BACK TO HELL"<<endl;
+	int input;
+	for(int check = 0; check == 0;)
+	{
+		input = getch() - 48;
+		state stage = ONE;
+		while(stage != END)
+		{
+			if(input == 1)
+			{
+				system("cls");
+				ONE:play();
+				system("pause");
+			}
 
+			else if (input == 2)
+			{
+				system("cls");
+				TWO:play();
+				system("pause");
+			}
+
+			else if (input == 3)
+			{
+				system("cls");
+				THREE:play();
+				system("pause");
+			}
+			else if (input == 5)
+			{
+				system("cls");
+				gootohell:startscreen();
+				system("pause");
+			}
+			else
+			{
+				cout << "Invalid input!" << endl;
+				input = getch() - 48;
+				check++;
+			}
+
+		}
+	}
+}
 void endscreen()
 {
 	system("cls");
-	colour(FOREGROUND_RED);
+	colour(0x07);
 
 	cout << "********* **    **     **     ***    *** ***     ***   ****         \n"
 		"********* **    **    ****    *****  *** ***    ***  ********         \n"
@@ -489,7 +539,7 @@ void endscreen()
 void options()
 {
 	system("cls");
-	colour(FOREGROUND_RED);
+	colour(0x07);
 
 	cout << endl;
 	cout << "Newbie... you think you have what it takes to be a CATCH NINJA huh?" << endl << endl;
@@ -506,13 +556,65 @@ void options()
 	cout << "Ruoyun" << endl;
 	cout << "Jessica" << endl << endl;
 
+	cout << "[1] EASY"  << endl;
+	cout << "[2] NORMAL"<< endl;
+	cout << "[3] HARD"  << endl;
+	cout << "[4] CRAZY GO AWAY"<<endl;
+	cout << "[5] GO HOME"<<endl<<endl;
+	int input;
+	for(int check = 0; check == 0;)
+	{
+		input = getch() - 48;
+		diff stage = EASY;
+		while(stage != END)
+		{
+			if(input == 1)
+			{
+				system("cls");
+				EASY:;
+				system("pause");
+			}
+
+			else if (input == 2)
+			{
+				system("cls");
+				NORMAL:;
+				system("pause");
+			}
+
+			else if (input == 3)
+			{
+				system("cls");
+				HARD:;
+				system("pause");
+			}
+			else if(input == 4)
+			{
+				system("cls");
+				GOD:;
+				system("pause");
+			}
+			else if(input == 5)
+			{
+				system("cls");
+				gootohell:startscreen();
+				system("pause");
+			}
+			else
+			{
+				cout << "Invalid input!" << endl;
+				input = getch() - 48;
+				check++;
+			}
+		}
+	}
 	exit(1);
 }
 
 void scoreboard()
 {
 	system("cls");
-	colour(FOREGROUND_RED);
+	colour(0x07);
 
 	cout << "****        **********  ********         *******         **********  *******        " <<
 		endl << "****        **********  ********         ****  ****      **********  **** ****       " <<
@@ -533,7 +635,29 @@ void scoreboard()
 		endl << "                                ***********     *********    ****       ****  ****   *****  **********             " <<
 		endl <<
 		endl;
-
+	cout<<"PLS PRESS 5 TO GO BACK TO HELL"<<endl;
+	int input;
+	for(int check = 0; check == 0;)
+	{
+		input = getch() - 48;
+		state stage = GAME;
+		while(stage != END)
+		{
+			if (input == 5)
+			{
+				system("cls");
+				gootohell:startscreen();
+				system("pause");
+			}
+			else
+			{
+				cout << "Invalid input!" << endl;
+				input = getch() - 48;
+				check++;
+			}
+		}
+	}
+	    
 	exit(1);
 }
 
@@ -546,26 +670,84 @@ void printMap()
 	cout << endl;
 	cout << endl;
 	cout << endl;
-	cout <<
-		"*******      *                          ,      ,,,,,,,,\n"
-		"*******    **                            ,,    ,,,,,,,,\n"
-		"*******   **                              ,,   ,,,,,,,,\n"
-		"*******  **                                ,,  ,,,,,,,,\n"
-		"**********                                  ,,,,,,,,,,,\n"
-		"*********                                    ,,,,,,,,,,\n"
-		"********                                      ,,,,,,,,,\n"
-		"********                                       ,,,,,,,,\n"
-		"********                                       ,,,,,,,,\n"
-		"********                                       ,,,,,,,,\n"
-		"********                                       ,,,,,,,,\n"
-		"*********                                     ,,,,,,,,,\n"
-		"*********                                     ,,,,,,,,,\n"
-		"*********                                     ,,,,,,,,,\n"
-		"*********                                     ,,,,,,,,,\n"
-		"*********                                     ,,,,,,,,,\n"
-		"*********                                     ,,,,,,,,,\n"
-		"*********                                     ,,,,,,,,,\n"
-		"*********                                     ,,,,,,,,,\n" << endl;
+	/*int levels;
+	for(int g; g<levels;g++)
+	{	
+		for(int m ; m<g ;m++)
+		{
+		if(m+=1)
+		{*/
+			cout <<
+			"*******      *                          ,      ,,,,,,,,\n"
+			"*******    **                            ,,    ,,,,,,,,\n"
+			"*******   **                              ,,   ,,,,,,,,\n"
+			"*******  **                                ,,  ,,,,,,,,\n"
+			"**********                                  ,,,,,,,,,,,\n"
+			"*********                                    ,,,,,,,,,,\n"
+			"********                                      ,,,,,,,,,\n"
+			"********                                       ,,,,,,,,\n"
+			"********                                       ,,,,,,,,\n"
+			"********                                       ,,,,,,,,\n"
+			"********                                       ,,,,,,,,\n"
+			"*********                                     ,,,,,,,,,\n"
+			"*********                                     ,,,,,,,,,\n"
+			"*********                                     ,,,,,,,,,\n"
+			"*********                                     ,,,,,,,,,\n"			
+			"*********                                     ,,,,,,,,,\n"
+			"*********                                     ,,,,,,,,,\n"
+			"*********                                     ,,,,,,,,,\n"
+			"*********                                     ,,,,,,,,,\n" << endl;
+		/*}
+		else if(m+= 2)
+		{
+			cout<<
+			"*******------*----                     ,      ,,,,,,,,\n"
+			"*******----**-----                      ,,    ,,,,,,,,\n"
+			"*******---**-----                        ,,   ,,,,,,,,\n"
+			"*******--**-----                          ,,  ,,,,,,,,\n"
+			"**********---                              ,,,,,,,,,,,\n"
+			"*********----                               ,,,,,,,,,,\n"
+			"********-----                                ,,,,,,,,,\n"
+			"********---                                   ,,,,,,,,\n"
+			"********--                                    ,,,,,,,,\n"
+			"********---                                   ,,,,,,,,\n"
+			"********--                                    ,,,,,,,,\n"
+			"*********                                    ,,,,,,,,,\n"
+			"*********                                    ,,,,,,,,,\n"
+			"*********                                    ,,,,,,,,,\n"
+			"*********                                    ,,,,,,,,,\n"
+			"*********                                    ,,,,,,,,,\n"
+			"*********                                    ,,,,,,,,,\n"
+			"*********                                    ,,,,,,,,,\n"
+			"*********                                    ,,,,,,,,,"
+			<<endl;
+			}
+		else if(m+= 3)
+		{	
+			cout<<
+			"*******------*---                    ==,======,,,,,,,,	\n"
+			"*******----**----                    ===,,====,,,,,,,,\n"
+			"*******---**-----                     ===,,===,,,,,,,,	\n"
+			"*******--**----                      =====,,==,,,,,,,,\n"
+			"**********------                       ====,,,,,,,,,,,\n"
+			"*********----                            ===,,,,,,,,,,\n"
+			"********-----                            ====,,,,,,,,,\n"
+			"********---                                ===,,,,,,,,\n"
+			"********--                                  ==,,,,,,,,\n"
+			"********--                                  ==,,,,,,,,\n"
+			"********--                                   =,,,,,,,,\n"
+			"*********                                    ,,,,,,,,,\n"
+			"*********                                    ,,,,,,,,,\n"
+			"*********                                    ,,,,,,,,,\n"
+			"*********                                    ,,,,,,,,,\n"
+			"*********                                    ,,,,,,,,,\n"
+			"*********                                    ,,,,,,,,,\n"
+			"*********                                    ,,,,,,,,,\n"
+			"*********                                    ,,,,,,,,,"
+			<<endl;
+		}
+	 }
+	}*/
 }
 
 void effects()
