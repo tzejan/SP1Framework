@@ -50,9 +50,9 @@ CHAR_INFO* getScreenDataBuffer();
 void flushBufferToConsole();
 void clearBuffer(WORD attribute = 0x0F);
 
-void writeToBuffer(COORD c, LPCSTR str, WORD attribute);
-void writeToBuffer(COORD c, std::string& s, WORD attribute);
-void writeToBuffer(COORD c, char ch, WORD attribute);
+void writeToBuffer(COORD c, LPCSTR str, WORD attribute = 0x0F);
+void writeToBuffer(COORD c, std::string& s, WORD attribute = 0x0F);
+void writeToBuffer(COORD c, char ch, WORD attribute = 0x0F);
 void writeToConsole(const CHAR_INFO* lpBuffer);
 
 #endif // _CONSOLE_H

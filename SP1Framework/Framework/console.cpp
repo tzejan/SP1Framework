@@ -113,10 +113,7 @@ CHAR_INFO* getScreenDataBuffer()
 
 void flushBufferToConsole()
 {
-    COORD c = {0,0};
-    SMALL_RECT WriteRegion = {0, 0, ConsoleSize.X-1, ConsoleSize.Y-1};
-    // WriteConsoleOutputA for ASCII text
-    WriteConsoleOutputA(hScreenBuffer, screenDataBuffer, ConsoleSize, c, &WriteRegion);
+    writeToConsole(screenDataBuffer);    
 }
 
 // sets the size of the console
@@ -146,7 +143,7 @@ void writeToBuffer(COORD c, LPCSTR str, WORD attribute)
     size_t length = strlen(str);
     for (size_t i = 0; i < length; ++i)
     {
-        screenDataBuffer[index+i].Char.AsciiChar = *(str+i);
+        screenDataBuffer[index+i].Char.AsciiChar = str[i];
         screenDataBuffer[index+i].Attributes = attribute;
     }
 }
@@ -167,5 +164,5 @@ void writeToConsole(const CHAR_INFO* lpBuffer)
     COORD c = {0,0};
     SMALL_RECT WriteRegion = {0, 0, ConsoleSize.X-1, ConsoleSize.Y-1};
     // WriteConsoleOutputA for ASCII text
-    WriteConsoleOutputA(hScreenBuffer, screenDataBuffer, ConsoleSize, c, &WriteRegion);
+    WriteConsoleOutputA(hScreenBuffer, lpBuffer, ConsoleSize, c, &WriteRegion);
 }
