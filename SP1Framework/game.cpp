@@ -30,6 +30,7 @@ bool keyPressed[K_COUNT];
 COORD charLocation;
 COORD consoleSize;
 
+
 map fruits[5]; //Columns
 basket player;
 
@@ -48,8 +49,6 @@ bool collision = false;
 bool spawn = true;
 
 int RowSpace = 0;
-int Shift = 0;
-int Shift1 = 5;
 
 const WORD colors[] = 
 {
@@ -114,7 +113,7 @@ void update(double dt)
 	deltaTime = dt;
 	refresh += dt;
 
-	if(refresh > 1.5)
+	if(refresh > 0.5)
 	{
 		collision = false; //Default collision is false
 		gameplay();
@@ -151,7 +150,7 @@ void update(double dt)
 
 void PatternAlgorithm1()
 {
-	srand(time(NULL));
+    srand(time(NULL));
 
 	column = rand()%5;
 	fruits[column].fruitcheck[0] = true;
@@ -160,29 +159,28 @@ void PatternAlgorithm1()
 
 	switch(identify)
 	{
-		case 0: fruits[column].character[0] = 'A'; //Apple
+	case 0: fruits[column].character[0] = 'A'; //Apple
 		fruits[column].color[0] = 1;
 		break;
 
-		case 1: fruits[column].character[0] = 'O'; //Orange
+	case 1: fruits[column].character[0] = 'O'; //Orange
 		fruits[column].color[0] = 2;
 		break;
 
-		case 2: fruits[column].character[0] = 'G'; //Grape
+	case 2: fruits[column].character[0] = 'G'; //Grape
 		fruits[column].color[0] = 3;
 		break;
 
-		case 3: fruits[column].character[0] = '~'; //Worm
+	case 3: fruits[column].character[0] = '~'; //Worm
 		fruits[column].color[0] = 4;
 		break;
 	}
-		spawn = false;
+	spawn = false;
 }
-
 void PatternAlgorithm2()
 {
 	//WORM INVASION
-
+	srand(time(0));
 	if(RowSpace%2 == 0)
 	{
 		for(int x = 0; x < 5; ++x)
@@ -191,36 +189,35 @@ void PatternAlgorithm2()
 			fruits[x].character[0]='~';
 			fruits[x].color[0]=4;
 		}
-			int EscapePlan = rand()%3;
-			
-			fruits[EscapePlan].fruitcheck[0] = false;	
+		int EscapePlan = rand()%4;
+
+		fruits[EscapePlan].fruitcheck[0] = false;	
 	}
-	
+
 	else
 	{
 		for(int x = 0;x < 5; ++x)
 		{
 			fruits[x].fruitcheck[0] = false;
 		}
-		
+
 	}
 
 	RowSpace += 1;
 
 	if(WormCollection==1)
 	{
-		//gameover();
+		gameover();
 	}
 }
-
-void PatternAlgorithm3()
+int Shift = 0;
+void PatternAlgorithm3A()
 {
 	//Swirl
-
 	fruits[Shift].fruitcheck[0] = true;
 	fruits[Shift].character[0] = 'O';
 	fruits[Shift].color[0] = 2;
-	
+
 	if(Shift < 4)
 	{
 		Shift++;
@@ -232,6 +229,42 @@ void PatternAlgorithm3()
 	}
 }
 
+void PatternAlgorithm3B()
+{
+	int y=4;
+	fruits[y-Shift].fruitcheck[0] = true;
+	fruits[y-Shift].character[0]='O';
+	fruits[y-Shift].color[0] = 2;
+	if(Shift<5)
+	{
+	++Shift;
+	}
+	else
+	{
+		Shift=0;
+	}
+}
+
+void PatternAlgorithm3()
+{
+	if(OrangeCollection%11<6)
+	{
+		PatternAlgorithm3A();
+
+	}
+	else
+	{
+		PatternAlgorithm3B();
+
+	}
+}
+
+
+
+void PatternAlgorith4()
+{
+
+}
 void gameplay()
 {
 	//Clear current fruits location
@@ -269,20 +302,7 @@ void gameplay()
 
 	if(spawn == true)
 	{ 
-		//if(ONE)
-		//{
-		    PatternAlgorithm1();
-		//}
-
-	    //else if(TWO)
-		//{
-			//PatternAlgorithm2();
-		//}
-
-		//else if(THREE)
-		//{
-			//PatternAlgorithm3();
-		//}
+		PatternAlgorithm3();
 	}
 
 	else if (spawn == false)
@@ -293,7 +313,7 @@ void gameplay()
 			fruits[x].character[0] = ' ';
 			fruits[x].color[0] = 0;
 		}
-			spawn = true;
+		spawn = true;
 	}
 }
 
@@ -330,10 +350,10 @@ void render()
 				colour(colors[0]);
 			}
 
-				else
-				{
-					cout << " ";
-				}
+			else
+			{
+				cout << " ";
+			}
 		}
 	}
 
@@ -371,19 +391,19 @@ void getcolumn()
 {
 	switch(player.location.X)
 	{
-		case 19: detect = 0;
+	case 19: detect = 0;
 		break;
 
-		case 22: detect = 1;
+	case 22: detect = 1;
 		break;
 
-		case 25: detect = 2;
+	case 25: detect = 2;
 		break;
 
-		case 28: detect = 3;
+	case 28: detect = 3;
 		break;
 
-		case 31: detect = 4;
+	case 31: detect = 4;
 		break;
 	}
 }
@@ -406,13 +426,13 @@ void checkcollision()
 void startscreen()
 {
 	cout<<  "  ******    ***  ********  ******  ***  ***      ***   *** *** ***   *** ********   ***   \n"
-			" ********  ***** ******** ******** ***  ***      ****  *** *** ****  *** ********  *****  \n"
-			" ***  *** **   **  ****   ***  *** ***  ***      ***** *** *** ***** ***      *** **   ** \n" 
-			" ***      **   **  ****   ***      ********      ***** *** *** ***** ***      *** **   ** \n"
-			" ***      *******  ****   ***      ********      ********* *** ********* ***  *** ******* \n"
-			" ***  *** *******  ****   ***  *** ***  ***      *** ***** *** *** ***** ***  *** ******* \n"
-			" ******** **   **  ****   ******** ***  ***      ***  **** *** ***  **** ******** **   ** \n" 
-			"   *****  **   **  ****    ******  ***  ***      ***   *** *** ***   ***  ******  **   ** " << endl;
+		" ********  ***** ******** ******** ***  ***      ****  *** *** ****  *** ********  *****  \n"
+		" ***  *** **   **  ****   ***  *** ***  ***      ***** *** *** ***** ***      *** **   ** \n" 
+		" ***      **   **  ****   ***      ********      ***** *** *** ***** ***      *** **   ** \n"
+		" ***      *******  ****   ***      ********      ********* *** ********* ***  *** ******* \n"
+		" ***  *** *******  ****   ***  *** ***  ***      *** ***** *** *** ***** ***  *** ******* \n"
+		" ******** **   **  ****   ******** ***  ***      ***  **** *** ***  **** ******** **   ** \n" 
+		"   *****  **   **  ****    ******  ***  ***      ***   *** *** ***   ***  ******  **   ** " << endl;
 
 	cout << endl;
 	cout << "[1] START" << endl;
@@ -431,28 +451,28 @@ void startscreen()
 			if(input == 1)
 			{
 				system("cls");
-				GAME:modes();
+GAME:modes();
 				system("pause");
 			}
 
 			else if (input == 2)
 			{
 				system("cls");
-				OPTIONS:options();
+OPTIONS:options();
 				system("pause");
 			}
 
 			else if (input == 3)
 			{
 				system("cls");
-				SCOREBOARD:scoreboard();
+SCOREBOARD:scoreboard();
 				system("pause");
 			}
 
 			else if (input == 4)
 			{
 				system("cls");
-				HOME:endscreen();
+HOME:endscreen();
 				system("pause");
 			}
 
@@ -472,7 +492,7 @@ void modes()
 	cout << "[2] WORM INVASION" << endl;
 	cout << "[3] SWIRL" << endl;
 	cout << "[4] MAIN MENU" <<endl;
-	
+
 	int input;
 	for(int check = 0; check == 0;)
 	{
@@ -483,31 +503,31 @@ void modes()
 			if(input == 1)
 			{
 				system("cls");
-				ONE:play();
+ONE:play();
 				system("pause");
 			}
 
 			else if (input == 2)
 			{
 				system("cls");
-				TWO:play();
+TWO:play();
 				system("pause");
 			}
 
 			else if (input == 3)
 			{
 				system("cls");
-				THREE:play();
+THREE:play();
 				system("pause");
 			}
-			
+
 			else if (input == 4)
 			{
 				system("cls");
-				FOUR:startscreen();
+FOUR:startscreen();
 				system("pause");
 			}
-			
+
 			else
 			{
 				cout << "Invalid input!" << endl;
@@ -524,14 +544,14 @@ void gameover()
 	colour(0x07);
 
 	cout<<  "  ******    ***    *****        ***** **********        *****      ***          ***   ********** ***********           \n"
-		    " ********  *****   **  **      **  ** **********      ***   ***    ***          ***   ********** *************         \n"
-		    " ***  *** **   **  **   **    **   ** *****          ***     ***   ***          ***   *****      ****        ****      \n"
-			" ***      **   **  **    **  **    ** *****         ****     ****  ***          ***   *****      ****         ****     \n"
-			" ***      *******  **     ***      ** **********    ****     ****  ***          ***   ********** ****        ****      \n"
-			" ***  *** *******  **              ** *****          ***     ***    ***        ***    *****      *************         \n"
-			" ******** **   **  **              ** *****           ***   ***       ***     ***     *****      ****       ***        \n"
-			"  ******  **   **  **              ** **********        *****           ******        ********** ****         ****       " << endl;
-	
+		" ********  *****   **  **      **  ** **********      ***   ***    ***          ***   ********** *************         \n"
+		" ***  *** **   **  **   **    **   ** *****          ***     ***   ***          ***   *****      ****        ****      \n"
+		" ***      **   **  **    **  **    ** *****         ****     ****  ***          ***   *****      ****         ****     \n"
+		" ***      *******  **     ***      ** **********    ****     ****  ***          ***   ********** ****        ****      \n"
+		" ***  *** *******  **              ** *****          ***     ***    ***        ***    *****      *************         \n"
+		" ******** **   **  **              ** *****           ***   ***       ***     ***     *****      ****       ***        \n"
+		"  ******  **   **  **              ** **********        *****           ******        ********** ****         ****       " << endl;
+
 	cout << endl;
 
 	cout << "THANKS FOR PLAYING, YOUR FINAL SCORE: " << score;
@@ -545,38 +565,38 @@ void endscreen()
 	colour(0x07);
 
 	cout << "********* **    **     **     ***    *** ***     ***   ****         \n"
-			"********* **    **    ****    *****  *** ***    ***  ********         \n"
-			"   ***    **    **   **  **   ****** *** ***   ***  ****  ****     \n"
-			"   ***    ********  **    **  ********** ********    ****       \n"
-			"   ***    ******** ********** ********** ********      *****         \n"
-			"   ***    **    ** ***    *** *** ****** ***   ***  ***   ****        \n"
-			"   ***    **    ** ***    *** ***  ***** ***    ***  *********		\n"
-			"   ***    **    ** ***    *** ***    *** ***     ***   ****" << endl;
+		"********* **    **    ****    *****  *** ***    ***  ********         \n"
+		"   ***    **    **   **  **   ****** *** ***   ***  ****  ****     \n"
+		"   ***    ********  **    **  ********** ********    ****       \n"
+		"   ***    ******** ********** ********** ********      *****         \n"
+		"   ***    **    ** ***    *** *** ****** ***   ***  ***   ****        \n"
+		"   ***    **    ** ***    *** ***  ***** ***    ***  *********		\n"
+		"   ***    **    ** ***    *** ***    *** ***     ***   ****" << endl;
 
 	cout << endl;
 
 	cout <<	"    ****     ********* *********   ***       ***    *****     ***    ***	\n"
-			"  ********   ********* *********    ***     ***   ***   ***   ***    ***	\n"
-			" ****  ****  ***       ***           ***   ***   ***     ***  ***    ***	\n"		      
-			"  ****       ***       ***            *** ***   ****     **** ***    ***	\n"
-			"    ******   ********  ********        *****    ****     **** ***    ***	\n"
-			"      *****  ***       ***             ****     ****     **** ***    ***	\n"
-			" ****   **** ***       ***             ****      ***     ***  ****  ****	\n"
-			"  *********  ********* *********       ****       ***   ***    ********	\n"
-			"   ******    ********* *********       ****         *****       ******   " << endl;
+		"  ********   ********* *********    ***     ***   ***   ***   ***    ***	\n"
+		" ****  ****  ***       ***           ***   ***   ***     ***  ***    ***	\n"		      
+		"  ****       ***       ***            *** ***   ****     **** ***    ***	\n"
+		"    ******   ********  ********        *****    ****     **** ***    ***	\n"
+		"      *****  ***       ***             ****     ****     **** ***    ***	\n"
+		" ****   **** ***       ***             ****      ***     ***  ****  ****	\n"
+		"  *********  ********* *********       ****       ***   ***    ********	\n"
+		"   ******    ********* *********       ****         *****       ******   " << endl;
 
 	cout << endl;
 
 	cout <<
-			"      ***       *****       ***    ***  ***   ***  \n"
-			"     ** **    *********    ** **   ***  ****  ***  \n"
-			"    **   **  ***     ***  **   **  ***  ***** ***  \n"
-			"   **     ** ***     *** **     ** ***  *********  \n"
-			"   ********* ***         ********* ***  *********  \n"
-			"   ********* ***    **** ********* ***  *********  \n"
-			"   **     ** ***     *** **     ** ***  *** *****  \n"
-			"   **     **  *********  **     ** ***  ***  ****  \n"
-			"   **     **   *******   **     ** ***  ***   ***   " << endl << endl;
+		"      ***       *****       ***    ***  ***   ***  \n"
+		"     ** **    *********    ** **   ***  ****  ***  \n"
+		"    **   **  ***     ***  **   **  ***  ***** ***  \n"
+		"   **     ** ***     *** **     ** ***  *********  \n"
+		"   ********* ***         ********* ***  *********  \n"
+		"   ********* ***    **** ********* ***  *********  \n"
+		"   **     ** ***     *** **     ** ***  *** *****  \n"
+		"   **     **  *********  **     ** ***  ***  ****  \n"
+		"   **     **   *******   **     ** ***  ***   ***   " << endl << endl;
 
 	exit(1);
 }
@@ -588,24 +608,24 @@ void options()
 
 	cout << endl;
 	cout << "Newbie... you think you have what it takes to be a CATCH NINJA huh?" << endl << endl << endl;
-	
+
 	cout << "HOW TO PLAY: " << endl << endl;
-	
+
 	cout << "1) Catch the fruits with the basket!" << endl;
 	cout << "2) Avoid the nasty worms!" << endl;
 	cout << "3) Be the best Catch Ninja you can be!" << endl << endl << endl;
 
 	cout << "FRUITS CATCHER ROOKIE GUIDE 101:" << endl << endl;
-	
+
 	cout << "1) APPLE - 1 POINT ";
 	colour(0x0C);
 	cout << "      [ O ]" << endl;
-	
+
 	colour(0x07);
 	cout << "2) ORANGE - 3 POINT ";
 	colour(0x04);
 	cout << "     [ O ]" << endl;
-	
+
 	colour(0x07);
 	cout << "3) GRAPE - 2X LE POINTS ";
 	colour(0x05);
@@ -643,28 +663,28 @@ void options()
 			if(input == 1)
 			{
 				system("cls");
-				EASY:;
+EASY:;
 				system("pause");
 			}
 
 			else if (input == 2)
 			{
 				system("cls");
-				NORMAL:;
+NORMAL:;
 				system("pause");
 			}
 
 			else if (input == 3)
 			{
 				system("cls");
-				HARD:;
+HARD:;
 				system("pause");
 			}
-			
+
 			else if(input == 4)
 			{
 				system("cls");
-				MAINMENU:startscreen();
+MAINMENU:startscreen();
 				system("pause");
 			}
 
@@ -685,7 +705,7 @@ void scoreboard()
 	system("cls");
 	colour(0x07);
 
-		cout << "****        **********  ********         ********        **********  ********       " <<
+	cout << "****        **********  ********         ********        **********  ********       " <<
 		endl << "****        **********  *********        ****  ****      **********  ****  ****      " <<
 		endl << "****        ****        ****  ****       ****    ****    ****        ****   ****      " <<
 		endl << "****        ********    ***********      ****     ****   ********    ****  *****       " <<
@@ -693,7 +713,7 @@ void scoreboard()
 		endl << "****        ****        ****     ****    ****    *****   ****        **** ****           " <<
 		endl << "**********  **********  ****      ****   ****  ******    **********  ****  ****           " <<
 		endl << "**********  **********  ****       ****  **********      **********  ****   *****          " <<
-		
+
 		endl << endl <<
 
 		endl << "*********      **********    ********         ********      *******         " <<
@@ -707,76 +727,76 @@ void scoreboard()
 		endl <<
 		endl << endl;
 
-		int first, second, third, forth, fifth;
-		
-		cout << "TOP 5 NINJA HIGH SCORES: " << endl << endl;
+	int first, second, third, forth, fifth;
 
-		ifstream indata1;
-		ofstream outdata1;
-		string data1;
-		indata1.open("score1.txt");
-		outdata1.open("temp1.txt");
-		
-		while (!indata1.eof())
-		{
-			getline(indata1, data1);
-			first = stoi(data1);
-		}
+	cout << "TOP 5 NINJA HIGH SCORES: " << endl << endl;
 
-		ifstream indata2;
-		ofstream outdata2;
-		string data2;
-		indata2.open("score2.txt");
-		outdata2.open("temp2.txt");
-		
-		while (!indata2.eof())
-		{
-			getline (indata2, data2);
-			second = stoi(data2);
-		}
+	ifstream indata1;
+	ofstream outdata1;
+	string data1;
+	indata1.open("score1.txt");
+	outdata1.open("temp1.txt");
 
-		ifstream indata3;
-		ofstream outdata3;
-		string data3;
-		indata3.open("score3.txt");
-		outdata3.open("temp3.txt");
-		
-		while (!indata3.eof())
-		{
-			getline (indata3, data3);
-			third = stoi(data3);
-		}
+	while (!indata1.eof())
+	{
+		getline(indata1, data1);
+		first = stoi(data1);
+	}
 
-		ifstream indata4;
-		ofstream outdata4;
-		string data4;
-		indata4.open("score4.txt");
-		outdata4.open("temp4.txt");
-		
-		while (!indata4.eof())
-		{
-			getline (indata4, data4);
-			forth = stoi(data4);
-		}
+	ifstream indata2;
+	ofstream outdata2;
+	string data2;
+	indata2.open("score2.txt");
+	outdata2.open("temp2.txt");
 
-		ifstream indata5;
-		ofstream outdata5;
-		string data5;
-		indata5.open("score5.txt");
-		outdata5.open("temp5.txt");
-		
-		while (!indata5.eof())
-		{
-			getline (indata5, data5);
-			fifth = stoi(data5);
-		}	
-		
+	while (!indata2.eof())
+	{
+		getline (indata2, data2);
+		second = stoi(data2);
+	}
+
+	ifstream indata3;
+	ofstream outdata3;
+	string data3;
+	indata3.open("score3.txt");
+	outdata3.open("temp3.txt");
+
+	while (!indata3.eof())
+	{
+		getline (indata3, data3);
+		third = stoi(data3);
+	}
+
+	ifstream indata4;
+	ofstream outdata4;
+	string data4;
+	indata4.open("score4.txt");
+	outdata4.open("temp4.txt");
+
+	while (!indata4.eof())
+	{
+		getline (indata4, data4);
+		forth = stoi(data4);
+	}
+
+	ifstream indata5;
+	ofstream outdata5;
+	string data5;
+	indata5.open("score5.txt");
+	outdata5.open("temp5.txt");
+
+	while (!indata5.eof())
+	{
+		getline (indata5, data5);
+		fifth = stoi(data5);
+	}	
+
 	int highscore[5] = {first, second, third, forth, fifth};
 	int subsitute = 0;
 	int subsitute2 = 0;
 	int size = sizeof(highscore)/sizeof(highscore[0]);
 	cout << size;
-	
+
 	for(int a = 0; a < size; a++)
 	{
 		if(score > highscore[a])
@@ -785,21 +805,21 @@ void scoreboard()
 			highscore[a] = score;
 			score = 0;
 		}
-		
+
 		else if(subsitute > highscore[a])
 		{
 			subsitute2 = highscore[a];
 			highscore[a] = subsitute;
 			subsitute = 0;
 		}
-		
+
 		else if(subsitute2 > highscore[a])
 		{
 			subsitute = highscore[a];
 			highscore[a] = subsitute2;
 			subsitute2 = 0;
 		}
-			cout << highscore[a] << endl;
+		cout << highscore[a] << endl;
 	}
 
 	outdata1 << highscore[0];
@@ -838,23 +858,23 @@ void scoreboard()
 	cout << endl;
 	cout << "[1] MAIN MENU" <<endl;
 	cout << "[2] EXIT" << endl;
-	
+
 	int input;
-	
+
 	for(int check = 0; check == 0;)
 	{
 		input = getch() - 48;
 		state stage = GAME;
-		
+
 		while(stage != END)
 		{
 			if (input == 1)
 			{
 				system("cls");
-				MAINMENU:startscreen();
+MAINMENU:startscreen();
 				system("pause");
 			}
-			
+
 			else if(input == 2)
 			{
 				endscreen();
@@ -868,7 +888,7 @@ void scoreboard()
 			}
 		}
 	}
-	
+
 	exit(1);
 }
 
@@ -882,26 +902,26 @@ void printMap()
 	cout << endl;
 	cout << endl;
 
-			cout <<
-			"*******      *                          ,      ,,,,,,,,\n"
-			"*******    **                            ,,    ,,,,,,,,\n"
-			"*******   **                              ,,   ,,,,,,,,\n"
-			"*******  **                                ,,  ,,,,,,,,\n"
-			"**********                                  ,,,,,,,,,,,\n"
-			"*********                                    ,,,,,,,,,,\n"
-			"********                                      ,,,,,,,,,\n"
-			"********                                       ,,,,,,,,\n"
-			"********                                       ,,,,,,,,\n"
-			"********                                       ,,,,,,,,\n"
-			"********                                       ,,,,,,,,\n"
-			"*********                                     ,,,,,,,,,\n"
-			"*********                                     ,,,,,,,,,\n"
-			"*********                                     ,,,,,,,,,\n"
-			"*********                                     ,,,,,,,,,\n"			
-			"*********                                     ,,,,,,,,,\n"
-			"*********                                     ,,,,,,,,,\n"
-			"*********                                     ,,,,,,,,,\n"
-			"*********                                     ,,,,,,,,,\n" << endl;
+	cout <<
+		"*******      *                          ,      ,,,,,,,,\n"
+		"*******    **                            ,,    ,,,,,,,,\n"
+		"*******   **                              ,,   ,,,,,,,,\n"
+		"*******  **                                ,,  ,,,,,,,,\n"
+		"**********                                  ,,,,,,,,,,,\n"
+		"*********                                    ,,,,,,,,,,\n"
+		"********                                      ,,,,,,,,,\n"
+		"********                                       ,,,,,,,,\n"
+		"********                                       ,,,,,,,,\n"
+		"********                                       ,,,,,,,,\n"
+		"********                                       ,,,,,,,,\n"
+		"*********                                     ,,,,,,,,,\n"
+		"*********                                     ,,,,,,,,,\n"
+		"*********                                     ,,,,,,,,,\n"
+		"*********                                     ,,,,,,,,,\n"			
+		"*********                                     ,,,,,,,,,\n"
+		"*********                                     ,,,,,,,,,\n"
+		"*********                                     ,,,,,,,,,\n"
+		"*********                                     ,,,,,,,,,\n" << endl;
 }
 
 void effects()
