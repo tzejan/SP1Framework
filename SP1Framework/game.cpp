@@ -5,11 +5,13 @@
 #include "Framework\console.h"
 #include <iostream>
 #include <iomanip>
+#include "Framework\sound.h"
 
 double elapsedTime;
 bool keyPressed[K_COUNT];
 COORD charLocation;
 COORD consoleSize;
+Sound snd;
 
 void init()
 {
@@ -27,6 +29,9 @@ void init()
     // set the character to be in the center of the screen.
     charLocation.X = consoleSize.X / 2;
     charLocation.Y = consoleSize.Y / 2;
+    
+    snd.loadWave("coin", "coin.wav");
+    snd.loadWave("explosion", "explosion.wav");
 }
 
 void shutdown()
@@ -52,22 +57,22 @@ void update(double dt)
     // Updating the location of the character based on the key press
     if (keyPressed[K_UP] && charLocation.Y > 0)
     {
-        playGameSound(S_MOVE);
+        playGameSound(S_COIN);
         charLocation.Y--; 
     }
     if (keyPressed[K_LEFT] && charLocation.X > 0)
     {
-        playGameSound(S_MOVE);
+        playGameSound(S_EXPLODE);
         charLocation.X--; 
     }
     if (keyPressed[K_DOWN] && charLocation.Y < consoleSize.Y - 1)
     {
-        playGameSound(S_MOVE);
+        playGameSound(S_COIN);
         charLocation.Y++; 
     }
     if (keyPressed[K_RIGHT] && charLocation.X < consoleSize.X - 1)
     {
-        playGameSound(S_MOVE);
+        playGameSound(S_EXPLODE);
         charLocation.X++; 
     }
 
@@ -115,9 +120,9 @@ void playGameSound(SoundType sound)
 {
     switch (sound)
     {
-        case S_MOVE: Beep(1440, 40);
+        case S_COIN: snd.playSound("coin");    
                     break;
-        case S_MUSIC : Beep(555, 40);
+        case S_EXPLODE : snd.playSound("explosion");
                     break;
     }
 }

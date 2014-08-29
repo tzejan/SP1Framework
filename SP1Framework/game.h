@@ -18,8 +18,8 @@ enum Keys
 
 enum SoundType
 {
-    S_MOVE,
-    S_MUSIC,
+    S_COIN,
+    S_EXPLODE,
     S_COUNT
 };
 
