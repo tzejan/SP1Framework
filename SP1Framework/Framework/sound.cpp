@@ -21,7 +21,7 @@ void Sound::playSound(std::string key, bool async)
     if (it != soundData.end())
     {
         DWORD flag = async? SND_MEMORY | SND_ASYNC : SND_MEMORY;
-        PlaySound(it->second, NULL, flag );
+        PlaySoundA(it->second, NULL, flag );
     }
 }
 
