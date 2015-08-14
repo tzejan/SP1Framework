@@ -12,7 +12,7 @@ const unsigned int frameTime = 1000 / FPS; // time for each frame
 void mainLoop();
 
 // TODO:
-// Bug in waitUnitil. it waits for the time from getElapsedTime to waitUntil, but should be insignificant.
+// Bug in waitUntil. it waits for the time from getElapsedTime to waitUntil, but should be insignificant.
 
 int main()
 {

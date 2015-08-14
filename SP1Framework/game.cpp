@@ -7,8 +7,8 @@
 #include <iomanip>
 #include <sstream>
 
-// Console size, width by height
-COORD ConsoleSize = {80, 25};
+// Console object
+Console console(80, 25, "SP1 Framework");
 
 double elapsedTime;
 double deltaTime;
@@ -18,25 +18,32 @@ bool keyPressed[K_COUNT];
 // Game specific variables here
 COORD charLocation;
 
+// Initialize variables, allocate memory, etc. 
 void init()
 {
     // Set precision for floating point output
     elapsedTime = 0.0;
 
-    initConsole(ConsoleSize, "SP1 Framework");
-
-    charLocation.X = ConsoleSize.X / 2;
-    charLocation.Y = ConsoleSize.Y / 2;
+    charLocation.X = console.getConsoleSize().X / 2;
+    charLocation.Y = console.getConsoleSize().Y / 2;
 }
 
+// Do your clean up of memory here
 void shutdown()
 {
     // Reset to white text on black background
 	colour(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 
-    shutDownConsole();
+    console.clearBuffer();
 }
-
+/*
+	This function checks if any key had been pressed since the last time we checked
+	If a key is pressed, the value for that particular key will be true
+	
+	Add more keys to the enum in game.h if you need to detect more keys
+	To get other VK key defines, right click on the VK define (e.g. VK_UP) and choose "Go To Definition" 
+	For Alphanumeric keys, the values are their ascii values (uppercase).
+*/
 void getInput()
 {    
     keyPressed[K_UP] = isKeyPressed(VK_UP);
@@ -46,6 +53,14 @@ void getInput()
     keyPressed[K_ESCAPE] = isKeyPressed(VK_ESCAPE);
 }
 
+/*
+	This is the update function
+	double dt - This is the amount of time in seconds since the previous call was made
+
+	Game logic should be done here.
+	Such as collision checks, determining the position of your game characters, status updates, etc
+	If there are any calls to write to the console here, then you are doing it wrong.
+*/
 void update(double dt)
 {
     // get the delta time
@@ -63,12 +78,12 @@ void update(double dt)
         //Beep(1440, 30);
         charLocation.X--;
     }
-    if (keyPressed[K_DOWN] && charLocation.Y < ConsoleSize.Y - 1)
+    if (keyPressed[K_DOWN] && charLocation.Y < console.getConsoleSize().Y - 1)
     {
         //Beep(1440, 30);
         charLocation.Y++;
     }
-    if (keyPressed[K_RIGHT] && charLocation.X < ConsoleSize.X - 1)
+    if (keyPressed[K_RIGHT] && charLocation.X < console.getConsoleSize().X - 1)
     {
         //Beep(1440, 30);
         charLocation.X++;
@@ -79,10 +94,16 @@ void update(double dt)
         g_quitGame = true;    
 }
 
+/*
+	This is the render loop
+	At this point, you should know exactly what to draw onto the screen.
+	Just draw it!
+	To get an idea of the values for colours, look at console.h and the URL listed there 
+*/
 void render()
 {    
     // Clears the buffer with this colour attribute
-    clearBuffer(0x1F);
+    console.clearBuffer(0x1F);
 
     // Set up sample colours, and output shadings
     const WORD colors[] =   {
@@ -96,29 +117,28 @@ void render()
 		c.X = 5*i;
         c.Y = i+1;
 		colour(colors[i]);
-		writeToBuffer(c, " °±²Û", colors[i]);
+		console.writeToBuffer(c, " °±²Û", colors[i]);
 	}
 
     // displays the framerate
     std::ostringstream ss;
     ss << std::fixed << std::setprecision(3);
     ss << 1.0 / deltaTime << "fps";
-    c.X = ConsoleSize.X-9;
+    c.X = console.getConsoleSize().X-9;
     c.Y = 0;
-    writeToBuffer(c, ss.str());
+    console.writeToBuffer(c, ss.str());
 
     // displays the elapsed time
     ss.str("");
     ss << elapsedTime << "secs";
     c.X = 0;
     c.Y = 0;
-    writeToBuffer(c, ss.str(), 0x59);
+    console.writeToBuffer(c, ss.str(), 0x59);
 
 
     // Draw the location of the character
-    writeToBuffer(charLocation, (char)1, 0x0C);
+    console.writeToBuffer(charLocation, (char)1, 0x0C);
 
-    
     // Writes the buffer to the console, hence you will see what you have written
-    flushBufferToConsole();
+    console.flushBufferToConsole();
 }
