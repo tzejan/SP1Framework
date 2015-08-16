@@ -54,6 +54,7 @@ class Console
 		// The functions below sets up the screen buffer and writes to the console with this data
 		COORD getConsoleSize() { return consoleSize; };  // Gets the console size
 		void setConsoleTitle(LPCSTR lpConsoleTitle); // sets the console title
+        void setConsoleFont(SHORT width, SHORT height, LPCWSTR lpcwFontName); // sets the console font
 		void flushBufferToConsole(); // writes the contents of the buffer to the screen
 		void clearBuffer(WORD attribute = 0x0F); // clears the screen with this colour
 

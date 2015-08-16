@@ -120,6 +120,20 @@ void Console::setConsoleTitle(LPCSTR lpConsoleTitle)
 {
 	SetConsoleTitleA(lpConsoleTitle);
 }
+
+void Console::setConsoleFont(SHORT width, SHORT height, LPCWSTR lpcwFontName)
+{
+    CONSOLE_FONT_INFOEX cfi;
+    cfi.cbSize = sizeof cfi;
+    cfi.nFont = 0;
+    cfi.dwFontSize.X = width;
+    cfi.dwFontSize.Y = height;
+    cfi.FontFamily = FF_DONTCARE;
+    cfi.FontWeight = FW_NORMAL;
+    wcscpy_s(cfi.FaceName, lpcwFontName);
+    SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
+}
+
 void Console::shutDownConsole()
 {
     delete [] screenDataBuffer;

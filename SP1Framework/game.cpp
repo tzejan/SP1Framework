@@ -27,6 +27,8 @@ void init()
 
     charLocation.X = console.getConsoleSize().X / 2;
     charLocation.Y = console.getConsoleSize().Y / 2;
+    // sets the width, height and the font name to use in the console
+    console.setConsoleFont(0, 16, L"Consolas");
 }
 
 // Do your clean up of memory here
