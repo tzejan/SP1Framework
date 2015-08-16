@@ -63,6 +63,6 @@ There is a function setConsoleSize() that does this. See above
 **The screen flickers!**  
 Everyone else is facing the same problem, don't worry too much about it. If this is really bothering you, check out the "WriteToBuffer" branch of this repository. You must make sure that all your rendering code is in the render() function. Otherwise, you will be in a world of pain if you try to use that code. The codes should be sufficiently commented for you to get started.
 
-**Unicode**
+**Unicode**  
 Right now, there is no support for unicode, but talk to me if you really need unicode, and we see if we can try out some stuff.
 
