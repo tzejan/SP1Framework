@@ -144,11 +144,13 @@ void renderMap()
         console.writeToBuffer(c, " °±²Û", colors[i]);
     }
 }
+
 void renderCharacter()
 {
     // Draw the location of the character
     console.writeToBuffer(charLocation, (char)1, 0x0C);
 }
+
 void renderFramerate()
 {
     COORD c;

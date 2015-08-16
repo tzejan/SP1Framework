@@ -152,15 +152,13 @@ void Console::clearBuffer(WORD attribute)
         screenDataBuffer[i].Attributes = attribute;
     }
 }
-void Console::writeToBuffer(COORD c, LPCSTR str, WORD attribute)
-{    
-    size_t index = c.X + consoleSize.X * c.Y;
+
+void Console::writeToBuffer(SHORT x, SHORT y, LPCSTR str, WORD attribute)
+{
+    size_t index = max(x + consoleSize.X * y, 0);
     size_t length = strlen(str);
     // if the length of the string exceeds the buffer size, we chop it off at the end
-    if (index + length >= screenDataBufferSize)
-    {
-        length = screenDataBufferSize - index - 1;
-    }
+    length = min(screenDataBufferSize - index - 1, length);
     for (size_t i = 0; i < length; ++i)
     {
         screenDataBuffer[index+i].Char.AsciiChar = str[i];
@@ -168,17 +166,32 @@ void Console::writeToBuffer(COORD c, LPCSTR str, WORD attribute)
     }
 }
 
+void Console::writeToBuffer(COORD c, LPCSTR str, WORD attribute)
+{    
+    writeToBuffer(c.X, c.Y, str, attribute);
+}
+
+void Console::writeToBuffer(SHORT x, SHORT y, std::string& s, WORD attribute)
+{
+    writeToBuffer(x, y, s.c_str(), attribute);
+}
+
 void Console::writeToBuffer(COORD c, std::string& s, WORD attribute)
 {
-    writeToBuffer(c, s.c_str(), attribute);
+    writeToBuffer(c.X, c.Y, s.c_str(), attribute);
+}
+
+void Console::writeToBuffer(SHORT x, SHORT y, char ch, WORD attribute)
+{
+    if (x < 0 || x > consoleSize.X || y < 0 || y > consoleSize.Y)
+        return;
+    screenDataBuffer[x + consoleSize.X * y].Char.AsciiChar = ch;
+    screenDataBuffer[x + consoleSize.X * y].Attributes = attribute;
 }
 
 void Console::writeToBuffer(COORD c, char ch, WORD attribute)
 {
-    if (c.X < 0 || c.X > consoleSize.X || c.Y < 0 || c.Y > consoleSize.Y)
-        return;
-    screenDataBuffer[c.X + consoleSize.X * c.Y].Char.AsciiChar = ch;
-    screenDataBuffer[c.X + consoleSize.X * c.Y].Attributes = attribute;
+    writeToBuffer(c.X, c.Y, ch, attribute);
 }
 
 void Console::writeToConsole(const CHAR_INFO* lpBuffer)

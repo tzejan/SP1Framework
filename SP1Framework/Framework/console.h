@@ -62,6 +62,9 @@ class Console
 		void writeToBuffer(COORD c, LPCSTR str, WORD attribute = 0x0F);
 		void writeToBuffer(COORD c, std::string& s, WORD attribute = 0x0F);
 		void writeToBuffer(COORD c, char ch, WORD attribute = 0x0F);
+        void writeToBuffer(SHORT x, SHORT y, LPCSTR str, WORD attribute = 0x0F);
+        void writeToBuffer(SHORT x, SHORT y, std::string& s, WORD attribute = 0x0F);
+        void writeToBuffer(SHORT x, SHORT y, char ch, WORD attribute = 0x0F);
 		
 		//===================================================================================================
 		// These are for your eyes only, don't bother to try to call the following functions.
