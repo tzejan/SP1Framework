@@ -44,15 +44,33 @@ Renders the current state of game onto screen. Go to a specific coordinate on th
 ##### shutdown()
 Code for cleaning up of game, writing of files, close files, free up memory, etc.
 
-###Other functions in the framework
+###Console functions in the framework
 
-#### setConsoleSize()
-Sets the size of the console. The largest size depends on your screen  
+##### void initConsole(COORD consoleSize, LPCSTR lpConsoleTitle=0);
+Inits the console size, and give it a title, pass in a C-Style string
 
-#### SetConsoleTitle()
-Sets the title of the console. 
+##### void shutDownConsole();
+Call this before you quit the game. Returns the console to show output from the STDOUT stream  
 
 
+
+##### void clearBuffer(WORD attribute = 0x0F);
+Clears the data buffer, hence "clearing the screen", preparing for new data.
+
+##### void writeToBuffer(COORD c, LPCSTR str, WORD attribute = 0x0F);
+##### void writeToBuffer(COORD c, std::string s, WORD attribute = 0x0F);
+##### void writeToBuffer(COORD c, char ch, WORD attribute = 0x0F);
+These 3 functions writes to the buffer at that coordinate, you can use C-Style strings, C++ string class or a char. The attribute is a optional parameter.
+
+##### void flushBufferToConsole();
+Call this at the end of the render() function so that the contents of the buffer will be displayed onto the screen.
+
+### Advanced users only
+
+##### CHAR_INFO* getScreenDataBuffer();
+Gets the screen data buffer, the buffer used in displaying the output. Do not use this unless you know what you are doing.  
+##### void writeToConsole(const CHAR_INFO* lpBuffer);
+With the screen data buffer, flush the output to the console.
 
 FAQ
 ---
