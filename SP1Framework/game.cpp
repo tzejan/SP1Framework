@@ -14,7 +14,7 @@ bool    g_abKeyPressed[K_COUNT];
 // Game specific variables here
 COORD   g_cCharLocation;
 // Console object
-Console console(80, 25, "SP1 Framework");
+Console g_Console(80, 25, "SP1 Framework");
 
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -28,10 +28,10 @@ void init( void )
     // Set precision for floating point output
     g_dElapsedTime = 0.0;
 
-    g_cCharLocation.X = console.getConsoleSize().X / 2;
-    g_cCharLocation.Y = console.getConsoleSize().Y / 2;
+    g_cCharLocation.X = g_Console.getConsoleSize().X / 2;
+    g_cCharLocation.Y = g_Console.getConsoleSize().Y / 2;
     // sets the width, height and the font name to use in the console
-    console.setConsoleFont(0, 16, L"Consolas");
+    g_Console.setConsoleFont(0, 16, L"Consolas");
 }
 
 //--------------------------------------------------------------
@@ -46,7 +46,7 @@ void shutdown( void )
     // Reset to white text on black background
     colour(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 
-    console.clearBuffer();
+    g_Console.clearBuffer();
 }
 
 //--------------------------------------------------------------
@@ -124,12 +124,12 @@ void moveCharacter()
         //Beep(1440, 30);
         g_cCharLocation.X--; 
     }
-    if (g_abKeyPressed[K_DOWN] && g_cCharLocation.Y < console.getConsoleSize().Y - 1)
+    if (g_abKeyPressed[K_DOWN] && g_cCharLocation.Y < g_Console.getConsoleSize().Y - 1)
     {
         //Beep(1440, 30);
         g_cCharLocation.Y++; 
     }
-    if (g_abKeyPressed[K_RIGHT] && g_cCharLocation.X < console.getConsoleSize().X - 1)
+    if (g_abKeyPressed[K_RIGHT] && g_cCharLocation.X < g_Console.getConsoleSize().X - 1)
     {
         //Beep(1440, 30);
         g_cCharLocation.X++; 
@@ -145,7 +145,7 @@ void processUserInput()
 void clearScreen()
 {
     // Clears the buffer with this colour attribute
-    console.clearBuffer(0x1F);
+    g_Console.clearBuffer(0x1F);
 }
 void renderMap()
 {
@@ -161,14 +161,14 @@ void renderMap()
         c.X = 5 * i;
         c.Y = i + 1;
         colour(colors[i]);
-        console.writeToBuffer(c, " °±²Û", colors[i]);
+        g_Console.writeToBuffer(c, " °±²Û", colors[i]);
     }
 }
 
 void renderCharacter()
 {
     // Draw the location of the character
-    console.writeToBuffer(g_cCharLocation, (char)1, 0x0C);
+    g_Console.writeToBuffer(g_cCharLocation, (char)1, 0x0C);
 }
 
 void renderFramerate()
@@ -178,19 +178,19 @@ void renderFramerate()
     std::ostringstream ss;
     ss << std::fixed << std::setprecision(3);
     ss << 1.0 / g_dDeltaTime << "fps";
-    c.X = console.getConsoleSize().X - 9;
+    c.X = g_Console.getConsoleSize().X - 9;
     c.Y = 0;
-    console.writeToBuffer(c, ss.str());
+    g_Console.writeToBuffer(c, ss.str());
 
     // displays the elapsed time
     ss.str("");
     ss << g_dElapsedTime << "secs";
     c.X = 0;
     c.Y = 0;
-    console.writeToBuffer(c, ss.str(), 0x59);
+    g_Console.writeToBuffer(c, ss.str(), 0x59);
 }
 void renderToScreen()
 {
     // Writes the buffer to the console, hence you will see what you have written
-    console.flushBufferToConsole();
+    g_Console.flushBufferToConsole();
 }
