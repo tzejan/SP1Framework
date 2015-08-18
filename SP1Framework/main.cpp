@@ -3,18 +3,19 @@
 #include "Framework\timer.h"
 #include "game.h"
 
+CStopWatch g_Timer;							// Timer function to keep track of time and the frame rate
+bool g_bQuitGame = false;					// Set to true if you want to quit the game
+const unsigned char gc_ucFPS = 5;				// FPS of this game
+const unsigned int gc_uFrameTime = 1000 / gc_ucFPS;	// time for each frame
 
-StopWatch g_timer;            // Timer function to keep track of time and the frame rate
-bool g_quitGame = false;      // Set to true if you want to quit the game
-const unsigned char FPS = 5; // FPS of this game
-const unsigned int frameTime = 1000 / FPS; // time for each frame
-
-void mainLoop();
+//main loop declaration
+void mainLoop( void );
 
 // TODO:
 // Bug in waitUnitil. it waits for the time from getElapsedTime to waitUntil, but should be insignificant.
 
-int main()
+// main function - starting function
+int main( void )
 {
 	init();      // initialize your variables
     mainLoop();  // main loop
@@ -23,16 +24,20 @@ int main()
 	return 0;
 }
 
-// This main loop calls functions to get input, update and render the game
-// at a specific frame rate
-void mainLoop()
+//--------------------------------------------------------------
+// Purpose	: This main loop calls functions to get input, 
+//			update and render the game at a specific frame rate
+// Input	: void
+// Output	: void
+//--------------------------------------------------------------
+void mainLoop( void )
 {
-    g_timer.startTimer();    // Start timer to calculate how long it takes to render this frame
-    while (!g_quitGame)      // run this loop until user wants to quit 
+    g_Timer.startTimer();    // Start timer to calculate how long it takes to render this frame
+    while (!g_bQuitGame)      // run this loop until user wants to quit 
 	{        
         getInput();                         // get keyboard input
-        update(g_timer.getElapsedTime());   // update the game
+        update(g_Timer.getElapsedTime());   // update the game
         render();                           // render the graphics output to screen
-        g_timer.waitUntil(frameTime);       // Frame rate limiter. Limits each frame to a specified time in ms.      
+        g_Timer.waitUntil(gc_uFrameTime);   // Frame rate limiter. Limits each frame to a specified time in ms.      
 	}    
 }

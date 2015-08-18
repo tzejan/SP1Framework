@@ -25,10 +25,10 @@ void colour(WORD attrib);
 // If no console handle is supplied, then we take the STDOUTPUT console
 void cls( HANDLE hConsole = 0);
 
-bool isKeyPressed(unsigned short key);
+bool isKeyPressed(unsigned short ushKkey);
 
 // sets the size of the console
 // There is a certain size limitation to how big a console can be set.
-void setConsoleSize(unsigned short x, unsigned short y);
+void setConsoleSize(unsigned short ushX, unsigned short ushY);
 
 #endif // _CONSOLE_H

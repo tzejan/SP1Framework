@@ -1,56 +1,97 @@
 #include "timer.h"
 
-StopWatch::StopWatch()
+//--------------------------------------------------------------
+// Purpose	: Constructor, We will set the timer intervals here
+// Input	: Void
+// Output	: Nil
+//--------------------------------------------------------------
+CStopWatch::CStopWatch( void )
 {    
-    QueryPerformanceFrequency( &frequency ) ;
+    QueryPerformanceFrequency( &m_liFrequency ) ;
 
     #define TARGET_RESOLUTION 1         // 1-millisecond target resolution
     TIMECAPS tc;
-    
 
     if (timeGetDevCaps(&tc, sizeof(TIMECAPS)) != TIMERR_NOERROR) 
     {
         // Error; application can't continue.
     }
 
-    wTimerRes = min(max(tc.wPeriodMin, TARGET_RESOLUTION), tc.wPeriodMax);
-    timeBeginPeriod(wTimerRes); 
+    m_uTimerRes = min(max(tc.wPeriodMin, TARGET_RESOLUTION), tc.wPeriodMax);
+
+	// requests a minimum resolution for periodic timers.
+	// goto https://msdn.microsoft.com/en-us/library/windows/desktop/dd757624(v=vs.85).aspx for more info
+    timeBeginPeriod(m_uTimerRes); 
 }
 
-StopWatch::~StopWatch()
+//--------------------------------------------------------------
+// Purpose	: Destructor
+// Input	: Void
+// Output	: Nil
+//--------------------------------------------------------------
+CStopWatch::~CStopWatch( void )
 {
-    timeEndPeriod(wTimerRes);
+	// clear the resolution
+	// goto https://msdn.microsoft.com/en-us/library/windows/desktop/dd757626(v=vs.85).aspx for more info
+	timeEndPeriod(m_uTimerRes);
 }
 
-double StopWatch::LIToSecs( LARGE_INTEGER & L) {
-     return ((double)L.QuadPart /(double)frequency.QuadPart) ;
+//--------------------------------------------------------------
+// Purpose	: Convert the time to seconds
+// Input	: Long integer
+// Output	: Double
+//--------------------------------------------------------------
+double CStopWatch::LiToSecs( LARGE_INTEGER & liInput) {
+     return ((double)liInput.QuadPart /(double)m_liFrequency.QuadPart) ;
  }
  
-void StopWatch::startTimer( )
+//--------------------------------------------------------------
+// Purpose	: Start the timer by getting current time and store
+// Input	: void
+// Output	: void
+//--------------------------------------------------------------
+void CStopWatch::startTimer( void )
 {
-    QueryPerformanceCounter(&prevTime) ;
+    QueryPerformanceCounter(&m_liPrevTime) ;
 }
  
-double StopWatch::getElapsedTime() 
+//--------------------------------------------------------------
+// Purpose	: Get the elapsed time by getting current time 
+//  		  and minus stored value
+// Input	: void
+// Output	: void
+//--------------------------------------------------------------
+double CStopWatch::getElapsedTime( void ) 
 {
-    LARGE_INTEGER time;
-    QueryPerformanceCounter(&currTime) ;
-    time.QuadPart = currTime.QuadPart - prevTime.QuadPart;
-    prevTime = currTime;
-    return LIToSecs( time) ;
+    LARGE_INTEGER llTime;
+	// obtain current time
+    QueryPerformanceCounter(&m_liCurrTime) ;
+    // Calculate elapsed time
+	llTime.QuadPart = m_liCurrTime.QuadPart - m_liPrevTime.QuadPart;
+	// Store current time for next elapsed time calculation
+    m_liPrevTime = m_liCurrTime;
+    return LiToSecs( llTime) ;
 }
 
-void StopWatch::waitUntil(long long time)
+//--------------------------------------------------------------
+// Purpose	: Sleep the system till llTime has reached
+// Input	: time to sleep (long long)
+// Output	: void
+//--------------------------------------------------------------
+void CStopWatch::waitUntil(long long llTime)
 {
-    LARGE_INTEGER nowTime;
-    LONGLONG timeElapsed;
+    LARGE_INTEGER liCurTime;
+    LONGLONG llTimeElapsed;
     while (true)
     {
-        QueryPerformanceCounter(&nowTime);
-        timeElapsed = ((nowTime.QuadPart - prevTime.QuadPart) * 1000 / frequency.QuadPart);
-        if (timeElapsed > time)
+		// get current time
+        QueryPerformanceCounter(&liCurTime);
+		// Calculate time elapsed
+        llTimeElapsed = ((liCurTime.QuadPart - m_liPrevTime.QuadPart) * 1000 / m_liFrequency.QuadPart);
+		// llTime has passed, return and end sleep
+        if (llTimeElapsed > llTime)
             return;
-        else if (time - timeElapsed > 1)
+        else if (llTime - llTimeElapsed > 1)
             Sleep(1);
     }
 }
