@@ -1,7 +1,6 @@
 SP1 Framework
 ============
 
-
 This framework is for helping students on the SP1 module to get started quickly on their projects. This framework only works on the Windows environment as it uses Windows API in some of its features. 
 
 Main Features
@@ -44,42 +43,66 @@ Renders the current state of game onto screen. Go to a specific coordinate on th
 ##### shutdown()
 Code for cleaning up of game, writing of files, close files, free up memory, etc.
 
-###Console functions in the framework
+### Console functions in the framework
 
-##### void initConsole(COORD consoleSize, LPCSTR lpConsoleTitle=0);
+There are 2 types of console functions, one that uses that std::cout, and one that uses the Console object.  
+For beginners, the functions that work with std::cout is more suitable as they are more familiar.
+If you experience flickering of the screen, that is because the output is flushed to the std output every time it is written. Hence, a faster way is to write the output to a buffer, and flushed at the end of the render() loop.
+
+#### Console functions to use with std::cout
+The following functions might need a console object to be instantiated and then you can call these functions. Needless to say, these functions are going to be deprecated and you should not be using them.
+
+##### void gotoXY(int x,int y);
+##### void gotoXY(COORD c);
+Go to a specific location on the screen and writes to the std output from there. Origin is top left.
+
+##### void colour(WORD attrib);
+Sets a specific colour to be used in the next call to std::cout.
+
+##### void cls( HANDLE hConsole = 0);
+Clears the screen with the last colour attribute set.
+
+#### Console object
+You will only need to create one console object, and use this one true object in your code for all the console output. 
+
+##### Console(COORD consoleSize, LPCSTR lpConsoleTitle = 0);
+##### Console(unsigned short consoleWidth, unsigned short consoleHeight, LPCSTR lpConsoleTitle = 0);
 Inits the console size, and give it a title, pass in a C-Style string
 
-##### void shutDownConsole();
-Call this before you quit the game. Returns the console to show output from the STDOUT stream  
+##### COORD getConsoleSize();  
+Gets the console size, in a COORD struct.
 
+##### void setConsoleTitle(LPCSTR lpConsoleTitle);
+Sets the console title
 
+##### void setConsoleFont(SHORT width, SHORT height, LPCWSTR lpcwFontName); 
+Sets the console font. You can set the width and height of the raster fonts. If you are using a TrueType font, you can use the height as the font size. 
 
 ##### void clearBuffer(WORD attribute = 0x0F);
 Clears the data buffer, hence "clearing the screen", preparing for new data.
 
 ##### void writeToBuffer(COORD c, LPCSTR str, WORD attribute = 0x0F);
-##### void writeToBuffer(COORD c, std::string s, WORD attribute = 0x0F);
+##### void writeToBuffer(COORD c, std::string& s, WORD attribute = 0x0F);
 ##### void writeToBuffer(COORD c, char ch, WORD attribute = 0x0F);
-These 3 functions writes to the buffer at that coordinate, you can use C-Style strings, C++ string class or a char. The attribute is a optional parameter.
+##### void writeToBuffer(SHORT x, SHORT y, LPCSTR str, WORD attribute = 0x0F);
+##### void writeToBuffer(SHORT x, SHORT y, std::string& s, WORD attribute = 0x0F);
+##### void writeToBuffer(SHORT x, SHORT y, char ch, WORD attribute = 0x0F);  
+The origin of the screen is on the top left.
+These 6 functions writes to the buffer at that coordinate, you can use C-Style strings, C++ string class or a char. The attribute is a optional parameter. The last 3 functions are overloaded versions of the first 3 functions.
+
 
 ##### void flushBufferToConsole();
 Call this at the end of the render() function so that the contents of the buffer will be displayed onto the screen.
 
-### Advanced users only
-
-##### CHAR_INFO* getScreenDataBuffer();
-Gets the screen data buffer, the buffer used in displaying the output. Do not use this unless you know what you are doing.  
-##### void writeToConsole(const CHAR_INFO* lpBuffer);
-With the screen data buffer, flush the output to the console.
 
 FAQ
 ---
 
 **How do I set the size of the console?**  
-There is a function setConsoleSize() that does this. See above
+The console size is set in the constructor of the console object. See the sample code to see how this is done. Note that if you tried to set an invalid size, the size of the console will be set to a default size, and you will get an error message.
 
 **The screen flickers!**  
-Everyone else is facing the same problem, don't worry too much about it. If this is really bothering you, check out the "WriteToBuffer" branch of this repository. You must make sure that all your rendering code is in the render() function. Otherwise, you will be in a world of pain if you try to use that code. The codes should be sufficiently commented for you to get started.
+It could be due to too much flushing of the buffer to the screen. Make sure that there is no std::cout functions called in your code. You should be clearing the buffer only once. You should be flushing the buffer to the console only once. 
 
 **Unicode**  
 Right now, there is no support for unicode, but talk to me if you really need unicode, and we see if we can try out some stuff.
