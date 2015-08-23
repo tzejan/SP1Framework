@@ -196,7 +196,7 @@ void Console::writeToBuffer(SHORT x, SHORT y, LPCSTR str, WORD attribute)
     size_t index = max(x + consoleSize.X * y, 0);
     size_t length = strlen(str);
     // if the length of the string exceeds the buffer size, we chop it off at the end
-    length = min(screenDataBufferSize - index - 1, length);
+    length = min(screenDataBufferSize - index, length);
     for (size_t i = 0; i < length; ++i)
     {
         screenDataBuffer[index+i].Char.AsciiChar = str[i];
@@ -221,7 +221,7 @@ void Console::writeToBuffer(COORD c, std::string& s, WORD attribute)
 
 void Console::writeToBuffer(SHORT x, SHORT y, char ch, WORD attribute)
 {
-    if (x < 0 || x > consoleSize.X || y < 0 || y > consoleSize.Y)
+    if (x < 0 || x >= consoleSize.X || y < 0 || y >= consoleSize.Y)
         return;
     screenDataBuffer[x + consoleSize.X * y].Char.AsciiChar = ch;
     screenDataBuffer[x + consoleSize.X * y].Attributes = attribute;
