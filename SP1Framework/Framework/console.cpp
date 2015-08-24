@@ -99,13 +99,13 @@ bool isKeyPressed(unsigned short ushKey)
 // Console object code follows
 //=============================================================================
 Console::Console(COORD consoleSize, LPCSTR lpConsoleTitle) : 
-    screenDataBufferSize(consoleSize.X * consoleSize.Y)
+	m_u32ScreenDataBufferSize(consoleSize.X * consoleSize.Y)
 {
     initConsole(consoleSize, lpConsoleTitle);
 }
 
 Console::Console(unsigned short consoleWidth, unsigned short consoleHeight, LPCSTR lpConsoleTitle) :
-    screenDataBufferSize(consoleWidth * consoleHeight)
+    m_u32ScreenDataBufferSize(consoleWidth * consoleHeight)
 {
     COORD consoleSize = { consoleWidth, consoleHeight };
     initConsole(consoleSize, lpConsoleTitle);
@@ -118,14 +118,15 @@ Console::~Console()
 
 void Console::initConsole(COORD consoleSize, LPCSTR lpConsoleTitle)
 {
+	this->m_cConsoleSize = consoleSize;
     // Use the ascii version for the consoleTitle
     SetConsoleTitleA(lpConsoleTitle);
     SetConsoleCP(437);
     
     // set up screen buffer    
-    screenDataBuffer = new CHAR_INFO[screenDataBufferSize];
+	m_ciScreenDataBuffer = new CHAR_INFO[m_u32ScreenDataBufferSize];
 
-    hScreenBuffer = CreateConsoleScreenBuffer( 
+    m_hScreenBuffer = CreateConsoleScreenBuffer( 
        GENERIC_READ |           // read/write access 
        GENERIC_WRITE, 
        FILE_SHARE_READ | 
@@ -134,10 +135,11 @@ void Console::initConsole(COORD consoleSize, LPCSTR lpConsoleTitle)
        CONSOLE_TEXTMODE_BUFFER, // must be TEXTMODE 
        NULL);                   // reserved; must be NULL 
 
-    SetConsoleActiveScreenBuffer(hScreenBuffer); 
-    // Sets the console size
-    setConsoleSize(consoleSize.X, consoleSize.Y);
-    this->consoleSize = consoleSize;
+	m_cMaxConsoleSize = GetLargestConsoleWindowSize(m_hScreenBuffer);
+
+	// Sets the console size
+	setConsoleWindowSize();
+    SetConsoleActiveScreenBuffer(m_hScreenBuffer); 	
 }
 
 void Console::setConsoleTitle(LPCSTR lpConsoleTitle)
@@ -160,47 +162,68 @@ void Console::setConsoleFont(SHORT width, SHORT height, LPCWSTR lpcwFontName)
 
 void Console::shutDownConsole()
 {
-    delete [] screenDataBuffer;
+	delete [] m_ciScreenDataBuffer;
     SetConsoleActiveScreenBuffer(GetStdHandle(STD_OUTPUT_HANDLE));
 }
 
 
 void Console::flushBufferToConsole()
 {
-    writeToConsole(screenDataBuffer);    
+	writeToConsole(m_ciScreenDataBuffer);    
 }
 
 // sets the size of the console
-void Console::setConsoleSize(unsigned short consoleWidth, unsigned short consoleHeight)
+void Console::setConsoleWindowSize()
 {
-    SMALL_RECT windowSize = {0, 0, consoleWidth-1, consoleHeight-1};
-    COORD buffSize = {consoleWidth, consoleHeight};
+	SMALL_RECT windowSize = {0, 0, m_cConsoleSize.X-1, m_cConsoleSize.Y-1};
+    COORD buffSize = {m_cConsoleSize.X, m_cConsoleSize.Y};
 
-    HANDLE hConsole = hScreenBuffer;//GetStdHandle( STD_OUTPUT_HANDLE );
-    BOOL bSuccess = SetConsoleWindowInfo(hConsole, TRUE, &windowSize);
-    PERR( bSuccess, "SetConsoleWindowInfo" );
-    bSuccess = SetConsoleScreenBufferSize(hConsole, buffSize);
-    PERR( bSuccess, "SetConsoleWindowInfo" );
+    HANDLE hConsole = m_hScreenBuffer;//GetStdHandle( STD_OUTPUT_HANDLE );
+
+	BOOL bSuccess;
+
+	CONSOLE_SCREEN_BUFFER_INFO csbi; // Hold Current Console Buffer Info 
+	bSuccess = GetConsoleScreenBufferInfo( hConsole, &csbi );
+	PERR( bSuccess, "GetConsoleScreenBufferInfo" );
+
+	// If the Current Buffer is Larger than what we want, Resize the 
+	// Console Window First, then the Buffer 
+	if( (DWORD)csbi.dwSize.X * csbi.dwSize.Y > (DWORD) m_cConsoleSize.X * m_cConsoleSize.Y)
+	{
+		bSuccess = SetConsoleWindowInfo(hConsole, TRUE, &windowSize);    
+		PERR( bSuccess, "SetConsoleWindowInfo" );
+		bSuccess = SetConsoleScreenBufferSize(hConsole, buffSize);
+		PERR( bSuccess, "SetConsoleScreenBufferSize" );
+	}
+	// If the Current Buffer is Smaller than what we want, Resize the 
+	// Buffer First, then the Console Window 
+	else
+	{	
+		bSuccess = SetConsoleScreenBufferSize(hConsole, buffSize);
+		PERR( bSuccess, "SetConsoleScreenBufferSize" );
+		bSuccess = SetConsoleWindowInfo(hConsole, TRUE, &windowSize);    
+		PERR( bSuccess, "SetConsoleWindowInfo" );
+	}
 }
 void Console::clearBuffer(WORD attribute)
 {
-    for (size_t i = 0; i < screenDataBufferSize; ++i)
+	for (size_t i = 0; i < m_u32ScreenDataBufferSize; ++i)
     {
-        screenDataBuffer[i].Char.AsciiChar = ' ';
-        screenDataBuffer[i].Attributes = attribute;
+		m_ciScreenDataBuffer[i].Char.AsciiChar = ' ';
+        m_ciScreenDataBuffer[i].Attributes = attribute;
     }
 }
 
 void Console::writeToBuffer(SHORT x, SHORT y, LPCSTR str, WORD attribute)
 {
-    size_t index = max(x + consoleSize.X * y, 0);
+	size_t index = max(x + m_cConsoleSize.X * y, 0);
     size_t length = strlen(str);
     // if the length of the string exceeds the buffer size, we chop it off at the end
-    length = min(screenDataBufferSize - index, length);
+	length = min(m_u32ScreenDataBufferSize - index, length);
     for (size_t i = 0; i < length; ++i)
     {
-        screenDataBuffer[index+i].Char.AsciiChar = str[i];
-        screenDataBuffer[index+i].Attributes = attribute;
+        m_ciScreenDataBuffer[index+i].Char.AsciiChar = str[i];
+        m_ciScreenDataBuffer[index+i].Attributes = attribute;
     }
 }
 
@@ -221,10 +244,10 @@ void Console::writeToBuffer(COORD c, std::string& s, WORD attribute)
 
 void Console::writeToBuffer(SHORT x, SHORT y, char ch, WORD attribute)
 {
-    if (x < 0 || x >= consoleSize.X || y < 0 || y >= consoleSize.Y)
+	if (x < 0 || x >= m_cConsoleSize.X || y < 0 || y >= m_cConsoleSize.Y)
         return;
-    screenDataBuffer[x + consoleSize.X * y].Char.AsciiChar = ch;
-    screenDataBuffer[x + consoleSize.X * y].Attributes = attribute;
+	m_ciScreenDataBuffer[x + m_cConsoleSize.X * y].Char.AsciiChar = ch;
+	m_ciScreenDataBuffer[x + m_cConsoleSize.X * y].Attributes = attribute;
 }
 
 void Console::writeToBuffer(COORD c, char ch, WORD attribute)
@@ -235,7 +258,7 @@ void Console::writeToBuffer(COORD c, char ch, WORD attribute)
 void Console::writeToConsole(const CHAR_INFO* lpBuffer)
 {
     COORD c = {0,0};
-    SMALL_RECT WriteRegion = {0, 0, consoleSize.X-1, consoleSize.Y-1};
+	SMALL_RECT WriteRegion = {0, 0, m_cConsoleSize.X-1, m_cConsoleSize.Y-1};
     // WriteConsoleOutputA for ASCII text
-    WriteConsoleOutputA(hScreenBuffer, lpBuffer, consoleSize, c, &WriteRegion);
+	WriteConsoleOutputA(m_hScreenBuffer, lpBuffer, m_cConsoleSize, c, &WriteRegion);
 }

@@ -52,7 +52,8 @@ class Console
         
         //===================================================================================================
         // The functions below sets up the screen buffer and writes to the console with this data
-        COORD getConsoleSize() { return consoleSize; };  // Gets the console size
+		COORD getConsoleSize() { return m_cConsoleSize; };  // Gets the console size
+		COORD getMaxConsoleSize() { return m_cMaxConsoleSize; };  // Gets the maximum allowable console size
         void setConsoleTitle(LPCSTR lpConsoleTitle); // sets the console title
         void setConsoleFont(SHORT width, SHORT height, LPCWSTR lpcwFontName); // sets the console font
         void flushBufferToConsole(); // writes the contents of the buffer to the screen
@@ -71,14 +72,15 @@ class Console
         // These are for your eyes only, don't bother to try to call the following functions.
     private:
         // Set a screen buffer for us to write to before flushing it to the screen
-        HANDLE hScreenBuffer;
-        CHAR_INFO* screenDataBuffer;
-        COORD consoleSize;
-        const UINT32 screenDataBufferSize;
+        HANDLE m_hScreenBuffer;
+        CHAR_INFO* m_ciScreenDataBuffer;
+        COORD m_cConsoleSize;
+		COORD m_cMaxConsoleSize; // maximum console size
+        const UINT32 m_u32ScreenDataBufferSize;
 
         // sets the size of the console
         // There is a certain size limitation to how big a console can be set.
-        void setConsoleSize(unsigned short consoleWidth, unsigned short consoleHeight);
+        void setConsoleWindowSize();
         // Initializes the console for this size
         void initConsole(COORD consoleSize, LPCSTR lpConsoleTitle = 0);
         void writeToConsole(const CHAR_INFO* lpBuffer);
