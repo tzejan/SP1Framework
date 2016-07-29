@@ -107,3 +107,11 @@ It could be due to too much flushing of the buffer to the screen. Make sure that
 **Unicode**  
 Right now, there is no support for unicode, but talk to me if you really need unicode, and we see if we can try out some stuff.
 
+Tips
+----
+- Do not write your code in the files provided. Write your code in your own files and call your functions.  
+- Each functionality should be in its own file, this will make it easier for you to merge changes later.  
+- Pass in the data you need into your function, do not use global variables unnecessarily.  
+- Talk to your teammates, keep them updated, and informed, especially if you have difficulties.  
+
+
