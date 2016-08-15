@@ -1,7 +1,7 @@
 SP1 Framework
 ============
 
-This framework is for helping students on the SP1 module to get started quickly on their projects. This framework only works on the Windows environment as it uses Windows API in some of its features. 
+This framework is to help students on the SP1 module to get started quickly on their projects. This framework only works on the Windows environment as it uses Windows API in some of its features. 
 
 Main Features
 -------------
@@ -109,9 +109,13 @@ Right now, there is no support for unicode, but talk to me if you really need un
 
 Tips
 ----
-- Do not write your code in the files provided. Write your code in your own files and call your functions.  
+- Do not write all your code in just the files provided. Create your files, write your code in your own files and call your functions.    
 - Each functionality should be in its own file, this will make it easier for you to merge changes later.  
 - Pass in the data you need into your function, do not use global variables unnecessarily.  
 - Talk to your teammates, keep them updated, and informed, especially if you have difficulties.  
+- Try not to have more than 1 person working on the same file, or even worse, same function.  
+- One commit for one functionality  
+- Mega commits are frowned upon. It might kill your project.  - 
+- Commit often, commit early  
 
 
