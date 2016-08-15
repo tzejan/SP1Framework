@@ -1,0 +1,22 @@
+        GGGGGGGGGGGGG                                                                               VVVVVVVV           VVVVVVVV
+     GGG::::::::::::G                                                                               V::::::V           V::::::V
+   GG:::::::::::::::G                                                                               V::::::V           V::::::V
+  G:::::GGGGGGGG::::G                                                                               V::::::V           V::::::V
+ G:::::G       GGGGGGrrrrr   rrrrrrrrr      ooooooooooo   uuuuuu    uuuuuu ppppp   ppppppppp         V:::::V           V:::::V 
+G:::::G              r::::rrr:::::::::r   oo:::::::::::oo u::::u    u::::u p::::ppp:::::::::p         V:::::V         V:::::V  
+G:::::G              r:::::::::::::::::r o:::::::::::::::ou::::u    u::::u p:::::::::::::::::p         V:::::V       V:::::V   
+G:::::G    GGGGGGGGGGrr::::::rrrrr::::::ro:::::ooooo:::::ou::::u    u::::u pp::::::ppppp::::::p         V:::::V     V:::::V    
+G:::::G    G::::::::G r:::::r     r:::::ro::::o     o::::ou::::u    u::::u  p:::::p     p:::::p          V:::::V   V:::::V     
+G:::::G    GGGGG::::G r:::::r     rrrrrrro::::o     o::::ou::::u    u::::u  p:::::p     p:::::p           V:::::V V:::::V      
+G:::::G        G::::G r:::::r            o::::o     o::::ou::::u    u::::u  p:::::p     p:::::p            V:::::V:::::V       
+ G:::::G       G::::G r:::::r            o::::o     o::::ou:::::uuuu:::::u  p:::::p    p::::::p             V:::::::::V        
+  G:::::GGGGGGGG::::G r:::::r            o:::::ooooo:::::ou:::::::::::::::uup:::::ppppp:::::::p              V:::::::V         
+   GG:::::::::::::::G r:::::r            o:::::::::::::::o u:::::::::::::::up::::::::::::::::p                V:::::V          
+     GGG::::::GGG:::G r:::::r             oo:::::::::::oo   uu::::::::uu:::up::::::::::::::pp                  V:::V           
+        GGGGGG   GGGG rrrrrrr               ooooooooooo       uuuuuuuu  uuuup::::::pppppppp                     VVV            
+                                                                            p:::::p                                            
+                                                                            p:::::p                                            
+                                                                           p:::::::p                                           
+                                                                           p:::::::p                                           
+                                                                           p:::::::p                                           
+                                                                           ppppppppp                                           

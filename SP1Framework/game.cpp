@@ -7,6 +7,10 @@
 #include <iomanip>
 #include <sstream>
 
+#include <fstream> //Test for file opening
+#include <string>
+using namespace std;
+
 double  g_dElapsedTime;
 double  g_dDeltaTime;
 bool    g_abKeyPressed[K_COUNT];
@@ -17,7 +21,7 @@ EGAMESTATES g_eGameState = S_SPLASHSCREEN;
 double  g_dBounceTime; // this is to prevent key bouncing, so we won't trigger keypresses more than once
 
 // Console object
-Console g_Console(80, 25, "SP1 Framework");
+Console g_Console(180, 50, "SP1 Framework");
 
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -130,7 +134,7 @@ void render()
 
 void splashScreenWait()    // waits for time to pass in splash screen
 {
-    if (g_dElapsedTime > 3.0) // wait for 3 seconds to switch to game mode, else do nothing
+    if (g_dElapsedTime > 10.0) // wait for 3 seconds to switch to game mode, else do nothing
         g_eGameState = S_GAME;
 }
 
@@ -194,12 +198,33 @@ void processUserInput()
 
 void clearScreen()
 {
-    // Clears the buffer with this colour attribute
-    g_Console.clearBuffer(0x1F);
+    // Clears the buffer
+    g_Console.clearBuffer(0000);
 }
 
 void renderSplashScreen()  // renders the splash screen
-{
+{	
+	//Display text only (From text file) (Group no file)
+	string line;
+	ifstream myfile("Maps_Text/Splash_Screen.txt");
+	COORD c = g_Console.getConsoleSize();
+	c.X = c.X / 5 - 9;
+	c.Y /= 3;
+	if (myfile.is_open())
+	{
+		while (getline(myfile, line))
+		{
+			g_Console.writeToBuffer(c, line);
+			c.Y++;
+		}
+		myfile.close();
+	}
+	else
+	{
+		cout << "file cannot be opened" << endl;
+	}
+
+	/*
     COORD c = g_Console.getConsoleSize();
     c.Y /= 3;
     c.X = c.X / 2 - 9;
@@ -210,6 +235,7 @@ void renderSplashScreen()  // renders the splash screen
     c.Y += 1;
     c.X = g_Console.getConsoleSize().X / 2 - 9;
     g_Console.writeToBuffer(c, "Press 'Esc' to quit", 0x09);
+	*/
 }
 
 void renderGame()
@@ -225,7 +251,7 @@ void renderMap()
         0x1A, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
         0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6
     };
-
+	
     COORD c;
     for (int i = 0; i < 12; ++i)
     {
@@ -244,7 +270,7 @@ void renderCharacter()
     {
         charColor = 0x0A;
     }
-    g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
+    g_Console.writeToBuffer(g_sChar.m_cLocation, (char)2, charColor);
 }
 
 void renderFramerate()
