@@ -25,7 +25,8 @@ bool newMap = true;
 static const int sizeWidth = 150;
 static const int sizeHeight = 150;
 char map[sizeHeight][sizeWidth] = {" ", };
-unsigned int mapSize = 0;
+unsigned int mapSizeWidth = 0;
+unsigned int mapSizeHeight = 0;
 
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -110,11 +111,14 @@ void update(double dt)
     switch (g_eGameState)
     {
         case S_SPLASHSCREEN : splashScreenWait(); // game logic for the splash screen
-							  mapSize = 63;
+							  mapSizeWidth = 63;
             break;
 		case S_MAIN_MENU: renderMainMenu();
+						  mapSizeWidth = 44;
 			break;
         case S_GAME: gameplay(); // gameplay logic when we are in the game
+					 mapSizeWidth = 15;
+					 mapSizeHeight = 5;
             break;
     }
 }
@@ -132,7 +136,6 @@ void render()
     switch (g_eGameState)
     {
         case S_SPLASHSCREEN: renderSplashScreen();
-							 mapSize = 63;
             break;
 		case S_MAIN_MENU: renderMainMenu();
 			break;
@@ -162,6 +165,7 @@ void gameplay()            // gameplay logic
 
 void moveCharacter()
 {
+	COORD c = g_Console.getConsoleSize();
     bool bSomethingHappened = false;
     if (g_dBounceTime > g_dElapsedTime)
         return;
@@ -170,27 +174,40 @@ void moveCharacter()
     // providing a beep sound whenver we shift the character
     if (g_abKeyPressed[K_UP] && g_sChar.m_cLocation.Y > 0)
     {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.Y--;
-        bSomethingHappened = true;
+		if (map[(g_sChar.m_cLocation.Y - 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] != '#')
+		{
+			//Beep(1440, 30);
+			g_sChar.m_cLocation.Y--;
+			bSomethingHappened = true;
+		}
+        
     }
     if (g_abKeyPressed[K_LEFT] && g_sChar.m_cLocation.X > 0)
     {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.X--;
-        bSomethingHappened = true;
+		if (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 1) - (90 - mapSizeWidth)] != '#')
+		{
+			//Beep(1440, 30);
+			g_sChar.m_cLocation.X--;
+			bSomethingHappened = true;
+		}
     }
     if (g_abKeyPressed[K_DOWN] && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
     {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.Y++;
-        bSomethingHappened = true;
+		if (map[(g_sChar.m_cLocation.Y + 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] != '#')
+		{
+			//Beep(1440, 30);
+			g_sChar.m_cLocation.Y++;
+			bSomethingHappened = true;
+		}
     }
     if (g_abKeyPressed[K_RIGHT] && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
     {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.X++;
-        bSomethingHappened = true;
+		if (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 1) - (90 - mapSizeWidth)] != '#')
+		{
+			//Beep(1440, 30);
+			g_sChar.m_cLocation.X++;
+			bSomethingHappened = true;
+		}
     }
     if (g_abKeyPressed[K_SPACE])
     {
@@ -227,7 +244,7 @@ void renderSplashScreen()  // renders the splash screen
 	}
 	//Prints the map info
 	COORD c = g_Console.getConsoleSize();
-	c.X = c.X / 2 - mapSize;
+	c.X = c.X / 2 - mapSizeWidth;
 	c.Y /= 3;
 	string line = " ";
 	for (int row = 0; row <= sizeHeight; row++)
@@ -259,6 +276,24 @@ void renderGame()
 
 void renderMap()
 {
+	//Sends map info to be stored (so file only needs to open once)
+	if (newMap)
+	{
+		newMap = false;
+		LoadMap("Maps_Text/Box_Test.txt");
+	}
+	//Prints the map info
+	COORD c = g_Console.getConsoleSize();
+	c.X = c.X / 2 - mapSizeWidth;
+	c.Y = c.Y / 2 - mapSizeHeight;
+	string line = " ";
+	for (int row = 0; row <= sizeHeight; row++)
+	{
+		line = map[row];
+		g_Console.writeToBuffer(c, line);
+		c.Y++;
+	}
+	/*
 	//Display text only (From text file) (Title screen: Title)
 	string line;
 	ifstream myfile("Maps_Text/Box_Test.txt");
@@ -278,7 +313,7 @@ void renderMap()
 	{
 		cout << "file cannot be opened" << endl;
 	}
-	/*
+	
     // Set up sample colours, and output shadings
     const WORD colors[] = {
         0x1A, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
@@ -381,7 +416,11 @@ void renderMainMenu()
 
 	//Start game if flag is true and hits enter key
 	if (g_abKeyPressed[K_ENTER])
+	{
+		newMap = true;
 		g_eGameState = S_GAME;// sets the state to start
+	}
+		
 
 	// quits the game if player hits the escape key
 	if (g_abKeyPressed[K_ESCAPE])
