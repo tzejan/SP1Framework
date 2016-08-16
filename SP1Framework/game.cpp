@@ -25,6 +25,7 @@ bool newMap = true;
 static const int sizeWidth = 150;
 static const int sizeHeight = 150;
 char map[sizeHeight][sizeWidth] = {" ", };
+unsigned int mapSize = 0;
 
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -109,6 +110,7 @@ void update(double dt)
     switch (g_eGameState)
     {
         case S_SPLASHSCREEN : splashScreenWait(); // game logic for the splash screen
+							  mapSize = 63;
             break;
 		case S_MAIN_MENU: renderMainMenu();
 			break;
@@ -126,10 +128,11 @@ void update(double dt)
 //--------------------------------------------------------------
 void render()
 {
-    clearScreen();      // clears the current screen and draw from scratch 
+    clearScreen();      // clears thes current screen and draw from scratch 
     switch (g_eGameState)
     {
         case S_SPLASHSCREEN: renderSplashScreen();
+							 mapSize = 63;
             break;
 		case S_MAIN_MENU: renderMainMenu();
 			break;
@@ -224,7 +227,7 @@ void renderSplashScreen()  // renders the splash screen
 	}
 	//Prints the map info
 	COORD c = g_Console.getConsoleSize();
-	c.X = c.X / 2 - 63;
+	c.X = c.X / 2 - mapSize;
 	c.Y /= 3;
 	string line = " ";
 	for (int row = 0; row <= sizeHeight; row++)
@@ -389,14 +392,9 @@ void LoadMap(string mapname)
 {
 	//Function use to store data from text file to 2d array
 	string line = " ";
-	//clear array
-	for (int row = 0; row < sizeHeight; row++)
-	{
-		for (int col = 0; col < sizeWidth; col++)
-		{
-			map[row][col] = '\0';
-		}
-	}
+	//clear 2d array
+	memset(map, '\0', sizeof(map[0][0]) * 150 * 150);
+
 	//store to array
 	ifstream myfile(mapname);
 	int row = 0;
