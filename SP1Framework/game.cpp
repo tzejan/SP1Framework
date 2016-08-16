@@ -80,6 +80,7 @@ void getInput( void )
     g_abKeyPressed[K_RIGHT]  = isKeyPressed(VK_RIGHT);
     g_abKeyPressed[K_SPACE]  = isKeyPressed(VK_SPACE);
     g_abKeyPressed[K_ESCAPE] = isKeyPressed(VK_ESCAPE);
+	g_abKeyPressed[K_ENTER]  = isKeyPressed(VK_RETURN);
 }
 
 //--------------------------------------------------------------
@@ -106,6 +107,8 @@ void update(double dt)
     {
         case S_SPLASHSCREEN : splashScreenWait(); // game logic for the splash screen
             break;
+		case S_MAIN_MENU: renderMainMenu();
+			break;
         case S_GAME: gameplay(); // gameplay logic when we are in the game
             break;
     }
@@ -125,6 +128,8 @@ void render()
     {
         case S_SPLASHSCREEN: renderSplashScreen();
             break;
+		case S_MAIN_MENU: renderMainMenu();
+			break;
         case S_GAME: renderGame();
             break;
     }
@@ -134,8 +139,8 @@ void render()
 
 void splashScreenWait()    // waits for time to pass in splash screen
 {
-    if (g_dElapsedTime > 10.0) // wait for 3 seconds to switch to game mode, else do nothing
-        g_eGameState = S_GAME;
+    if (g_dElapsedTime > 5.0) // wait for 3 seconds to switch to game mode, else do nothing
+		g_eGameState = S_MAIN_MENU;
 }
 
 void gameplay()            // gameplay logic
@@ -204,11 +209,11 @@ void clearScreen()
 
 void renderSplashScreen()  // renders the splash screen
 {	
-	//Display text only (From text file) (Group no file)
+	//Display text only (From text file) (Group no. file)
 	string line;
 	ifstream myfile("Maps_Text/Splash_Screen.txt");
 	COORD c = g_Console.getConsoleSize();
-	c.X = c.X / 5 - 9;
+	c.X = c.X / 2 - 63;
 	c.Y /= 3;
 	if (myfile.is_open())
 	{
@@ -295,4 +300,41 @@ void renderToScreen()
 {
     // Writes the buffer to the console, hence you will see what you have written
     g_Console.flushBufferToConsole();
+}
+
+void renderMainMenu()
+{
+	//Display text only (From text file) (Title screen: Title)
+	string line;
+	ifstream myfile("Maps_Text/Main_Menu.txt");
+	COORD c = g_Console.getConsoleSize();
+	c.X = c.X / 2 - 44;
+	c.Y /= 3;
+	if (myfile.is_open())
+	{
+		while (getline(myfile, line))
+		{
+			g_Console.writeToBuffer(c, line);
+			c.Y++;
+		}
+		myfile.close();
+	}
+	else
+	{
+		cout << "file cannot be opened" << endl;
+	}
+
+	c.X += 44-10;
+	c.Y++;
+	g_Console.writeToBuffer(c, "Press Enter To Start!", 0x0A);
+	c.Y++;
+	g_Console.writeToBuffer(c, "Press Escape To Exit!", 0x0C);
+
+	//Start game if flag is true and hits enter key
+	if (g_abKeyPressed[K_ENTER])
+		g_eGameState = S_GAME;// sets the state to start
+
+	// quits the game if player hits the escape key
+	if (g_abKeyPressed[K_ESCAPE])
+		g_bQuitGame = true;
 }
