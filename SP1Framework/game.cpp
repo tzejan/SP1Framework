@@ -7,10 +7,6 @@
 #include <iomanip>
 #include <sstream>
 
-#include <fstream> //Test for file opening
-#include <string>
-using namespace std;
-
 double  g_dElapsedTime;
 double  g_dDeltaTime;
 bool    g_abKeyPressed[K_COUNT];
@@ -22,6 +18,13 @@ double  g_dBounceTime; // this is to prevent key bouncing, so we won't trigger k
 
 // Console object
 Console g_Console(180, 50, "SP1 Framework");
+
+
+// Bool for loading text files once
+bool newMap = true;
+static const int sizeWidth = 150;
+static const int sizeHeight = 150;
+char map[sizeHeight][sizeWidth] = {" ", };
 
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -139,8 +142,12 @@ void render()
 
 void splashScreenWait()    // waits for time to pass in splash screen
 {
-    if (g_dElapsedTime > 5.0) // wait for 3 seconds to switch to game mode, else do nothing
+	if (g_dElapsedTime > 5.0) // wait for 3 seconds to switch to game mode, else do nothing
+	{
+		newMap = true;
 		g_eGameState = S_MAIN_MENU;
+	}
+		
 }
 
 void gameplay()            // gameplay logic
@@ -209,24 +216,22 @@ void clearScreen()
 
 void renderSplashScreen()  // renders the splash screen
 {	
-	//Display text only (From text file) (Group no. file)
-	string line;
-	ifstream myfile("Maps_Text/Splash_Screen.txt");
+	//Sends map info to be stored (so file only needs to open once)
+	if (newMap)
+	{
+		newMap = false;
+		LoadMap("Maps_Text/Splash_Screen.txt");
+	}
+	//Prints the map info
 	COORD c = g_Console.getConsoleSize();
 	c.X = c.X / 2 - 63;
 	c.Y /= 3;
-	if (myfile.is_open())
+	string line = " ";
+	for (int row = 0; row <= sizeHeight; row++)
 	{
-		while (getline(myfile, line))
-		{
-			g_Console.writeToBuffer(c, line);
-			c.Y++;
-		}
-		myfile.close();
-	}
-	else
-	{
-		cout << "file cannot be opened" << endl;
+		line = map[row];
+		g_Console.writeToBuffer(c, line);
+		c.Y++;
 	}
 
 	/*
@@ -251,6 +256,26 @@ void renderGame()
 
 void renderMap()
 {
+	//Display text only (From text file) (Title screen: Title)
+	string line;
+	ifstream myfile("Maps_Text/Box_Test.txt");
+	COORD c = g_Console.getConsoleSize();
+	c.X = c.X / 2 - 15;
+	c.Y = c.Y/2 - 5;
+	if (myfile.is_open())
+	{
+		while (getline(myfile, line))
+		{
+			g_Console.writeToBuffer(c, line);
+			c.Y++;
+		}
+		myfile.close();
+	}
+	else
+	{
+		cout << "file cannot be opened" << endl;
+	}
+	/*
     // Set up sample colours, and output shadings
     const WORD colors[] = {
         0x1A, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
@@ -265,6 +290,7 @@ void renderMap()
         colour(colors[i]);
         g_Console.writeToBuffer(c, " °±²Û", colors[i]);
     }
+	*/
 }
 
 void renderCharacter()
@@ -304,6 +330,26 @@ void renderToScreen()
 
 void renderMainMenu()
 {
+	if (newMap)
+	{
+		newMap = false;
+		LoadMap("Maps_Text/Main_Menu.txt");
+	}
+	//Prints the map info
+	COORD c = g_Console.getConsoleSize();
+	c.X = c.X / 2 - 44;
+	c.Y /= 3;
+	string line = " ";
+	for (int row = 0; row <= sizeHeight; row++)
+	{
+		if (map[row][0]!= '\0')
+		{
+			line = map[row];
+			g_Console.writeToBuffer(c, line);
+			c.Y++;
+		}
+	}
+	/*
 	//Display text only (From text file) (Title screen: Title)
 	string line;
 	ifstream myfile("Maps_Text/Main_Menu.txt");
@@ -323,7 +369,7 @@ void renderMainMenu()
 	{
 		cout << "file cannot be opened" << endl;
 	}
-
+	*/
 	c.X += 44-10;
 	c.Y++;
 	g_Console.writeToBuffer(c, "Press Enter To Start!", 0x0A);
@@ -337,4 +383,37 @@ void renderMainMenu()
 	// quits the game if player hits the escape key
 	if (g_abKeyPressed[K_ESCAPE])
 		g_bQuitGame = true;
+}
+
+void LoadMap(string mapname)
+{
+	//Function use to store data from text file to 2d array
+	string line = " ";
+	//clear array
+	for (int row = 0; row < sizeHeight; row++)
+	{
+		for (int col = 0; col < sizeWidth; col++)
+		{
+			map[row][col] = '\0';
+		}
+	}
+	//store to array
+	ifstream myfile(mapname);
+	int row = 0;
+	if (myfile.is_open())
+	{
+		while (getline(myfile, line))
+		{
+			for (int i = 0; i <= line.length(); i++)
+			{
+				map[row][i] = line[i];
+			}
+			row++;
+		}
+		myfile.close();
+	}
+	else
+	{
+		cout << "file cannot be opened" << endl;
+	}
 }
