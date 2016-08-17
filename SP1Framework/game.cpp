@@ -117,8 +117,8 @@ void update(double dt)
 						  mapSizeWidth = 44;
 			break;
         case S_GAME: gameplay(); // gameplay logic when we are in the game
-					 mapSizeWidth = 15;
-					 mapSizeHeight = 5;
+					 mapSizeWidth = 62;
+					 mapSizeHeight = 18;
             break;
     }
 }
@@ -280,12 +280,12 @@ void renderMap()
 	if (newMap)
 	{
 		newMap = false;
-		LoadMap("Maps_Text/Box_Test.txt");
+		LoadMap("Maps_Levels/TestMap3.txt");
 	}
 	//Prints the map info
 	COORD c = g_Console.getConsoleSize();
-	c.X = c.X / 2 - mapSizeWidth;
-	c.Y = c.Y / 2 - mapSizeHeight;
+	c.X = c.X / 2 - mapSizeWidth; 
+	c.Y = c.Y / 2 - mapSizeHeight; 
 	string line = " ";
 	for (int row = 0; row <= sizeHeight; row++)
 	{
