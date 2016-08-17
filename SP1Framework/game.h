@@ -5,6 +5,8 @@
 #include <fstream> //Test for file opening
 #include <string>
 using namespace std;
+#include "LoadMap.h"
+#include "PrintMap.h"
 
 extern CStopWatch g_swTimer;
 extern bool g_bQuitGame;
