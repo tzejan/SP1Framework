@@ -2,11 +2,14 @@
 #define _GAME_H
 
 #include "Framework\timer.h"
-#include <fstream> //Test for file opening
-#include <string>
-using namespace std;
+
+//For other cpp
 #include "LoadMap.h"
 #include "PrintMap.h"
+#include <fstream> //File opening
+#include <string>
+using namespace std;
+
 
 extern CStopWatch g_swTimer;
 extern bool g_bQuitGame;
@@ -59,6 +62,5 @@ void renderFramerate();     // renders debug information, frame rate, elapsed ti
 void renderToScreen();      // dump the contents of the buffer to the screen, one frame worth of game
 
 void renderMainMenu();      // renders the main menu
-void LoadMap(string mapname);				// Load map to 2d array once for every level or screen
 
 #endif // _GAME_H
