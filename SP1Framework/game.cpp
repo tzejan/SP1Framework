@@ -23,7 +23,7 @@ Console g_Console(180, 50, "SP1 Framework");
 // Bool for loading text files once
 bool newMap = true;
 static const int sizeWidth = 150;
-static const int sizeHeight = 150;
+static const int sizeHeight = 50;
 char map[sizeHeight][sizeWidth] = {" ", };
 unsigned int mapSizeWidth = 0;
 unsigned int mapSizeHeight = 0;
@@ -110,15 +110,14 @@ void update(double dt)
 
     switch (g_eGameState)
     {
-        case S_SPLASHSCREEN : splashScreenWait(); // game logic for the splash screen
-							  mapSizeWidth = 63;
+        case S_SPLASHSCREEN : 
+			splashScreenWait(); // game logic for the splash screen			 
             break;
-		case S_MAIN_MENU: renderMainMenu();
-						  mapSizeWidth = 44;
+		case S_MAIN_MENU: 
+			renderMainMenu();		  
 			break;
-        case S_GAME: gameplay(); // gameplay logic when we are in the game
-					 mapSizeWidth = 62;
-					 mapSizeHeight = 18;
+        case S_GAME: 
+			gameplay(); // gameplay logic when we are in the game
             break;
     }
 }
@@ -135,11 +134,18 @@ void render()
     clearScreen();      // clears thes current screen and draw from scratch 
     switch (g_eGameState)
     {
-        case S_SPLASHSCREEN: renderSplashScreen();
+        case S_SPLASHSCREEN: 
+			mapSizeWidth = 63;
+			renderSplashScreen();
             break;
-		case S_MAIN_MENU: renderMainMenu();
+		case S_MAIN_MENU: 
+			mapSizeWidth = 44;
+			renderMainMenu();
 			break;
-        case S_GAME: renderGame();
+        case S_GAME:
+			mapSizeWidth = 62;
+			mapSizeHeight = 18;
+			renderGame();
             break;
     }
     renderFramerate();  // renders debug information, frame rate, elapsed time, etc
@@ -287,7 +293,7 @@ void renderMap()
 	c.X = c.X / 2 - mapSizeWidth; 
 	c.Y = c.Y / 2 - mapSizeHeight; 
 	string line = " ";
-	for (int row = 0; row <= sizeHeight; row++)
+	for (int row = 0; row < sizeHeight; row++)
 	{
 		line = map[row];
 		g_Console.writeToBuffer(c, line);
@@ -432,7 +438,7 @@ void LoadMap(string mapname)
 	//Function use to store data from text file to 2d array
 	string line = " ";
 	//clear 2d array
-	memset(map, '\0', sizeof(map[0][0]) * 150 * 150);
+	memset(map, '\0', sizeof(map[0][0]) * 50 * 150);
 
 	//store to array
 	ifstream myfile(mapname);
