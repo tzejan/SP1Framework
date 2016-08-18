@@ -29,6 +29,8 @@ unsigned int mapSizeWidth = 0;
 unsigned int mapSizeHeight = 0;
 bool count = false;
 
+//next map
+int refreshMap = 2;
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
 //            Initialize variables, allocate memory, load data from file, etc. 
@@ -80,6 +82,8 @@ void shutdown( void )
 //--------------------------------------------------------------
 void getInput( void )
 {    
+	g_abKeyPressed[K_CTRL]    = isKeyPressed(VK_CONTROL);
+	g_abKeyPressed[K_ALT]    = isKeyPressed(VK_MENU);
     g_abKeyPressed[K_UP]     = isKeyPressed(VK_UP);
     g_abKeyPressed[K_DOWN]   = isKeyPressed(VK_DOWN);
     g_abKeyPressed[K_LEFT]   = isKeyPressed(VK_LEFT);
@@ -158,7 +162,7 @@ void render()
 
 void splashScreenWait()    // waits for time to pass in splash screen
 {
-	if (g_dElapsedTime > 5.0) // wait for 3 seconds to switch to game mode, else do nothing
+	if (g_dElapsedTime > 3.0) // wait for 3 seconds to switch to game mode, else do nothing
 	{
 		newMap = true;
 		g_eGameState = S_MAIN_MENU;
@@ -202,8 +206,6 @@ void moveCharacter()
 						g_sChar.m_cLocation.Y--;
 						bSomethingHappened = true;
 					}
-
-
 				}
 				else if ((map[(g_sChar.m_cLocation.Y - 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)254) && (map[(g_sChar.m_cLocation.Y - 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)219))
 				{
@@ -356,6 +358,17 @@ void processUserInput()
     // quits the game if player hits the escape key
     if (g_abKeyPressed[K_ESCAPE])
         g_bQuitGame = true;  
+	if (g_abKeyPressed[K_ALT])
+	{
+		refreshMap++;
+		newMap = true;
+	}
+	if (g_abKeyPressed[K_CTRL])
+	{
+		refreshMap--;
+		newMap = true;
+	}
+		
 }
 
 void clearScreen()
@@ -388,10 +401,39 @@ void renderMap()
 	if (newMap)
 	{
 		newMap = false;
-		loadMap(2);
-		g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 + 58;
-		g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 - 16;
+		switch (refreshMap)
+		{
+		case 2: //Tutorial
+			loadMap(refreshMap);
+			g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 - 59;
+			g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 - 13;
+			break;
+
+
+		case 3: //Levers
+			loadMap(refreshMap);
+			g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 - 59;
+			g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 - 10;
+			break;
+
+		case 4: //Questions
+			loadMap(refreshMap);
+			g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 + 55;
+			g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 + 14;
+			break;
+		case 5: //Boxes
+			loadMap(refreshMap);
+			g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 + 58;
+			g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 - 16;
+			break;
+		case 6: //Teleportals 
+			loadMap(refreshMap);
+			g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 + 56;
+			g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 + 16;
+			break;
+		}
 	}
+
 	//Print map in cpp functions
 	printMap(mapSizeWidth, mapSizeHeight, false);
 }

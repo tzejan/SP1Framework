@@ -12,7 +12,19 @@ void loadMap(int level)
 			mapname = "Maps_Text/Main_Menu.txt";
 			break;
 		case 2:
+			mapname = "Maps_Levels/Tutorial.txt"; 
+			break;
+		case 3: 
+			mapname = "Maps_Levels/Levers.txt"; 
+			break;
+		case 4: 
+			mapname = "Maps_Levels/Questions.txt";
+			break;
+		case 5:
 			mapname = "Maps_Levels/Boxes.txt";
+			break;
+		case 6:
+			mapname = "Maps_Levels/Teleportal.txt";
 			break;
 	}
 	
