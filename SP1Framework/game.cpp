@@ -31,6 +31,9 @@ bool count = false;
 
 //next map
 int refreshMap = 1;
+
+//array for portals :D
+int portalPos[26] = { 0, };
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
 //            Initialize variables, allocate memory, load data from file, etc. 
@@ -127,6 +130,9 @@ void update(double dt)
 		case S_GAME_1:
 			gameplay(); // gameplay logic when we are in the game
 			break;
+		case S_GAME_4:
+			gameplay(); // gameplay logic when we are in the game
+			break;
     }
 }
 //--------------------------------------------------------------
@@ -163,6 +169,12 @@ void render()
 			mapSizeWidth = 124 / 2;
 			mapSizeHeight = 36 / 2;
 			refreshMap = 1;
+			renderGame();
+			break;
+		case S_GAME_4:
+			mapSizeWidth = 124 / 2;
+			mapSizeHeight = 34 / 2;
+			refreshMap = 4;
 			renderGame();
 			break;
     }
@@ -374,18 +386,19 @@ void processUserInput()
 		{
 			case 0:
 				g_eGameState = S_GAME_1; //Loads level 1
+				_sleep(250);
 				break;
 			case 1:
-				g_eGameState = S_GAME_1; //Loads level 2 (Currently in place holder mode)
+				g_eGameState = S_GAME_4; //Loads level 2 (Currently in place holder mode)
+				_sleep(250);
 				break;
 			case 2:
 				g_eGameState = S_GAME_1; //Loads level 3 (Currently in place holder mode)
+				_sleep(250);
 				break;
 			case 3:
 				g_eGameState = S_GAME_1; //Loads level 4 (Currently in place holder mode)
-				break;
-			case 4:
-				g_eGameState = S_GAME_1; //Loads level 5 (Currently in place holder mode)
+				_sleep(250);
 				break;
 		}
 		newMap = true;
@@ -396,18 +409,19 @@ void processUserInput()
 		{
 		case 1:
 			g_eGameState = S_GAME; //Loads level Tutorial
+			_sleep(250);
 			break;
 		case 2:
 			g_eGameState = S_GAME; //Loads level 1 (Currently in place holder mode)
+			_sleep(250);
 			break;
 		case 3:
 			g_eGameState = S_GAME; //Loads level 2 (Currently in place holder mode)
+			_sleep(250);
 			break;
 		case 4:
 			g_eGameState = S_GAME; //Loads level 3 (Currently in place holder mode)
-			break;
-		case 5:
-			g_eGameState = S_GAME; //Loads level 4 (Currently in place holder mode)
+			_sleep(250);
 			break;
 		}
 		newMap = true;
@@ -464,9 +478,9 @@ void renderMap()
 			g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 + 58;
 			g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 - 16;
 			break;
-		case 4: //Teleportals 
+		case 4: //Teleportals (Perfected spawn)
 			g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 + 56;
-			g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 + 16;
+			g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 + 14;
 			break;
 		default:
 			cout << "THIS IS AN ERROR MESSAGE FOR BEING OUT OF SIZE!!!";

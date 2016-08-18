@@ -38,6 +38,9 @@ enum EGAMESTATES
 	S_MAIN_MENU,
     S_GAME,			//Level tutorial (Currently placeholder will be replaced to S_GAME_TUT)
 	S_GAME_1,		//Level 1
+	S_GAME_2,		//Level 2
+	S_GAME_3,		//Level 3
+	S_GAME_4,		//Level 4
     S_COUNT
 };
 
@@ -46,6 +49,13 @@ struct SGameChar
 {
     COORD m_cLocation;
     bool  m_bActive;
+};
+
+struct teleporter
+{
+	char character;
+	int Portal_1;
+	int Portal_2;
 };
 
 void init        ( void );      // initialize your variables, allocate memory, etc

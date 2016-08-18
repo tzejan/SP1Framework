@@ -31,8 +31,9 @@ void loadMap(int level)
 	
 	//Function use to store data from text file to 2d array
 	string line = " ";
-	//clear 2d array
+	//clear 2d array / portal locations
 	memset(map, '\0', sizeof(map[0][0]) * 50 * 150);
+	memset(portalPos, '\0', sizeof(portalPos[0]) * 26);
 
 	//store to array
 	ifstream myfile(mapname);
@@ -41,6 +42,16 @@ void loadMap(int level)
 	{
 		while (getline(myfile, line))
 		{
+
+			if (level == 6)
+			{
+				//Write code to start storing coordinates here
+				//Store all teleport location here
+				//Store location in array or struct
+				//Run a double for loop if possible _Assignemt 2 common letter 
+			}
+			
+
 			for (int i = 0; i <= line.length(); i++)
 			{
 				if (line[i] == '#')
@@ -49,6 +60,10 @@ void loadMap(int level)
 					map[row][i] = (char)186;
 				else if (line[i] == 'B' && level == 5) //Level control printing
 					map[row][i] = (char)254;
+				else if ((line[i] >= 65 && line[i] <= 90) && (line[i] != 'E') && level == 6) //Level control printing
+				{
+					map[row][i] = (char)233; //Place holder currently
+				}
 				else
 					map[row][i] = line[i]; //Print the rest as normal
 			}
