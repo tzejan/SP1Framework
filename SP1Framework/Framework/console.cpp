@@ -217,12 +217,12 @@ void Console::clearBuffer(WORD attribute)
     }
 }
 
-void Console::writeToBuffer(SHORT x, SHORT y, LPCSTR str, WORD attribute)
+void Console::writeToBuffer(SHORT x, SHORT y, LPCSTR str, WORD attribute, SHORT length)
 {
 	size_t index = max(x + m_cConsoleSize.X * y, 0);
     size_t str_idx = 0;
     // if the length of the string exceeds the buffer size, we chop it off at the end
-    while (index < m_u32ScreenDataBufferSize && str[str_idx] != 0)
+    while (index < m_u32ScreenDataBufferSize && str[str_idx] != 0 && str_idx < length)
     {
         m_ciScreenDataBuffer[index].Char.AsciiChar = str[str_idx];
         m_ciScreenDataBuffer[index].Attributes = attribute;
@@ -231,19 +231,19 @@ void Console::writeToBuffer(SHORT x, SHORT y, LPCSTR str, WORD attribute)
     }
 }
 
-void Console::writeToBuffer(COORD c, LPCSTR str, WORD attribute)
+void Console::writeToBuffer(COORD c, LPCSTR str, WORD attribute, SHORT length)
 {    
-    writeToBuffer(c.X, c.Y, str, attribute);
+    writeToBuffer(c.X, c.Y, str, attribute, length);
 }
 
-void Console::writeToBuffer(SHORT x, SHORT y, std::string& s, WORD attribute)
+void Console::writeToBuffer(SHORT x, SHORT y, std::string& s, WORD attribute, SHORT length)
 {
-    writeToBuffer(x, y, s.c_str(), attribute);
+    writeToBuffer(x, y, s.c_str(), attribute, length);
 }
 
-void Console::writeToBuffer(COORD c, std::string& s, WORD attribute)
+void Console::writeToBuffer(COORD c, std::string& s, WORD attribute, SHORT length)
 {
-    writeToBuffer(c.X, c.Y, s.c_str(), attribute);
+    writeToBuffer(c.X, c.Y, s.c_str(), attribute, length);
 }
 
 void Console::writeToBuffer(SHORT x, SHORT y, char ch, WORD attribute)

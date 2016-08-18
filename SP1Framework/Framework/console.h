@@ -61,11 +61,11 @@ class Console
 
         // writeToBuffer takes in a c-style string, c++ string, or a char
         // You will need to provide the coordinate to place the leftmost character
-        void writeToBuffer(COORD c, LPCSTR str, WORD attribute = 0x0F);
-        void writeToBuffer(COORD c, std::string& s, WORD attribute = 0x0F);
+        void writeToBuffer(COORD c, LPCSTR str, WORD attribute = 0x0F, SHORT length = 32767);
+        void writeToBuffer(COORD c, std::string& s, WORD attribute = 0x0F, SHORT length = 32767);
         void writeToBuffer(COORD c, char ch, WORD attribute = 0x0F);
-        void writeToBuffer(SHORT x, SHORT y, LPCSTR str, WORD attribute = 0x0F);
-        void writeToBuffer(SHORT x, SHORT y, std::string& s, WORD attribute = 0x0F);
+        void writeToBuffer(SHORT x, SHORT y, LPCSTR str, WORD attribute = 0x0F, SHORT length = 32767);
+        void writeToBuffer(SHORT x, SHORT y, std::string& s, WORD attribute = 0x0F, SHORT length = 32767);
         void writeToBuffer(SHORT x, SHORT y, char ch, WORD attribute = 0x0F);
         
         //===================================================================================================
