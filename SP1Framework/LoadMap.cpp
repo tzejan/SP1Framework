@@ -32,9 +32,9 @@ void loadMap(int level)
 			for (int i = 0; i <= line.length(); i++)
 			{
 				if (line[i] == '#')
-					map[row][i] = (char)219;
+					map[row][i] = (char)219; //Print walls instead of #
 				else
-					map[row][i] = line[i];
+					map[row][i] = line[i]; //Print the rest as normal
 			}
 			row++;
 		}
