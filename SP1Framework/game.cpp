@@ -28,6 +28,7 @@ char map[sizeHeight][sizeWidth] = {" ", };
 unsigned int mapSizeWidth = 0;
 unsigned int mapSizeHeight = 0;
 bool count = false;
+int test = 0; //Delete this
 
 //next map
 int refreshMap = 2;
