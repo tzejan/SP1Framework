@@ -23,7 +23,7 @@ Console g_Console(180, 50, "SP1 Framework");
 // Bool for loading text files once
 bool newMap = true;
 static const int sizeWidth = 150;
-static const int sizeHeight = 50;
+static const int sizeHeight = 150;
 char map[sizeHeight][sizeWidth] = {" ", };
 unsigned int mapSizeWidth = 0;
 unsigned int mapSizeHeight = 0;
@@ -44,8 +44,8 @@ void init( void )
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
 
-    g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
-    g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
+	g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2; //+ 58 for position 
+    g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2; //- 16 for position 
     g_sChar.m_bActive = true;
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
@@ -111,12 +111,16 @@ void update(double dt)
     switch (g_eGameState)
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         case S_SPLASHSCREEN : 
 			splashScreenWait(); // game logic for the splash screen			 
+=======
+        case S_SPLASHSCREEN : splashScreenWait(); // game logic for the splash screen
+>>>>>>> origin/master
             break;
-		case S_MAIN_MENU: 
-			renderMainMenu();		  
+		case S_MAIN_MENU: renderMainMenu();
 			break;
+<<<<<<< HEAD
         case S_GAME: 
 			gameplay(); // gameplay logic when we are in the game
 =======
@@ -130,6 +134,9 @@ void update(double dt)
 					 mapSizeWidth = 62;
 					 mapSizeHeight = 18;
 >>>>>>> parent of 1812f47... Boxes map: added pushing and door disappearing. Left with door blockage.
+=======
+        case S_GAME: gameplay(); // gameplay logic when we are in the game
+>>>>>>> origin/master
             break;
     }
 }
@@ -143,23 +150,21 @@ void update(double dt)
 //--------------------------------------------------------------
 void render()
 {
-    clearScreen();      // clears thes current screen and draw from scratch (input mapping's max length and height)
+    clearScreen();      // clears thes current screen and draw from scratch 
     switch (g_eGameState)
     {
 <<<<<<< HEAD
         case S_SPLASHSCREEN: 
-			mapSizeWidth = 127/2;
-			mapSizeHeight = 22/2;
+			mapSizeWidth = 63;
 			renderSplashScreen();
             break;
 		case S_MAIN_MENU: 
-			mapSizeWidth = 88/2;
-			mapSizeHeight = 9/2;
+			mapSizeWidth = 44;
 			renderMainMenu();
 			break;
-        case S_GAME:
-			mapSizeWidth = 124/2;
-			mapSizeHeight = 36/2;
+        case S_GAME: 
+			mapSizeWidth = 62;
+			mapSizeHeight = 18;
 			renderGame();
 =======
         case S_SPLASHSCREEN: renderSplashScreen();
@@ -202,39 +207,159 @@ void moveCharacter()
     // providing a beep sound whenver we shift the character
     if (g_abKeyPressed[K_UP] && g_sChar.m_cLocation.Y > 0)
     {
-		if (map[(g_sChar.m_cLocation.Y - 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] != (char)219)
+		if (map[(g_sChar.m_cLocation.Y - 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] != '#') 
 		{
+			if (map[(g_sChar.m_cLocation.Y - 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] != 'D')
+			{
+				if ((map[(g_sChar.m_cLocation.Y - 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == 'B') && (map[(g_sChar.m_cLocation.Y - 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] != '#'))
+				{
+					if (map[(g_sChar.m_cLocation.Y - 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == 'D')
+					{
+						g_sChar.m_cLocation.Y = g_sChar.m_cLocation.Y;
+						bSomethingHappened = true;
+					}
+					else
+					{
+						map[(g_sChar.m_cLocation.Y - 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] = ' ';
+						map[(g_sChar.m_cLocation.Y - 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] = 'B';
+						g_sChar.m_cLocation.Y--;
+						bSomethingHappened = true;
+					}
+				
+
+				}
+				else if ((map[(g_sChar.m_cLocation.Y - 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == 'B') && (map[(g_sChar.m_cLocation.Y - 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == '#'))
+				{
+					g_sChar.m_cLocation.Y = g_sChar.m_cLocation.Y;
+					bSomethingHappened = true;
+				}
+				else
+				{
+					g_sChar.m_cLocation.Y--;
+					bSomethingHappened = true;
+				}
+			}
+	
 			//Beep(1440, 30);
-			g_sChar.m_cLocation.Y--;
-			bSomethingHappened = true;
+			//g_sChar.m_cLocation.Y--;
+			//bSomethingHappened = true;
 		}
         
     }
     if (g_abKeyPressed[K_LEFT] && g_sChar.m_cLocation.X > 0)
     {
-		if (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 1) - (90 - mapSizeWidth)] != (char)219)
+		if (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 1) - (90 - mapSizeWidth)] != '#')
 		{
+			if (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 1) - (90 - mapSizeWidth)] != 'D')
+			{
+				if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 1) - (90 - mapSizeWidth)] == 'B') && (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 2) - (90 - mapSizeWidth)] != '#'))
+				{
+					if (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 2) - (90 - mapSizeWidth)] == 'D')
+					{
+						g_sChar.m_cLocation.X = g_sChar.m_cLocation.X;
+						bSomethingHappened = true;
+					}
+					else
+					{
+						map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 1) - (90 - mapSizeWidth)] = ' ';
+						map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 2) - (90 - mapSizeWidth)] = 'B';
+						g_sChar.m_cLocation.X--;
+						bSomethingHappened = true;
+					}
+	
+				}
+				else if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 1) - (90 - mapSizeWidth)] == 'B') && (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 2) - (90 - mapSizeWidth)] == '#'))
+				{
+					g_sChar.m_cLocation.X = g_sChar.m_cLocation.X;
+					bSomethingHappened = true;
+				}
+				else
+				{
+					g_sChar.m_cLocation.X--;
+					bSomethingHappened = true;
+				}
+			}
+	
 			//Beep(1440, 30);
-			g_sChar.m_cLocation.X--;
-			bSomethingHappened = true;
+			//g_sChar.m_cLocation.X--;
+			//bSomethingHappened = true;
 		}
     }
     if (g_abKeyPressed[K_DOWN] && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
     {
-		if (map[(g_sChar.m_cLocation.Y + 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] != (char)219)
+		if (map[(g_sChar.m_cLocation.Y + 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] != '#')
 		{
+			if (map[(g_sChar.m_cLocation.Y + 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] != 'D')
+			{
+				if ((map[(g_sChar.m_cLocation.Y + 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == 'B') && (map[(g_sChar.m_cLocation.Y + 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] != '#'))
+				{
+					if (map[(g_sChar.m_cLocation.Y + 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == 'D')
+					{
+						g_sChar.m_cLocation.Y = g_sChar.m_cLocation.Y;
+						bSomethingHappened = true;
+					}
+					else
+					{
+						map[(g_sChar.m_cLocation.Y + 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] = ' ';
+						map[(g_sChar.m_cLocation.Y + 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] = 'B';
+						g_sChar.m_cLocation.Y++;
+						bSomethingHappened = true;
+					}
+		
+				}
+				else if ((map[(g_sChar.m_cLocation.Y + 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == 'B') && (map[(g_sChar.m_cLocation.Y + 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == '#'))
+				{
+					g_sChar.m_cLocation.Y = g_sChar.m_cLocation.Y;
+					bSomethingHappened = true;
+				}
+				else
+				{
+					g_sChar.m_cLocation.Y++;
+					bSomethingHappened = true;
+				}
+			}
+
 			//Beep(1440, 30);
-			g_sChar.m_cLocation.Y++;
-			bSomethingHappened = true;
+			//g_sChar.m_cLocation.Y++;
+			//bSomethingHappened = true;
 		}
     }
     if (g_abKeyPressed[K_RIGHT] && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
     {
-		if (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 1) - (90 - mapSizeWidth)] != (char)219)
+		if (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 1) - (90 - mapSizeWidth)] != '#')
 		{
+
+			if (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 1) - (90 - mapSizeWidth)] != 'D')
+			{
+				if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 1) - (90 - mapSizeWidth)] == 'B') && (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 2) - (90 - mapSizeWidth)] != '#')) //if there is a block and nothing is blocking it
+				{
+					if (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 2) - (90 - mapSizeWidth)] == 'D')
+					{
+						g_sChar.m_cLocation.X = g_sChar.m_cLocation.X;
+						bSomethingHappened = true;
+					}
+					else
+					{
+						map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 1) - (90 - mapSizeWidth)] = ' ';
+						map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 2) - (90 - mapSizeWidth)] = 'B';
+						g_sChar.m_cLocation.X++;
+						bSomethingHappened = true;
+					}
+				}
+				else if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 1) - (90 - mapSizeWidth)] == 'B') && (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 2) - (90 - mapSizeWidth)] == '#')) //if something is blocking the block 
+				{
+					g_sChar.m_cLocation.X = g_sChar.m_cLocation.X;
+					bSomethingHappened = true;
+				}
+				else
+				{
+					g_sChar.m_cLocation.X++;
+					bSomethingHappened = true;
+				}
+			}
 			//Beep(1440, 30);
-			g_sChar.m_cLocation.X++;
-			bSomethingHappened = true;
+			//g_sChar.m_cLocation.X++;
+			//bSomethingHappened = true;
 		}
     }
     if (g_abKeyPressed[K_SPACE])
@@ -248,6 +373,61 @@ void moveCharacter()
         // set the bounce time to some time in the future to prevent accidental triggers
         g_dBounceTime = g_dElapsedTime + 0.125; // 125ms should be enough
     }
+
+	//Doors:
+	if (map[6][106] == 'B') //Door1 
+	{
+		map[5][82] = ' '; 
+		map[5][83] = ' ';
+	}
+
+    if (map[11][119] == 'B') //Door2
+	{
+	map[24][96] = ' '; 
+	map[24][97] = ' ';
+	}
+
+	if (map[21][85] == 'B') //Door3
+	{
+		map[21][86] = ' '; 
+		map[4][57] = ' ';
+		map[4][58] = ' ';
+	}
+
+	if (map[9][69] == 'B') //Door4
+	{
+		map[9][70] = ' ';
+		map[14][80] = ' ';
+		map[14][81] = ' ';
+	}
+
+	if (map[14][22] == 'B') //Door5
+	{
+		map[1][30] = ' ';
+		map[1][31] = ' ';
+	}
+
+	if (map[1][12] == 'B') //Door6
+	{
+		map[5][12] = ' ';
+		map[5][13] = ' ';
+	}
+	
+	if (map[11][18] == 'B') //Door7
+	{
+		map[11][19] = ' ';
+		map[21][7] = ' ';
+		map[21][8] = ' ';
+	}
+
+	if (map[31][15] == 'B') //Door8
+	{
+		map[31][16] = ' ';
+		map[34][29] = ' ';
+		map[34][30] = ' ';
+	}
+
+	
 }
 void processUserInput()
 {
@@ -268,10 +448,32 @@ void renderSplashScreen()  // renders the splash screen
 	if (newMap)
 	{
 		newMap = false;
-		loadMap(0);
+		LoadMap("Maps_Text/Splash_Screen.txt");
 	}
-	//Print map in cpp functions
-	printMap(mapSizeWidth, mapSizeHeight, false);
+	//Prints the map info
+	COORD c = g_Console.getConsoleSize();
+	c.X = c.X / 2 - mapSizeWidth;
+	c.Y /= 3;
+	string line = " ";
+	for (int row = 0; row <= sizeHeight; row++)
+	{
+		line = map[row];
+		g_Console.writeToBuffer(c, line);
+		c.Y++;
+	}
+
+	/*
+    COORD c = g_Console.getConsoleSize();
+    c.Y /= 3;
+    c.X = c.X / 2 - 9;
+    g_Console.writeToBuffer(c, "A game in 3 seconds", 0x03);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 2 - 20;
+    g_Console.writeToBuffer(c, "Press <Space> to change character colour", 0x09);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 2 - 9;
+    g_Console.writeToBuffer(c, "Press 'Esc' to quit", 0x09);
+	*/
 }
 
 void renderGame()
@@ -286,6 +488,7 @@ void renderMap()
 	if (newMap)
 	{
 		newMap = false;
+<<<<<<< HEAD
 <<<<<<< HEAD
 		loadMap(2);
 =======
@@ -318,9 +521,57 @@ void renderMap()
 		}
 		myfile.close();
 >>>>>>> parent of 1812f47... Boxes map: added pushing and door disappearing. Left with door blockage.
+=======
+		LoadMap("Maps_Levels/TestMap3.txt");
+>>>>>>> origin/master
 	}
-	//Print map in cpp functions
-	printMap(mapSizeWidth, mapSizeHeight, false);
+	//Prints the map info
+	COORD c = g_Console.getConsoleSize();
+	c.X = c.X / 2 - mapSizeWidth; 
+	c.Y = c.Y / 2 - mapSizeHeight; 
+	string line = " ";
+	for (int row = 0; row <= sizeHeight ; row++) 
+	{
+		line = map[row];
+		g_Console.writeToBuffer(c, line);
+		c.Y++;
+	}
+	/*
+	//Display text only (From text file) (Title screen: Title)
+	string line;
+	ifstream myfile("Maps_Text/Box_Test.txt");
+	COORD c = g_Console.getConsoleSize();
+	c.X = c.X / 2 - 15;
+	c.Y = c.Y/2 - 5;
+	if (myfile.is_open())
+	{
+		while (getline(myfile, line))
+		{
+			g_Console.writeToBuffer(c, line);
+			c.Y++;
+		}
+		myfile.close();
+	}
+	else
+	{
+		cout << "file cannot be opened" << endl;
+	}
+	
+    // Set up sample colours, and output shadings
+    const WORD colors[] = {
+        0x1A, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
+        0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6
+    };
+	
+    COORD c;
+    for (int i = 0; i < 12; ++i)
+    {
+        c.X = 5 * i;
+        c.Y = i + 1;
+        colour(colors[i]);
+        g_Console.writeToBuffer(c, " °±²Û", colors[i]);
+    }
+	*/
 }
 
 void renderCharacter()
@@ -331,7 +582,7 @@ void renderCharacter()
     {
         charColor = 0x0A;
     }
-    g_Console.writeToBuffer(g_sChar.m_cLocation, (char)234, charColor);
+    g_Console.writeToBuffer(g_sChar.m_cLocation, (char)2, charColor);
 }
 
 void renderFramerate()
@@ -350,7 +601,7 @@ void renderFramerate()
     ss << g_dElapsedTime << "secs";
     c.X = 0;
     c.Y = 0;
-    g_Console.writeToBuffer(c, ss.str());
+    g_Console.writeToBuffer(c, ss.str(), 0x59);
 }
 void renderToScreen()
 {
@@ -363,10 +614,48 @@ void renderMainMenu()
 	if (newMap)
 	{
 		newMap = false;
-		loadMap(1);
+		LoadMap("Maps_Text/Main_Menu.txt");
 	}
-	//Print map in cpp functions
-	printMap(mapSizeWidth, mapSizeHeight, true);
+	//Prints the map info
+	COORD c = g_Console.getConsoleSize();
+	c.X = c.X / 2 - 44;
+	c.Y /= 3;
+	string line = " ";
+	for (int row = 0; row <= sizeHeight; row++)
+	{
+		if (map[row][0]!= '\0')
+		{
+			line = map[row];
+			g_Console.writeToBuffer(c, line);
+			c.Y++;
+		}
+	}
+	/*
+	//Display text only (From text file) (Title screen: Title)
+	string line;
+	ifstream myfile("Maps_Text/Main_Menu.txt");
+	COORD c = g_Console.getConsoleSize();
+	c.X = c.X / 2 - 44;
+	c.Y /= 3;
+	if (myfile.is_open())
+	{
+		while (getline(myfile, line))
+		{
+			g_Console.writeToBuffer(c, line);
+			c.Y++;
+		}
+		myfile.close();
+	}
+	else
+	{
+		cout << "file cannot be opened" << endl;
+	}
+	*/
+	c.X += 44-10;
+	c.Y++;
+	g_Console.writeToBuffer(c, "Press Enter To Start!", 0x0A);
+	c.Y++;
+	g_Console.writeToBuffer(c, "Press Escape To Exit!", 0x0C);
 
 	//Start game if flag is true and hits enter key
 	if (g_abKeyPressed[K_ENTER])
@@ -374,8 +663,37 @@ void renderMainMenu()
 		newMap = true;
 		g_eGameState = S_GAME;// sets the state to start
 	}
-	
+		
+
 	// quits the game if player hits the escape key
 	if (g_abKeyPressed[K_ESCAPE])
 		g_bQuitGame = true;
+}
+
+void LoadMap(string mapname)
+{
+	//Function use to store data from text file to 2d array
+	string line = " ";
+	//clear 2d array
+	memset(map, '\0', sizeof(map[0][0]) * 150 * 150);
+
+	//store to array
+	ifstream myfile(mapname);
+	int row = 0;
+	if (myfile.is_open())
+	{
+		while (getline(myfile, line))
+		{
+			for (int i = 0; i <= line.length(); i++)
+			{
+				map[row][i] = line[i];
+			}
+			row++;
+		}
+		myfile.close();
+	}
+	else
+	{
+		cout << "file cannot be opened" << endl;
+	}
 }
