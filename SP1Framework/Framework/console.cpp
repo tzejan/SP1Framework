@@ -38,7 +38,7 @@ void colour(WORD wAttrib)
 }
 
 //--------------------------------------------------------------
-// Purpose  : Clear Sreen
+// Purpose  : Clear Screen
 // Input    : Console handler
 // Output   : Nil
 //--------------------------------------------------------------
@@ -139,7 +139,10 @@ void Console::initConsole(COORD consoleSize, LPCSTR lpConsoleTitle)
 
 	// Sets the console size
 	setConsoleWindowSize();
-    SetConsoleActiveScreenBuffer(m_hScreenBuffer); 	
+    SetConsoleActiveScreenBuffer(m_hScreenBuffer);
+    m_topleft_c = { 0, 0 };
+    m_writeRegion = { 0, 0, m_cConsoleSize.X - 1, m_cConsoleSize.Y - 1 };
+
 }
 
 void Console::setConsoleTitle(LPCSTR lpConsoleTitle)
@@ -207,23 +210,24 @@ void Console::setConsoleWindowSize()
 }
 void Console::clearBuffer(WORD attribute)
 {
+    CHAR_INFO clear = { ' ', attribute };
 	for (size_t i = 0; i < m_u32ScreenDataBufferSize; ++i)
     {
-		m_ciScreenDataBuffer[i].Char.AsciiChar = ' ';
-        m_ciScreenDataBuffer[i].Attributes = attribute;
+        m_ciScreenDataBuffer[i] = clear;
     }
 }
 
 void Console::writeToBuffer(SHORT x, SHORT y, LPCSTR str, WORD attribute)
 {
 	size_t index = max(x + m_cConsoleSize.X * y, 0);
-    size_t length = strlen(str);
+    size_t str_idx = 0;
     // if the length of the string exceeds the buffer size, we chop it off at the end
-	length = min(m_u32ScreenDataBufferSize - index, length);
-    for (size_t i = 0; i < length; ++i)
+    while (index < m_u32ScreenDataBufferSize && str[str_idx] != 0)
     {
-        m_ciScreenDataBuffer[index+i].Char.AsciiChar = str[i];
-        m_ciScreenDataBuffer[index+i].Attributes = attribute;
+        m_ciScreenDataBuffer[index].Char.AsciiChar = str[str_idx];
+        m_ciScreenDataBuffer[index].Attributes = attribute;
+        ++index;
+        ++str_idx;
     }
 }
 
@@ -256,9 +260,7 @@ void Console::writeToBuffer(COORD c, char ch, WORD attribute)
 }
 
 void Console::writeToConsole(const CHAR_INFO* lpBuffer)
-{
-    COORD c = {0,0};
-	SMALL_RECT WriteRegion = {0, 0, m_cConsoleSize.X-1, m_cConsoleSize.Y-1};
+{	
     // WriteConsoleOutputA for ASCII text
-	WriteConsoleOutputA(m_hScreenBuffer, lpBuffer, m_cConsoleSize, c, &WriteRegion);
+    WriteConsoleOutputA(m_hScreenBuffer, lpBuffer, m_cConsoleSize, m_topleft_c, &m_writeRegion);
 }

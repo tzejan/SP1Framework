@@ -77,6 +77,8 @@ class Console
         COORD m_cConsoleSize;
 		COORD m_cMaxConsoleSize; // maximum console size
         const UINT32 m_u32ScreenDataBufferSize;
+        COORD m_topleft_c;
+        SMALL_RECT m_writeRegion;
 
         // sets the size of the console
         // There is a certain size limitation to how big a console can be set.
