@@ -6,6 +6,7 @@
 //For other cpp
 #include "LoadMap.h"
 #include "PrintMap.h"
+#include "PushBox_Level.h"
 //#include "CollisionDetection.h"
 #include <fstream> //File opening
 #include <string>
@@ -25,7 +26,7 @@ enum EKEYS
 	K_ESCAPE,
 	K_SPACE,
 	K_COUNT,
-	K_ENTER
+	K_ENTER,
 };
 
 // Enumeration for the different screen states

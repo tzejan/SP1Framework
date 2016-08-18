@@ -83,6 +83,7 @@
     <ClCompile Include="LoadMap.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PrintMap.cpp" />
+    <ClCompile Include="PushBox_Level.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\console.h" />
@@ -90,6 +91,7 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="LoadMap.h" />
     <ClInclude Include="PrintMap.h" />
+    <ClInclude Include="PushBox_Level.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
