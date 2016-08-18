@@ -12,7 +12,7 @@ void loadMap(int level)
 			mapname = "Maps_Text/Main_Menu.txt";
 			break;
 		case 2:
-			mapname = "Maps_Levels/TestMap.txt";
+			mapname = "Maps_Levels/Boxes.txt";
 			break;
 	}
 	
@@ -32,7 +32,11 @@ void loadMap(int level)
 			for (int i = 0; i <= line.length(); i++)
 			{
 				if (line[i] == '#')
-					map[row][i] = (char)219; //Print walls instead of #
+					map[row][i] = (char)219;
+				else if (line[i] == 'D')
+					map[row][i] = (char)186;
+				else if (line[i] == 'B')
+					map[row][i] = (char)254;
 				else
 					map[row][i] = line[i]; //Print the rest as normal
 			}

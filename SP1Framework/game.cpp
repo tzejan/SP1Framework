@@ -174,60 +174,233 @@ void gameplay()            // gameplay logic
 void moveCharacter()
 {
 	COORD c = g_Console.getConsoleSize();
-    bool bSomethingHappened = false;
-    if (g_dBounceTime > g_dElapsedTime)
-        return;
+	bool bSomethingHappened = false;
+	if (g_dBounceTime > g_dElapsedTime)
+		return;
 
-    // Updating the location of the character based on the key press
-    // providing a beep sound whenver we shift the character
-    if (g_abKeyPressed[K_UP] && g_sChar.m_cLocation.Y > 0)
-    {
+	// Updating the location of the character based on the key press
+	// providing a beep sound whenver we shift the character
+	if (g_abKeyPressed[K_UP] && g_sChar.m_cLocation.Y > 0)
+	{
 		if (map[(g_sChar.m_cLocation.Y - 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] != (char)219)
 		{
+			if (map[(g_sChar.m_cLocation.Y - 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] != (char)186) //'D'
+			{
+				if ((map[(g_sChar.m_cLocation.Y - 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)254) && (map[(g_sChar.m_cLocation.Y - 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] != (char)219))
+				{
+					if (map[(g_sChar.m_cLocation.Y - 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)186)
+					{
+						g_sChar.m_cLocation.Y = g_sChar.m_cLocation.Y;
+						bSomethingHappened = true;
+					}
+					else
+					{
+						map[(g_sChar.m_cLocation.Y - 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] = ' ';
+						map[(g_sChar.m_cLocation.Y - 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] = (char)254;
+						g_sChar.m_cLocation.Y--;
+						bSomethingHappened = true;
+					}
+
+
+				}
+				else if ((map[(g_sChar.m_cLocation.Y - 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)254) && (map[(g_sChar.m_cLocation.Y - 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)219))
+				{
+					g_sChar.m_cLocation.Y = g_sChar.m_cLocation.Y;
+					bSomethingHappened = true;
+				}
+				else
+				{
+					g_sChar.m_cLocation.Y--;
+					bSomethingHappened = true;
+				}
+			}
+
 			//Beep(1440, 30);
-			g_sChar.m_cLocation.Y--;
-			bSomethingHappened = true;
+			//g_sChar.m_cLocation.Y--;
+			//bSomethingHappened = true;
 		}
-        
-    }
-    if (g_abKeyPressed[K_LEFT] && g_sChar.m_cLocation.X > 0)
-    {
+
+	}
+	if (g_abKeyPressed[K_LEFT] && g_sChar.m_cLocation.X > 0)
+	{
 		if (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 1) - (90 - mapSizeWidth)] != (char)219)
 		{
+			if (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 1) - (90 - mapSizeWidth)] != (char)186)
+			{
+				if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 1) - (90 - mapSizeWidth)] == (char)254) && (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 2) - (90 - mapSizeWidth)] != (char)219))
+				{
+					if (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 2) - (90 - mapSizeWidth)] == (char)186)
+					{
+						g_sChar.m_cLocation.X = g_sChar.m_cLocation.X;
+						bSomethingHappened = true;
+					}
+					else
+					{
+						map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 1) - (90 - mapSizeWidth)] = ' ';
+						map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 2) - (90 - mapSizeWidth)] = (char)254;
+						g_sChar.m_cLocation.X--;
+						bSomethingHappened = true;
+					}
+
+				}
+				else if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 1) - (90 - mapSizeWidth)] == (char)254) && (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 2) - (90 - mapSizeWidth)] == (char)219))
+				{
+					g_sChar.m_cLocation.X = g_sChar.m_cLocation.X;
+					bSomethingHappened = true;
+				}
+				else
+				{
+					g_sChar.m_cLocation.X--;
+					bSomethingHappened = true;
+				}
+			}
+
 			//Beep(1440, 30);
-			g_sChar.m_cLocation.X--;
-			bSomethingHappened = true;
+			//g_sChar.m_cLocation.X--;
+			//bSomethingHappened = true;
 		}
-    }
-    if (g_abKeyPressed[K_DOWN] && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
-    {
+	}
+	if (g_abKeyPressed[K_DOWN] && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
+	{
 		if (map[(g_sChar.m_cLocation.Y + 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] != (char)219)
 		{
+			if (map[(g_sChar.m_cLocation.Y + 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] != (char)186)
+			{
+				if ((map[(g_sChar.m_cLocation.Y + 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)254) && (map[(g_sChar.m_cLocation.Y + 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] != (char)219))
+				{
+					if (map[(g_sChar.m_cLocation.Y + 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)186)
+					{
+						g_sChar.m_cLocation.Y = g_sChar.m_cLocation.Y;
+						bSomethingHappened = true;
+					}
+					else
+					{
+						map[(g_sChar.m_cLocation.Y + 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] = ' ';
+						map[(g_sChar.m_cLocation.Y + 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] = (char)254;
+						g_sChar.m_cLocation.Y++;
+						bSomethingHappened = true;
+					}
+
+				}
+				else if ((map[(g_sChar.m_cLocation.Y + 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)254) && (map[(g_sChar.m_cLocation.Y + 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)219))
+				{
+					g_sChar.m_cLocation.Y = g_sChar.m_cLocation.Y;
+					bSomethingHappened = true;
+				}
+				else
+				{
+					g_sChar.m_cLocation.Y++;
+					bSomethingHappened = true;
+				}
+			}
+
 			//Beep(1440, 30);
-			g_sChar.m_cLocation.Y++;
-			bSomethingHappened = true;
+			//g_sChar.m_cLocation.Y++;
+			//bSomethingHappened = true;
 		}
-    }
-    if (g_abKeyPressed[K_RIGHT] && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
-    {
+	}
+	if (g_abKeyPressed[K_RIGHT] && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
+	{
 		if (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 1) - (90 - mapSizeWidth)] != (char)219)
 		{
-			//Beep(1440, 30);
-			g_sChar.m_cLocation.X++;
-			bSomethingHappened = true;
-		}
-    }
-    if (g_abKeyPressed[K_SPACE])
-    {
-        g_sChar.m_bActive = !g_sChar.m_bActive;
-        bSomethingHappened = true;
-    }
 
-    if (bSomethingHappened)
-    {
-        // set the bounce time to some time in the future to prevent accidental triggers
-        g_dBounceTime = g_dElapsedTime + 0.125; // 125ms should be enough
-    }
+			if (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 1) - (90 - mapSizeWidth)] != (char)186)
+			{
+				if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 1) - (90 - mapSizeWidth)] == (char)254) && (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 2) - (90 - mapSizeWidth)] != (char)219)) //if there is a block and nothing is blocking it
+				{
+					if (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 2) - (90 - mapSizeWidth)] == (char)186)
+					{
+						g_sChar.m_cLocation.X = g_sChar.m_cLocation.X;
+						bSomethingHappened = true;
+					}
+					else
+					{
+						map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 1) - (90 - mapSizeWidth)] = ' ';
+						map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 2) - (90 - mapSizeWidth)] = (char)254;
+						g_sChar.m_cLocation.X++;
+						bSomethingHappened = true;
+					}
+				}
+				else if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 1) - (90 - mapSizeWidth)] == (char)254) && (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 2) - (90 - mapSizeWidth)] == (char)219)) //if something is blocking the block 
+				{
+					g_sChar.m_cLocation.X = g_sChar.m_cLocation.X;
+					bSomethingHappened = true;
+				}
+				else
+				{
+					g_sChar.m_cLocation.X++;
+					bSomethingHappened = true;
+				}
+			}
+			//Beep(1440, 30);
+			//g_sChar.m_cLocation.X++;
+			//bSomethingHappened = true;
+		}
+	}
+	if (g_abKeyPressed[K_SPACE])
+	{
+		g_sChar.m_bActive = !g_sChar.m_bActive;
+		bSomethingHappened = true;
+	}
+
+	if (bSomethingHappened)
+	{
+		// set the bounce time to some time in the future to prevent accidental triggers
+		g_dBounceTime = g_dElapsedTime + 0.125; // 125ms should be enough
+	}
+
+	//Doors:
+	if (map[6][106] == (char)254) //Door1 
+	{
+		map[5][82] = ' ';
+		map[5][83] = ' ';
+	}
+
+	if (map[11][119] == (char)254) //Door2
+	{
+		map[24][96] = ' ';
+		map[24][97] = ' ';
+	}
+
+	if (map[21][85] == (char)254) //Door3
+	{
+		map[21][86] = ' ';
+		map[4][57] = ' ';
+		map[4][58] = ' ';
+	}
+
+	if (map[9][69] == (char)254) //Door4
+	{
+		map[9][70] = ' ';
+		map[14][80] = ' ';
+		map[14][81] = ' ';
+	}
+
+	if (map[14][22] == (char)254) //Door5
+	{
+		map[1][30] = ' ';
+		map[1][31] = ' ';
+	}
+
+	if (map[1][12] == (char)254) //Door6
+	{
+		map[5][12] = ' ';
+		map[5][13] = ' ';
+	}
+
+	if (map[11][18] == (char)254) //Door7
+	{
+		map[11][19] = ' ';
+		map[21][7] = ' ';
+		map[21][8] = ' ';
+	}
+
+	if (map[31][15] == (char)254) //Door8
+	{
+		map[31][16] = ' ';
+		map[34][29] = ' ';
+		map[34][30] = ' ';
+	}
 }
 void processUserInput()
 {
@@ -267,6 +440,8 @@ void renderMap()
 	{
 		newMap = false;
 		loadMap(2);
+		g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 + 58;
+		g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 - 16;
 	}
 	//Print map in cpp functions
 	printMap(mapSizeWidth, mapSizeHeight, false);
