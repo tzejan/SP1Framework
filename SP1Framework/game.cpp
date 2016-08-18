@@ -27,7 +27,8 @@ static const int sizeHeight = 50;
 char map[sizeHeight][sizeWidth] = {" ", };
 unsigned int mapSizeWidth = 0;
 unsigned int mapSizeHeight = 0;
-bool count = false;
+int currentlevel = 0;
+
 
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -43,7 +44,7 @@ void init( void )
     g_dBounceTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_SPLASHSCREEN;
+	g_eGameState = S_SPLASHSCREEN;
 
     g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
@@ -120,6 +121,9 @@ void update(double dt)
         case S_GAME: 
 			gameplay(); // gameplay logic when we are in the game
             break;
+		case S_GAME2:
+			gameplay(); // gameplay logic when we are in the game
+			break;
     }
 }
 //--------------------------------------------------------------
@@ -148,9 +152,16 @@ void render()
         case S_GAME:
 			mapSizeWidth = 124/2;
 			mapSizeHeight = 36/2;
+			currentlevel = 1;		//Level input here
 			doorMapChanges_J();
 			renderGame();
             break;
+		case S_GAME2:
+			mapSizeWidth = 124/2;
+			mapSizeHeight = 34/2;
+			currentlevel = 2;		//Level input here
+			renderGame();
+			break;
     }
     renderFramerate();  // renders debug information, frame rate, elapsed time, etc
     renderToScreen();   // dump the contents of the buffer to the screen, one frame worth of game
@@ -202,8 +213,6 @@ void moveCharacter()
 						g_sChar.m_cLocation.Y--;
 						bSomethingHappened = true;
 					}
-
-
 				}
 				else if ((map[(g_sChar.m_cLocation.Y - 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)254) && (map[(g_sChar.m_cLocation.Y - 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)219))
 				{
@@ -212,8 +221,8 @@ void moveCharacter()
 				}
 				else
 				{
-					g_sChar.m_cLocation.Y--;
-					bSomethingHappened = true;
+						g_sChar.m_cLocation.Y--;
+						bSomethingHappened = true;
 				}
 			}
 
@@ -388,9 +397,20 @@ void renderMap()
 	if (newMap)
 	{
 		newMap = false;
-		loadMap(2);
-		g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 + 58;
-		g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 - 16;
+		loadMap(currentlevel+1);
+
+		//Set position of player here :D
+		switch (currentlevel)
+		{
+			case 1:
+				g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 + 58;
+				g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 - 16;
+				break;
+			case 2:
+				g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 + 58;
+				g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 - 16;
+				break;
+		}		
 	}
 	//Print map in cpp functions
 	printMap(mapSizeWidth, mapSizeHeight, false);

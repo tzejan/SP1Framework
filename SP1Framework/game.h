@@ -35,6 +35,7 @@ enum EGAMESTATES
     S_SPLASHSCREEN,
 	S_MAIN_MENU,
     S_GAME,
+	S_GAME2,
     S_COUNT
 };
 
@@ -44,6 +45,7 @@ struct SGameChar
     COORD m_cLocation;
     bool  m_bActive;
 };
+
 
 void init        ( void );      // initialize your variables, allocate memory, etc
 void getInput    ( void );      // get input from player

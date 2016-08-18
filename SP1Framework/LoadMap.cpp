@@ -14,6 +14,9 @@ void loadMap(int level)
 		case 2:
 			mapname = "Maps_Levels/Boxes.txt";
 			break;
+		case 3:
+			mapname = "Maps_Levels/Teleportal.txt";
+			break;
 	}
 	
 	
@@ -31,11 +34,11 @@ void loadMap(int level)
 		{
 			for (int i = 0; i <= line.length(); i++)
 			{
-				if (line[i] == '#')
+				if (line[i] == '#') //For Walls
 					map[row][i] = (char)219;
-				else if (line[i] == 'D')
+				else if (line[i] == 'D' && level == 2) //For Door (Level 2 only)
 					map[row][i] = (char)186;
-				else if (line[i] == 'B')
+				else if (line[i] == 'B' && level == 2) //For push blocks (Level 2 only)
 					map[row][i] = (char)254;
 				else
 					map[row][i] = line[i]; //Print the rest as normal
