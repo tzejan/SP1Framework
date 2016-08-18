@@ -110,6 +110,7 @@ void update(double dt)
 
     switch (g_eGameState)
     {
+<<<<<<< HEAD
         case S_SPLASHSCREEN : 
 			splashScreenWait(); // game logic for the splash screen			 
             break;
@@ -118,6 +119,17 @@ void update(double dt)
 			break;
         case S_GAME: 
 			gameplay(); // gameplay logic when we are in the game
+=======
+        case S_SPLASHSCREEN : splashScreenWait(); // game logic for the splash screen
+							  mapSizeWidth = 63;
+            break;
+		case S_MAIN_MENU: renderMainMenu();
+						  mapSizeWidth = 44;
+			break;
+        case S_GAME: gameplay(); // gameplay logic when we are in the game
+					 mapSizeWidth = 62;
+					 mapSizeHeight = 18;
+>>>>>>> parent of 1812f47... Boxes map: added pushing and door disappearing. Left with door blockage.
             break;
     }
 }
@@ -134,6 +146,7 @@ void render()
     clearScreen();      // clears thes current screen and draw from scratch (input mapping's max length and height)
     switch (g_eGameState)
     {
+<<<<<<< HEAD
         case S_SPLASHSCREEN: 
 			mapSizeWidth = 127/2;
 			mapSizeHeight = 22/2;
@@ -148,6 +161,13 @@ void render()
 			mapSizeWidth = 124/2;
 			mapSizeHeight = 36/2;
 			renderGame();
+=======
+        case S_SPLASHSCREEN: renderSplashScreen();
+            break;
+		case S_MAIN_MENU: renderMainMenu();
+			break;
+        case S_GAME: renderGame();
+>>>>>>> parent of 1812f47... Boxes map: added pushing and door disappearing. Left with door blockage.
             break;
     }
     renderFramerate();  // renders debug information, frame rate, elapsed time, etc
@@ -266,7 +286,38 @@ void renderMap()
 	if (newMap)
 	{
 		newMap = false;
+<<<<<<< HEAD
 		loadMap(2);
+=======
+		LoadMap("Maps_Levels/TestMap3.txt");
+	}
+	//Prints the map info
+	COORD c = g_Console.getConsoleSize();
+	c.X = c.X / 2 - mapSizeWidth; 
+	c.Y = c.Y / 2 - mapSizeHeight; 
+	string line = " ";
+	for (int row = 0; row <= sizeHeight; row++)
+	{
+		line = map[row];
+		g_Console.writeToBuffer(c, line);
+		c.Y++;
+	}
+	/*
+	//Display text only (From text file) (Title screen: Title)
+	string line;
+	ifstream myfile("Maps_Text/Box_Test.txt");
+	COORD c = g_Console.getConsoleSize();
+	c.X = c.X / 2 - 15;
+	c.Y = c.Y/2 - 5;
+	if (myfile.is_open())
+	{
+		while (getline(myfile, line))
+		{
+			g_Console.writeToBuffer(c, line);
+			c.Y++;
+		}
+		myfile.close();
+>>>>>>> parent of 1812f47... Boxes map: added pushing and door disappearing. Left with door blockage.
 	}
 	//Print map in cpp functions
 	printMap(mapSizeWidth, mapSizeHeight, false);
