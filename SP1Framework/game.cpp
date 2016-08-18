@@ -28,10 +28,9 @@ char map[sizeHeight][sizeWidth] = {" ", };
 unsigned int mapSizeWidth = 0;
 unsigned int mapSizeHeight = 0;
 bool count = false;
-int test = 0; //Delete this
 
 //next map
-int refreshMap = 2;
+int refreshMap = 1;
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
 //            Initialize variables, allocate memory, load data from file, etc. 
@@ -48,8 +47,8 @@ void init( void )
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
 
-    g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
-    g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
+    //g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
+    //g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
     g_sChar.m_bActive = true;
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
@@ -83,7 +82,7 @@ void shutdown( void )
 //--------------------------------------------------------------
 void getInput( void )
 {    
-	g_abKeyPressed[K_CTRL]    = isKeyPressed(VK_CONTROL);
+	g_abKeyPressed[K_CTRL]   = isKeyPressed(VK_CONTROL);
 	g_abKeyPressed[K_ALT]    = isKeyPressed(VK_MENU);
     g_abKeyPressed[K_UP]     = isKeyPressed(VK_UP);
     g_abKeyPressed[K_DOWN]   = isKeyPressed(VK_DOWN);
@@ -125,6 +124,9 @@ void update(double dt)
         case S_GAME: 
 			gameplay(); // gameplay logic when we are in the game
             break;
+		case S_GAME_1:
+			gameplay(); // gameplay logic when we are in the game
+			break;
     }
 }
 //--------------------------------------------------------------
@@ -150,12 +152,19 @@ void render()
 			mapSizeHeight = 9/2;
 			renderMainMenu();
 			break;
-        case S_GAME:
+        case S_GAME:					//This is a placeholder will be replaced with (S_GAME_TUT)
 			mapSizeWidth = 124/2;
 			mapSizeHeight = 36/2;
+			refreshMap = 0;
 			doorMapChanges_J();
 			renderGame();
             break;
+		case S_GAME_1:
+			mapSizeWidth = 124 / 2;
+			mapSizeHeight = 36 / 2;
+			refreshMap = 1;
+			renderGame();
+			break;
     }
     renderFramerate();  // renders debug information, frame rate, elapsed time, etc
     renderToScreen();   // dump the contents of the buffer to the screen, one frame worth of game
@@ -361,12 +370,46 @@ void processUserInput()
         g_bQuitGame = true;  
 	if (g_abKeyPressed[K_ALT])
 	{
-		refreshMap++;
+		switch (refreshMap)
+		{
+			case 0:
+				g_eGameState = S_GAME_1; //Loads level 1
+				break;
+			case 1:
+				g_eGameState = S_GAME_1; //Loads level 2 (Currently in place holder mode)
+				break;
+			case 2:
+				g_eGameState = S_GAME_1; //Loads level 3 (Currently in place holder mode)
+				break;
+			case 3:
+				g_eGameState = S_GAME_1; //Loads level 4 (Currently in place holder mode)
+				break;
+			case 4:
+				g_eGameState = S_GAME_1; //Loads level 5 (Currently in place holder mode)
+				break;
+		}
 		newMap = true;
 	}
 	if (g_abKeyPressed[K_CTRL])
 	{
-		refreshMap--;
+		switch (refreshMap)
+		{
+		case 1:
+			g_eGameState = S_GAME; //Loads level Tutorial
+			break;
+		case 2:
+			g_eGameState = S_GAME; //Loads level 1 (Currently in place holder mode)
+			break;
+		case 3:
+			g_eGameState = S_GAME; //Loads level 2 (Currently in place holder mode)
+			break;
+		case 4:
+			g_eGameState = S_GAME; //Loads level 3 (Currently in place holder mode)
+			break;
+		case 5:
+			g_eGameState = S_GAME; //Loads level 4 (Currently in place holder mode)
+			break;
+		}
 		newMap = true;
 	}
 		
@@ -402,35 +445,31 @@ void renderMap()
 	if (newMap)
 	{
 		newMap = false;
+		loadMap(refreshMap + 2); //Load map
 		switch (refreshMap)
 		{
-		case 2: //Tutorial
-			loadMap(refreshMap);
+		case 0: //Tutorial
 			g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 - 59;
 			g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 - 13;
 			break;
-
-
-		case 3: //Levers
-			loadMap(refreshMap);
+		case 1: //Levers
 			g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 - 59;
 			g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 - 10;
 			break;
-
-		case 4: //Questions
-			loadMap(refreshMap);
+		case 2: //Questions
 			g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 + 55;
 			g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 + 14;
 			break;
-		case 5: //Boxes
-			loadMap(refreshMap);
+		case 3: //Boxes
 			g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 + 58;
 			g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 - 16;
 			break;
-		case 6: //Teleportals 
-			loadMap(refreshMap);
+		case 4: //Teleportals 
 			g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 + 56;
 			g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 + 16;
+			break;
+		default:
+			cout << "THIS IS AN ERROR MESSAGE FOR BEING OUT OF SIZE!!!";
 			break;
 		}
 	}

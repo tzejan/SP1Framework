@@ -36,7 +36,8 @@ enum EGAMESTATES
 {
     S_SPLASHSCREEN,
 	S_MAIN_MENU,
-    S_GAME,
+    S_GAME,			//Level tutorial (Currently placeholder will be replaced to S_GAME_TUT)
+	S_GAME_1,		//Level 1
     S_COUNT
 };
 
