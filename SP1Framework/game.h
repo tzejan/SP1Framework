@@ -6,7 +6,7 @@
 //For other cpp
 #include "LoadMap.h"
 #include "PrintMap.h"
-#include "CollisionDetection.h"
+//#include "CollisionDetection.h"
 #include <fstream> //File opening
 #include <string>
 using namespace std;
