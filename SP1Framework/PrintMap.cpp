@@ -45,7 +45,7 @@ void deleteMap(int width, int height)
 {
 	for (int row = 0; row <= (height * 2); row++)
 	{
-		for (int col = 0; col <= (col * 2); col++)
+		for (int col = 0; col <= (width * 2); col++)
 		{
 			if (map[row][col] != (char)255)
 			{
