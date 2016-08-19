@@ -13,7 +13,7 @@ bool    g_abKeyPressed[K_COUNT];
 
 // Game specific variables here
 SGameChar   g_sChar;
-EGAMESTATES g_eGameState = S_GAME_4;
+EGAMESTATES g_eGameState = S_SPLASHSCREEN;
 double  g_dBounceTime; // this is to prevent key bouncing, so we won't trigger keypresses more than once
 
 // Console object
@@ -45,7 +45,7 @@ void init( void )
     g_dBounceTime = 0.0;
 
     // sets the initial state for the game
-	g_eGameState = S_GAME_4;
+    g_eGameState = S_SPLASHSCREEN;
 
     //g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
     //g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
@@ -127,6 +127,9 @@ void update(double dt)
 		case S_GAME_1:
 			gameplay(); // gameplay logic when we are in the game
 			break;
+		case S_GAME_2:
+			gameplay(); // gameplay logic when we are in the game
+			break;
 		case S_GAME_3:
 			gameplay(); // gameplay logic when we are in the game
 			break;
@@ -162,13 +165,18 @@ void render()
 			mapSizeWidth = 124/2;
 			mapSizeHeight = 36/2;
 			refreshMap = 0;
-			doorMapChanges_J();
 			renderGame();
             break;
 		case S_GAME_1:
 			mapSizeWidth = 124 / 2;
 			mapSizeHeight = 36 / 2;
 			refreshMap = 1;
+			renderGame();
+			break;
+		case S_GAME_2:
+			mapSizeWidth = 124 / 2;
+			mapSizeHeight = 36 / 2;
+			refreshMap = 2;
 			renderGame();
 			break;
 		case S_GAME_3:
@@ -208,177 +216,26 @@ void gameplay()            // gameplay logic
 
 void moveCharacter()
 {
-	COORD c = g_Console.getConsoleSize();
-	bool bSomethingHappened = false;
-	if (g_dBounceTime > g_dElapsedTime)
-		return;
-
-	// Updating the location of the character based on the key press
-	// providing a beep sound whenver we shift the character
-	if (g_abKeyPressed[K_UP] && g_sChar.m_cLocation.Y > 0)
+	switch (refreshMap)
 	{
-		if (map[(g_sChar.m_cLocation.Y - 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] != (char)219)
-		{
-			if (map[(g_sChar.m_cLocation.Y - 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] != (char)186) //'D'
-			{
-				if ((map[(g_sChar.m_cLocation.Y - 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)254) && (map[(g_sChar.m_cLocation.Y - 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] != (char)219))
-				{
-					if (map[(g_sChar.m_cLocation.Y - 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)186)
-					{
-						g_sChar.m_cLocation.Y = g_sChar.m_cLocation.Y;
-						bSomethingHappened = true;
-					}
-					else
-					{
-						map[(g_sChar.m_cLocation.Y - 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] = ' ';
-						map[(g_sChar.m_cLocation.Y - 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] = (char)254;
-						g_sChar.m_cLocation.Y--;
-						bSomethingHappened = true;
-					}
-				}
-				else if ((map[(g_sChar.m_cLocation.Y - 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)254) && (map[(g_sChar.m_cLocation.Y - 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)219))
-				{
-					g_sChar.m_cLocation.Y = g_sChar.m_cLocation.Y;
-					bSomethingHappened = true;
-				}
-				else
-				{
-					g_sChar.m_cLocation.Y--;
-					bSomethingHappened = true;
-				}
-			}
-
-			//Beep(1440, 30);
-			//g_sChar.m_cLocation.Y--;
-			//bSomethingHappened = true;
-		}
-
-	}
-	if (g_abKeyPressed[K_LEFT] && g_sChar.m_cLocation.X > 0)
-	{
-		if (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 1) - (90 - mapSizeWidth)] != (char)219)
-		{
-			if (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 1) - (90 - mapSizeWidth)] != (char)186)
-			{
-				if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 1) - (90 - mapSizeWidth)] == (char)254) && (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 2) - (90 - mapSizeWidth)] != (char)219))
-				{
-					if (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 2) - (90 - mapSizeWidth)] == (char)186)
-					{
-						g_sChar.m_cLocation.X = g_sChar.m_cLocation.X;
-						bSomethingHappened = true;
-					}
-					else
-					{
-						map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 1) - (90 - mapSizeWidth)] = ' ';
-						map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 2) - (90 - mapSizeWidth)] = (char)254;
-						g_sChar.m_cLocation.X--;
-						bSomethingHappened = true;
-					}
-
-				}
-				else if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 1) - (90 - mapSizeWidth)] == (char)254) && (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 2) - (90 - mapSizeWidth)] == (char)219))
-				{
-					g_sChar.m_cLocation.X = g_sChar.m_cLocation.X;
-					bSomethingHappened = true;
-				}
-				else
-				{
-					g_sChar.m_cLocation.X--;
-					bSomethingHappened = true;
-				}
-			}
-
-			//Beep(1440, 30);
-			//g_sChar.m_cLocation.X--;
-			//bSomethingHappened = true;
-		}
-	}
-	if (g_abKeyPressed[K_DOWN] && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
-	{
-		if (map[(g_sChar.m_cLocation.Y + 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] != (char)219)
-		{
-			if (map[(g_sChar.m_cLocation.Y + 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] != (char)186)
-			{
-				if ((map[(g_sChar.m_cLocation.Y + 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)254) && (map[(g_sChar.m_cLocation.Y + 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] != (char)219))
-				{
-					if (map[(g_sChar.m_cLocation.Y + 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)186)
-					{
-						g_sChar.m_cLocation.Y = g_sChar.m_cLocation.Y;
-						bSomethingHappened = true;
-					}
-					else
-					{
-						map[(g_sChar.m_cLocation.Y + 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] = ' ';
-						map[(g_sChar.m_cLocation.Y + 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] = (char)254;
-						g_sChar.m_cLocation.Y++;
-						bSomethingHappened = true;
-					}
-
-				}
-				else if ((map[(g_sChar.m_cLocation.Y + 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)254) && (map[(g_sChar.m_cLocation.Y + 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)219))
-				{
-					g_sChar.m_cLocation.Y = g_sChar.m_cLocation.Y;
-					bSomethingHappened = true;
-				}
-				else
-				{
-					g_sChar.m_cLocation.Y++;
-					bSomethingHappened = true;
-				}
-			}
-
-			//Beep(1440, 30);
-			//g_sChar.m_cLocation.Y++;
-			//bSomethingHappened = true;
-		}
-	}
-	if (g_abKeyPressed[K_RIGHT] && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
-	{
-		if (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 1) - (90 - mapSizeWidth)] != (char)219) 
-		{
-			if (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 1) - (90 - mapSizeWidth)] != (char)186)
-			{
-				if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 1) - (90 - mapSizeWidth)] == (char)254) && (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 2) - (90 - mapSizeWidth)] != (char)219)) //if there is a block and nothing is blocking it
-				{
-					if (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 2) - (90 - mapSizeWidth)] == (char)186)
-					{
-						g_sChar.m_cLocation.X = g_sChar.m_cLocation.X;
-						bSomethingHappened = true;
-					}
-					else
-					{
-						map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 1) - (90 - mapSizeWidth)] = ' ';
-						map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 2) - (90 - mapSizeWidth)] = (char)254;
-						g_sChar.m_cLocation.X++;
-						bSomethingHappened = true;
-					}
-				}
-				else if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 1) - (90 - mapSizeWidth)] == (char)254) && (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 2) - (90 - mapSizeWidth)] == (char)219)) //if something is blocking the block 
-				{
-					g_sChar.m_cLocation.X = g_sChar.m_cLocation.X;
-					bSomethingHappened = true;
-				}
-				else
-				{
-					g_sChar.m_cLocation.X++;
-					bSomethingHappened = true;
-				}
-			}
-			//Beep(1440, 30);
-			//g_sChar.m_cLocation.X++;
-			//bSomethingHappened = true;
-		}
-	}
-	if (g_abKeyPressed[K_SPACE])
-	{
-		g_sChar.m_bActive = !g_sChar.m_bActive;
-		bSomethingHappened = true;
-	}
-
-	if (bSomethingHappened)
-	{
-		// set the bounce time to some time in the future to prevent accidental triggers
-		g_dBounceTime = g_dElapsedTime + 0.125; // 125ms should be enough
+	case 0: //Tutorial
+		//Create new header and cpp. Add function here
+		break;
+	case 1: //Levers
+		//Create new header and cpp. Add your function here
+		break;
+	case 2: //Questions
+		//Create new header and cpp. Add your function here
+		break;
+	case 3: //Boxes
+		pushBoxMovement_J();
+		break;
+	case 4: //Teleportals 
+		//Create new header and cpp. Add your function here
+		break;
+	default:
+		cout << "Character cannot move!!";
+		break;
 	}
 
 }
@@ -396,15 +253,15 @@ void processUserInput()
 				Sleep(250);
 				break;
 			case 1:
-				g_eGameState = S_GAME_4; //Loads level 2 (Currently in place holder mode)
+				g_eGameState = S_GAME_2; //Loads level 2 (Currently in place holder mode)
 				Sleep(250);
 				break;
 			case 2:
-				g_eGameState = S_GAME_1; //Loads level 3 (Currently in place holder mode)
+				g_eGameState = S_GAME_3; //Loads level 3 (Currently in place holder mode)
 				Sleep(250);
 				break;
 			case 3:
-				g_eGameState = S_GAME_1; //Loads level 4 (Currently in place holder mode)
+				g_eGameState = S_GAME_4; //Loads level 4 (Currently in place holder mode)
 				Sleep(250);
 				break;
 		}

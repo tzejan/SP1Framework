@@ -42,6 +42,9 @@
     <ClCompile Include="PushBox_Level.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PushBox_Movement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\console.h">
@@ -60,6 +63,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PushBox_Level.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PushBox_Movement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

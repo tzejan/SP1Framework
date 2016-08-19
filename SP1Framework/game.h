@@ -7,6 +7,7 @@
 #include "LoadMap.h"
 #include "PrintMap.h"
 #include "PushBox_Level.h"
+#include "PushBox_Movement.h"
 //#include "CollisionDetection.h"
 #include <fstream> //File opening
 #include <string>
