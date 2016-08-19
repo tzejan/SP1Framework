@@ -1,6 +1,6 @@
 #include "LoadMap.h"
 
-teleporter portalPos[26];
+
 
 void loadMap(int level)
 {
@@ -74,6 +74,7 @@ void loadMap(int level)
 	if (level == 6)
 	{
 		int portals = 0;
+		memset(portalPos, 0, sizeof(portalPos));
 		//Write code to start storing coordinates here
 		//Store all teleport location here
 		//Store location in array or struct
@@ -105,12 +106,12 @@ void loadMap(int level)
 								}
 								else if ((portalPos[portals].character == map[row2][col2]) && map[row2][col2]!=(char)233)
 								{
+									map[row2][col2] = (char)233;
+									map[row][col] = (char)233;
 									portalPos[portals].Portal_1_X = row;
 									portalPos[portals].Portal_1_Y = col;
 									portalPos[portals].Portal_2_X = row2;
 									portalPos[portals].Portal_2_Y = col2;
-									map[row2][col2] = (char)233;
-									map[row][col] = (char)233;
 									portals+=1;
 								}
 							}

@@ -8,6 +8,7 @@
 #include "PrintMap.h"
 #include "PushBox_Level.h"
 #include "PushBox_Movement.h"
+#include "Teleport_Movement.h"
 //#include "CollisionDetection.h"
 #include <fstream> //File opening
 #include <string>
@@ -50,6 +51,15 @@ struct SGameChar
 {
     COORD m_cLocation;
     bool  m_bActive;
+};
+
+struct teleporter
+{
+	char character;
+	int Portal_1_X;
+	int Portal_1_Y;
+	int Portal_2_X;
+	int Portal_2_Y;
 };
 
 void init        ( void );      // initialize your variables, allocate memory, etc

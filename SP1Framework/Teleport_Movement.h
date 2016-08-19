@@ -1,5 +1,6 @@
 #include <iostream>
 #include "game.h"
+#include "LoadMap.h"
 
 using namespace std;
 
@@ -10,4 +11,8 @@ extern double  g_dBounceTime;
 extern unsigned int mapSizeWidth;
 extern unsigned int mapSizeHeight;
 
-void pushBoxMovement_J();
+extern struct teleporter portalPos[26];
+
+
+void teleport_player();
+void returnNextPosition(int currentPositionY, int currentPositionX);

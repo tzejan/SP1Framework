@@ -31,6 +31,8 @@ unsigned int mapSizeHeight = 0;
 //next map
 int refreshMap = 1;
 
+teleporter portalPos[26];
+
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
 //            Initialize variables, allocate memory, load data from file, etc. 
@@ -231,6 +233,7 @@ void moveCharacter()
 		pushBoxMovement_J();
 		break;
 	case 4: //Teleportals 
+		teleport_player();
 		//Create new header and cpp. Add your function here
 		break;
 	default:
@@ -276,15 +279,15 @@ void processUserInput()
 			Sleep(250);
 			break;
 		case 2:
-			g_eGameState = S_GAME; //Loads level 1 (Currently in place holder mode)
+			g_eGameState = S_GAME_1; //Loads level 1 (Currently in place holder mode)
 			Sleep(250);
 			break;
 		case 3:
-			g_eGameState = S_GAME; //Loads level 2 (Currently in place holder mode)
+			g_eGameState = S_GAME_2; //Loads level 2 (Currently in place holder mode)
 			Sleep(250);
 			break;
 		case 4:
-			g_eGameState = S_GAME; //Loads level 3 (Currently in place holder mode)
+			g_eGameState = S_GAME_3; //Loads level 3 (Currently in place holder mode)
 			Sleep(250);
 			break;
 		}
