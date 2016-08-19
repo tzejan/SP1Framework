@@ -11,6 +11,7 @@ void doorMapChanges_J()
 
 	if (map[11][119] == (char)254) //Door2
 	{
+		map[11][120] = ' ';
 		map[24][96] = ' ';
 		map[24][97] = ' ';
 	}

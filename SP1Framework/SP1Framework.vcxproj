@@ -80,6 +80,8 @@
     <ClCompile Include="Framework\console.cpp" />
     <ClCompile Include="Framework\timer.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="Levers_Level.cpp" />
+    <ClCompile Include="Levers_Movement.cpp" />
     <ClCompile Include="LoadMap.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PrintMap.cpp" />
@@ -91,6 +93,8 @@
     <ClInclude Include="Framework\console.h" />
     <ClInclude Include="Framework\timer.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="Levers_Level.h" />
+    <ClInclude Include="Levers_Movement.h" />
     <ClInclude Include="LoadMap.h" />
     <ClInclude Include="PrintMap.h" />
     <ClInclude Include="PushBox_Level.h" />

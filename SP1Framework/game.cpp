@@ -222,15 +222,40 @@ void moveCharacter()
 	{
 	case 0: //Tutorial
 		//Create new header and cpp. Add function here
+		if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == 'E') && (refreshMap == 0))
+		{
+			refreshMap = 1;
+			g_eGameState = S_GAME_1; //Proceed to level 1
+			newMap = true;
+		}
 		break;
 	case 1: //Levers
-		//Create new header and cpp. Add your function here
+		leversMovement_HS();
+		doorMapChanges_HS();
+		if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == 'E') && (refreshMap == 1))
+		{
+			refreshMap = 2;
+			g_eGameState = S_GAME_2; //Proceed to level 2
+			newMap = true;
+		}
 		break;
 	case 2: //Questions
 		//Create new header and cpp. Add your function here
+		if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == 'E') && (refreshMap == 2))
+		{
+			refreshMap = 3;
+			g_eGameState = S_GAME_3; //Proceed to level 3
+			newMap = true;
+		}
 		break;
 	case 3: //Boxes
 		pushBoxMovement_J();
+	    if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == 'E') && (refreshMap == 3))
+		{
+		refreshMap = 4;
+		g_eGameState = S_GAME_4; //Proceed to level 4
+		newMap = true;
+		} 
 		break;
 	case 4: //Teleportals 
 		teleport_player();

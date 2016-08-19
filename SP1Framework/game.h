@@ -8,6 +8,8 @@
 #include "PrintMap.h"
 #include "PushBox_Level.h"
 #include "PushBox_Movement.h"
+#include "Levers_Level.h"
+#include "Levers_Movement.h"
 #include "Teleport_Movement.h"
 //#include "CollisionDetection.h"
 #include <fstream> //File opening
