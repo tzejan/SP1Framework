@@ -30,7 +30,7 @@ unsigned int mapSizeHeight = 0;
 bool count = false;
 
 //next map
-int refreshMap = 1;
+int refreshMap = 0;
 
 //array for portals :D
 int portalPos[26] = { 0, };
@@ -130,6 +130,12 @@ void update(double dt)
 		case S_GAME_1:
 			gameplay(); // gameplay logic when we are in the game
 			break;
+		case S_GAME_2:
+			gameplay(); // gameplay logic when we are in the game
+			break;
+		case S_GAME_3:
+			gameplay(); // gameplay logic when we are in the game
+			break;
 		case S_GAME_4:
 			gameplay(); // gameplay logic when we are in the game
 			break;
@@ -162,13 +168,25 @@ void render()
 			mapSizeWidth = 124/2;
 			mapSizeHeight = 36/2;
 			refreshMap = 0;
-			doorMapChanges_J();
 			renderGame();
             break;
 		case S_GAME_1:
 			mapSizeWidth = 124 / 2;
 			mapSizeHeight = 36 / 2;
 			refreshMap = 1;
+			renderGame();
+			break;
+		case S_GAME_2:
+			mapSizeWidth = 124 / 2;
+			mapSizeHeight = 36 / 2;
+			refreshMap = 2;
+			renderGame();
+			break;
+		case S_GAME_3:
+			mapSizeWidth = 124 / 2;
+			mapSizeHeight = 36 / 2;
+			refreshMap = 3;
+			doorMapChanges_J();
 			renderGame();
 			break;
 		case S_GAME_4:
@@ -389,15 +407,15 @@ void processUserInput()
 				_sleep(250);
 				break;
 			case 1:
-				g_eGameState = S_GAME_4; //Loads level 2 (Currently in place holder mode)
+				g_eGameState = S_GAME_2; //Loads level 2 (Currently in place holder mode)
 				_sleep(250);
 				break;
 			case 2:
-				g_eGameState = S_GAME_1; //Loads level 3 (Currently in place holder mode)
+				g_eGameState = S_GAME_3; //Loads level 3 (Currently in place holder mode)
 				_sleep(250);
 				break;
 			case 3:
-				g_eGameState = S_GAME_1; //Loads level 4 (Currently in place holder mode)
+				g_eGameState = S_GAME_4; //Loads level 4 (Currently in place holder mode)
 				_sleep(250);
 				break;
 		}
