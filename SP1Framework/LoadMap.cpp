@@ -45,7 +45,7 @@ void loadMap(int level)
 	{
 		while (getline(myfile, line))
 		{	
-			for (int i = 0; i <= line.length(); i++)
+			for (unsigned int i = 0; i <= line.length(); i++)
 			{
 				if (line[i] == '#')
 					map[row][i] = (char)219;

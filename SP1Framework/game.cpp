@@ -31,7 +31,9 @@ unsigned int mapSizeHeight = 0;
 //next map
 int refreshMap = 1;
 
+//For teleportal location
 teleporter portalPos[26];
+int *timeLeft;
 
 //--------------------------------------------------------------
 // Purpose  : Initialisation function

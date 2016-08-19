@@ -3,8 +3,7 @@
 
 using namespace std;
 
-extern struct SGameChar;
-extern SGameChar g_sChar;
+extern struct SGameChar g_sChar;
 extern enum EKEYS;
 extern double  g_dElapsedTime;
 extern double  g_dBounceTime;
