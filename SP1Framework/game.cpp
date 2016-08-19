@@ -228,7 +228,8 @@ void moveCharacter()
 		}
 		break;
 	case 1: //Levers
-		//Create new header and cpp. Add your function here
+		leversMovement_HS();
+		doorMapChanges_HS();
 		if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == 'E') && (refreshMap == 1))
 		{
 			refreshMap = 2;
