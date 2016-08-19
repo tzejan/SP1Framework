@@ -30,6 +30,9 @@ unsigned int mapSizeHeight = 0;
 
 //next map
 int refreshMap = 1;
+int timeRemaining = 60;  //If u all decide to use timer u need to put this as a function requirement (dont edit this number will affect teleport level)
+double setTime = 1.0;
+bool timeToWait = false;
 
 //For teleportal location
 teleporter portalPos[26];
@@ -123,7 +126,7 @@ void update(double dt)
 			splashScreenWait(); // game logic for the splash screen			 
             break;
 		case S_MAIN_MENU: 
-			renderMainMenu();		  
+			renderMainMenu();	// game logic for the main screen  
 			break;
         case S_GAME: 
 			gameplay(); // gameplay logic when we are in the game
@@ -226,7 +229,6 @@ void moveCharacter()
 		//Create new header and cpp. Add function here
 		if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == 'E') && (refreshMap == 0))
 		{
-			refreshMap = 1;
 			g_eGameState = S_GAME_1; //Proceed to level 1
 			newMap = true;
 		}
@@ -236,7 +238,6 @@ void moveCharacter()
 		doorMapChanges_HS();
 		if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == 'E') && (refreshMap == 1))
 		{
-			refreshMap = 2;
 			g_eGameState = S_GAME_2; //Proceed to level 2
 			newMap = true;
 		}
@@ -245,7 +246,6 @@ void moveCharacter()
 		//Create new header and cpp. Add your function here
 		if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == 'E') && (refreshMap == 2))
 		{
-			refreshMap = 3;
 			g_eGameState = S_GAME_3; //Proceed to level 3
 			newMap = true;
 		}
@@ -254,7 +254,7 @@ void moveCharacter()
 		pushBoxMovement_J();
 	    if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == 'E') && (refreshMap == 3))
 		{
-		refreshMap = 4;
+		//refreshMap = 4;
 		g_eGameState = S_GAME_4; //Proceed to level 4
 		newMap = true;
 		} 
@@ -338,7 +338,7 @@ void renderSplashScreen()  // renders the splash screen
 		loadMap(0);
 	}
 	//Print map in cpp functions
-	printMap(mapSizeWidth, mapSizeHeight, false);
+	printMap(mapSizeWidth, mapSizeHeight, &timeToWait, false);
 }
 
 void renderGame()
@@ -359,6 +359,7 @@ void renderMap()
 		case 0: //Tutorial
 			g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 - 59;
 			g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 - 13;
+			timeToWait = false;
 			break;
 		case 1: //Levers
 			g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 - 59;
@@ -371,10 +372,13 @@ void renderMap()
 		case 3: //Boxes
 			g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 + 58;
 			g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 - 16;
+			timeToWait = false;
 			break;
 		case 4: //Teleportals (Perfected spawn)
 			g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 + 56;
 			g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 + 14;
+			timeToWait = true;
+			timeRemaining = 2.0;
 			break;
 		default:
 			cout << "THIS IS AN ERROR MESSAGE FOR BEING OUT OF SIZE!!!";
@@ -383,7 +387,7 @@ void renderMap()
 	}
 
 	//Print map in cpp functions
-	printMap(mapSizeWidth, mapSizeHeight, false);
+	printMap(mapSizeWidth, mapSizeHeight, &timeToWait, false);
 }
 
 void renderCharacter()
@@ -414,6 +418,20 @@ void renderFramerate()
     c.X = 0;
     c.Y = 0;
     g_Console.writeToBuffer(c, ss.str());
+
+	if (timeToWait) // timer for level 6 if u want to have it in your level got to set case file
+	{
+		if (g_dElapsedTime > setTime && timeRemaining != 0)
+		{
+			setTime = g_dElapsedTime + 1;
+			timeRemaining--;
+		}
+		else if (g_dElapsedTime > setTime)
+		{
+			setTime = g_dElapsedTime + 1;
+			deleteMap(mapSizeWidth, mapSizeHeight);
+		}
+	}
 }
 void renderToScreen()
 {
@@ -429,7 +447,7 @@ void renderMainMenu()
 		loadMap(1);
 	}
 	//Print map in cpp functions
-	printMap(mapSizeWidth, mapSizeHeight, true);
+	printMap(mapSizeWidth, mapSizeHeight, &timeToWait, true);
 
 	//Start game if flag is true and hits enter key
 	if (g_abKeyPressed[K_ENTER])

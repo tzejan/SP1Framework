@@ -35,8 +35,6 @@ void loadMap(int level)
 	string line = " ";
 	//clear 2d array / portal locations
 	memset(map, '\0', sizeof(map[0][0]) * 50 * 150);
-//	memset(portalPos, '\0', sizeof(portalPos[0]) * 26);
-
 
 	//store to array
 	ifstream myfile(mapname);
@@ -53,10 +51,6 @@ void loadMap(int level)
 					map[row][i] = (char)186;
 				else if (line[i] == 'B' && level == 5) //Level control printing
 					map[row][i] = (char)254;
-				//else if ((line[i] >= 65 && line[i] <= 90) && (line[i] != 'E') && level == 6) //Level control printing
-				//
-				//	map[row][i] = (char)233; //Place holder currently
-				//}
 				else
 					map[row][i] = line[i]; //Print the rest as normal
 			}
@@ -79,7 +73,7 @@ void loadMap(int level)
 		//Store all teleport location here
 		//Store location in array or struct
 		//Run a double for loop if possible _Assignemt 2 common letter 
-		for (int row = 0; row < 50; row++)
+		for (int row = 0; row < 50; row++)//Finds the first row for first letter
 		{
 			if (map[row] == '\0')
 			{
@@ -87,25 +81,26 @@ void loadMap(int level)
 			}
 			else
 			{
-				for (int col = 0; col < 150; col++)
+				for (int col = 0; col < 150; col++) //Finds the colums for first letter
 				{
 					if (map[row][col] == '\0')
 					{
-						continue;
+						continue; //Dont find any thing
 					}
-					else if ((map[row][col] >= 65 && map[row][col] <= 90) && (map[row][col] != 'E'))
+					else if ((map[row][col] >= 65 && map[row][col] <= 90) && (map[row][col] != 'E')) //Check if its the letter i want
 					{
-						portalPos[portals].character = map[row][col];
+						portalPos[portals].character = map[row][col]; //Store the letter in the array / struct given in global variable
 						for (int row2 = row+1; row2 < 50; row2++)
 						{
-							for (int col2 = 0; col2 < 150; col2++)
+							for (int col2 = 0; col2 < 150; col2++) //Runs another for loop to find the second letter
 							{
 								if (map[row2][col2] == '\0')
 								{
-									continue;
+									continue;//Dont find any thing
 								}
-								else if ((portalPos[portals].character == map[row2][col2]) && map[row2][col2]!=(char)233)
+								else if ((portalPos[portals].character == map[row2][col2]) && map[row2][col2]!=(char)233) //Found second letter
 								{
+									//Store both positions here (MAX. 26)
 									map[row2][col2] = (char)233;
 									map[row][col] = (char)233;
 									portalPos[portals].Portal_1_X = row;
