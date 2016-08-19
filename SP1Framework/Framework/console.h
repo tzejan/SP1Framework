@@ -67,6 +67,11 @@ class Console
         void writeToBuffer(SHORT x, SHORT y, LPCSTR str, WORD attribute = 0x0F, SHORT length = 32767);
         void writeToBuffer(SHORT x, SHORT y, std::string& s, WORD attribute = 0x0F, SHORT length = 32767);
         void writeToBuffer(SHORT x, SHORT y, char ch, WORD attribute = 0x0F);
+
+        // These functions are for handling the console input, including mouse
+        void readConsoleInput();
+        void setKeyboardHandler(void (*pfKeyboardHandler)(const KEY_EVENT_RECORD&));
+        void setMouseHandler(void(*pfMouseHandler)(const MOUSE_EVENT_RECORD&));
         
         //===================================================================================================
         // These are for your eyes only, don't bother to try to call the following functions.
@@ -80,12 +85,26 @@ class Console
         COORD m_topleft_c;
         SMALL_RECT m_writeRegion;
 
+        // for input
+        HANDLE m_hStdin;        // standard input handler
+        DWORD m_fdwSaveOldMode; // old mode for console input, for restoring input modes
+        const static unsigned char INPUT_BUFFER_SIZE = 128;
+        INPUT_RECORD m_irInBuf[INPUT_BUFFER_SIZE];
+
+        // Handlers for Keyboard and mouse events
+        void (*m_pfKeyboardHandler)(const KEY_EVENT_RECORD&);
+        void (*m_pfMouseHandler)(const MOUSE_EVENT_RECORD&);
+
+        //===================================================================================================
+        // Private functions.
+
         // sets the size of the console
         // There is a certain size limitation to how big a console can be set.
         void setConsoleWindowSize();
         // Initializes the console for this size
         void initConsole(COORD consoleSize, LPCSTR lpConsoleTitle = 0);
         void writeToConsole(const CHAR_INFO* lpBuffer);
+        void initInput();
 
         void shutDownConsole();
 };
