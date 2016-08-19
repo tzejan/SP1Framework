@@ -19,6 +19,12 @@
     <Filter Include="Source Files\Framework">
       <UniqueIdentifier>{37c19c94-9502-4b2b-b3f1-70fa908b49af}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Maze">
+      <UniqueIdentifier>{99c97f22-41ed-4c61-8905-ab098e4fc007}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Maze">
+      <UniqueIdentifier>{69c3ed9d-755a-40c7-8a9c-d04fca6dd578}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -33,6 +39,9 @@
     <ClCompile Include="game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Maze\maze.cpp">
+      <Filter>Source Files\Maze</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\console.h">
@@ -43,6 +52,9 @@
     </ClInclude>
     <ClInclude Include="game.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Maze\maze.h">
+      <Filter>Header Files\Maze</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

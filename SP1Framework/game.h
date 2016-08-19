@@ -2,6 +2,9 @@
 #define _GAME_H
 
 #include "Framework\timer.h"
+#include "Framework\console.h"
+
+#include "Maze\maze.h"
 
 extern CStopWatch g_swTimer;
 extern bool g_bQuitGame;
