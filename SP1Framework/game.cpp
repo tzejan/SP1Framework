@@ -13,7 +13,7 @@ bool    g_abKeyPressed[K_COUNT];
 
 // Game specific variables here
 SGameChar   g_sChar;
-EGAMESTATES g_eGameState = S_SPLASHSCREEN;
+EGAMESTATES g_eGameState = S_GAME_4;
 double  g_dBounceTime; // this is to prevent key bouncing, so we won't trigger keypresses more than once
 
 // Console object
@@ -27,13 +27,10 @@ static const int sizeHeight = 50;
 char map[sizeHeight][sizeWidth] = {" ", };
 unsigned int mapSizeWidth = 0;
 unsigned int mapSizeHeight = 0;
-bool count = false;
 
 //next map
 int refreshMap = 1;
 
-//array for portals :D
-int portalPos[26] = { 0, };
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
 //            Initialize variables, allocate memory, load data from file, etc. 
@@ -48,7 +45,7 @@ void init( void )
     g_dBounceTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_SPLASHSCREEN;
+	g_eGameState = S_GAME_4;
 
     //g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
     //g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
@@ -130,6 +127,9 @@ void update(double dt)
 		case S_GAME_1:
 			gameplay(); // gameplay logic when we are in the game
 			break;
+		case S_GAME_3:
+			gameplay(); // gameplay logic when we are in the game
+			break;
 		case S_GAME_4:
 			gameplay(); // gameplay logic when we are in the game
 			break;
@@ -169,6 +169,13 @@ void render()
 			mapSizeWidth = 124 / 2;
 			mapSizeHeight = 36 / 2;
 			refreshMap = 1;
+			renderGame();
+			break;
+		case S_GAME_3:
+			mapSizeWidth = 124 / 2;
+			mapSizeHeight = 36 / 2;
+			refreshMap = 3;
+			doorMapChanges_J();
 			renderGame();
 			break;
 		case S_GAME_4:
@@ -386,19 +393,19 @@ void processUserInput()
 		{
 			case 0:
 				g_eGameState = S_GAME_1; //Loads level 1
-				_sleep(250);
+				Sleep(250);
 				break;
 			case 1:
 				g_eGameState = S_GAME_4; //Loads level 2 (Currently in place holder mode)
-				_sleep(250);
+				Sleep(250);
 				break;
 			case 2:
 				g_eGameState = S_GAME_1; //Loads level 3 (Currently in place holder mode)
-				_sleep(250);
+				Sleep(250);
 				break;
 			case 3:
 				g_eGameState = S_GAME_1; //Loads level 4 (Currently in place holder mode)
-				_sleep(250);
+				Sleep(250);
 				break;
 		}
 		newMap = true;
@@ -409,19 +416,19 @@ void processUserInput()
 		{
 		case 1:
 			g_eGameState = S_GAME; //Loads level Tutorial
-			_sleep(250);
+			Sleep(250);
 			break;
 		case 2:
 			g_eGameState = S_GAME; //Loads level 1 (Currently in place holder mode)
-			_sleep(250);
+			Sleep(250);
 			break;
 		case 3:
 			g_eGameState = S_GAME; //Loads level 2 (Currently in place holder mode)
-			_sleep(250);
+			Sleep(250);
 			break;
 		case 4:
 			g_eGameState = S_GAME; //Loads level 3 (Currently in place holder mode)
-			_sleep(250);
+			Sleep(250);
 			break;
 		}
 		newMap = true;

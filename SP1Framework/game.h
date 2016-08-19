@@ -51,13 +51,6 @@ struct SGameChar
     bool  m_bActive;
 };
 
-struct teleporter
-{
-	char character;
-	int Portal_1;
-	int Portal_2;
-};
-
 void init        ( void );      // initialize your variables, allocate memory, etc
 void getInput    ( void );      // get input from player
 void update      ( double dt ); // update the game and the state of the game
