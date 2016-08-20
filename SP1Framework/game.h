@@ -11,6 +11,8 @@
 #include "Levers_Level.h"
 #include "Levers_Movement.h"
 #include "Teleport_Movement.h"
+#include "Question_Level.h"
+#include "Question_Movement.h"
 //#include "CollisionDetection.h"
 #include <fstream> //File opening
 #include <string>
@@ -32,6 +34,10 @@ enum EKEYS
 	K_ESCAPE,
 	K_SPACE,
 	K_ENTER,
+	K_D1,
+	K_D2,
+	K_D3,
+	K_D4,
 	K_COUNT //Put this last thx
 };
 
