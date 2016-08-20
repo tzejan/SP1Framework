@@ -1,7 +1,5 @@
 #include "LoadMap.h"
 
-
-
 void loadMap(int level)
 {
 	string mapname = " ";
