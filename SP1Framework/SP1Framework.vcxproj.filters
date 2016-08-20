@@ -44,13 +44,19 @@
     </ClCompile>
     <ClCompile Include="PushBox_Movement.cpp">
       <Filter>Source Files</Filter>
-</ClCompile>
-    <ClCompile Include="Teleport_Movement.cpp">    
-</ClCompile>
+    </ClCompile>
+    <ClCompile Include="Teleport_Movement.cpp">
+    </ClCompile>
     <ClCompile Include="Levers_Movement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Levers_Level.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Question_Level.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Question_Movement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -75,13 +81,19 @@
     </ClInclude>
     <ClInclude Include="PushBox_Movement.h">
       <Filter>Header Files</Filter>
-</ClInclude>
-    <ClInclude Include="Teleport_Movement.h">    
-</ClInclude>
+    </ClInclude>
+    <ClInclude Include="Teleport_Movement.h">
+    </ClInclude>
     <ClInclude Include="Levers_Movement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Levers_Level.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Question_Level.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Question_Movement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

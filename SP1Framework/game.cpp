@@ -38,6 +38,11 @@ bool timeToWait = false;
 teleporter portalPos[26];
 int *timeLeft;
 
+// Unlock number keys
+bool check = false;
+// Check Question Number
+int checkq = 0;
+
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
 //            Initialize variables, allocate memory, load data from file, etc. 
@@ -98,6 +103,10 @@ void getInput( void )
     g_abKeyPressed[K_SPACE]  = isKeyPressed(VK_SPACE);
     g_abKeyPressed[K_ESCAPE] = isKeyPressed(VK_ESCAPE);
 	g_abKeyPressed[K_ENTER]  = isKeyPressed(VK_RETURN);
+	g_abKeyPressed[K_D1] = isKeyPressed(0x31);
+	g_abKeyPressed[K_D2] = isKeyPressed(0x32);
+	g_abKeyPressed[K_D3] = isKeyPressed(0x33);
+	g_abKeyPressed[K_D4] = isKeyPressed(0x34);
 }
 
 //--------------------------------------------------------------
@@ -181,7 +190,7 @@ void render()
 			renderGame();
 			break;
 		case S_GAME_2:
-			mapSizeWidth = 124 / 2;
+			mapSizeWidth = 126 / 2;
 			mapSizeHeight = 36 / 2;
 			refreshMap = 2;
 			renderGame();
@@ -243,7 +252,7 @@ void moveCharacter()
 		}
 		break;
 	case 2: //Questions
-		//Create new header and cpp. Add your function here
+		qMovement();
 		if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == 'E') && (refreshMap == 2))
 		{
 			g_eGameState = S_GAME_3; //Proceed to level 3
@@ -320,7 +329,48 @@ void processUserInput()
 		}
 		newMap = true;
 	}
-		
+	if (g_abKeyPressed[K_SPACE])
+	{
+		if (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)63)
+		{
+			saveMap();
+			if ((g_sChar.m_cLocation.Y) - (25 - mapSizeHeight) == 16 && (g_sChar.m_cLocation.X) - (90 - mapSizeWidth) == 32)
+			{
+				clearScreen();
+				loadQ(1);
+				checkq = 1;//indicate which question has been loaded
+				check = true;//indicate that a question has been loaded
+			}
+			if ((g_sChar.m_cLocation.Y) - (25 - mapSizeHeight) == 33 && (g_sChar.m_cLocation.X) - (90 - mapSizeWidth) == 42)
+			{
+				clearScreen();
+				loadQ(2);
+				checkq = 2;
+				check = true;
+			}
+		}
+	}
+	if (check)//see if a question had already loaded
+	{
+		if (checkq == 1)
+		{
+			if (g_abKeyPressed[K_D3])
+			{
+				Question_Asn(true);
+				check = false;
+				checkq = 0;
+			}
+		}
+		if (checkq == 2)
+		{
+			if (g_abKeyPressed[K_D2])
+			{
+				Question_Asn(true);
+				check = false;
+				checkq = 0;
+			}
+		}
+	}
 }
 
 void clearScreen()
@@ -366,8 +416,8 @@ void renderMap()
 			g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 - 10;
 			break;
 		case 2: //Questions
-			g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 + 55;
-			g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 + 14;
+			g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 - 18;
+			g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 - 2;
 			break;
 		case 3: //Boxes
 			g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 + 58;

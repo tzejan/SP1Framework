@@ -87,6 +87,8 @@
     <ClCompile Include="PrintMap.cpp" />
     <ClCompile Include="PushBox_Level.cpp" />
     <ClCompile Include="PushBox_Movement.cpp" />
+    <ClCompile Include="Question_Level.cpp" />
+    <ClCompile Include="Question_Movement.cpp" />
     <ClCompile Include="Teleport_Movement.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -99,6 +101,8 @@
     <ClInclude Include="PrintMap.h" />
     <ClInclude Include="PushBox_Level.h" />
     <ClInclude Include="PushBox_Movement.h" />
+    <ClInclude Include="Question_Level.h" />
+    <ClInclude Include="Question_Movement.h" />
     <ClInclude Include="Teleport_Movement.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
