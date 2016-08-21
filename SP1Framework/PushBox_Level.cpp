@@ -5,6 +5,7 @@ void doorMapChanges_J()
 	//Doors:
 	if (map[6][106] == (char)254) //Door1 
 	{
+		map[6][107] = ' ';
 		map[5][82] = ' ';
 		map[5][83] = ' ';
 	}

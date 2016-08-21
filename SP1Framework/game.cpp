@@ -137,7 +137,7 @@ void update(double dt)
 		case S_MAIN_MENU: 
 			renderMainMenu();	// game logic for the main screen  
 			break;
-        case S_GAME: 
+        case S_GAME_TUT: 
 			gameplay(); // gameplay logic when we are in the game
             break;
 		case S_GAME_1:
@@ -177,7 +177,7 @@ void render()
 			mapSizeHeight = 9/2;
 			renderMainMenu();
 			break;
-        case S_GAME:					//This is a placeholder will be replaced with (S_GAME_TUT)
+        case S_GAME_TUT:					
 			mapSizeWidth = 124/2;
 			mapSizeHeight = 36/2;
 			refreshMap = 0;
@@ -199,7 +199,6 @@ void render()
 			mapSizeWidth = 124 / 2;
 			mapSizeHeight = 36 / 2;
 			refreshMap = 3;
-			doorMapChanges_J();
 			renderGame();
 			break;
 		case S_GAME_4:
@@ -261,6 +260,7 @@ void moveCharacter()
 		break;
 	case 3: //Boxes
 		pushBoxMovement_J();
+		doorMapChanges_J();
 	    if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == 'E') && (refreshMap == 3))
 		{
 		//refreshMap = 4;
@@ -292,15 +292,15 @@ void processUserInput()
 				Sleep(250);
 				break;
 			case 1:
-				g_eGameState = S_GAME_2; //Loads level 2 (Currently in place holder mode)
+				g_eGameState = S_GAME_2; //Loads level 2 
 				Sleep(250);
 				break;
 			case 2:
-				g_eGameState = S_GAME_3; //Loads level 3 (Currently in place holder mode)
+				g_eGameState = S_GAME_3; //Loads level 3 
 				Sleep(250);
 				break;
 			case 3:
-				g_eGameState = S_GAME_4; //Loads level 4 (Currently in place holder mode)
+				g_eGameState = S_GAME_4; //Loads level 4 
 				Sleep(250);
 				break;
 		}
@@ -311,19 +311,19 @@ void processUserInput()
 		switch (refreshMap)
 		{
 		case 1:
-			g_eGameState = S_GAME; //Loads level Tutorial
+			g_eGameState = S_GAME_TUT; //Loads level Tutorial
 			Sleep(250);
 			break;
 		case 2:
-			g_eGameState = S_GAME_1; //Loads level 1 (Currently in place holder mode)
+			g_eGameState = S_GAME_1; //Loads level 1 
 			Sleep(250);
 			break;
 		case 3:
-			g_eGameState = S_GAME_2; //Loads level 2 (Currently in place holder mode)
+			g_eGameState = S_GAME_2; //Loads level 2 
 			Sleep(250);
 			break;
 		case 4:
-			g_eGameState = S_GAME_3; //Loads level 3 (Currently in place holder mode)
+			g_eGameState = S_GAME_3; //Loads level 3 
 			Sleep(250);
 			break;
 		}
@@ -503,7 +503,7 @@ void renderMainMenu()
 	if (g_abKeyPressed[K_ENTER])
 	{
 		newMap = true;
-		g_eGameState = S_GAME;// sets the state to start
+		g_eGameState = S_GAME_TUT;// sets the state to start
 	}
 	
 	// quits the game if player hits the escape key

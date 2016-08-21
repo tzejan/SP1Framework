@@ -16,36 +16,9 @@ void qMovement()
 		{
 			if (map[(g_sChar.m_cLocation.Y - 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] != (char)186) //'D'
 			{
-				if ((map[(g_sChar.m_cLocation.Y - 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)254) && (map[(g_sChar.m_cLocation.Y - 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] != (char)219))
-				{
-					if (map[(g_sChar.m_cLocation.Y - 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)186)
-					{
-						g_sChar.m_cLocation.Y = g_sChar.m_cLocation.Y;
-						bSomethingHappened = true;
-					}
-					else
-					{
-						map[(g_sChar.m_cLocation.Y - 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] = ' ';
-						map[(g_sChar.m_cLocation.Y - 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] = (char)254;
-						g_sChar.m_cLocation.Y--;
-						bSomethingHappened = true;
-					}
-				}
-				else if ((map[(g_sChar.m_cLocation.Y - 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)254) && (map[(g_sChar.m_cLocation.Y - 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)219))
-				{
-					g_sChar.m_cLocation.Y = g_sChar.m_cLocation.Y;
-					bSomethingHappened = true;
-				}
-				else
-				{
 					g_sChar.m_cLocation.Y--;
 					bSomethingHappened = true;
-				}
 			}
-
-			//Beep(1440, 30);
-			//g_sChar.m_cLocation.Y--;
-			//bSomethingHappened = true;
 		}
 
 	}
@@ -55,37 +28,9 @@ void qMovement()
 		{
 			if (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 1) - (90 - mapSizeWidth)] != (char)186)
 			{
-				if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 1) - (90 - mapSizeWidth)] == (char)254) && (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 2) - (90 - mapSizeWidth)] != (char)219))
-				{
-					if (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 2) - (90 - mapSizeWidth)] == (char)186)
-					{
-						g_sChar.m_cLocation.X = g_sChar.m_cLocation.X;
-						bSomethingHappened = true;
-					}
-					else
-					{
-						map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 1) - (90 - mapSizeWidth)] = ' ';
-						map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 2) - (90 - mapSizeWidth)] = (char)254;
-						g_sChar.m_cLocation.X--;
-						bSomethingHappened = true;
-					}
-
-				}
-				else if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 1) - (90 - mapSizeWidth)] == (char)254) && (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X - 2) - (90 - mapSizeWidth)] == (char)219))
-				{
-					g_sChar.m_cLocation.X = g_sChar.m_cLocation.X;
-					bSomethingHappened = true;
-				}
-				else
-				{
 					g_sChar.m_cLocation.X--;
 					bSomethingHappened = true;
-				}
 			}
-
-			//Beep(1440, 30);
-			//g_sChar.m_cLocation.X--;
-			//bSomethingHappened = true;
 		}
 	}
 	if (g_abKeyPressed[K_DOWN] && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
@@ -94,37 +39,9 @@ void qMovement()
 		{
 			if (map[(g_sChar.m_cLocation.Y + 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] != (char)186)
 			{
-				if ((map[(g_sChar.m_cLocation.Y + 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)254) && (map[(g_sChar.m_cLocation.Y + 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] != (char)219))
-				{
-					if (map[(g_sChar.m_cLocation.Y + 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)186)
-					{
-						g_sChar.m_cLocation.Y = g_sChar.m_cLocation.Y;
-						bSomethingHappened = true;
-					}
-					else
-					{
-						map[(g_sChar.m_cLocation.Y + 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] = ' ';
-						map[(g_sChar.m_cLocation.Y + 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] = (char)254;
-						g_sChar.m_cLocation.Y++;
-						bSomethingHappened = true;
-					}
-
-				}
-				else if ((map[(g_sChar.m_cLocation.Y + 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)254) && (map[(g_sChar.m_cLocation.Y + 2) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)219))
-				{
-					g_sChar.m_cLocation.Y = g_sChar.m_cLocation.Y;
-					bSomethingHappened = true;
-				}
-				else
-				{
 					g_sChar.m_cLocation.Y++;
 					bSomethingHappened = true;
-				}
 			}
-
-			//Beep(1440, 30);
-			//g_sChar.m_cLocation.Y++;
-			//bSomethingHappened = true;
 		}
 	}
 	if (g_abKeyPressed[K_RIGHT] && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
@@ -133,35 +50,9 @@ void qMovement()
 		{
 			if (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 1) - (90 - mapSizeWidth)] != (char)186)
 			{
-				if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 1) - (90 - mapSizeWidth)] == (char)254) && (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 2) - (90 - mapSizeWidth)] != (char)219)) //if there is a block and nothing is blocking it
-				{
-					if (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 2) - (90 - mapSizeWidth)] == (char)186)
-					{
-						g_sChar.m_cLocation.X = g_sChar.m_cLocation.X;
-						bSomethingHappened = true;
-					}
-					else
-					{
-						map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 1) - (90 - mapSizeWidth)] = ' ';
-						map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 2) - (90 - mapSizeWidth)] = (char)254;
-						g_sChar.m_cLocation.X++;
-						bSomethingHappened = true;
-					}
-				}
-				else if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 1) - (90 - mapSizeWidth)] == (char)254) && (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X + 2) - (90 - mapSizeWidth)] == (char)219)) //if something is blocking the block 
-				{
-					g_sChar.m_cLocation.X = g_sChar.m_cLocation.X;
-					bSomethingHappened = true;
-				}
-				else
-				{
 					g_sChar.m_cLocation.X++;
 					bSomethingHappened = true;
-				}
 			}
-			//Beep(1440, 30);
-			//g_sChar.m_cLocation.X++;
-			//bSomethingHappened = true;
 		}
 	}
 	if (g_abKeyPressed[K_SPACE])

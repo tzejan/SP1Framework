@@ -45,9 +45,9 @@ void loadMap(int level)
 			{
 				if (line[i] == '#')
 					map[row][i] = (char)219;
-				else if (line[i] == 'D' && (level == 5 || level == 3 || level == 4)) //Level control printing if u want this on ur level change to (level == 5 || level == 6)
+				else if (line[i] == 'D' && (level == 5 || level == 3 || level == 4 || level == 2)) //Level control printing if u want this on ur level change to (level == 5 || level == 6)
 					map[row][i] = (char)186;
-				else if (line[i] == 'B' && level == 5) //Level control printing
+				else if (line[i] == 'B' && (level == 5 || level == 2)) //Level control printing
 					map[row][i] = (char)254;
 				else
 					map[row][i] = line[i]; //Print the rest as normal
