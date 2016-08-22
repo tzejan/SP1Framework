@@ -63,7 +63,7 @@ void loadMap(int level)
 
 	
 	//Store to struct (Test)
-	if (level == 6)
+	if (level == 6 || level == 2)
 	{
 		int portals = 0;
 		memset(portalPos, 0, sizeof(portalPos));

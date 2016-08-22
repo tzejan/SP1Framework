@@ -13,6 +13,7 @@
 #include "Teleport_Movement.h"
 #include "Question_Level.h"
 #include "Question_Movement.h"
+#include "Tutorial_Movement.h"
 //#include "CollisionDetection.h"
 #include <fstream> //File opening
 #include <string>

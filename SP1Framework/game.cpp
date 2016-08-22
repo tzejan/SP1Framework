@@ -70,7 +70,7 @@ void init( void )
     //g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
     g_sChar.m_bActive = true;
     // sets the width, height and the font name to use in the console
-    g_Console.setConsoleFont(0, 16, L"Arial");
+    g_Console.setConsoleFont(0, 16, L"Ariel");
 }
 
 //--------------------------------------------------------------
@@ -243,6 +243,7 @@ void moveCharacter()
 	{
 	case 0: //Tutorial
 		//Create new header and cpp. Add function here
+		Movement_Tut();
 		if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == 'E') && (refreshMap == 0))
 		{
 			healthLeft = 5; //resetting lives 
