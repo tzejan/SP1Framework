@@ -145,6 +145,9 @@ void update(double dt)
 		case S_MAIN_MENU: 
 			renderMainMenu();	// game logic for the main screen  
 			break;
+		case S_INTRUCTIONS:
+			renderInstructions();
+			break;
         case S_GAME_TUT: 
 			gameplay(); // gameplay logic when we are in the game
             break;
@@ -184,6 +187,11 @@ void render()
 			mapSizeWidth = 88/2;
 			mapSizeHeight = 9/2;
 			renderMainMenu();
+			break;
+		case S_INTRUCTIONS:
+			mapSizeWidth = 116 / 2;
+			mapSizeHeight = 37 / 2;
+			renderInstructions();
 			break;
         case S_GAME_TUT:					
 			mapSizeWidth = 124/2;
@@ -493,7 +501,7 @@ void renderSplashScreen()  // renders the splash screen
 		loadMap(0);
 	}
 	//Print map in cpp functions
-	printMap(mapSizeWidth, mapSizeHeight, &timeToWait, false, &printHealth);
+	printMap(mapSizeWidth, mapSizeHeight, &timeToWait, false, false, &printHealth);
 }
 
 void renderGame()
@@ -508,7 +516,7 @@ void renderMap()
 	if (newMap)
 	{
 		newMap = false;
-		loadMap(refreshMap + 2); //Load map
+		loadMap(refreshMap + 3); //Load map
 		switch (refreshMap)
 		{
 		case 0: //Tutorial
@@ -535,7 +543,7 @@ void renderMap()
 			g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 + 56;
 			g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 + 14;
 			timeToWait = true;
-			timeRemaining = 60.0;
+			timeRemaining = 60;
 			break;
 		default:
 			cout << "THIS IS AN ERROR MESSAGE FOR BEING OUT OF SIZE!!!";
@@ -544,7 +552,7 @@ void renderMap()
 	}
 
 	//Print map in cpp functions
-	printMap(mapSizeWidth, mapSizeHeight, &timeToWait, false, &printHealth);
+	printMap(mapSizeWidth, mapSizeHeight, &timeToWait, false, false, &printHealth);
 }
 
 void renderCharacter()
@@ -606,7 +614,7 @@ void renderMainMenu()
 		loadMap(1);
 	}
 	//Print map in cpp functions
-	printMap(mapSizeWidth, mapSizeHeight, &timeToWait, true, &printHealth);
+	printMap(mapSizeWidth, mapSizeHeight, &timeToWait, true, false, &printHealth);
 
 	//Start game if flag is true and hits enter key (put only after the cursor is there)
 	if (g_abKeyPressed[K_ENTER] && menuPointer == 0)
@@ -614,15 +622,49 @@ void renderMainMenu()
 		newMap = true;
 		g_eGameState = S_GAME_TUT;// sets the state to start
 	}
-	
+	else if (g_abKeyPressed[K_ENTER] && menuPointer == 1)
+	{
+		newMap = true;
+		g_eGameState = S_INTRUCTIONS;// sets the state to start
+	}
+
 	// quits the game if player hits the escape key
-	if (g_abKeyPressed[K_ENTER] && menuPointer == 1)
+	if (g_abKeyPressed[K_ENTER] && menuPointer == 2)
 		g_bQuitGame = true;
+	
+	if (g_dBounceTime > g_dElapsedTime) //This is before any button press
+		return;
 
 	if (g_abKeyPressed[K_UP] && menuPointer != 0)
+	{
 		menuPointer--;
-	if (g_abKeyPressed[K_DOWN] && menuPointer != 1)
+		g_dBounceTime = g_dElapsedTime + 0.25;
+	}
+	if (g_abKeyPressed[K_DOWN] && menuPointer != 2)
+	{
 		menuPointer++;
+		g_dBounceTime = g_dElapsedTime + 0.25;
+	}
+	
+}
+
+void renderInstructions()
+{
+	if (newMap)
+	{
+		menuPointer = 0;
+		newMap = false;
+		loadMap(2);
+	}
+	//Print map in cpp functions
+	printMap(mapSizeWidth, mapSizeHeight, &timeToWait, false, true, &printHealth);
+
+	//Start game if flag is true and hits enter key (put only after the cursor is there)
+	if (g_abKeyPressed[K_ESCAPE])
+	{
+		newMap = true;
+		g_eGameState = S_MAIN_MENU;// sets the state to start
+	}
 }
 
 void resetLevel() //Causes reset

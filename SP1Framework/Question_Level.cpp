@@ -80,7 +80,7 @@ void loadQ(int qNum)
 	{
 		while (getline(myfile, line))
 		{
-			for (int i = 0; i <= line.length(); i++)
+			for (unsigned int i = 0; i <= line.length(); i++)
 			{
 				map[row][i] = line[i];
 			}

@@ -48,6 +48,7 @@ enum EGAMESTATES
 {
     S_SPLASHSCREEN,
 	S_MAIN_MENU,
+	S_INTRUCTIONS,
     S_GAME_TUT,			//Level tutorial 
 	S_GAME_1,		//Level 1
 	S_GAME_2,		//Level 2
@@ -91,6 +92,7 @@ void renderFramerate();     // renders debug information, frame rate, elapsed ti
 void renderToScreen();      // dump the contents of the buffer to the screen, one frame worth of game
 
 void renderMainMenu();      // renders the main menu
+void renderInstructions();  // Instructions page
 
 void resetLevel();			// Reset the game level
 

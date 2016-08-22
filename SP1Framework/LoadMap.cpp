@@ -12,18 +12,21 @@ void loadMap(int level)
 			mapname = "Maps_Text/Main_Menu.txt";
 			break;
 		case 2:
+			mapname = "Maps_Text/Instructions.txt";
+			break;
+		case 3:
 			mapname = "Maps_Levels/Tutorial.txt"; 
 			break;
-		case 3: 
+		case 4: 
 			mapname = "Maps_Levels/Levers.txt"; //Level 1
 			break;
-		case 4: 
+		case 5: 
 			mapname = "Maps_Levels/Questions.txt"; //Level 2
 			break;
-		case 5:
+		case 6:
 			mapname = "Maps_Levels/Boxes.txt"; //Level 3
 			break;
-		case 6:
+		case 7:
 			mapname = "Maps_Levels/Teleportal.txt"; //Level 4
 			break;
 	}
@@ -45,9 +48,9 @@ void loadMap(int level)
 			{
 				if (line[i] == '#')
 					map[row][i] = (char)219;
-				else if (line[i] == 'D' && (level == 5 || level == 3 || level == 4 || level == 2)) //Level control printing if u want this on ur level change to (level == 5 || level == 6)
+				else if (line[i] == 'D' && (level == 6 || level == 4 || level == 5 || level == 3)) //Level control printing if u want this on ur level change to (level == 5 || level == 6)
 					map[row][i] = (char)186;
-				else if (line[i] == 'B' && (level == 5 || level == 2)) //Level control printing
+				else if (line[i] == 'B' && (level == 6 || level == 3)) //Level control printing
 					map[row][i] = (char)254;
 				else
 					map[row][i] = line[i]; //Print the rest as normal
@@ -63,7 +66,7 @@ void loadMap(int level)
 
 	
 	//Store to struct (Test)
-	if (level == 6 || level == 2)
+	if (level == 7 || level == 3)
 	{
 		int portals = 0;
 		memset(portalPos, 0, sizeof(portalPos));

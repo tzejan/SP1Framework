@@ -12,5 +12,5 @@ extern int *changeHealth;
 extern struct SGameChar  g_sChar;
 extern int menuPointer;
 
-void printMap(int width, int height, bool *timer, bool isMainMenu, bool *health);
+void printMap(int width, int height, bool *timer, bool isMainMenu, bool instructions, bool *health);
 void deleteMap(int width, int height);

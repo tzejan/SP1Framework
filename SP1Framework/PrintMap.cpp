@@ -1,6 +1,6 @@
 #include "PrintMap.h"
 
-void printMap(int width, int height, bool *timer, bool isMainMenu, bool *health)
+void printMap(int width, int height, bool *timer, bool isMainMenu, bool instructions, bool *health)
 {
 	double timeToWait = 1.0;
 
@@ -23,15 +23,33 @@ void printMap(int width, int height, bool *timer, bool isMainMenu, bool *health)
 		{
 			g_Console.writeToBuffer(c, "-> Start Game!", 0x0A);
 			c.Y++;
+			g_Console.writeToBuffer(c, "Instructions!", 0x0A);
+			c.Y++;
 			g_Console.writeToBuffer(c, "Quit Game!", 0x0C);
 		}
 		else if (menuPointer == 1)
 		{
 			g_Console.writeToBuffer(c, "Start Game!", 0x0A);
 			c.Y++;
+			g_Console.writeToBuffer(c, "-> Instructions!", 0x0A);
+			c.Y++;
+			g_Console.writeToBuffer(c, "Quit Game!", 0x0C);
+		}
+		else if (menuPointer == 2)
+		{
+			g_Console.writeToBuffer(c, "Start Game!", 0x0A);
+			c.Y++;
+			g_Console.writeToBuffer(c, "Instructions!", 0x0A);
+			c.Y++;
 			g_Console.writeToBuffer(c, "-> Quit Game!", 0x0C);
 		}
 		
+	}
+	if (instructions)
+	{
+		c.X += width - 9;
+		c.Y++;
+		g_Console.writeToBuffer(c, "Escape to go back!", 0x0A);
 	}
 	if (*timer == true)
 	{
@@ -81,7 +99,7 @@ void printMap(int width, int height, bool *timer, bool isMainMenu, bool *health)
 	}
 }
 
-void deleteMap(int width, int height)
+void deleteMap(int width, int height) //Activates at level Teleporter only
 {
 	for (int row = (height * 2)-1; row >= 0; row--)
 	{
