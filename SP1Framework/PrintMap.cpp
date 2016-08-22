@@ -43,9 +43,9 @@ void printMap(int width, int height, bool *timer, bool isMainMenu)
 
 void deleteMap(int width, int height)
 {
-	for (int row = 0; row < (height * 2); row++)
+	for (int row = (height * 2)-1; row >= 0; row--)
 	{
-		for (int col = 0; col < (width * 2); col++)
+		for (int col = (width * 2)-1; col >= 0; col--)
 		{
 			if (map[row][col] != (char)255)
 			{

@@ -27,17 +27,18 @@ enum EKEYS
 {
 	K_CTRL,
 	K_ALT,
-	K_UP,
-	K_DOWN,
-	K_LEFT,
-	K_RIGHT,
-	K_ESCAPE,
-	K_SPACE,
+	K_UP,		//Character Move up
+	K_DOWN,		//Character Move down
+	K_LEFT,		//Character Move left
+	K_RIGHT,	//Character Move right
+	K_ESCAPE,	//Quit game
+	K_SPACE,	//Character interaction key
 	K_ENTER,
 	K_D1,
 	K_D2,
 	K_D3,
 	K_D4,
+	K_LSHIFT,
 	K_COUNT //Put this last thx
 };
 
@@ -89,5 +90,7 @@ void renderFramerate();     // renders debug information, frame rate, elapsed ti
 void renderToScreen();      // dump the contents of the buffer to the screen, one frame worth of game
 
 void renderMainMenu();      // renders the main menu
+
+void resetLevel();			// Reset the game level
 
 #endif // _GAME_H

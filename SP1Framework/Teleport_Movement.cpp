@@ -70,8 +70,10 @@ void teleport_player()
 			}
 			else
 			{
+				
 				g_sChar.m_cLocation.X++;
 				bSomethingHappened = true;
+				
 			}
 		}
 	}
@@ -79,6 +81,10 @@ void teleport_player()
 	{
 		g_sChar.m_bActive = !g_sChar.m_bActive;
 		bSomethingHappened = true;
+	}
+	if (map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)255)
+	{
+		newMap = true;
 	}
 
 	if (bSomethingHappened)

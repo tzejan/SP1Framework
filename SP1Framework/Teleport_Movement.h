@@ -12,6 +12,7 @@ extern unsigned int mapSizeWidth;
 extern unsigned int mapSizeHeight;
 
 extern struct teleporter portalPos[26];
+extern bool newMap;
 
 
 void teleport_player();

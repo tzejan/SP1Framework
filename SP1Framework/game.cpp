@@ -63,7 +63,7 @@ void init( void )
     //g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
     g_sChar.m_bActive = true;
     // sets the width, height and the font name to use in the console
-    g_Console.setConsoleFont(0, 16, L"Consolas");
+    g_Console.setConsoleFont(0, 16, L"Arial");
 }
 
 //--------------------------------------------------------------
@@ -103,6 +103,7 @@ void getInput( void )
     g_abKeyPressed[K_SPACE]  = isKeyPressed(VK_SPACE);
     g_abKeyPressed[K_ESCAPE] = isKeyPressed(VK_ESCAPE);
 	g_abKeyPressed[K_ENTER]  = isKeyPressed(VK_RETURN);
+	g_abKeyPressed[K_LSHIFT] = isKeyPressed(VK_LSHIFT);
 	g_abKeyPressed[K_D1] = isKeyPressed(0x31);
 	g_abKeyPressed[K_D2] = isKeyPressed(0x32);
 	g_abKeyPressed[K_D3] = isKeyPressed(0x33);
@@ -225,6 +226,7 @@ void splashScreenWait()    // waits for time to pass in splash screen
 void gameplay()            // gameplay logic
 {
     processUserInput();	// checks if you should change states or do something else with the game, e.g. pause, exit
+	resetLevel();		// check for button press for reset of level
 	moveCharacter();    // moves the character, collision detection, physics, etc
 						// sound can be played here too.
 }
@@ -428,7 +430,7 @@ void renderMap()
 			g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 + 56;
 			g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 + 14;
 			timeToWait = true;
-			timeRemaining = 2.0;
+			timeRemaining = 60.0;
 			break;
 		default:
 			cout << "THIS IS AN ERROR MESSAGE FOR BEING OUT OF SIZE!!!";
@@ -478,7 +480,7 @@ void renderFramerate()
 		}
 		else if (g_dElapsedTime > setTime)
 		{
-			setTime = g_dElapsedTime + 1;
+			setTime = g_dElapsedTime + 0.35;
 			deleteMap(mapSizeWidth, mapSizeHeight);
 		}
 	}
@@ -509,4 +511,13 @@ void renderMainMenu()
 	// quits the game if player hits the escape key
 	if (g_abKeyPressed[K_ESCAPE])
 		g_bQuitGame = true;
+}
+
+void resetLevel() //Causes reset
+{
+	if (g_abKeyPressed[K_LSHIFT])
+	{
+		newMap = true;
+		renderMap();
+	}
 }
