@@ -33,6 +33,10 @@ int refreshMap = 1;
 int timeRemaining = 60;  //If u all decide to use timer u need to put this as a function requirement (dont edit this number will affect teleport level)
 double setTime = 1.0;
 bool timeToWait = false;
+//Heath system 
+bool printHealth = false;
+int healthLeft = 5; 
+int *changeHealth = &healthLeft;
 
 //For teleportal location
 teleporter portalPos[26];
@@ -226,7 +230,6 @@ void splashScreenWait()    // waits for time to pass in splash screen
 void gameplay()            // gameplay logic
 {
     processUserInput();	// checks if you should change states or do something else with the game, e.g. pause, exit
-	resetLevel();		// check for button press for reset of level
 	moveCharacter();    // moves the character, collision detection, physics, etc
 						// sound can be played here too.
 }
@@ -239,6 +242,7 @@ void moveCharacter()
 		//Create new header and cpp. Add function here
 		if ((map[(g_sChar.m_cLocation.Y) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == 'E') && (refreshMap == 0))
 		{
+			healthLeft = 5; //resetting lives 
 			g_eGameState = S_GAME_1; //Proceed to level 1
 			newMap = true;
 		}
@@ -285,6 +289,10 @@ void processUserInput()
     // quits the game if player hits the escape key
     if (g_abKeyPressed[K_ESCAPE])
         g_bQuitGame = true;  
+
+	if (g_abKeyPressed[K_LSHIFT])
+		resetLevel();		// check for button press for reset of level
+
 	if (g_abKeyPressed[K_ALT])
 	{
 		switch (refreshMap)
@@ -390,7 +398,7 @@ void renderSplashScreen()  // renders the splash screen
 		loadMap(0);
 	}
 	//Print map in cpp functions
-	printMap(mapSizeWidth, mapSizeHeight, &timeToWait, false);
+	printMap(mapSizeWidth, mapSizeHeight, &timeToWait, false, &printHealth);
 }
 
 void renderGame()
@@ -409,11 +417,13 @@ void renderMap()
 		switch (refreshMap)
 		{
 		case 0: //Tutorial
+			printHealth = true;
 			g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 - 59;
 			g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 - 13;
 			timeToWait = false;
 			break;
 		case 1: //Levers
+			
 			g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 - 59;
 			g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 - 10;
 			break;
@@ -439,18 +449,19 @@ void renderMap()
 	}
 
 	//Print map in cpp functions
-	printMap(mapSizeWidth, mapSizeHeight, &timeToWait, false);
+	printMap(mapSizeWidth, mapSizeHeight, &timeToWait, false, &printHealth);
 }
 
 void renderCharacter()
 {
-    // Draw the location of the character
-    WORD charColor = 0x0C;
-    if (g_sChar.m_bActive)
-    {
-        charColor = 0x0A;
-    }
-    g_Console.writeToBuffer(g_sChar.m_cLocation, (char)234, charColor);
+	// Draw the location of the character
+	WORD charColor = 0x0C;
+	if (g_sChar.m_bActive)
+	{
+		charColor = 0x0A;
+	}
+	g_Console.writeToBuffer(g_sChar.m_cLocation, (char)234, charColor);
+	
 }
 
 void renderFramerate()
@@ -499,7 +510,7 @@ void renderMainMenu()
 		loadMap(1);
 	}
 	//Print map in cpp functions
-	printMap(mapSizeWidth, mapSizeHeight, &timeToWait, true);
+	printMap(mapSizeWidth, mapSizeHeight, &timeToWait, true, &printHealth);
 
 	//Start game if flag is true and hits enter key
 	if (g_abKeyPressed[K_ENTER])
@@ -515,9 +526,11 @@ void renderMainMenu()
 
 void resetLevel() //Causes reset
 {
-	if (g_abKeyPressed[K_LSHIFT])
+	if (healthLeft != 1)
 	{
+		*changeHealth -= 1; //For health testing. Can delete 
 		newMap = true;
 		renderMap();
+		Sleep(250);
 	}
 }
