@@ -47,6 +47,9 @@ bool check = false;
 // Check Question Number
 int checkq = 0;
 
+//For main menu
+int menuPointer = 0;
+
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
 //            Initialize variables, allocate memory, load data from file, etc. 
@@ -506,6 +509,7 @@ void renderMainMenu()
 {
 	if (newMap)
 	{
+		menuPointer = 0;
 		newMap = false;
 		loadMap(1);
 	}
@@ -513,15 +517,20 @@ void renderMainMenu()
 	printMap(mapSizeWidth, mapSizeHeight, &timeToWait, true, &printHealth);
 
 	//Start game if flag is true and hits enter key (put only after the cursor is there)
-	if (g_abKeyPressed[K_ENTER])
+	if (g_abKeyPressed[K_ENTER] && menuPointer == 0)
 	{
 		newMap = true;
 		g_eGameState = S_GAME_TUT;// sets the state to start
 	}
 	
 	// quits the game if player hits the escape key
-	if (g_abKeyPressed[K_ESCAPE])
+	if (g_abKeyPressed[K_ENTER] && menuPointer == 1)
 		g_bQuitGame = true;
+
+	if (g_abKeyPressed[K_UP] && menuPointer != 0)
+		menuPointer--;
+	if (g_abKeyPressed[K_DOWN] && menuPointer != 1)
+		menuPointer++;
 }
 
 void resetLevel() //Causes reset

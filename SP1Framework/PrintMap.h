@@ -10,6 +10,7 @@ extern char map[50][150];
 extern int timeRemaining;
 extern int *changeHealth;
 extern struct SGameChar  g_sChar;
+extern int menuPointer;
 
 void printMap(int width, int height, bool *timer, bool isMainMenu, bool *health);
 void deleteMap(int width, int height);

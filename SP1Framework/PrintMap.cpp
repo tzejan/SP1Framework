@@ -19,9 +19,19 @@ void printMap(int width, int height, bool *timer, bool isMainMenu, bool *health)
 	{
 		c.X += 44 - 10;
 		c.Y++;
-		g_Console.writeToBuffer(c, "Press Enter To Start!", 0x0A);
-		c.Y++;
-		g_Console.writeToBuffer(c, "Press Escape To Exit!", 0x0C);
+		if (menuPointer == 0)
+		{
+			g_Console.writeToBuffer(c, "-> Start Game!", 0x0A);
+			c.Y++;
+			g_Console.writeToBuffer(c, "Quit Game!", 0x0C);
+		}
+		else if (menuPointer == 1)
+		{
+			g_Console.writeToBuffer(c, "Start Game!", 0x0A);
+			c.Y++;
+			g_Console.writeToBuffer(c, "-> Quit Game!", 0x0C);
+		}
+		
 	}
 	if (*timer == true)
 	{
