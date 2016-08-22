@@ -409,6 +409,7 @@ void renderMap()
 	if (newMap)
 	{
 		newMap = false;
+		deleteChar = false;
 		loadMap(refreshMap + 2); //Load map
 		switch (refreshMap)
 		{
@@ -434,6 +435,7 @@ void renderMap()
 			timeToWait = false;
 			break;
 		case 4: //Teleportals (Perfected spawn)
+			deleteChar = false;
 			g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 + 56;
 			g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 + 14;
 			timeToWait = true;
