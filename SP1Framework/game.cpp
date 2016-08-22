@@ -33,6 +33,12 @@ int refreshMap = 1;
 int timeRemaining = 60;  //If u all decide to use timer u need to put this as a function requirement (dont edit this number will affect teleport level)
 double setTime = 1.0;
 bool timeToWait = false;
+//Heath system 
+bool printHealth = false;
+int healthLeft = 5; 
+int *changeHealth = &healthLeft;
+//For timer map
+bool deleteChar = false;
 
 //For teleportal location
 teleporter portalPos[26];
@@ -63,7 +69,7 @@ void init( void )
     //g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
     g_sChar.m_bActive = true;
     // sets the width, height and the font name to use in the console
-    g_Console.setConsoleFont(0, 16, L"Consolas");
+    g_Console.setConsoleFont(0, 16, L"Arial");
 }
 
 //--------------------------------------------------------------
@@ -388,7 +394,7 @@ void renderSplashScreen()  // renders the splash screen
 		loadMap(0);
 	}
 	//Print map in cpp functions
-	printMap(mapSizeWidth, mapSizeHeight, &timeToWait, false);
+	printMap(mapSizeWidth, mapSizeHeight, &timeToWait, false, &printHealth);
 }
 
 void renderGame()
@@ -407,15 +413,18 @@ void renderMap()
 		switch (refreshMap)
 		{
 		case 0: //Tutorial
+			printHealth = true;
 			g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 - 59;
 			g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 - 13;
 			timeToWait = false;
 			break;
 		case 1: //Levers
+			healthLeft = 5; //resetting lives 
 			g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 - 59;
 			g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 - 10;
 			break;
 		case 2: //Questions
+			*changeHealth -= 1; //For health testing. Can delete 
 			g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2 - 18;
 			g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2 - 2;
 			break;
@@ -437,18 +446,25 @@ void renderMap()
 	}
 
 	//Print map in cpp functions
-	printMap(mapSizeWidth, mapSizeHeight, &timeToWait, false);
+	printMap(mapSizeWidth, mapSizeHeight, &timeToWait, false, &printHealth);
 }
 
 void renderCharacter()
 {
-    // Draw the location of the character
-    WORD charColor = 0x0C;
-    if (g_sChar.m_bActive)
-    {
-        charColor = 0x0A;
-    }
-    g_Console.writeToBuffer(g_sChar.m_cLocation, (char)234, charColor);
+	if (deleteChar)
+	{
+		g_Console.writeToBuffer(g_sChar.m_cLocation, (char)255);
+	}
+	else
+	{
+		// Draw the location of the character
+		WORD charColor = 0x0C;
+		if (g_sChar.m_bActive)
+		{
+			charColor = 0x0A;
+		}
+		g_Console.writeToBuffer(g_sChar.m_cLocation, (char)234, charColor);
+	}
 }
 
 void renderFramerate()
@@ -497,7 +513,7 @@ void renderMainMenu()
 		loadMap(1);
 	}
 	//Print map in cpp functions
-	printMap(mapSizeWidth, mapSizeHeight, &timeToWait, true);
+	printMap(mapSizeWidth, mapSizeHeight, &timeToWait, true, &printHealth);
 
 	//Start game if flag is true and hits enter key
 	if (g_abKeyPressed[K_ENTER])

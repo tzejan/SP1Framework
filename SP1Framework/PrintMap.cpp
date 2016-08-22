@@ -1,6 +1,6 @@
 #include "PrintMap.h"
 
-void printMap(int width, int height, bool *timer, bool isMainMenu)
+void printMap(int width, int height, bool *timer, bool isMainMenu, bool *health)
 {
 	double timeToWait = 1.0;
 
@@ -39,6 +39,36 @@ void printMap(int width, int height, bool *timer, bool isMainMenu)
 		}
 		
 	}
+	if (*health == true)
+	{
+		if (*timer == true)
+		{
+			if (timeRemaining > 0)
+			{
+				c.X += width + 5;
+				c.Y -= 37;
+			}
+			else
+			{
+				c.X += width - 8;
+				c.Y -= 37;
+			}
+		}
+		else
+		{
+			c.X += width + 50;
+			c.Y -= 38;
+		}
+		if (*changeHealth != 0)
+		{
+			for (int i = *changeHealth; i > 0; i--)
+			{
+				g_Console.writeToBuffer(c, (char)3, 0x0C);
+				c.X += 2;
+			}
+		}
+
+	}
 }
 
 void deleteMap(int width, int height)
@@ -51,6 +81,11 @@ void deleteMap(int width, int height)
 			{
 				map[row][col] = (char)255;
 				break;
+			}
+			if ((map[(g_sChar.m_cLocation.Y - 1) - (25 - mapSizeHeight)][(g_sChar.m_cLocation.X) - (90 - mapSizeWidth)] == (char)255) && (deleteChar == false))
+			{
+				*changeHealth -= 1; //only minus one health 
+				deleteChar = true; //to erase character when character goes into empty space 
 			}
 		}
 	}
