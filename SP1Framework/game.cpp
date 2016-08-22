@@ -512,7 +512,7 @@ void renderMainMenu()
 	//Print map in cpp functions
 	printMap(mapSizeWidth, mapSizeHeight, &timeToWait, true, &printHealth);
 
-	//Start game if flag is true and hits enter key
+	//Start game if flag is true and hits enter key (put only after the cursor is there)
 	if (g_abKeyPressed[K_ENTER])
 	{
 		newMap = true;
