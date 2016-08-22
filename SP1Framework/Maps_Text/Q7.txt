@@ -1,0 +1,8 @@
+Including this question, how any questions are there in the entire maze?
+1.11
+2.10
+3.9
+4.8
+Hint  : Count all the question marks
+Hint 2: The answer is eight or more
+Hint 3: All the hints above are kind of useless

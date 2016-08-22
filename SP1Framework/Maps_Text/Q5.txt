@@ -1,0 +1,6 @@
+An electric train is moving North at 100 mph and a wind is blowing to the West at 5mph.
+Which way does the smoke blow?
+1.Nowhere
+2.South
+3.West
+4.South-West

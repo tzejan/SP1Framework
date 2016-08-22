@@ -30,11 +30,41 @@ void loadQ(int qNum)
 	string mapname = " ";
 	switch (qNum)
 	{
+	case 0:
+		mapname = "Maps_Text/Q0.txt";
+		break;
 	case 1:
 		mapname = "Maps_Text/Q1.txt";
 		break;
 	case 2:
 		mapname = "Maps_Text/Q2.txt";
+		break;
+	case 3:
+		mapname = "Maps_Text/Q3.txt";
+		break;
+	case 4:
+		mapname = "Maps_Text/Q4.txt";
+		break;
+	case 5:
+		mapname = "Maps_Text/Q5.txt";
+		break;
+	case 6:
+		mapname = "Maps_Text/Q6.txt";
+		break;
+	case 7:
+		mapname = "Maps_Text/Q7.txt";
+		break;
+	case 8:
+		mapname = "Maps_Text/Q8.txt";
+		break;
+	case 9:
+		mapname = "Maps_Text/Q9.txt";
+		break;
+	case 10:
+		mapname = "Maps_Text/Q10.txt";
+		break;
+	case 11:
+		mapname = "Maps_Text/Q11.txt";
 		break;
 	}
 
@@ -63,10 +93,6 @@ void loadQ(int qNum)
 		cout << "file cannot be opened" << endl;
 	}
 }
-
-
-
-
 
 void Question_Asn(bool isTrue) //what happens if a question is answered correctly
 {

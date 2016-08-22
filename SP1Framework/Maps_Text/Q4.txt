@@ -1,0 +1,5 @@
+How many months have 28 days?
+1.One
+2.Two
+3.Five
+4.All of them
