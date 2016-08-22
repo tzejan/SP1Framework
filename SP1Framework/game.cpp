@@ -533,4 +533,8 @@ void resetLevel() //Causes reset
 		renderMap();
 		Sleep(250);
 	}
+	if (healthLeft == 0)
+	{
+		//Game over here!
+	}
 }
