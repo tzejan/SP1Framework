@@ -51,8 +51,8 @@ void Position::generateRandomMapCoordinates() {
 	int newX, newY;
 
 
-	newX = rand() % 79;
-	newY = rand() % 24;
+	newX = rand() % 80;
+	newY = rand() % 25;
 	setXPosition(newX);
 	setYPosition(newY);
 	return;
