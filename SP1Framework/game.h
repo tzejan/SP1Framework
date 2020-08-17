@@ -8,6 +8,7 @@ extern bool g_bQuitGame;
 
 // struct to store keyboard events
 // a small subset of KEY_EVENT_RECORD
+// Adding code with Git Hub is very cool!
 struct SKeyEvent
 {
     bool keyDown;
