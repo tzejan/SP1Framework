@@ -5,5 +5,6 @@ Release/
 *.opendb
 *.opensdf
 *.suo
+*.vs
 *.user
 ipch/
