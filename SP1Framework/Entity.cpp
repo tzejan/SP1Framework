@@ -8,6 +8,7 @@ Entity::Entity()
 
 Entity::~Entity()
 {
+	//leave blank
 }
 
 Position Entity::getPos(void)
