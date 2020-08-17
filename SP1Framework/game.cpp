@@ -6,6 +6,9 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <stdlib.h>
+#include <time.h>
+
 
 double  g_dElapsedTime;
 double  g_dDeltaTime;
@@ -28,6 +31,10 @@ Console g_Console(80, 25, "SP1 Framework");
 //--------------------------------------------------------------
 void init( void )
 {
+
+    // initialise random seed for random generation
+    srand((unsigned int)time(NULL));
+
     // Set precision for floating point output
     g_dElapsedTime = 0.0;    
 
