@@ -292,7 +292,7 @@ void render()
 void clearScreen()
 {
     // Clears the buffer with this colour attribute
-    g_Console.clearBuffer(0x1F);
+    g_Console.clearBuffer(0);
 }
 
 void renderToScreen()
@@ -330,7 +330,7 @@ void renderMap()
     //   0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6
     //};
 
-    g_Console.writeToBuffer(0, 18, "                                                                                ", 0000);
+    g_Console.writeToBuffer(0, 18, "                                                                                ", 0xFF);
     g_Console.writeToBuffer(23, 20, "                  ", 0xB2); // 6 space for each sprint **total of 3 sprints/ 18 spaces
     g_Console.writeToBuffer(23, 21, "                  ", 0xB2); // 6 space for each sprint **total of 3 sprints / 18 spaces
     g_Console.writeToBuffer(3, 20, "                  ", 0xFF); //box for toiletpaper
@@ -350,35 +350,35 @@ void rendertoiletpaper()
         {
             if (tx == 11 && ty == 22)
             {
-                g_Console.writeToBuffer(tx, ty, " ", 0);
+                g_Console.writeToBuffer(tx, ty, " ", 79);
             }
             else if (tx == 12 && ty == 22)
             {
-                g_Console.writeToBuffer(tx, ty, " ", 0);
+                g_Console.writeToBuffer(tx, ty, " ", 79);
             }
             else if (tx == 10 && ty == 23)
             {
-                g_Console.writeToBuffer(tx, ty, " ", 0);
+                g_Console.writeToBuffer(tx, ty, " ", 79);
             }
             else if (tx == 13 && ty == 23)
             {
-                g_Console.writeToBuffer(tx, ty, " ", 0);
+                g_Console.writeToBuffer(tx, ty, " ", 79);
             }
             else if (tx == 11 && ty == 24)
             {
-                g_Console.writeToBuffer(tx, ty, " ", 0);
+                g_Console.writeToBuffer(tx, ty, " ", 79);
             }
             else if (tx == 12 && ty == 24)
             {
-                g_Console.writeToBuffer(tx, ty, " ", 0);
+                g_Console.writeToBuffer(tx, ty, " ", 79);
             }
             else if (tx == 11 && ty == 23)
             {
-                g_Console.writeToBuffer(tx, ty, " ", 0x1F);
+                g_Console.writeToBuffer(tx, ty, " ", 0);
             }
             else if (tx == 12 && ty == 23)
             {
-                g_Console.writeToBuffer(tx, ty, " ", 0x1F);
+                g_Console.writeToBuffer(tx, ty, " ", 0);
             }
             else
             {
