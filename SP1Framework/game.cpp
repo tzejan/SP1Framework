@@ -335,6 +335,9 @@ void renderMap()
         c.Y = i + 1;
         colour(colors[i]);
         g_Console.writeToBuffer(c, " °±²Û", colors[i]);
+        g_Console.writeToBuffer(0, 20, "                                                                                ", 0000);
+        g_Console.writeToBuffer(20, 22, "                  ", 0xB2);
+        g_Console.writeToBuffer(20, 23, "                  ", 0xB2);
     }
 }
 
