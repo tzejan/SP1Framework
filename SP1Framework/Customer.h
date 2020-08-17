@@ -5,10 +5,13 @@ class Customer :
 {
 private:
     int itemToBuy;
+    int quantity;
 
 public:
     Customer();
     ~Customer();
-    
+    void moveToShelfContainingItem(int itemToBuy);
+    bool entranceWaiting(void);
+    bool shelfWaiting(void);
 };
 
