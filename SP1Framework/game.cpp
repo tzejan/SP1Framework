@@ -17,7 +17,7 @@ SGameChar   g_sChar;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 
 // Console object
-Console g_Console(80, 25, "SP1 Framework");
+Console g_Console(80, 30, "Escape the Factory");
 
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -310,7 +310,7 @@ void renderSplashScreen()  // renders the splash screen
     c.X = g_Console.getConsoleSize().X / 2 - 20;
     g_Console.writeToBuffer(c, "Press <Space> to change character colour", 0x09);
     c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 2 - 9;
+    c.X = g_Console.getConsoleSize().X / 2 - 10;
     g_Console.writeToBuffer(c, "Press 'Esc' to quit", 0x09);
 }
 
