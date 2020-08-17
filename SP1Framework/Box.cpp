@@ -22,13 +22,3 @@ int Box::getAmt()
 {
 	return amount;
 }
-
-void Box::setXBoxPosition(int newX)
-{
-	pos.setXPosition(newX);
-}
-
-void Box::setYBoxPosition(int newY)
-{
-	pos.setYPosition(newY);
-}
