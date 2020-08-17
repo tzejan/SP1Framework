@@ -317,6 +317,7 @@ void renderSplashScreen()  // renders the splash screen
 
 void renderGame()
 {
+    PrintMap();
     renderMap();        // renders the map to the buffer first
     renderCharacter();  // renders the character into the buffer
     rendertoiletpaper();     // renders toiletpaper *** add bool statement to check if toilet paper is collected then display ***
@@ -442,12 +443,12 @@ void renderInputEvents()
             break;
         default: continue;
         }
-        if (g_skKeyEvent[i].keyDown)
+      /*  if (g_skKeyEvent[i].keyDown)
             ss << key << " pressed";
         else if (g_skKeyEvent[i].keyReleased)
             ss << key << " released";
         else
-            ss << key << " not pressed";
+            ss << key << " not pressed";*/
 
         COORD c = { startPos.X, startPos.Y + i };
         g_Console.writeToBuffer(c, ss.str(), 0x17);
@@ -492,6 +493,24 @@ void renderInputEvents()
         break;
     }
     
+}
+
+void PrintMap()
+{
+    int wallX = 19;
+    int wallY = 1;
+
+    //walls in 4 sides
+    for (int i = 0; i < 41; i++)
+    {
+        g_Console.writeToBuffer(wallX + i, 1, " ", 0xB2);
+        g_Console.writeToBuffer(wallX + i, 16, " ", 0xB2);
+    }
+    for (int j = 0; j < 16; j++)
+    {
+        g_Console.writeToBuffer(19, wallY + j, " ", 0xB2);
+        g_Console.writeToBuffer(59, wallY + j, " ", 0xB2);
+    }
 }
 
 
