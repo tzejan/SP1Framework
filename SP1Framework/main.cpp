@@ -43,3 +43,5 @@ void mainLoop( void )
         g_Timer.waitUntil(gc_uFrameTime);   // Frame rate limiter. Limits each frame to a specified time in ms.      
     }    
 }
+
+//test
