@@ -8,12 +8,12 @@ Box::~Box()
 {
 }
 
-char Box::getTag()
+int Box::getTag()
 {
 	return itemtag;
 }
 
-void Box::setTag(char itemtag)
+void Box::setTag(int itemtag)
 {
 	this->itemtag = itemtag;
 }
