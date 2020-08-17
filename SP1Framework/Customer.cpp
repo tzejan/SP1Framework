@@ -7,7 +7,6 @@ Customer::Customer()
 	switch (number)
 	{
 	case 1: //rice
-
 	}
 }
 

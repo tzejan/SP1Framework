@@ -2,6 +2,7 @@
 
 #include "Framework\timer.h"
 #include "game.h"
+#include "Box.h"
 
 CStopWatch g_Timer;                            // Timer function to keep track of time and the frame rate
 bool g_bQuitGame = false;                    // Set to true if you want to quit the game
@@ -44,4 +45,8 @@ void mainLoop( void )
     }    
 }
 
+void test()
+{
+    Box Box1;
+}
 //test

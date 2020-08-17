@@ -1,5 +1,7 @@
 #pragma once
-class Box
+#include "Entity.h"
+class Box: 
+	private Entity
 {
 private:
 	char itemtag; //tag to identify what type of item the box holds
@@ -10,5 +12,7 @@ public:
 	char getTag();//Get itemtag
 	void setTag(char itemtag);//Set itemtag
 	int getAmt();//Get amount
+	void setXBoxPosition(int newX);
+	void setYBoxPosition(int newY);
 };
 
