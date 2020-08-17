@@ -6,3 +6,4 @@ Release/
 *.user
 ipch/
 .vs/
+*.db
