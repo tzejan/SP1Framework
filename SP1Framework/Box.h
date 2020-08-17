@@ -7,6 +7,7 @@ private:
 public:
 	Box();
 	~Box();
+
 	char getTag();//Get itemtag
 	void setTag(char itemtag);//Set itemtag
 	int getAmt();//Get amount

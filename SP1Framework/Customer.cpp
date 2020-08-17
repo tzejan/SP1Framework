@@ -4,11 +4,11 @@
 Customer::Customer()
 {
 	int number = rand() % 6;
-	switch (number)
-	{
-	case 1: //rice
+	//switch (number)
+	//{
+	//case 1: //rice
 
-	}
+	//}
 }
 
 Customer::~Customer()
