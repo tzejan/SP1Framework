@@ -15,7 +15,7 @@ public:
 	static int getSavings();
 
 	void receiveStrike(); //set strikes
-	void receivePay(int pay); //set savings
+	void receivePay(int pay); //set savings 
 
 	void payRent();
 	void payFood();
