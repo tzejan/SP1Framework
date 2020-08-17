@@ -1,5 +1,5 @@
 // This is the main file to hold everthing together
-//test
+
 #include "Framework\timer.h"
 #include "game.h"
 
