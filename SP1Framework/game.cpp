@@ -335,10 +335,19 @@ void renderMap()
         c.Y = i + 1;
         colour(colors[i]);
         g_Console.writeToBuffer(c, " °±²Û", colors[i]);
-        g_Console.writeToBuffer(0, 20, "                                                                                ", 0000);
-        g_Console.writeToBuffer(20, 22, "                  ", 0xB2);
-        g_Console.writeToBuffer(20, 23, "                  ", 0xB2);
     }
+
+    g_Console.writeToBuffer(0, 18, "                                                                                ", 0000);
+    g_Console.writeToBuffer(23, 20, "                  ", 0xB2);
+    g_Console.writeToBuffer(23, 21, "                  ", 0xB2);
+    g_Console.writeToBuffer(3, 20, "                  ", 0xFF);
+    g_Console.writeToBuffer(3, 25, "                  ", 0xFF);
+    for (int i = 20; i < 25; ++i)
+    {
+        g_Console.writeToBuffer(3, i, " ", 0xFF);
+        g_Console.writeToBuffer(20, i, " ", 0xFF);
+    }
+    
 }
 
 void renderCharacter()
@@ -366,8 +375,8 @@ void renderFramerate()
     // displays the elapsed time
     ss.str("");
     ss << g_dElapsedTime << "secs";
-    c.X = 0;
-    c.Y = 0;
+    c.X = 64;
+    c.Y = 20;
     g_Console.writeToBuffer(c, ss.str(), 0x59);
 }
 
