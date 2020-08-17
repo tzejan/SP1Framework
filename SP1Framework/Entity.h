@@ -2,7 +2,7 @@
 #include "Position.h"
 class Entity
 {
-private:
+protected:
 	Position pos;
 
 public:
