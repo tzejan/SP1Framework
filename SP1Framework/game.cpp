@@ -141,7 +141,7 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
 // Input    : const KEY_EVENT_RECORD& keyboardEvent
 // Output   : void
 //--------------------------------------------------------------
-void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent)
+void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent) //movement
 {
     // here, we map the key to our enums
     EKEYS key = K_COUNT;
