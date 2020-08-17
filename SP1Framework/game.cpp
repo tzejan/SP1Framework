@@ -323,19 +323,29 @@ void renderGame()
 void renderMap()
 {
     // Set up sample colours, and output shadings
-    const WORD colors[] = {
-        0x1A, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
-        0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6
+    const char colors[] = {
+        0x1A, 0x2B, 0x3C, 0x4D, 0x5E, 0x0F,0xF7,
+        0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6,0xC0,
     };
 
     COORD c;
-    for (int i = 0; i < 12; ++i)
+    for (int i = 0; i < 80; ++i)
     {
-        c.X = 5 * i;
-        c.Y = i + 1;
-        colour(colors[i]);
-        g_Console.writeToBuffer(c, " °±²Û", colors[i]);
+        c.X = i;
+        g_Console.writeToBuffer(c, " ", colors[6]);
+        for (int r = 0; r < 80; ++r)
+        {
+            
+            c.Y = r;
+            g_Console.writeToBuffer(c, " ", colors[6]);
+            
+        }
+        
+        g_Console.writeToBuffer(c, " ", colors[6]);
     }
+    c.X = 18;
+    c.Y = 14;
+    g_Console.writeToBuffer(c, " ", colors[5]);
 }
 
 void renderCharacter()

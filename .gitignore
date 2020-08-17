@@ -5,3 +5,7 @@ Release/
 *.suo
 *.user
 ipch/
+*.db
+*.db-shm
+*.db-wal
+*.opendb
