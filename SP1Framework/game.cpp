@@ -286,6 +286,7 @@ void render()
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
     renderInputEvents();    // renders status of input events
     renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
+    rendertoiletpaper();     // renders toiletpaper *** add bool statement to check if toilet paper is collected then display ***
 }
 
 void clearScreen()
@@ -323,31 +324,67 @@ void renderGame()
 void renderMap()
 {
     // Set up sample colours, and output shadings
-    const WORD colors[] = {
-        0x1A, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
-        0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6
-    };
-
-    COORD c;
-    for (int i = 0; i < 12; ++i)
-    {
-        c.X = 5 * i;
-        c.Y = i + 1;
-        colour(colors[i]);
-        g_Console.writeToBuffer(c, " °±²Û", colors[i]);
-    }
+    //const WORD colors[] = {
+    //    0x1A, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
+    //   0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6
+    //};
 
     g_Console.writeToBuffer(0, 18, "                                                                                ", 0000);
     g_Console.writeToBuffer(23, 20, "                  ", 0xB2);
     g_Console.writeToBuffer(23, 21, "                  ", 0xB2);
     g_Console.writeToBuffer(3, 20, "                  ", 0xFF);
-    g_Console.writeToBuffer(3, 25, "                  ", 0xFF);
-    for (int i = 20; i < 25; ++i)
+    g_Console.writeToBuffer(3, 28, "                  ", 0xFF);
+    for (int i = 20; i < 28; ++i)
     {
         g_Console.writeToBuffer(3, i, " ", 0xFF);
         g_Console.writeToBuffer(20, i, " ", 0xFF);
     }
-    
+}
+
+void rendertoiletpaper()
+{
+    for (int ty = 22; ty < 27; ++ty)
+    {
+        for (int tx = 7; tx < 17; ++tx)
+        {
+            if (tx == 11 && ty == 22)
+            {
+                g_Console.writeToBuffer(tx, ty, " ", 0);
+            }
+            else if (tx == 12 && ty == 22)
+            {
+                g_Console.writeToBuffer(tx, ty, " ", 0);
+            }
+            else if (tx == 10 && ty == 23)
+            {
+                g_Console.writeToBuffer(tx, ty, " ", 0);
+            }
+            else if (tx == 13 && ty == 23)
+            {
+                g_Console.writeToBuffer(tx, ty, " ", 0);
+            }
+            else if (tx == 11 && ty == 24)
+            {
+                g_Console.writeToBuffer(tx, ty, " ", 0);
+            }
+            else if (tx == 12 && ty == 24)
+            {
+                g_Console.writeToBuffer(tx, ty, " ", 0);
+            }
+            else if (tx == 11 && ty == 23)
+            {
+                g_Console.writeToBuffer(tx, ty, " ", 0x1F);
+            }
+            else if (tx == 12 && ty == 23)
+            {
+                g_Console.writeToBuffer(tx, ty, " ", 0x1F);
+            }
+            else
+            {
+                g_Console.writeToBuffer(tx, ty, " ", 0xFF);
+            }
+        }
+    }
 }
 
 void renderCharacter()
