@@ -2,11 +2,11 @@
 #include "Entity.h"
 
 class Player :
-	public Entity
+	public Entity 
 {
 private:
 	static int strikes;
-	static int savings;
+	static int savings; 
 
 	bool holdingProduct;
 
