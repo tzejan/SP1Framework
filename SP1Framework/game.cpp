@@ -286,7 +286,7 @@ void render()
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
     renderInputEvents();    // renders status of input events
     renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
-    rendertoiletpaper();     // renders toiletpaper *** add bool statement to check if toilet paper is collected then display ***
+
 }
 
 void clearScreen()
@@ -319,6 +319,7 @@ void renderGame()
 {
     renderMap();        // renders the map to the buffer first
     renderCharacter();  // renders the character into the buffer
+    rendertoiletpaper();     // renders toiletpaper *** add bool statement to check if toilet paper is collected then display ***
 }
 
 void renderMap()
@@ -330,14 +331,14 @@ void renderMap()
     //};
 
     g_Console.writeToBuffer(0, 18, "                                                                                ", 0000);
-    g_Console.writeToBuffer(23, 20, "                  ", 0xB2);
-    g_Console.writeToBuffer(23, 21, "                  ", 0xB2);
-    g_Console.writeToBuffer(3, 20, "                  ", 0xFF);
-    g_Console.writeToBuffer(3, 28, "                  ", 0xFF);
+    g_Console.writeToBuffer(23, 20, "                  ", 0xB2); // 6 space for each sprint **total of 3 sprints/ 18 spaces
+    g_Console.writeToBuffer(23, 21, "                  ", 0xB2); // 6 space for each sprint **total of 3 sprints / 18 spaces
+    g_Console.writeToBuffer(3, 20, "                  ", 0xFF); //box for toiletpaper
+    g_Console.writeToBuffer(3, 28, "                  ", 0xFF); //box for toiletpaper
     for (int i = 20; i < 28; ++i)
     {
-        g_Console.writeToBuffer(3, i, " ", 0xFF);
-        g_Console.writeToBuffer(20, i, " ", 0xFF);
+        g_Console.writeToBuffer(3, i, " ", 0xFF); //box for toiletpaper
+        g_Console.writeToBuffer(20, i, " ", 0xFF); //box for toiletpaper
     }
 }
 
