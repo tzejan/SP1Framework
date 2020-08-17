@@ -338,10 +338,10 @@ void renderMap()
     COORD c;
     for (int i = 0; i < 12; ++i)
     {
-        c.X = 5 * i;
+        c.X = 5;
         c.Y = i + 1;
-        colour(colors[i]);
-        g_Console.writeToBuffer(c, " °±²Û", colors[i]);
+        colour(colors[0]);
+        g_Console.writeToBuffer(c, " ", colors[1]);
     }
 }
 
