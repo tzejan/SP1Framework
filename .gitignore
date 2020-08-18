@@ -1,6 +1,7 @@
 Debug/
 Release/
 *.opensdf
+*.opendb
 *.sdf
 *.suo
 *.user
