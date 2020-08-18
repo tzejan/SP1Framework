@@ -104,6 +104,9 @@
     <ClInclude Include="Shelf.h" />
     <ClInclude Include="Son.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Tutorial level.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
