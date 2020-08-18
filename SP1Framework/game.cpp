@@ -388,7 +388,7 @@ void renderHome()
 void renderTutorialLevel()
 {
     Map tutorialLevel;
-    tutorialLevel.chooseMap(1);
+    tutorialLevel.chooseMap(1, g_Console);
 }
 
 void renderCharacter()

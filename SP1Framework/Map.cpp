@@ -33,7 +33,7 @@ int Map::getColumnBig()
 	return columnBig;
 }
 
-void Map::chooseMap(int lvl, Console console)
+void Map::chooseMap(int lvl, Console& console)
 {
 	switch (lvl)
 	{
@@ -71,7 +71,7 @@ void Map::printMap(std::fstream& level, int row, int column)
 
 }
 
-void Map::printMapValues(std::fstream& level, Console console)
+void Map::printMapValues(std::fstream& level, Console& console)
 {
 	COORD c;
 	std::string output;
