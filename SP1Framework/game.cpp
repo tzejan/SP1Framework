@@ -344,9 +344,18 @@ void renderMap()
     }
 }
 
+void renderMainMenu() 
+{
+    
+}
+
+void renderHome() 
+{
+
+}
+
 void renderTutorialLevel()
 {
-    COORD c;
 
 }
 

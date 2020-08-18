@@ -5,7 +5,7 @@ Son::Son() {
 }
 
 Son::~Son() {
-
+	 
 }
 
 void Son::isSick() {
