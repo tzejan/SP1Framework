@@ -344,7 +344,7 @@ void renderSplashScreen()  // renders the splash screen
     g_Console.writeToBuffer(c, "Fair Prize", 0x03);
     c.Y += 1;
     c.X = g_Console.getConsoleSize().X / 2 - 15;
-    g_Console.writeToBuffer(c, "Click here to start the game!", 0x09);
+    g_Console.writeToBuffer(c, "Left click to start the game!", 0x09);
     c.Y += 1;
     c.X = g_Console.getConsoleSize().X / 2 - 9;
     g_Console.writeToBuffer(c, "Press 'Esc' to quit", 0x09);

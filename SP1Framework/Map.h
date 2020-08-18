@@ -5,15 +5,18 @@
 class Map
 {
 private:
-	int mapX, mapY;
+	const int rowSmall, columnSmall;
+	const int rowBig, columnBig;
 
 public:
 	Map();
 	~Map();
 	
-	int getMapX();
-	int getMapY();
-	void setMapX(int mapX);
-	void setMapY(int mapY);
+	int getRowSmall();
+	int getColumnSmall();
+	int getRowBig();
+	int getColumnBig();
+	void chooseMap(Map map, int lvl);
+	void printMap(std::fstream& level, int rows, int column);
 };
 

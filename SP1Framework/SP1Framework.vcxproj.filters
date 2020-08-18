@@ -19,18 +19,6 @@
     <Filter Include="Source Files\Framework">
       <UniqueIdentifier>{37c19c94-9502-4b2b-b3f1-70fa908b49af}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Entity Classes">
-      <UniqueIdentifier>{e6365e9d-c389-457a-abb8-3cca770bbc1e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Map Files">
-      <UniqueIdentifier>{1a90e691-d1fb-4218-bb23-1c3321daeff9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Entity Files">
-      <UniqueIdentifier>{424644ab-5d1b-442c-a5ad-081a204d466d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Map Files">
-      <UniqueIdentifier>{c664cc50-697f-4d16-8046-199992560c7a}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -45,32 +33,32 @@
     <ClCompile Include="game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Box.cpp">
-      <Filter>Source Files\Entity Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Customer.cpp">
-      <Filter>Source Files\Entity Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Source Files\Entity Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Son.cpp">
-      <Filter>Source Files\Entity Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Shelf.cpp">
-      <Filter>Source Files\Entity Files</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>Source Files\Entity Files</Filter>
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Box.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Position.cpp">
-      <Filter>Source Files\Map Files</Filter>
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Customer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shelf.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Son.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Map.cpp">
-      <Filter>Source Files\Map Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>Source Files\Map Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -83,36 +71,39 @@
     <ClInclude Include="game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Header Files\Entity Classes</Filter>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Box.h">
-      <Filter>Header Files\Entity Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="Customer.h">
-      <Filter>Header Files\Entity Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Header Files\Entity Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="Shelf.h">
-      <Filter>Header Files\Entity Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="Son.h">
-      <Filter>Header Files\Entity Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files\Map Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Map.h">
-      <Filter>Header Files\Map Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Position.h">
-      <Filter>Header Files\Map Files</Filter>
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Customer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shelf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Son.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Tutorial level.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Lvl6.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

@@ -107,6 +107,7 @@
     <ClInclude Include="Son.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="Lvl6.txt" />
     <Text Include="Tutorial level.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
