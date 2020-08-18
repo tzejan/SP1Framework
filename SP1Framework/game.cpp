@@ -280,7 +280,7 @@ void processUserInput()
 // Input    : void
 // Output   : void
 //--------------------------------------------------------------
-void render()
+void render()// make render functions for our level and put it in the switch case
 {
     clearScreen();      // clears the current screen and draw from scratch 
     switch (g_eGameState)
