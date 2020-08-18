@@ -247,7 +247,8 @@ void updateHome() // Home logic
 
 void updateTutorial() //Tutorial level logic
 {
-
+    processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
+    moveCharacter();    // moves the character, collision detection, physics, etc
 }
 
 void updateGame()       // game logic
@@ -309,6 +310,10 @@ void render()// make render functions for our level and put it in the switch cas
     switch (g_eGameState)
     {
     case S_SPLASHSCREEN: renderSplashScreen();
+        break;
+    case S_MENU: renderMainMenu();
+        break;
+    case S_HOME: renderHome();
         break;
     case S_GAME: renderGame();
         break;
