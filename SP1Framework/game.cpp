@@ -6,6 +6,7 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <cmath>
 
 double  g_dElapsedTime;
 double  g_dDeltaTime;
@@ -34,9 +35,15 @@ void init( void )
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
 
-    g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 1;
+
+    //starting location
+    g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
+
+
     g_sChar.m_bActive = true;
+
+
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
 
@@ -223,6 +230,9 @@ void splashScreenWait()    // waits for time to pass in splash screen
 void updateGame()       // gameplay logic
 {
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
+
+  
+
     moveCharacter();    // moves the character, collision detection, physics, etc
                         // sound can be played here too.
 }
@@ -234,12 +244,12 @@ void moveCharacter()
     if (g_skKeyEvent[K_UP].keyReleased && g_sChar.m_cLocation.Y > 0)
     {
         //Beep(1440, 30);
-        g_sChar.m_cLocation.Y--;       
+        g_sChar.m_cLocation.Y -= 2;       
     }
     if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar.m_cLocation.X > 0)
     {
         //Beep(1440, 30);
-        g_sChar.m_cLocation.X--;        
+        g_sChar.m_cLocation.X -= 2;        
     }
     if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
     {
@@ -278,9 +288,11 @@ void render()
     clearScreen();      // clears the current screen and draw from scratch 
     switch (g_eGameState)
     {
-    case S_SPLASHSCREEN: renderSplashScreen();
+    case S_SPLASHSCREEN: 
+        renderSplashScreen();
         break;
-    case S_GAME: renderGame();
+    case S_GAME: 
+        renderGame();
         break;
     }
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
@@ -334,8 +346,9 @@ void renderMap()
         c.X = 5 * i;
         c.Y = i + 1;
         colour(colors[i]);
-        g_Console.writeToBuffer(c, " °±²Û", colors[i]);
+        g_Console.writeToBuffer(c, "°", colors[i]);
     }
+
 }
 
 void renderCharacter()
