@@ -106,7 +106,7 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
     {
     case S_SPLASHSCREEN: // don't handle anything for splash screen
         break;
-    case S_GAME: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
+    case S_STAGE2: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
         break;
     }
 }
@@ -133,7 +133,7 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
     {
     case S_SPLASHSCREEN: gameplayMouseHandler(mouseEvent); // handle mouse input for splash screen
         break;
-    case S_GAME: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
+    case S_STAGE2: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
         break;
     }
 }
@@ -220,7 +220,9 @@ void update(double dt)
             break;
         case S_TUT:
             break;
-        case S_GAME: updateGame(); // gameplay logic when we are in the game
+        case S_STAGE1:
+            break;
+        case S_STAGE2: updateStage2(); // gameplay logic when we are in the game [6 shelf map]
             break;
     }
 }
@@ -231,7 +233,7 @@ void updateSplashScreen()    // Splash screen logic
     if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED
         && (g_mouseEvent.mousePosition.X >= 25 || g_mouseEvent.mousePosition.X <= 53)
         && g_mouseEvent.mousePosition.Y == 9) //Change to main game state once mouse clicks on the button
-        g_eGameState = S_GAME;
+        g_eGameState = S_STAGE2;
 }
 
 void updateMenu() // Menu logic
@@ -249,7 +251,12 @@ void updateTutorial() //Tutorial level logic
 
 }
 
-void updateGame()       // gameplay logic
+void updateStage1() //Stage 1 level logic
+{
+
+}
+
+void updateStage2()       // Stage 2 logic
 {
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
@@ -309,7 +316,7 @@ void render()// make render functions for our level and put it in the switch cas
     {
     case S_SPLASHSCREEN: renderSplashScreen();
         break;
-    case S_GAME: renderGame();
+    case S_STAGE2: renderGame();
         break;
     }
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
