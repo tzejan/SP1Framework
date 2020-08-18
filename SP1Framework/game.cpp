@@ -428,7 +428,7 @@ void renderInputEvents()
         else
             ss << key << " not pressed";
 
-        COORD c = { startPos.X, startPos.Y + i };
+        COORD c = { startPos.X, static_cast<SHORT>(startPos.Y + i) };
         g_Console.writeToBuffer(c, ss.str(), 0x17);
     }
 

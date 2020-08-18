@@ -22,7 +22,7 @@ void gotoXY(COORD c)
 //--------------------------------------------------------------
 void gotoXY(int iX,int iY)
 {
-    COORD c = { iX, iY };
+    COORD c = { static_cast<SHORT>(iX), static_cast<SHORT>(iY) };
     gotoXY(c);
 }
 
@@ -111,7 +111,7 @@ Console::Console(unsigned short consoleWidth, unsigned short consoleHeight, LPCS
     m_pfKeyboardHandler(0),
     m_pfMouseHandler(0)
 {
-    COORD consoleSize = { consoleWidth, consoleHeight };
+    COORD consoleSize = { static_cast<SHORT>(consoleWidth), static_cast<SHORT>(consoleHeight) };
     initConsole(consoleSize, lpConsoleTitle);
 }
 
@@ -253,7 +253,7 @@ void Console::writeToBuffer(SHORT x, SHORT y, LPCSTR str, WORD attribute, SHORT 
 	size_t index = max(x + m_cConsoleSize.X * y, 0);
     size_t str_idx = 0;
     // if the length of the string exceeds the buffer size, we chop it off at the end
-    while (index < m_u32ScreenDataBufferSize && str[str_idx] != 0 && str_idx < length)
+    while (index < m_u32ScreenDataBufferSize && str[str_idx] != 0 && str_idx < static_cast<size_t>(length))
     {
         m_ciScreenDataBuffer[index].Char.AsciiChar = str[str_idx];
         m_ciScreenDataBuffer[index].Attributes = attribute;
@@ -316,7 +316,7 @@ void Console::readConsoleInput()
 
     // Dispatch the events to the appropriate handler. 
 
-    for (int i = 0; i < numInputEvents; i++)
+    for (int i = 0; i < static_cast<int>(numInputEvents); i++)
     {
         switch (m_irInBuf[i].EventType)
         {
