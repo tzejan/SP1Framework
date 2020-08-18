@@ -20,7 +20,7 @@ SGameChar   g_sChar;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 
 // Console object
-Console g_Console(80, 25, "SP1 Framework");
+Console g_Console(160, 50, "SP1 Framework");
 
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -229,10 +229,12 @@ void update(double dt)
 
 void updateSplashScreen()    // Splash screen logic
 {
-    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED
-        && (g_mouseEvent.mousePosition.X >= 25 || g_mouseEvent.mousePosition.X <= 53)
-        && g_mouseEvent.mousePosition.Y == 9) //Change to main game state once mouse clicks on the button
-        g_eGameState = S_GAME;
+    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    {
+        if ((g_mouseEvent.mousePosition.X >= g_Console.getConsoleSize().X / 2 - 15 || g_mouseEvent.mousePosition.X <= g_Console.getConsoleSize().X / 2 + 13)
+            && g_mouseEvent.mousePosition.Y == g_Console.getConsoleSize().Y / 3 + 1) //Change to main game state once mouse clicks on the button
+            g_eGameState = S_GAME;
+    }
 }
 
 void updateMenu() // Menu logic
@@ -247,7 +249,8 @@ void updateHome() // Home logic
 
 void updateTutorial() //Tutorial level logic
 {
-
+    processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
+    moveCharacter();    // moves the character, collision detection, physics, etc
 }
 
 void updateGame()       // game logic
@@ -309,6 +312,10 @@ void render()// make render functions for our level and put it in the switch cas
     switch (g_eGameState)
     {
     case S_SPLASHSCREEN: renderSplashScreen();
+        break;
+    case S_MENU: renderMainMenu();
+        break;
+    case S_HOME: renderHome();
         break;
     case S_GAME: renderGame();
         break;
@@ -380,8 +387,8 @@ void renderHome()
 
 void renderTutorialLevel()
 {
-    Map tutorialLevel;
-    tutorialLevel.chooseMap(1);
+    Map map;
+    map.chooseMap(1, g_Console);
 }
 
 void renderCharacter()
