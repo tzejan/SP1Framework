@@ -211,11 +211,15 @@ void update(double dt)
     g_dElapsedTime += dt;
     g_dDeltaTime = dt;
 
+
+    // *-- PUT LEVELS HERE --*   //
     switch (g_eGameState)
     {
-        case S_SPLASHSCREEN : splashScreenWait(); // game logic for the splash screen
+        case S_SPLASHSCREEN : 
+            splashScreenWait(); // game logic for the splash screen
             break;
-        case S_GAME: updateGame(); // gameplay logic when we are in the game
+        case S_GAME: 
+            updateGame(); // gameplay logic when we are in the game
             break;
     }
 }
