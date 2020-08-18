@@ -37,7 +37,7 @@ void Player::payFood() {
 }
 
 void Player::payMedicine() {
-	savings = savings - 300;
+	savings = savings - 100;
 }
 
 void Player::holdsProduct() {

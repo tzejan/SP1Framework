@@ -340,7 +340,7 @@ void renderMap()
         c.X = 5;
         c.Y = i + 1;
         colour(colors[i]); //Change text colour
-        g_Console.writeToBuffer(c, "a", colors[i]); //Change text background
+        g_Console.writeToBuffer(c, " ", colors[i]); //Change text background
     }
 }
 
