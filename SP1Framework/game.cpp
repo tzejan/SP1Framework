@@ -156,8 +156,8 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent) //movement
     {
     case 0x57: key = K_UP; break; // changed VK_UP to 0x57 "W"
     case 0x53: key = K_DOWN; break; //changed VK_DOWN to 0x53 "S"
-    case 0x41: key = K_LEFT; break; // changed VK_LEFT to 0x57 "A"
-    case 0x44: key = K_RIGHT; break; // changed VK_RIGHT to 0x57 "D"
+    case 0x41: key = K_LEFT; break; // changed VK_LEFT to 0x41 "A"
+    case 0x44: key = K_RIGHT; break; // changed VK_RIGHT to 0x44 "D"
     case VK_SPACE: key = K_SPACE; break;
     case VK_ESCAPE: key = K_ESCAPE; break; 
     }
@@ -280,7 +280,7 @@ void processUserInput()
 // Input    : void
 // Output   : void
 //--------------------------------------------------------------
-void render()
+void render()// make render functions for our level and put it in the switch case
 {
     clearScreen();      // clears the current screen and draw from scratch 
     switch (g_eGameState)
@@ -370,8 +370,8 @@ void renderFramerate()
     // displays the elapsed time
     ss.str("");
     ss << g_dElapsedTime << "secs";
-    c.X = 0;
-    c.Y = 0;
+    c.X = 36; //change to shift location of timer
+    c.Y = 0;  //we might use this or we might need to make a new timer to show when the game starts
     g_Console.writeToBuffer(c, ss.str(), 0x59);
 }
 

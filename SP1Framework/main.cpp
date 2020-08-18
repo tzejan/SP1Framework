@@ -1,4 +1,14 @@
 // This is the main file to hold everthing together
+/*
+Idea on how to have the timer for the customers:
+when customer is created using a pointer, make another pointer (timePtr maybe) = new CStopWatch,
+and have it count up till 10 seconds. After 10 seconds over, call the function entranceWaiting.
+Then make a function to show the item the customer is buying and how much the customer is buying.
+When the timer reaches 30 seconds (because 20 seconds of waiting at shelf)
+or when the customers order is satisfied, delete the customer,
+set it to nullptr, do the same for the stopwatch. Make function to story hidden money
+(either in player or in customer)
+*/
 
 #include "Framework\timer.h"
 #include "game.h"
