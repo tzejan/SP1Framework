@@ -115,5 +115,8 @@
     <Text Include="Lvl3.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="MainMenu.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
