@@ -18,5 +18,6 @@ public:
 	int getColumnBig();
 	void chooseMap(int lvl);
 	void printMap(std::fstream& level, int rows, int column);
+	void printMapValues(std::fstream& level);
 };
 
