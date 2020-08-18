@@ -226,7 +226,7 @@ void update(double dt)
     }
 }
 
-
+//These 4 Functions below are specific to the framework! Not the game.
 void splashScreenWait()    // waits for time to pass in splash screen
 {
     if (g_dElapsedTime > 3.0) // wait for 3 seconds to switch to game mode, else do nothing
@@ -274,6 +274,8 @@ void moveCharacter()
 
    
 }
+
+
 void processUserInput()
 {
     // quits the game if player hits the escape key
@@ -318,6 +320,8 @@ void renderToScreen()
     g_Console.flushBufferToConsole();
 }
 
+
+//These functions below are specific to the framework! Not the game!
 void renderSplashScreen()  // renders the splash screen
 {
     COORD c = g_Console.getConsoleSize();
@@ -399,17 +403,23 @@ void renderInputEvents()
         ss.str("");
         switch (i)
         {
-        case K_UP: key = "UP";
+        case K_UP: 
+            key = "UP";
             break;
-        case K_DOWN: key = "DOWN";
+        case K_DOWN: 
+            key = "DOWN";
             break;
-        case K_LEFT: key = "LEFT";
+        case K_LEFT: 
+            key = "LEFT";
             break;
-        case K_RIGHT: key = "RIGHT";
+        case K_RIGHT: 
+            key = "RIGHT";
             break;
-        case K_SPACE: key = "SPACE";
+        case K_SPACE: 
+            key = "SPACE";
             break;
-        default: continue;
+        default: 
+            continue;
         }
         if (g_skKeyEvent[i].keyDown)
             ss << key << " pressed";
