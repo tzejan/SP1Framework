@@ -370,8 +370,8 @@ void renderFramerate()
     // displays the elapsed time
     ss.str("");
     ss << g_dElapsedTime << "secs";
-    c.X = 0;
-    c.Y = 0;
+    c.X = 36; //change to shift location of timer
+    c.Y = 0;  // ^
     g_Console.writeToBuffer(c, ss.str(), 0x59);
 }
 
