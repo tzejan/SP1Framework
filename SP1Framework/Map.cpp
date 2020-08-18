@@ -54,7 +54,7 @@ void Map::printMap(std::fstream& level, int row, int column, Console& console)
 	{
 		*(mapArray + y) = new int[column];
 		getline(level, output);
-		c.Y++;
+		c.Y = y;
 		for (int x = 0; x < column; x++)
 		{
 			int value;
@@ -64,52 +64,21 @@ void Map::printMap(std::fstream& level, int row, int column, Console& console)
 			{
 			case 0:
 				console.writeToBuffer(c, ' ', 0xFF);
+				break;
 			case 1:
 				console.writeToBuffer(c, ' ', 0x88);
+				break;
 			case 2:
 				console.writeToBuffer(c, ' ', 0x66);
+				break;
 			case 3:
 				console.writeToBuffer(c, ' ', 0x100);
+				break;
 			case 4:
 				console.writeToBuffer(c, ' ', 0x100);
+				break;
 			}
-			c.X++;
+			c.X = x;
 		}
 	}
 }
-
-/*
-void Map::printMapValues(std::fstream& level, Console& console)
-{
-	COORD c;
-	std::string output;
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	const int row = 50, column = 160;
-	COORD mapArray[row][column];
-
-	for (int r = 0; r < row; r++)
-	{
-		c.Y++;
-		getline(level, output);
-		for (int c = 0; c < column; c++)
-		{
-			int value;
-			value = output[c] - 48;
-			mapArray[c.Y][c.X] = value;
-			switch (mapArray[r][c])
-			{
-			case 0:
-				console.writeToBuffer(c, ' ', 0xFF);
-			case 1:
-				console.writeToBuffer(c, ' ', 0x88);
-			case 2:
-				console.writeToBuffer(c, ' ', 0x66);
-			case 3:
-				console.writeToBuffer(c, ' ', 0x100);
-			case 4:
-				console.writeToBuffer(c, ' ', 0x100);
-			}
-		}
-	}
-}
-*/

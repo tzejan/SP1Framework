@@ -320,6 +320,7 @@ void render()// make render functions for our level and put it in the switch cas
     case S_GAME: renderGame();
         break;
     }
+
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
     renderInputEvents();    // renders status of input events
     renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
