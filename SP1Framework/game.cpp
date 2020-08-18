@@ -287,6 +287,7 @@ void render()
     renderInputEvents();    // renders status of input events
     renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
 
+
 }
 
 void clearScreen()
@@ -503,7 +504,7 @@ void PrintMap()
     //walls in 4 sides
     for (int i = 0; i < 41; i++)
     {
-        g_Console.writeToBuffer(wallX + i, 1, " ", 0);
+        g_Console.writeToBuffer(wallX + i, 1, " ", 0xB2);
         g_Console.writeToBuffer(wallX + i, 16, " ", 0xB2);
     }
     for (int j = 0; j < 16; j++)
@@ -514,4 +515,7 @@ void PrintMap()
 }
 
 
-
+bool gettoiletpaper()
+{
+    return true;
+}
