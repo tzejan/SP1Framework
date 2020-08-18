@@ -52,11 +52,13 @@ void Map::printMap(std::fstream& level, int row, int column, Console& console)
 
 	for (int y = 0; y < row; y++)
 	{
+		c.Y = y;
 		*(mapArray + y) = new int[column];
 		getline(level, output);
-		c.Y = y;
+		
 		for (int x = 0; x < column; x++)
 		{
+			c.X = x;
 			int value;
 			value = output[x] - 48;
 			*(*(mapArray + y) + x) = value;
@@ -78,7 +80,6 @@ void Map::printMap(std::fstream& level, int row, int column, Console& console)
 				console.writeToBuffer(c, ' ', 0x100);
 				break;
 			}
-			c.X = x;
 		}
 	}
 }
