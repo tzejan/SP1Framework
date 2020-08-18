@@ -42,8 +42,7 @@ enum EGAMESTATES
     S_MENU,
     S_HOME,
     S_TUT,
-    S_STAGE1,
-    S_STAGE2,
+    S_GAME,
     S_COUNT
 };
 
@@ -61,11 +60,10 @@ void render      ( void );      // renders the current state of the game to the 
 void shutdown    ( void );      // do clean up, free memory
 
 void updateSplashScreen();    // waits for time to pass in splash screen
-void updateMenu();
-void updateHome();
-void updateTutorial();
-void updateStage1();
-void updateStage2();          // Stage 2 logic
+void updateMenu();            // Menu logic
+void updateHome();            // Home logic
+void updateTutorial();        // Tutorial logic
+void updateGame();          // Game logic
 void moveCharacter();       // moves the character, collision detection, physics, etc
 void processUserInput();    // checks if you should change states or do something else with the game, e.g. pause, exit
 void clearScreen();         // clears the current screen and draw from scratch 
