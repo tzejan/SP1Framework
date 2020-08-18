@@ -82,4 +82,5 @@ void Map::printMap(std::fstream& level, int row, int column, Console& console)
 			}
 		}
 	}
+	delete mapArray;
 }
