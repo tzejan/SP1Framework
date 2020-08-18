@@ -32,16 +32,15 @@ int Map::getColumnBig()
 	return columnBig;
 }
 
-void Map::chooseMap(Map map, int lvl)
+void Map::chooseMap(int lvl)
 {
 	switch (lvl)
 	{
 	case 1:
 		std::fstream tutorialLevel("Tutorial level.txt");
-		map.printMap(tutorialLevel, rowBig, columnBig);
+		printMap(tutorialLevel, rowBig, columnBig);
 		break;
 	}		
-	
 }
 
 void Map::printMap(std::fstream& level, int row, int column)

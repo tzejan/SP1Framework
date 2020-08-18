@@ -2,6 +2,7 @@
 //
 //
 #include "game.h"
+#include "Map.h"
 #include "Framework\console.h"
 #include <iostream>
 #include <iomanip>
@@ -345,7 +346,7 @@ void renderSplashScreen()  // renders the splash screen
 
 void renderGame()
 {
-    renderMap();        // renders the map to the buffer first
+    renderTutorialLevel();        // renders the map to the buffer first
     renderCharacter();  // renders the character into the buffer
 }
 
@@ -379,7 +380,8 @@ void renderHome()
 
 void renderTutorialLevel()
 {
-
+    Map tutorialLevel;
+    tutorialLevel.chooseMap(1);
 }
 
 void renderCharacter()
