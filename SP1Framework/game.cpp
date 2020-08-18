@@ -346,6 +346,8 @@ void renderMap()
 
 void renderTutorialLevel()
 {
+    COORD c;
+
 }
 
 void renderCharacter()
