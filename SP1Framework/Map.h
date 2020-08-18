@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <fstream>
+#include "Framework\console.h"
 
 class Map
 {
@@ -16,8 +17,8 @@ public:
 	int getColumnSmall();
 	int getRowBig();
 	int getColumnBig();
-	void chooseMap(int lvl);
+	void chooseMap(int lvl, Console console);
 	void printMap(std::fstream& level, int rows, int column);
-	void printMapValues(std::fstream& level);
+	void printMapValues(std::fstream& level, Console console);
 };
 

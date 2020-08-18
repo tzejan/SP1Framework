@@ -1,4 +1,5 @@
 #include "Map.h"
+#include "Framework\console.h"
 #include <fstream>
 #include <string>
 #include <Windows.h>
@@ -32,13 +33,13 @@ int Map::getColumnBig()
 	return columnBig;
 }
 
-void Map::chooseMap(int lvl)
+void Map::chooseMap(int lvl, Console console)
 {
 	switch (lvl)
 	{
 	case 1:
 		std::fstream tutorialLevel("Tutorial level.txt");
-		printMapValues(tutorialLevel);
+		printMapValues(tutorialLevel, console);
 		break;
 	}		
 }
@@ -70,8 +71,9 @@ void Map::printMap(std::fstream& level, int row, int column)
 
 }
 
-void Map::printMapValues(std::fstream& level)
+void Map::printMapValues(std::fstream& level, Console console)
 {
+	COORD c;
 	std::string output;
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	const int row = 50, column = 160;
@@ -85,11 +87,19 @@ void Map::printMapValues(std::fstream& level)
 			int value;
 			value = output[c] - 48;
 			mapArray[r][c] = value;
-			if (mapArray[r][c] == 0) { SetConsoleTextAttribute(hConsole, 255 | 255); std::cout << mapArray[r][c]; } //255 = white, 256 = black
-			if (mapArray[r][c] == 1) { SetConsoleTextAttribute(hConsole, 136 | 136); std::cout << mapArray[r][c]; }
-			if (mapArray[r][c] == 2) { SetConsoleTextAttribute(hConsole, 238 | 238); std::cout << mapArray[r][c]; }
-			if (mapArray[r][c] == 3) { SetConsoleTextAttribute(hConsole, 256 | 256); std::cout << mapArray[r][c]; }
-			if (mapArray[r][c] == 4) { SetConsoleTextAttribute(hConsole, 256 | 256); std::cout << mapArray[r][c]; }
+			switch (mapArray[r][c])
+			{
+			case 0:
+				console.writeToBuffer(c, ' ', 0xFF);
+			case 1:
+				console.writeToBuffer(c, ' ', 0x88);
+			case 2:
+				console.writeToBuffer(c, ' ', 0x66);
+			case 3:
+				console.writeToBuffer(c, ' ', 0x100);
+			case 4:
+				console.writeToBuffer(c, ' ', 0x100);
+			}
 		}
 	}
 }
