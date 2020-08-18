@@ -222,7 +222,9 @@ void update(double dt)
 
 void updateSplashScreen()    // waits for time to pass in splash screen
 {
-    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) // wait for 3 seconds to switch to game mode, else do nothing
+    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED
+        && (g_mouseEvent.mousePosition.X >= 25 || g_mouseEvent.mousePosition.X <= 53)
+        && g_mouseEvent.mousePosition.Y == 9) //Change to main game state once mouse clicks on the button
         g_eGameState = S_GAME;
 }
 
