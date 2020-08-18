@@ -344,6 +344,10 @@ void renderMap()
     }
 }
 
+void renderTutorialLevel()
+{
+}
+
 void renderCharacter()
 {
     // Draw the location of the character

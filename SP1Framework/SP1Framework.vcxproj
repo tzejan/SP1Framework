@@ -79,6 +79,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Box.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Customer.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Framework\console.cpp" />
@@ -93,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Box.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Customer.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Framework\console.h" />
@@ -103,6 +105,9 @@
     <ClInclude Include="Position.h" />
     <ClInclude Include="Shelf.h" />
     <ClInclude Include="Son.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Tutorial level.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
