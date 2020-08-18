@@ -107,7 +107,8 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
     {
     case S_SPLASHSCREEN: // don't handle anything for the splash screen
         break;
-    case S_GAME: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
+    case S_GAME: 
+        gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
         break;
     }
 }
@@ -134,7 +135,8 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
     {
     case S_SPLASHSCREEN: // don't handle anything for the splash screen
         break;
-    case S_GAME: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
+    case S_GAME: 
+        gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
         break;
     }
 }
