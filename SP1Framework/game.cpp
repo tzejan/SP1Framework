@@ -17,7 +17,7 @@ SGameChar   g_sChar;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 
 // Console object
-Console g_Console(80, 25, "SP1 Framework");
+Console g_Console(80 , 25, "SP1 Framework");
 
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -324,28 +324,251 @@ void renderMap()
 {
     // Set up sample colours, and output shadings
     const char colors[] = {
-        0x1A, 0x2B, 0x3C, 0x4D, 0x5E, 0x0F,0xF7,
+        0x1A, 0x2B, 0x3C, 0x4D, 0x5E, 0x0F,0xF7, 0xFF,0x7C,0xA2,0xAA,
         0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6,0xC0,
     };
+    // 0x1C No colour
+    // 0x2C Green
+    // 0x3C Light Blue
+    // 0x4C Red
+    // 0x5C Purple
+    // 0x6C Yellow
+    // 0x7C Gray
+    // 0x8C Reddish Pink with gray border
+    // 0x9C Reddish Pink with blue border
+    // 0x1D No colour
+    // 0x2D Green
+    // 0x3D Light Blue
+    // 0xFF White
 
     COORD c;
-    for (int i = 0; i < 80; ++i)
+    // Black colour
+    for ( int i = 0; i < 17; i++) 
     {
         c.X = i;
-        g_Console.writeToBuffer(c, " ", colors[6]);
-        for (int r = 0; r < 80; ++r)
-        {
-            
-            c.Y = r;
-            g_Console.writeToBuffer(c, " ", colors[6]);
-            
-        }
+        c.Y = 4;
+        g_Console.writeToBuffer(c, " ", colors[5]);
+        c.X = i;
+        c.Y = 10;
+        g_Console.writeToBuffer(c, " ", colors[5]);
+        c.X = i;
+        c.Y = 14;
+        g_Console.writeToBuffer(c, " ", colors[5]);
+        c.X = i;
+        c.Y = 20;
+        g_Console.writeToBuffer(c, " ", colors[5]);
+
         
-        g_Console.writeToBuffer(c, " ", colors[6]);
     }
-    c.X = 18;
-    c.Y = 14;
-    g_Console.writeToBuffer(c, " ", colors[5]);
+    for (int i = 0; i < 5; i++)
+    {
+        c.X = 15;
+        c.Y = i;
+        g_Console.writeToBuffer(c, "  ", colors[5]);
+        c.X = 29;
+        c.Y = i;
+        g_Console.writeToBuffer(c, "  ", colors[5]);
+        c.X = 50;
+        c.Y = i;
+        g_Console.writeToBuffer(c, "  ", colors[5]);
+        c.X = 64;
+        c.Y = i;
+        g_Console.writeToBuffer(c, "  ", colors[5]);
+    }
+    for (int i = 20; i < 25; i++)
+    {
+        c.X = 15;
+        c.Y = i;
+        g_Console.writeToBuffer(c, "  ", colors[5]);
+        c.X = 29;
+        c.Y = i;
+        g_Console.writeToBuffer(c, "  ", colors[5]);
+        c.X = 50;
+        c.Y = i;
+        g_Console.writeToBuffer(c, "  ", colors[5]);
+        c.X = 64;
+        c.Y = i;
+        g_Console.writeToBuffer(c, "  ", colors[5]);
+    }
+    for (int i = 10; i < 15; i++)
+    {
+        c.X = 15;
+        c.Y = i;
+        g_Console.writeToBuffer(c, "  ", colors[5]);
+        c.X = 29;
+        c.Y = i;
+        g_Console.writeToBuffer(c, "  ", colors[5]);
+        c.X = 50;
+        c.Y = i;
+        g_Console.writeToBuffer(c, "  ", colors[5]);
+        c.X = 64;
+        c.Y = i;
+        g_Console.writeToBuffer(c, "  ", colors[5]);
+        
+        
+
+    }
+    for (int i = 29; i < 51; i++)
+    {
+        c.X = i;
+        c.Y = 4;
+        g_Console.writeToBuffer(c, "  ", colors[5]);
+        c.X = i;
+        c.Y = 10;
+        g_Console.writeToBuffer(c, "  ", colors[5]);
+        c.X = i;
+        c.Y = 14;
+        g_Console.writeToBuffer(c, "  ", colors[5]);
+        c.X = i;
+        c.Y = 20;
+        g_Console.writeToBuffer(c, "  ", colors[5]);
+    }
+    for (int i = 64; i < 79; i++) {
+        c.X = i;
+        c.Y = 4;
+        g_Console.writeToBuffer(c, "  ", colors[5]);
+        c.X = i;
+        c.Y = 10;
+        g_Console.writeToBuffer(c, "  ", colors[5]);
+        c.X = i;
+        c.Y = 14;
+        g_Console.writeToBuffer(c, "  ", colors[5]);
+        c.X = i;
+        c.Y = 20;
+        g_Console.writeToBuffer(c, "  ", colors[5]);
+    }
+    // Gray colour oF ROAD
+    for (int i = 17; i < 28; i++)
+    {
+        c.X = i;
+        g_Console.writeToBuffer(c, "  ", colors[8]);
+        for (int i = 0; i < 25; i++)
+        {
+            c.Y = i;
+            g_Console.writeToBuffer(c, "  ", colors[8]);
+        }
+    }
+    for (int i = 52; i < 63; i++)
+    {
+        c.X = i;
+        g_Console.writeToBuffer(c, "  ", colors[8]);
+        for (int i = 0; i < 25; i++)
+        {
+            c.Y = i;
+            g_Console.writeToBuffer(c, "  ", colors[8]);
+        }
+    }
+    for (int i = 0; i < 79; i++)
+    {
+        c.X = i;
+        g_Console.writeToBuffer(c, "  ", colors[8]);
+        for (int i = 5; i < 10; i++)
+        {
+            c.Y = i;
+            g_Console.writeToBuffer(c, "  ", colors[8]);
+        }
+    }
+    for (int i = 0; i < 79; i++)
+    {
+        c.X = i;
+        g_Console.writeToBuffer(c, "  ", colors[8]);
+        for (int i = 15; i < 20; i++)
+        {
+            c.Y = i;
+            g_Console.writeToBuffer(c, "  ", colors[8]);
+        }
+    }
+    // White colour of road
+    for (int i = 0; i < 25; i++)
+    {
+        if (i == 1 || i == 2 || i== 3 || i == 6 || i == 7 || i == 8 || i == 11 || i == 12 || i == 13 || i == 16 || i == 17 || i == 18 || i == 21 || i == 22 || i == 23)
+        {
+            c.X = 22;
+            c.Y = i;
+            g_Console.writeToBuffer(c, "  ", colors[7]);
+            c.X = 57;
+            c.Y = i;
+            g_Console.writeToBuffer(c, "  ", colors[7]);
+        }
+    }
+    
+
+    for (int i = 0; i < 79; i++)
+    {
+        if (i == 0 || i == 1 || i == 2 || i == 8 || i == 9 || i == 10 || i == 11 || i == 12 || i == 13 || i == 31 || i == 32 || i == 33 || i == 34 || i == 35 || i == 36 || i == 43 || i == 44 || i == 45 || i == 46 || i == 47 || i == 48 || i == 66 || i == 67 || i == 68 || i == 69 || i == 70 || i == 71 || i == 77 || i == 78 )
+        {
+            c.X = i;
+            c.Y = 7;
+            g_Console.writeToBuffer(c, "  ", colors[7]);
+            c.X = i;
+            c.Y = 17;
+            g_Console.writeToBuffer(c, "  ", colors[7]);
+        }
+    }
+    // Green Colour
+    for (int i = 0; i < 14; i++)
+    {
+        c.X = i;
+        for (int i = 21; i < 25; i++)
+        {
+            c.Y = i;
+            g_Console.writeToBuffer(c, "  ", colors[10]);
+        }
+        for (int i = 11; i < 14; i++)
+        {
+            c.Y = i;
+            g_Console.writeToBuffer(c, "  ", colors[10]);
+        }
+        g_Console.writeToBuffer(c, "  ", colors[10]);
+        for (int i = 0; i < 4; i++)
+        {
+            c.Y = i;
+            g_Console.writeToBuffer(c, "  ", colors[10]);
+        }
+        g_Console.writeToBuffer(c, "  ", colors[10]);
+    }
+    for (int i = 31; i < 49; i++)
+    {
+        c.X = i;
+        for (int i = 21; i < 25; i++)
+        {
+            c.Y = i;
+            g_Console.writeToBuffer(c, "  ", colors[10]);
+        }
+        for (int i = 11; i < 14; i++)
+        {
+            c.Y = i;
+            g_Console.writeToBuffer(c, "  ", colors[10]);
+        }
+        g_Console.writeToBuffer(c, "  ", colors[10]);
+        for (int i = 0; i < 4; i++)
+        {
+            c.Y = i;
+            g_Console.writeToBuffer(c, "  ", colors[10]);
+        }
+        g_Console.writeToBuffer(c, "  ", colors[10]);
+    }
+    for (int i = 66; i < 79; i++)
+    {
+        c.X = i;
+        for (int i = 21; i < 25; i++)
+        {
+            c.Y = i;
+            g_Console.writeToBuffer(c, "  ", colors[10]);
+        }
+        for (int i = 11; i < 14; i++)
+        {
+            c.Y = i;
+            g_Console.writeToBuffer(c, "  ", colors[10]);
+        }
+        g_Console.writeToBuffer(c, "  ", colors[10]);
+        for (int i = 0; i < 4; i++)
+        {
+            c.Y = i;
+            g_Console.writeToBuffer(c, "  ", colors[10]);
+        }
+        g_Console.writeToBuffer(c, "  ", colors[10]);
+    }
 }
 
 void renderCharacter()
@@ -382,7 +605,7 @@ void renderFramerate()
 void renderInputEvents()
 {
     // keyboard events
-    COORD startPos = {50, 2};
+    COORD startPos = {NULL, NULL};
     std::ostringstream ss;
     std::string key;
     for (int i = 0; i < K_COUNT; ++i)
