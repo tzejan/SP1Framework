@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-
 double  g_dElapsedTime;
 double  g_dDeltaTime;
 SKeyEvent g_skKeyEvent[K_COUNT];
