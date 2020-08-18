@@ -5,3 +5,5 @@ Release/
 *.suo
 *.user
 ipch/
+.vs/SP1Framework/v16/Browse.VC.db
+.vs/SP1Framework/v16/Browse.VC.opendb
