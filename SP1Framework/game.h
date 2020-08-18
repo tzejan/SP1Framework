@@ -39,6 +39,9 @@ enum EKEYS
 enum EGAMESTATES
 {
     S_SPLASHSCREEN,
+    S_MENU,
+    S_HOME,
+    S_TUT,
     S_GAME,
     S_COUNT
 };
