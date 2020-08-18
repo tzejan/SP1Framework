@@ -51,6 +51,9 @@
     <ClCompile Include="Shelf.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Son.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\console.h">
@@ -78,6 +81,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Shelf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Son.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
