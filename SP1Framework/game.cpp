@@ -389,7 +389,6 @@ void renderTutorialLevel()
 {
     Map map;
     map.chooseMap(1, g_Console);
-    g_Console.flushBufferToConsole();
 }
 
 void renderCharacter()
