@@ -115,5 +115,8 @@
     <Text Include="Tutorial level.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="Lvl6.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
