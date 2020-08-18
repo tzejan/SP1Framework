@@ -212,7 +212,13 @@ void update(double dt)
 
     switch (g_eGameState)
     {
-        case S_SPLASHSCREEN : updateSplashScreen(); // game logic for the splash screen
+        case S_SPLASHSCREEN: updateSplashScreen(); // game logic for the splash screen
+            break;
+        case S_MENU:
+            break;
+        case S_HOME:
+            break;
+        case S_TUT:
             break;
         case S_GAME: updateGame(); // gameplay logic when we are in the game
             break;
@@ -220,10 +226,27 @@ void update(double dt)
 }
 
 
-void updateSplashScreen()    // waits for time to pass in splash screen
+void updateSplashScreen()    // Splash screen logic
 {
-    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) // wait for 3 seconds to switch to game mode, else do nothing
+    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED
+        && (g_mouseEvent.mousePosition.X >= 25 || g_mouseEvent.mousePosition.X <= 53)
+        && g_mouseEvent.mousePosition.Y == 9) //Change to main game state once mouse clicks on the button
         g_eGameState = S_GAME;
+}
+
+void updateMenu() // Menu logic
+{
+
+}
+
+void updateHome() // Home logic
+{
+
+}
+
+void updateTutorial() //Tutorial level logic
+{
+
 }
 
 void updateGame()       // gameplay logic
@@ -314,7 +337,7 @@ void renderSplashScreen()  // renders the splash screen
     g_Console.writeToBuffer(c, "Fair Prize", 0x03);
     c.Y += 1;
     c.X = g_Console.getConsoleSize().X / 2 - 15;
-    g_Console.writeToBuffer(c, "Click here to start the game!", 0x09);
+    g_Console.writeToBuffer(c, "Left click to start the game!", 0x09);
     c.Y += 1;
     c.X = g_Console.getConsoleSize().X / 2 - 9;
     g_Console.writeToBuffer(c, "Press 'Esc' to quit", 0x09);
