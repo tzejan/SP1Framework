@@ -137,7 +137,7 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
     case S_GAME: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
         break;
     }
-}
+} //140
 
 //--------------------------------------------------------------
 // Purpose  : This is the keyboard handler in the game state. Whenever there is a keyboard event in the game state, this function will be called.
