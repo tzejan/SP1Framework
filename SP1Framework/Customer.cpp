@@ -1,4 +1,5 @@
 #include "Customer.h"
+#include "Position.h"
 #include <stdlib.h>
 
 Customer::Customer()//sets which item they want to buy and how much to do so
@@ -8,9 +9,6 @@ Customer::Customer()//sets which item they want to buy and how much to do so
 
 	pos.setX(40); //change when we spawn them
 	pos.setY(13); // ^
-
-	pos.setX(10); //change when we spawn them
-	pos.setY(10); // ^
 }
 
 //Customer::Customer(Map map)
