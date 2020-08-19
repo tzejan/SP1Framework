@@ -174,6 +174,8 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
         break;
     case S_MENU: gameplayMouseHandler(mouseEvent); // handle mouse input for menu
         break;
+    case S_ENDOFWORKSCREEN: gameplayMouseHandler(mouseEvent);
+        break;
     case S_HOME: gameplayMouseHandler(mouseEvent); // handle mouse input for home menu
         break;
     case S_GAME: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
