@@ -113,7 +113,7 @@ void shutdown( void )
 void getInput( void )
 {
     // resets all the keyboard events
-    // memset(g_skKeyEvent, 0, K_COUNT * sizeof(*g_skKeyEvent));
+    memset(g_skKeyEvent, 0, K_COUNT * sizeof(*g_skKeyEvent));
     // then call the console to detect input from user
     g_Console.readConsoleInput();    
 }
@@ -252,13 +252,13 @@ void update(double dt)
     {
         case S_SPLASHSCREEN: updateSplashScreen(); // game logic for the splash screen
             break;
-        case S_MENU: g_ePreviousGameState = S_MENU; updateMenu();
+        case S_MENU: updateMenu();
             break;
-        case S_HOME: g_ePreviousGameState = S_HOME; updateHome();
+        case S_HOME: updateHome();
             break;
-        case S_TUT: g_ePreviousGameState = S_TUT; updateTutorial();
+        case S_TUT: updateTutorial();
             break;
-        case S_GAME: g_ePreviousGameState = S_GAME; g_dElapsedWorkTime += dt; updateGame(); // gameplay logic when we are in the game
+        case S_GAME: g_dElapsedWorkTime += dt; updateGame();// gameplay logic when we are in the game
             break;
     }
 }
@@ -380,8 +380,16 @@ void processInputMenu() //All input processing related to Main Menu
         COORD c = g_Console.getConsoleSize();
         if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 20
             && g_mouseEvent.mousePosition.X <= c.X / 6 + 29)
+            && g_mouseEvent.mousePosition.Y == 9) //Change to main game state once mouse clicks on the button
+            g_eGameState = S_GAME;
+    }
+    else if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    {
+        COORD c = g_Console.getConsoleSize();
+        if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 20
+            && g_mouseEvent.mousePosition.X <= c.X / 6 + 29)
             && g_mouseEvent.mousePosition.Y == 9) //Change to previous game state once mouse clicks on the button
-            g_eGameState = g_ePreviousGameState;
+            g_eGameState = S_GAME;
     }
 
     if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
@@ -399,8 +407,8 @@ void processInputHome()
     if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
     {
         COORD c = g_Console.getConsoleSize();
-        if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 20
-            && g_mouseEvent.mousePosition.X <= c.X / 6 + 29)
+        if ((g_mouseEvent.mousePosition.X >= c.X - 20
+            && g_mouseEvent.mousePosition.X <= c.X - 17)
             && g_mouseEvent.mousePosition.Y == 9) //Change to main menu state once mouse clicks on the button
             g_eGameState = S_MENU;
     }
@@ -533,7 +541,10 @@ void renderMainMenu()
     g_Console.writeToBuffer(c, "Main Menu", 0xF0);
     c.Y += 8;
     c.X = g_Console.getConsoleSize().X / 6 + 20;
-    g_Console.writeToBuffer(c, "Go to Work", 0xF0);
+    if (g_ePreviousGameState == S_SPLASHSCREEN)
+        g_Console.writeToBuffer(c, "Start New", 0xF0);
+    else
+        g_Console.writeToBuffer(c, "Resume Work", 0xF0);
     c.Y += 1;
     c.X = g_Console.getConsoleSize().X / 6 + 20;
     g_Console.writeToBuffer(c, "Save", 0xF0);
