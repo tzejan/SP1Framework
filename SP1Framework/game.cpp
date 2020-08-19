@@ -510,17 +510,23 @@ void renderHome()
     c.X = c.X / 2 - 5;
     g_Console.writeToBuffer(c, "Home", 0xF0);
     c.Y += 3;
-    c.X = g_Console.getConsoleSize().X / 6 + 15;
-    g_Console.writeToBuffer(c, "TBF", 0xF0);
+    c.X = g_Console.getConsoleSize().X / 8;
+    g_Console.writeToBuffer(c, "Son 1", 0xF0);
     c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 6 + 15;
-    g_Console.writeToBuffer(c, "TBF", 0xF0);
+    c.X = g_Console.getConsoleSize().X / 8;
+    g_Console.writeToBuffer(c, "State : ", 0xF0);
     c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 6 + 15;
-    g_Console.writeToBuffer(c, "TBF", 0xF0);
+    c.X = g_Console.getConsoleSize().X / 8;
+    g_Console.writeToBuffer(c, "X days without medicine", 0xF0);
+    c.Y += 9;
+    c.X = g_Console.getConsoleSize().X / 8;
+    g_Console.writeToBuffer(c, "Son 2", 0xF0);
     c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 6 + 15;
-    g_Console.writeToBuffer(c, "TBF", 0xF0);
+    c.X = g_Console.getConsoleSize().X / 8;
+    g_Console.writeToBuffer(c, "State : ", 0xF0);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 8;
+    g_Console.writeToBuffer(c, "X days without medicine", 0xF0);
 }
 
 void renderTutorialLevel()
