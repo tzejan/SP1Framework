@@ -594,6 +594,15 @@ void renderEndOfWorkScreen()
     c.Y += 1;
     c.X = g_Console.getConsoleSize().X / 8;
     g_Console.writeToBuffer(c, "Click here to go home", 0xF0);
+
+    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    {
+        COORD c = g_Console.getConsoleSize();
+        if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 20
+            && g_mouseEvent.mousePosition.X <= c.X / 6 + 29)
+            && g_mouseEvent.mousePosition.Y == 9) //Change to main game state once mouse clicks on the button
+            g_eGameState = S_HOME;
+    }
 }
 
 void renderTutorialLevel()

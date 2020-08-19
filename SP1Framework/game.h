@@ -96,6 +96,7 @@ void renderMap();           // renders the map to the buffer first
 
 void renderMainMenu(); //renders the main menu
 void renderHome(); //renders home
+void renderEndOfWorkScreen();
 void renderTutorialLevel(); // renders the tutorial level
 
 void renderCustomer();
