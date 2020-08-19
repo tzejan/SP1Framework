@@ -529,7 +529,10 @@ void renderHome()
     c.Y += 2;
     c.X = g_Console.getConsoleSize().X / 8;
     g_Console.writeToBuffer(c, "Food (Price) [ ] ", 0xF0);
-    c.Y += 7;
+    c.Y += 3;
+    c.X = g_Console.getConsoleSize().X / 8;
+    g_Console.writeToBuffer(c, "Rent (Price) [ ] ", 0xF0);
+    c.Y += 4;
     c.X = g_Console.getConsoleSize().X / 8;
     g_Console.writeToBuffer(c, "Son 2", 0xF0);
     c.Y += 1;
