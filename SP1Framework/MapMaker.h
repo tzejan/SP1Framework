@@ -1,4 +1,5 @@
 #pragma once
+#include <Windows.h>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -18,6 +19,9 @@ public:
 	//Takes the Txt file and puts it into the array
 	void Draw(string filepath);
 
+	//Gets character from Coordinate
+	char getFromCoord(COORD c);
+	char getFromCoord(SHORT x, SHORT y);
 
 };
 

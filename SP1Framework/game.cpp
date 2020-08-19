@@ -345,8 +345,9 @@ void renderGame()
 {
     renderMap(); 
     renderTHEMAP();// renders the map to the buffer first
-    renderHUD();
+    
     renderCharacter();  // renders the character into the buffer
+    renderHUD();
 }
 
 

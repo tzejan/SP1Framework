@@ -25,3 +25,15 @@ void MapMaker::Draw(string filepath)
 	}
 	
 }
+
+char MapMaker::getFromCoord(COORD c)
+{
+	return MapArray[c.X][c.Y];
+}
+
+char MapMaker::getFromCoord(SHORT x, SHORT y)
+{
+	return MapArray[x][y];
+}
+
+
