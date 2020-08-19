@@ -262,6 +262,8 @@ void update(double dt)
             break;
         case S_MENU: updateMenu();
             break;
+        case S_ENDOFWORKSCREEN: updateEndofWorkScreen();
+            break;
         case S_HOME: updateHome();
             break;
         case S_TUT: updateTutorial();
@@ -278,6 +280,11 @@ void updateSplashScreen()    // Splash screen logic
 }
 
 void updateMenu() // Menu logic
+{
+    processUserInput();
+}
+
+void updateEndofWorkScreen()
 {
     processUserInput();
 }
