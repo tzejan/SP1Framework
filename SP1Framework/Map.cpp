@@ -41,7 +41,7 @@ void Map::chooseMap(int lvl, Console& console) //this is to choose the map to pr
 	case 0:
 	{
 		std::fstream menu("MainMenu.txt");
-		printMap(menu, rowBig, columnBig, console);
+		printMap(menu, rowSmall, columnSmall, console);
 		break;
 	}
 	case 1:
