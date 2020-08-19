@@ -29,7 +29,7 @@ Customer* customerPtr[6] = {nullptr , nullptr , nullptr , nullptr , nullptr , nu
 
 Box* boxPtr[6] = { nullptr , nullptr , nullptr , nullptr , nullptr , nullptr };
 Position* boxPosPtr[6] = { nullptr , nullptr , nullptr , nullptr , nullptr , nullptr };
-
+bool bCarryBox[6] = { false, false, false, false, false, false };
 
 
 // Console object
@@ -58,6 +58,7 @@ void init( void )
 
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
+    g_ePreviousGameState = S_SPLASHSCREEN;
 
    /* g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;*/
@@ -206,6 +207,7 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent) //movement
     case VK_SPACE: key = K_SPACE; break;
     case VK_ESCAPE: key = K_ESCAPE; break; 
     case VK_F3: key = K_F3; break;
+    case VK_F4: key = K_F4; break;
     }
     // a key pressed event would be one with bKeyDown == true
     // a key released event would be one with bKeyDown == false
@@ -305,7 +307,8 @@ void updateGame()       // game logic
 {
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter(); 
-    moveChara();// moves the character, collision detection, physics, etc
+    moveChara();
+    moveBoxes();// moves the character, collision detection, physics, etc
                         // sound can be played here too.
 }
 
@@ -373,35 +376,69 @@ void moveChara()
         {
             g_sChar.m_cLocation.Y--;
         }
+        g_ePreviousGameState = g_eGameState;
         break;
     case LEFT:
         if (col.collidingWith(g_sChar.m_cLocation.Y, g_sChar.m_cLocation.X, 0, -1, map) == 0)
         {
             g_sChar.m_cLocation.X--;
         }
+        g_ePreviousGameState = g_eGameState;
         break;
     case DOWN:
         if (col.collidingWith(g_sChar.m_cLocation.Y, g_sChar.m_cLocation.X, +1, 0, map) == 0)
         {
             g_sChar.m_cLocation.Y++;
         }
+        g_ePreviousGameState = g_eGameState;
         break;
     case RIGHT:
         if (col.collidingWith(g_sChar.m_cLocation.Y, g_sChar.m_cLocation.X, 0, +1, map) == 0)
         {
             g_sChar.m_cLocation.X++;
         }
+        g_ePreviousGameState = g_eGameState;
         break;
+ 
+    if (g_skKeyEvent[K_SPACE].keyReleased)
+    {
+        g_sChar.m_bActive = !g_sChar.m_bActive;        
     }
 }
 
-void moveBoxes() {
 
+
+        if (bCarryBox[i] == true && g_skKeyEvent[K_RIGHT].keyDown) {
+            boxPosPtr[i]->setX(g_sChar.m_cLocation.X + 1);
+            boxPosPtr[i]->setY(g_sChar.m_cLocation.Y);
+
+        }
+        else if (bCarryBox[i] == true && g_skKeyEvent[K_LEFT].keyDown) {
+            boxPosPtr[i]->setX(g_sChar.m_cLocation.X - 1);
+            boxPosPtr[i]->setY(g_sChar.m_cLocation.Y);
+
+        }
+        else if (bCarryBox[i] == true && g_skKeyEvent[K_UP].keyDown) {
+            boxPosPtr[i]->setX(g_sChar.m_cLocation.X);
+            boxPosPtr[i]->setY(g_sChar.m_cLocation.Y - 1);
+
+        }
+        else if (bCarryBox[i] == true && g_skKeyEvent[K_DOWN].keyDown) {
+            boxPosPtr[i]->setX(g_sChar.m_cLocation.X);
+            boxPosPtr[i]->setY(g_sChar.m_cLocation.Y + 1);
+
+        }
+
+        if (g_skKeyEvent[K_SPACE].keyDown && bCarryBox[i] == true) {
+            bCarryBox[i] = false;
+        }
+    }
 }
 
 void checkEnd() //Check if day has ended
 {
-    if (g_dElapsedWorkTime >= 5)
+    //if (g_dElapsedWorkTime >= 5)
+    if (g_skKeyEvent[K_F4].keyDown)
     {
         g_dElapsedWorkTime = 0.0;
         g_eGameState = S_ENDOFWORKSCREEN;
@@ -431,27 +468,35 @@ void processInputSplash() // All input processing related to Splashscreen
         if (g_mouseEvent.mousePosition.X >= c.X / 2 - 16
             && g_mouseEvent.mousePosition.X <= c.X / 2 + 17
             && g_mouseEvent.mousePosition.Y == c.Y / 25 + 12) //Change to main game state once mouse clicks on the button
+        {
+            g_ePreviousGameState = g_eGameState;
             g_eGameState = S_MENU;
+        }
     }
 }
 
 void processInputMenu() //All input processing related to Main Menu
 {
-    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED && g_ePreviousGameState == S_SPLASHSCREEN)
     {
         COORD c = g_Console.getConsoleSize();
-        if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 20
-            && g_mouseEvent.mousePosition.X <= c.X / 6 + 29)
+        if ((g_mouseEvent.mousePosition.X >= c.X / 2 - 7
+            && g_mouseEvent.mousePosition.X <= c.X / 2 + 1)
             && g_mouseEvent.mousePosition.Y == 9) //Change to main game state once mouse clicks on the button
+        {
+            g_ePreviousGameState = g_eGameState;
             g_eGameState = S_GAME;
+        }
     }
     else if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
     {
         COORD c = g_Console.getConsoleSize();
-        if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 20
-            && g_mouseEvent.mousePosition.X <= c.X / 6 + 29)
+        if ((g_mouseEvent.mousePosition.X >= c.X / 2 - 7
+            && g_mouseEvent.mousePosition.X <= c.X / 2 + 1)
             && g_mouseEvent.mousePosition.Y == 9) //Change to previous game state once mouse clicks on the button
-            g_eGameState = S_GAME;
+        {
+            g_eGameState = g_ePreviousGameState;
+        }
     }
 
     if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
@@ -460,7 +505,9 @@ void processInputMenu() //All input processing related to Main Menu
         if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 20
             && g_mouseEvent.mousePosition.X <= c.X / 6 + 29)
             && g_mouseEvent.mousePosition.Y == 12) //Exit once mouse clicks on the button
+        {
             g_bQuitGame = true;
+        }
     }
 }
 
@@ -472,19 +519,32 @@ void processInputEndOfWorkScreen()
         if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 15
             && g_mouseEvent.mousePosition.X <= c.X / 6 + 36)
             && g_mouseEvent.mousePosition.Y == 13) //Change to home state once mouse clicks on the button
+        {
             g_eGameState = S_HOME;
+        }
     }
 }
 
 void processInputHome()
 {
+    COORD c = g_Console.getConsoleSize();
     if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
     {
-        COORD c = g_Console.getConsoleSize();
         if ((g_mouseEvent.mousePosition.X >= c.X - 20
             && g_mouseEvent.mousePosition.X <= c.X - 17)
             && g_mouseEvent.mousePosition.Y == 9) //Change to main menu state once mouse clicks on the button
+        {
             g_eGameState = S_MENU;
+        }
+    }
+    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    {
+        if (g_mouseEvent.mousePosition.X >= c.X - 20
+            && g_mouseEvent.mousePosition.X <= c.X - 13
+            && g_mouseEvent.mousePosition.Y == c.Y == 8) //Change to main game state once mouse clicks on the button
+        {
+            g_eGameState = S_GAME;
+        }
     }
 }
 
@@ -495,7 +555,7 @@ void processUserInput()
     case S_SPLASHSCREEN: processInputSplash(); break;
     case S_MENU: processInputMenu(); break;
     case S_ENDOFWORKSCREEN: processInputEndOfWorkScreen(); break;
-    case S_HOME: 
+    case S_HOME: processInputHome();
         if (g_skKeyEvent[K_ESCAPE].keyReleased)// opens main menu if player hits the escape key
             g_eGameState = S_MENU; 
         break;
