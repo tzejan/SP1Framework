@@ -277,11 +277,15 @@ void moveCharacter()
     // providing a beep sound whenver we shift the character
     if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 1) // changed .keyPressed into . keyDown
     {
-    g_sChar.m_cLocation.Y--;
+        /*if (mapArray[g_sChar.m_cLocation.X][g_sChar.m_cLocation.Y] == '0')
+        {
+            g_sChar.m_cLocation.Y--;
+        }*/
+        g_sChar.m_cLocation.Y--;
     }
     if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 1) // changed .keyPressed into . keyDown
     {
-    g_sChar.m_cLocation.X--;
+        g_sChar.m_cLocation.X--;
     }
     if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 2) // changed .keyPressed into . keyDown
     {
