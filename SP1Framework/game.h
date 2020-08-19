@@ -44,6 +44,8 @@ enum EGAMESTATES
     S_COUNT
 };
 
+
+
 // struct for the game character
 struct SGameChar
 {
