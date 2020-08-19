@@ -13,12 +13,12 @@ using namespace std;
 #include "Bullet.h"
 double  g_dElapsedTime;
 double  g_dDeltaTime;
-<<<<<<< HEAD
+
 char MapArray[80][25];
-=======
+
+
 bool paused = false;
 bool level1 = true;
->>>>>>> ded392233d7bc88498cdd7687acd5f4321c54bfd
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 // Game specific variables here
