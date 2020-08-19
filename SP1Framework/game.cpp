@@ -2,6 +2,7 @@
 //
 //
 #include "game.h"
+#include "MapMaker.h"
 #include "Framework\console.h"
 #include <iostream>
 #include <iomanip>
@@ -16,9 +17,10 @@ SMouseEvent g_mouseEvent;
 // Game specific variables here
 SGameChar   g_sChar;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
+MapMaker map1;
 
 // Console object
-Console g_Console(80, 25, "SP1 Framework");
+Console g_Console(100, 20, "SP1 Framework");
 
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -39,6 +41,7 @@ void init( void )
     //starting location
     g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
+    map1.Draw("Map Template.txt");
 
 
     g_sChar.m_bActive = true;
