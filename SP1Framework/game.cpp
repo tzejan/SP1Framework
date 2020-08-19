@@ -41,7 +41,7 @@ void init( void )
 
     //starting location
     g_sChar.m_cLocation.X = 1;
-    g_sChar.m_cLocation.Y = 12;
+    g_sChar.m_cLocation.Y = 11;
     
     map1.Draw("Map_Template.txt"); //Puts the Map Template.txt contents into map1's MapArray.
     hud.Draw("HUD_Template.txt");
@@ -248,26 +248,53 @@ void updateGame()       // gameplay logic
                         // sound can be played here too.
 }
 
+
+
 void moveCharacter()
 {    
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
-    if (g_skKeyEvent[K_UP].keyReleased && g_sChar.m_cLocation.Y > 0)
+
+    /*if (g_skKeyEvent[K_UP].keyReleased && g_sChar.m_cLocation.Y - 1 == '#')
     {
         //Beep(1440, 30);
-        g_sChar.m_cLocation.Y -= 2;       
+        g_sChar.m_cLocation.Y -= 0;
     }
-    if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar.m_cLocation.X > 0)
+
+    if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar.m_cLocation.Y + 1 == '#')
     {
         //Beep(1440, 30);
-        g_sChar.m_cLocation.X -= 2;        
+        g_sChar.m_cLocation.Y -= 0;
     }
-    if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
+
+    if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar.m_cLocation.X + 1 == '#')
+    {
+        //Beep(1440, 30);
+        g_sChar.m_cLocation.X -= 0;
+    }
+
+    if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar.m_cLocation.X - 1 == '#')
+    {
+        //Beep(1440, 30);
+        g_sChar.m_cLocation.X -= 0;
+    }*/
+
+   if (g_skKeyEvent[K_UP].keyReleased && g_sChar.m_cLocation.Y > 0 && map1.getFromCoord(g_sChar.m_cLocation.X, g_sChar.m_cLocation.Y-1) == ' ')
+    {
+        //Beep(1440, 30);
+        g_sChar.m_cLocation.Y -= 1;       
+    }
+    if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar.m_cLocation.X > 0 && map1.getFromCoord(g_sChar.m_cLocation.X-1, g_sChar.m_cLocation.Y) == ' ')
+    {
+        //Beep(1440, 30);
+        g_sChar.m_cLocation.X -= 1;        
+    }
+    if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && map1.getFromCoord(g_sChar.m_cLocation.X, g_sChar.m_cLocation.Y+1) == ' ')
     {
         //Beep(1440, 30);
         g_sChar.m_cLocation.Y++;        
     }
-    if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
+    if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1 && map1.getFromCoord(g_sChar.m_cLocation.X+1, g_sChar.m_cLocation.Y) == ' ')
     {
         //Beep(1440, 30);
         g_sChar.m_cLocation.X++;        
@@ -277,11 +304,14 @@ void moveCharacter()
         g_sChar.m_bActive = !g_sChar.m_bActive;        
     }
 
-   
+    /*if (map1.getFromCoord(g_sChar.m_cLocation.X, g_sChar.m_cLocation.Y) == '#')
+    {
+        g_sChar.m_cLocation.Y += 0;
+    }*/
 }
 
 
-void processUserInput()
+void processUserInput() 
 {
     // quits the game if player hits the escape key
     if (g_skKeyEvent[K_ESCAPE].keyReleased)

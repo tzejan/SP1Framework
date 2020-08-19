@@ -22,6 +22,6 @@ public:
 	//Gets character from Coordinate
 	char getFromCoord(COORD c);
 	char getFromCoord(SHORT x, SHORT y);
-
+	
 };
 
