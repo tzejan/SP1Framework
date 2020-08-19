@@ -46,5 +46,9 @@ void Bullet::UpdateXandY(Console& console)
 	}
 	c.X = x;
 	c.Y = y;
-	console.writeToBuffer(c, "*",0x3D);
+
+	if (x >= 0 && x < 80 && y >= 0 && y < 25)
+	{
+		console.writeToBuffer(c, "*", 0x3D);
+	}
 }
