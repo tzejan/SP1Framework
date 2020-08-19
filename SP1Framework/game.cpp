@@ -306,7 +306,7 @@ void processUserInput()
 {
     // quits the game if player hits the escape key
     if (g_skKeyEvent[K_ESCAPE].keyReleased)
-        g_bQuitGame = true;    
+        g_eGameState = S_MENU;
 }
 
 //--------------------------------------------------------------
