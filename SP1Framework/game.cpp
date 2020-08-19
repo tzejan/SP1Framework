@@ -76,6 +76,7 @@ void init( void )
     }
 
     g_sChar.m_bActive = true;
+    g_sChar.moving = false;
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
 
@@ -303,7 +304,8 @@ void updateTutorial() //Tutorial level logic
 void updateGame()       // game logic
 {
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
-    moveCharacter();    // moves the character, collision detection, physics, etc
+    moveCharacter(); 
+    moveChara();// moves the character, collision detection, physics, etc
                         // sound can be played here too.
 }
 
@@ -312,35 +314,84 @@ void moveCharacter()
     // COLLISION WITH ENVIRONMENT IS SOLVED HERE
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
-    if (g_skKeyEvent[K_UP].keyDown) // changed .keyPressed into . keyDown
+    if ((g_skKeyEvent[K_UP].keyDown) && (g_sChar.moving != true)) // changed .keyPressed into . keyDown
     {
+        g_sChar.moving = true;
+        g_sChar.direction = UP;
+      
+    }
+    if ((g_skKeyEvent[K_LEFT].keyDown) && (g_sChar.moving != true)) // changed .keyPressed into . keyDown
+    {
+        g_sChar.moving = true;
+        g_sChar.direction = LEFT;
+    }
+    if ((g_skKeyEvent[K_DOWN].keyDown) && (g_sChar.moving != true))// changed .keyPressed into . keyDown
+    {
+     
+        g_sChar.moving = true;
+        g_sChar.direction = DOWN;
+
+    }
+    if ((g_skKeyEvent[K_RIGHT].keyDown) && (g_sChar.moving != true)) // changed .keyPressed into . keyDown
+    {
+        g_sChar.moving = true;
+        g_sChar.direction = RIGHT;
+    }
+    if (g_skKeyEvent[K_UP].keyReleased)
+    {
+        g_sChar.moving = false;
+        g_sChar.direction = NONE;
+    }
+    if (g_skKeyEvent[K_LEFT].keyReleased)
+    {
+        g_sChar.moving = false;
+        g_sChar.direction = NONE;
+    }
+    if (g_skKeyEvent[K_DOWN].keyReleased)
+    {
+        g_sChar.moving = false;
+        g_sChar.direction = NONE;
+    }
+    if (g_skKeyEvent[K_RIGHT].keyReleased)
+    {
+        g_sChar.moving = false;
+        g_sChar.direction = NONE;
+    }
+    
+    if (g_skKeyEvent[K_SPACE].keyReleased)
+    {
+        g_sChar.m_bActive = !g_sChar.m_bActive;        
+    }
+}
+
+void moveChara()
+{
+    switch (g_sChar.direction)
+    {
+    case UP:
         if (col.collidingWith(g_sChar.m_cLocation.Y, g_sChar.m_cLocation.X, -1, 0, map) == 0)
         {
             g_sChar.m_cLocation.Y--;
-        }        
-    }
-    if (g_skKeyEvent[K_LEFT].keyDown) // changed .keyPressed into . keyDown
+        }
+        break;
+    case LEFT:
         if (col.collidingWith(g_sChar.m_cLocation.Y, g_sChar.m_cLocation.X, 0, -1, map) == 0)
         {
             g_sChar.m_cLocation.X--;
         }
-    if (g_skKeyEvent[K_DOWN].keyDown)// changed .keyPressed into . keyDown
-    {
+        break;
+    case DOWN:
         if (col.collidingWith(g_sChar.m_cLocation.Y, g_sChar.m_cLocation.X, +1, 0, map) == 0)
         {
             g_sChar.m_cLocation.Y++;
         }
-    }
-    if (g_skKeyEvent[K_RIGHT].keyDown) // changed .keyPressed into . keyDown
-    {
+        break;
+    case RIGHT:
         if (col.collidingWith(g_sChar.m_cLocation.Y, g_sChar.m_cLocation.X, 0, +1, map) == 0)
         {
             g_sChar.m_cLocation.X++;
         }
-    }
-    if (g_skKeyEvent[K_SPACE].keyReleased)
-    {
-        g_sChar.m_bActive = !g_sChar.m_bActive;        
+        break;
     }
 }
 
