@@ -344,7 +344,7 @@ void render()// make render functions for our level and put it in the switch cas
 void clearScreen()
 {
     // Clears the buffer with this colour attribute
-    g_Console.clearBuffer(0x1F); 
+    g_Console.clearBuffer(0x00); 
 }
 
 void renderToScreen() 
