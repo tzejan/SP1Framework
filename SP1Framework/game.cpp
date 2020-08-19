@@ -503,10 +503,7 @@ void processInputHome()
         {
             g_eGameState = S_MENU;
         }
-    }
-    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
-    {
-        if (g_mouseEvent.mousePosition.X >= c.X - 20
+        else if (g_mouseEvent.mousePosition.X >= c.X - 20
             && g_mouseEvent.mousePosition.X <= c.X - 13
             && g_mouseEvent.mousePosition.Y == c.Y == 8) //Change to main game state once mouse clicks on the button
         {
