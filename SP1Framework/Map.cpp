@@ -15,6 +15,16 @@ Map::~Map()
 }
 
 
+int Map::getGrid(int y, int x)
+{
+	return mapArray[y][x];
+}
+
+void Map::setGrid(int y, int x, int number)
+{
+	mapArray[y][x] = number;
+}
+
 void Map::chooseMap(int lvl, Console& console) //this is to choose the map to print out
 {
 	switch (lvl)

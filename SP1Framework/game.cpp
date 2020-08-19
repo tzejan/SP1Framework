@@ -21,6 +21,7 @@ SMouseEvent g_mouseEvent;
 // Game specific variables here
 SGameChar   g_sChar;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
+EGAMESTATES g_ePreviousGameState;
 EDEBUGSTATES g_eDebugState = D_OFF; // initial state
 
 Customer* customerPtr[6] = {nullptr , nullptr , nullptr , nullptr , nullptr , nullptr};
@@ -35,6 +36,7 @@ int g_ConsoleX = 80;
 int g_ConsoleY = 25;
 Console g_Console(g_ConsoleX, g_ConsoleY, "SP1 Framework");
 
+Map map;
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
 //            Initialize variables, allocate memory, load data from file, etc. 
@@ -111,7 +113,7 @@ void shutdown( void )
 void getInput( void )
 {
     // resets all the keyboard events
-    memset(g_skKeyEvent, 0, K_COUNT * sizeof(*g_skKeyEvent));
+    // memset(g_skKeyEvent, 0, K_COUNT * sizeof(*g_skKeyEvent));
     // then call the console to detect input from user
     g_Console.readConsoleInput();    
 }
@@ -292,24 +294,36 @@ void updateGame()       // game logic
 
 void moveCharacter()
 {    
+    // COLLISION WITH ENVIRONMENT IS SOLVED HERE
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
     if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 1) // changed .keyPressed into . keyDown
     {
-    g_sChar.m_cLocation.Y--;
+        if (map.getGrid(g_sChar.m_cLocation.Y - 1, g_sChar.m_cLocation.X) == 0)
+        {
+            g_sChar.m_cLocation.Y--;
+        }
     }
     if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 1) // changed .keyPressed into . keyDown
     {
-    g_sChar.m_cLocation.X--;
+        if (map.getGrid(g_sChar.m_cLocation.Y , g_sChar.m_cLocation.X - 1) == 0)
+        {
+            g_sChar.m_cLocation.X--;
+        }
     }
     if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 2) // changed .keyPressed into . keyDown
     {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.Y++;
+        if (map.getGrid(g_sChar.m_cLocation.Y + 1, g_sChar.m_cLocation.X) == 0)
+        {
+            g_sChar.m_cLocation.Y++;
+        }
     }
     if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 2) // changed .keyPressed into . keyDown
     {
-        g_sChar.m_cLocation.X++;
+        if (map.getGrid(g_sChar.m_cLocation.Y, g_sChar.m_cLocation.X + 1) == 0)
+        {
+            g_sChar.m_cLocation.X++;
+        }
     }
     if (g_skKeyEvent[K_SPACE].keyReleased)
     {
@@ -328,7 +342,7 @@ void checkEnd() //Check if day has ended
     if (g_dElapsedWorkTime >= 10)
     {
         g_dElapsedWorkTime = 0.0;
-        g_eGameState = S_HOME;
+        g_eGameState = S_ENDOFWORKSCREEN;
     }
 }
 
@@ -364,19 +378,31 @@ void processInputMenu() //All input processing related to Main Menu
     if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
     {
         COORD c = g_Console.getConsoleSize();
-        if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 15
-            && g_mouseEvent.mousePosition.X <= c.X / 6 + 24)
-            && g_mouseEvent.mousePosition.Y == 4) //Change to main game state once mouse clicks on the button
+        if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 20
+            && g_mouseEvent.mousePosition.X <= c.X / 6 + 29)
+            && g_mouseEvent.mousePosition.Y == 9) //Change to main game state once mouse clicks on the button
             g_eGameState = S_GAME;
     }
 
     if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
     {
         COORD c = g_Console.getConsoleSize();
-        if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 15
-            && g_mouseEvent.mousePosition.X <= c.X / 6 + 24)
-            && g_mouseEvent.mousePosition.Y == 7) //Exit once mouse clicks on the button
+        if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 20
+            && g_mouseEvent.mousePosition.X <= c.X / 6 + 29)
+            && g_mouseEvent.mousePosition.Y == 12) //Exit once mouse clicks on the button
             g_bQuitGame = true;
+    }
+}
+
+void processInputHome()
+{
+    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    {
+        COORD c = g_Console.getConsoleSize();
+        if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 20
+            && g_mouseEvent.mousePosition.X <= c.X / 6 + 29)
+            && g_mouseEvent.mousePosition.Y == 9) //Change to main menu state once mouse clicks on the button
+            g_eGameState = S_GAME;
     }
 }
 
@@ -419,6 +445,8 @@ void render()// make render functions for our level and put it in the switch cas
     case S_SPLASHSCREEN: renderSplashScreen();
         break;
     case S_MENU: renderMainMenu();
+        break;
+    case S_ENDOFWORKSCREEN: renderEndOfWorkScreen();
         break;
     case S_HOME: renderHome();
         break;
@@ -498,51 +526,98 @@ void renderMap()
 
 void renderMainMenu() 
 {
-    Map Menu;
-    Menu.chooseMap(0, g_Console);
+    map.chooseMap(0, g_Console);
     COORD c = g_Console.getConsoleSize();
     c.Y /= 25;
     c.X = c.X / 2 - 5;
     g_Console.writeToBuffer(c, "Main Menu", 0xF0);
-    c.Y += 3;
-    c.X = g_Console.getConsoleSize().X / 6 + 15;
+    c.Y += 8;
+    c.X = g_Console.getConsoleSize().X / 6 + 20;
     g_Console.writeToBuffer(c, "Go to Work", 0xF0);
     c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 6 + 15;
+    c.X = g_Console.getConsoleSize().X / 6 + 20;
     g_Console.writeToBuffer(c, "Save", 0xF0);
     c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 6 + 15;
+    c.X = g_Console.getConsoleSize().X / 6 + 20;
     g_Console.writeToBuffer(c, "Load", 0xF0);
     c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 6 + 15;
+    c.X = g_Console.getConsoleSize().X / 6 + 20;
     g_Console.writeToBuffer(c, "Exit Game", 0xF0);
 }
 
 void renderHome() 
 {
-    Map Home;
-    Home.chooseMap(0, g_Console);
+    map.chooseMap(0, g_Console);
     COORD c = g_Console.getConsoleSize();
+    // Game Mechanic stuff
     c.Y /= 25;
     c.X = c.X / 2 - 5;
     g_Console.writeToBuffer(c, "Home", 0xF0);
     c.Y += 3;
-    c.X = g_Console.getConsoleSize().X / 6 + 15;
-    g_Console.writeToBuffer(c, "TBF", 0xF0);
+    c.X = g_Console.getConsoleSize().X / 8;
+    g_Console.writeToBuffer(c, "Son 1", 0xF0);
     c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 6 + 15;
-    g_Console.writeToBuffer(c, "TBF", 0xF0);
+    c.X = g_Console.getConsoleSize().X / 8;
+    g_Console.writeToBuffer(c, "State : ", 0xF0);
     c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 6 + 15;
-    g_Console.writeToBuffer(c, "TBF", 0xF0);
+    c.X = g_Console.getConsoleSize().X / 8;
+    g_Console.writeToBuffer(c, "X days without medicine", 0xF0); //Make this hidden according to Son 1 state
+    c.Y += 2;
+    c.X = g_Console.getConsoleSize().X / 8;
+    g_Console.writeToBuffer(c, "Food (Price) [ ] ", 0xF0);
+    c.Y += 3;
+    c.X = g_Console.getConsoleSize().X / 8;
+    g_Console.writeToBuffer(c, "Rent (Price) [ ] ", 0xF0);
+    c.Y += 4;
+    c.X = g_Console.getConsoleSize().X / 8;
+    g_Console.writeToBuffer(c, "Son 2", 0xF0);
     c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 6 + 15;
-    g_Console.writeToBuffer(c, "TBF", 0xF0);
+    c.X = g_Console.getConsoleSize().X / 8;
+    g_Console.writeToBuffer(c, "State : ", 0xF0);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 8;
+    g_Console.writeToBuffer(c, "X days without medicine", 0xF0); //Make this hidden according to Son 2 state
+    c.Y += 2;
+    c.X = g_Console.getConsoleSize().X / 8;
+    g_Console.writeToBuffer(c, "Food (Price) [ ] ", 0xF0);
+
+    // Menu stuff
+    c = g_Console.getConsoleSize();
+    c.Y /= 5;
+    c.X = c.X - 20;
+    g_Console.writeToBuffer(c, "Options", 0xF0);
+    c.Y += 3;
+    g_Console.writeToBuffer(c, "Next Day", 0xF0);
+    c.Y += 1;
+    g_Console.writeToBuffer(c, "Menu", 0xF0);
+}
+
+void renderEndOfWorkScreen()
+{
+    map.chooseMap(0, g_Console);
+    COORD c = g_Console.getConsoleSize();
+    c.Y /= 25;
+    c.X = c.X / 2 - 5;
+    g_Console.writeToBuffer(c, "End of day report", 0xF0);
+    c.Y += 8;
+    c.X = g_Console.getConsoleSize().X / 8;
+    g_Console.writeToBuffer(c, "Customers served: [ ]", 0xF0);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 8;
+    g_Console.writeToBuffer(c, "Complaints given: [ ]", 0xF0);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 8;
+    g_Console.writeToBuffer(c, "Strikes: [ ]", 0xF0);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 8;
+    g_Console.writeToBuffer(c, "Todays pay: [ ]", 0xF0);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 8;
+    g_Console.writeToBuffer(c, "Click here to go home", 0xF0);
 }
 
 void renderTutorialLevel()
 {
-    Map map;
     map.chooseMap(1, g_Console);
 }
 
@@ -562,24 +637,43 @@ void renderBoxes()
 void renderCustomer()
 {   
     COORD c = g_Console.getConsoleSize();
-    c.X = 40;
+    c.X = 79;
     c.Y = 13;
-    for (int i = 0; i < 6; i++) {
-        if (customerPtr[i] == nullptr){
-            customerPtr[i] = new Customer; // spawn customer PS:needs to delete the customer 
-            c.X = customerPtr[i]->getPos().getX();
-            c.Y = customerPtr[i]->getPos().getY();
-            g_Console.writeToBuffer(c, ' ', 0x77);
+    int time = g_dElapsedWorkTime;
+    
+        for (int i = 0; i < 6; i++) {
+            if (customerPtr[i] == nullptr) {
+                customerPtr[i] = new Customer; // spawn customer PS:needs to delete the customer 
+                c.X = customerPtr[i]->getPos().getX();
+                c.Y = customerPtr[i]->getPos().getY();
+                /*g_Console.writeToBuffer(c, ' ', 0x77);*/
+            }
         }
-   }
-    for (int i = 0; i < 6; i++)
-    {
-        if (customerPtr[i] != nullptr) {
-            int num = rand() % 6 + 1; // randomizing customer item
-           // switch (num) {
-           // case 0 :
-                g_Console.writeToBuffer(c, char(1), 0xBB);
-           // }
+        for (int i = 0; i < 6; i++)
+        {
+            if (customerPtr[i] != nullptr) {
+                int num = rand() % 6 + 1; // randomizing customer item
+
+                switch (i) {
+                case 0:
+                    if (time % 10 != 0) {
+                        c.X = 79;
+                        c.Y = 13;
+                        g_Console.writeToBuffer(c, char(1), 0x122);
+                    }
+                case 1:
+                    if (time % 10 != 1) {
+                        c.X = 37;
+                        c.Y = 7;
+                        g_Console.writeToBuffer(c, char(1), 0x122);
+                    }
+                case 2:
+                   if (time % 30 != 2) {
+                        c.X = 37;
+                        c.Y = 13;
+                        g_Console.writeToBuffer(c, char(1), 0x122);
+                   }
+            }
         }
     }
 }

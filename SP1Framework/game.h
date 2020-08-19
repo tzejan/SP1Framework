@@ -41,6 +41,7 @@ enum EGAMESTATES
 {
     S_SPLASHSCREEN,
     S_MENU,
+    S_ENDOFWORKSCREEN,
     S_HOME,
     S_TUT,
     S_GAME,
