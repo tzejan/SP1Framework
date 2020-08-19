@@ -5,7 +5,7 @@
 #include <Windows.h>
 #include <iostream>
 
-Map::Map(): row{ 25 }, column{ 80 }
+Map::Map(): mapArray {0}
 {
 	//small is the normal console size, big is the map size.
 }
@@ -14,15 +14,6 @@ Map::~Map()
 {
 }
 
-int Map::getRow()
-{
-	return row;
-}
-
-int Map::getColumn()
-{
-	return column;
-}
 
 void Map::chooseMap(int lvl, Console& console) //this is to choose the map to print out
 {
@@ -40,8 +31,6 @@ void Map::chooseMap(int lvl, Console& console) //this is to choose the map to pr
 		printMap(tutorialLevel, console);
 		break;
 	}
-	case 2:
-		std::fstream level;
 	}
 }
 
@@ -51,8 +40,6 @@ void Map::printMap(std::fstream& level, Console& console)
 {
 	COORD c = console.getConsoleSize();
 	std::string output;
-	const int row = 25, column = 80;
-	int mapArray[row][column];
 	/*
 	int** mapArray = new int* [row];
 
@@ -69,12 +56,12 @@ void Map::printMap(std::fstream& level, Console& console)
 			value = output[x] - 48;
 			*(*(mapArray + y) + x) = value;
 	*/
-	for (int y = 0; y < row; y++)
+	for (int y = 0; y < 25; y++)
 	{
 		c.Y = y;
 		getline(level, output);
 
-		for (int x = 0; x < column; x++)
+		for (int x = 0; x < 80; x++)
 		{
 			c.X = x;
 			int value;

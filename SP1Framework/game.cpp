@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "Customer.h"
+#include "Box.h"
 
 double  g_dElapsedTime;
 double g_dElapsedWorkTime;
@@ -279,11 +280,15 @@ void moveCharacter()
     // providing a beep sound whenver we shift the character
     if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 1) // changed .keyPressed into . keyDown
     {
-    g_sChar.m_cLocation.Y--;
+        /*if (mapArray[g_sChar.m_cLocation.X][g_sChar.m_cLocation.Y] == '0')
+        {
+            g_sChar.m_cLocation.Y--;
+        }*/
+        g_sChar.m_cLocation.Y--;
     }
     if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 1) // changed .keyPressed into . keyDown
     {
-    g_sChar.m_cLocation.X--;
+        g_sChar.m_cLocation.X--;
     }
     if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 2) // changed .keyPressed into . keyDown
     {
@@ -446,6 +451,7 @@ void renderGame()
     renderTutorialLevel();        // renders the map to the buffer first
     renderCharacter();  // renders the character into the buffer
     renderCustomer();
+    Box::renderBoxes(g_Console);
     COORD c;
     // displays the elapsed time
     std::ostringstream ss;
@@ -523,6 +529,8 @@ void renderTutorialLevel()
     Map map;
     map.chooseMap(1, g_Console);
 }
+
+
 
 void renderCustomer()
 {   
