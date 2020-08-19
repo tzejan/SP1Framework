@@ -347,10 +347,10 @@ void moveCharacter()
         g_sChar.m_cLocation.X++;    
         play.SetDirection('R');
     }
-    if (g_skKeyEvent[K_SPACE].keyReleased)
+    if (g_skKeyEvent[K_SPACE].keyDown)
     {
-        g_sChar.m_bActive = !g_sChar.m_bActive;
-        
+        /*g_sChar.m_bActive = !g_sChar.m_bActive;*/
+        MakesBullet();
     }
 
    

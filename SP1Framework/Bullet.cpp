@@ -12,6 +12,8 @@ Bullet::Bullet(SGameChar& player, char direction)
 {
 	this->direction = direction;
 
+	x = player.m_cLocation.X;
+	y = player.m_cLocation.Y;
 	
 }
 
@@ -22,6 +24,9 @@ Bullet::~Bullet()
 
 void Bullet::UpdateXandY(Console& console)
 {
+	COORD c;
+	
+
 
 	if (direction == 'U')
 	{
@@ -39,5 +44,7 @@ void Bullet::UpdateXandY(Console& console)
 	{
 		x += 1;
 	}
-	
+	c.X = x;
+	c.Y = y;
+	console.writeToBuffer(c, "*",0x3D);
 }
