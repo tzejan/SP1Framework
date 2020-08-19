@@ -8,6 +8,7 @@
 #include <sstream>
 #include<stdio.h> 
 #include "Map.h"
+#include "player.h"
 using namespace std;
 #include "Bullet.h"
 double  g_dElapsedTime;
@@ -23,6 +24,8 @@ EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 Console g_Console(80, 25, "SP1 Framework");
 
 Bullet* Amount_ofbullet[256] = { nullptr,};
+
+player play(&g_sChar);
 
 void CheckAndUpdate()
 {
@@ -281,26 +284,31 @@ void moveCharacter()
     if (g_skKeyEvent[K_UP].keyReleased && g_sChar.m_cLocation.Y > 0)
     {
         //Beep(1440, 30);
-        g_sChar.m_cLocation.Y--;       
+        g_sChar.m_cLocation.Y--;
+        play.SetDirection('U');
     }
     if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar.m_cLocation.X > 0)
     {
         //Beep(1440, 30);
         g_sChar.m_cLocation.X--;
+        play.SetDirection('L');
     }
     if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
     {
         //Beep(1440, 30);
-        g_sChar.m_cLocation.Y++;        
+        g_sChar.m_cLocation.Y++;   
+        play.SetDirection('D');
     }
     if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
     {
         //Beep(1440, 30);
-        g_sChar.m_cLocation.X++;        
+        g_sChar.m_cLocation.X++;    
+        play.SetDirection('R');
     }
     if (g_skKeyEvent[K_SPACE].keyReleased)
     {
-        g_sChar.m_bActive = !g_sChar.m_bActive;        
+        g_sChar.m_bActive = !g_sChar.m_bActive;
+        
     }
 
    

@@ -2,6 +2,7 @@
 #include <iostream>
 #include "game.h"
 #include "Framework/console.h"
+#include "Player.h"
 using namespace std;
 
 
@@ -9,14 +10,10 @@ using namespace std;
 
 Bullet::Bullet(SGameChar& player, SMouseEvent& mousepos)
 {
-	x = player.m_cLocation.X;
-	y = player.m_cLocation.Y;
+	if (player::direction == 'U')
+	{
 
-	goal_x = mousepos.mousePosition.X;
-	goal_y = mousepos.mousePosition.Y;
-
-	gradient = (goal_y - y) / (goal_x - x);
-	c = y - (gradient * x);
+	}
 	
 }
 
