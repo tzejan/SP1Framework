@@ -304,6 +304,7 @@ void updateTutorial() //Tutorial level logic
 
 void updateGame()       // game logic
 {
+    g_ePreviousGameState = g_eGameState;
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
     moveBoxes();
@@ -321,7 +322,6 @@ void moveCharacter()
         {
             g_sChar.m_cLocation.Y--;
         }        
-        g_ePreviousGameState = g_eGameState;
     }
     if (g_skKeyEvent[K_LEFT].keyDown) // changed .keyPressed into . keyDown
     {
@@ -329,7 +329,6 @@ void moveCharacter()
         {
             g_sChar.m_cLocation.X--;
         }
-        g_ePreviousGameState = g_eGameState;
     }
     if (g_skKeyEvent[K_DOWN].keyDown)// changed .keyPressed into . keyDown
     {
@@ -337,7 +336,6 @@ void moveCharacter()
         {
             g_sChar.m_cLocation.Y++;
         }
-        g_ePreviousGameState = g_eGameState;
     }
     if (g_skKeyEvent[K_RIGHT].keyDown) // changed .keyPressed into . keyDown
     {
@@ -345,7 +343,6 @@ void moveCharacter()
         {
             g_sChar.m_cLocation.X++;
         }
-        g_ePreviousGameState = g_eGameState;
     }
     /*if (g_skKeyEvent[K_SPACE].keyReleased)
     {
