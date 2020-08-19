@@ -15,6 +15,6 @@ public:
 	int getRow();
 	int getColumn();
 	void chooseMap(int lvl, Console& console);
-	void printMap(std::fstream& level, int rows, int column, Console& console);
+	void printMap(std::fstream& level, Console& console);
 };
 

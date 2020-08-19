@@ -5,8 +5,8 @@ Customer::Customer()//sets which item they want to buy and how much to do so
 {
 	itemToBuy = rand() % 6 + 1; // 1 = rice, 2 = toilet paper, 3 = canned food, 4 = instant noodles, 5 = vegetables, 6 = bandages
 	quantity = rand() % 10 + 1;
-	pos.setXPosition(0); //change when we spawn them
-	pos.setYPosition(0); // ^
+	pos.setXPosition(10); //change when we spawn them
+	pos.setYPosition(10); // ^
 }
 
 Customer::~Customer()

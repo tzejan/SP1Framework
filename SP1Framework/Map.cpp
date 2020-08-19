@@ -31,13 +31,13 @@ void Map::chooseMap(int lvl, Console& console) //this is to choose the map to pr
 	case 0:
 	{
 		std::fstream menu("MainMenu.txt");
-		printMap(menu, row, column, console);
+		printMap(menu, console);
 		break;
 	}
 	case 1:
 	{
 		std::fstream tutorialLevel("Tutorial level.txt");
-		printMap(tutorialLevel, row, column, console);
+		printMap(tutorialLevel, console);
 		break;
 	}
 	}
@@ -45,10 +45,13 @@ void Map::chooseMap(int lvl, Console& console) //this is to choose the map to pr
 
 //put in the level you want to print out, the size of how big it will be and the console obj
 //if unsure follow case 1 example.
-void Map::printMap(std::fstream& level, int row, int column, Console& console)
+void Map::printMap(std::fstream& level, Console& console)
 {
 	COORD c = console.getConsoleSize();
 	std::string output;
+	const int row = 25, column = 80;
+	int mapArray[row][column];
+	/*
 	int** mapArray = new int* [row];
 
 	for (int y = 0; y < row; y++)
@@ -63,7 +66,20 @@ void Map::printMap(std::fstream& level, int row, int column, Console& console)
 			int value;
 			value = output[x] - 48;
 			*(*(mapArray + y) + x) = value;
-			switch (*(*(mapArray + y) + x))
+	*/
+	for (int y = 0; y < row; y++)
+	{
+		c.Y = y;
+		getline(level, output);
+
+		for (int x = 0; x < column; x++)
+		{
+			c.X = x;
+			int value;
+			value = output[x] - 48;
+			mapArray[y][x] = value;
+
+			switch (mapArray[y][x])
 			{
 			case 0:
 				console.writeToBuffer(c, ' ', 0xF0); //white
