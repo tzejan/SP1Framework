@@ -234,9 +234,9 @@ void updateSplashScreen()    // Splash screen logic
     COORD c = g_Console.getConsoleSize();
     if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
     {
-        if (g_mouseEvent.mousePosition.X >= c.X / 2 - 15 
-            && g_mouseEvent.mousePosition.X <= c.X / 2 + 13
-            && g_mouseEvent.mousePosition.Y == c.Y / 3 + 1) //Change to main game state once mouse clicks on the button
+        if (g_mouseEvent.mousePosition.X >= c.X / 2 - 16 
+            && g_mouseEvent.mousePosition.X <= c.X / 2 + 17
+            && g_mouseEvent.mousePosition.Y == c.Y / 25 + 12) //Change to main game state once mouse clicks on the button
             g_eGameState = S_MENU;
     }
 }
@@ -361,15 +361,12 @@ void renderToScreen()
 void renderSplashScreen()  // renders the splash screen
 {
     COORD c = g_Console.getConsoleSize();
-    c.Y /= 3;
+    c.Y /= 25;
     c.X = c.X / 2 - 5;
     g_Console.writeToBuffer(c, "Fair Prize", 0x03);
-    c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 2 - 15;
-    g_Console.writeToBuffer(c, "Left click to start the game!", 0x09);
-    c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 2 - 9;
-    g_Console.writeToBuffer(c, "Press 'Esc' to quit", 0x09);
+    c.Y += 12;
+    c.X = g_Console.getConsoleSize().X / 2 - 16;
+    g_Console.writeToBuffer(c, "Left click here to start the game!", 0x09);
 }
 
 void renderGame()
