@@ -21,3 +21,6 @@ ipch/
 *.log
 *.ilk
 *.db
+*.json
+*.db
+*.sqlite

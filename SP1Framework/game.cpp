@@ -21,9 +21,50 @@ EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 
 // Console object
 Console g_Console(80, 25, "SP1 Framework");
-
 Bullet* Amount_ofbullet[256] = { nullptr,};
-
+void healthbar(void) {
+    COORD C;
+    //border 
+    for (int i = 0; i < 24; i++) {
+        C.Y = 0;
+        C.X = i;
+        g_Console.writeToBuffer(C, " ", 0x9A);
+    }
+    for (int i = 0; i < 24; i++) {
+        C.Y = 2;
+        C.X = i;
+        g_Console.writeToBuffer(C, " ", 0x9A);
+    }
+    for (int i = 0; i < 2; i++) {
+        C.Y = 1;
+        C.X = i;
+        g_Console.writeToBuffer(C, " ", 0x9A);
+    }
+    for (int i = 22; i < 24; i++) {
+        C.Y = 1;
+        C.X = i;
+        g_Console.writeToBuffer(C, " ", 0x9A);
+    }
+    //health bars
+    //red
+    for (int i = 2; i < 10; i++) {
+        C.Y = 1;
+        C.X = i;
+        g_Console.writeToBuffer(C, " ", 0x4A);
+    }
+    //yellow
+    for (int i = 10; i < 16; i++) {
+        C.Y = 1;
+        C.X = i;
+        g_Console.writeToBuffer(C, " ", 0x6A);
+    }
+    //green
+    for (int i = 16; i < 22; i++) {
+        C.Y = 1;
+        C.X = i;
+        g_Console.writeToBuffer(C, " ", 0x2A);
+    }
+}
 void CheckAndUpdate()
 {
     for (int i = 0; i < 256; i++)
@@ -38,7 +79,7 @@ void CheckAndUpdate()
             }
         }
     }
-
+    //Ang Zhi Wei commit
 }
 
 
@@ -330,6 +371,7 @@ void render()
     case S_GAME: renderGame();
         break;
     }
+    healthbar();
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
     renderInputEvents();    // renders status of input events
     renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
