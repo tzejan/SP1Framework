@@ -257,8 +257,6 @@ void updateGame()       // game logic
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
                         // sound can be played here too.
-    if (g_dElapsedWorkTime >= 10)
-        g_eGameState = S_HOME;
 }
 
 void moveCharacter()
@@ -295,7 +293,11 @@ void moveCharacter()
 
 void checkEnd() //Check if day has ended
 {
-
+    if (g_dElapsedWorkTime >= 10)
+    {
+        g_eGameState = S_HOME;
+        g_dElapsedWorkTime = 0.0;
+    }
 }
 
 void processInputSplash() // All input processing related to Splashscreen
@@ -337,6 +339,10 @@ void processUserInput()
     {
     case S_SPLASHSCREEN: processInputSplash(); break;
     case S_MENU: processInputMenu(); break;
+    case S_HOME: 
+        if (g_skKeyEvent[K_ESCAPE].keyReleased)// quits the game if player hits the escape key
+            g_eGameState = S_MENU; 
+        break;
     case S_TUT:
         if (g_skKeyEvent[K_ESCAPE].keyReleased)// quits the game if player hits the escape key
             g_eGameState = S_MENU;
@@ -344,6 +350,7 @@ void processUserInput()
     case S_GAME:
         if (g_skKeyEvent[K_ESCAPE].keyReleased)// quits the game if player hits the escape key
             g_eGameState = S_MENU;
+        checkEnd();
         break;
     }
 }
@@ -407,7 +414,7 @@ void renderGame()
     // displays the elapsed time
     std::ostringstream ss;
     ss.str("");
-    ss << g_dElapsedTime << "secs";
+    ss << g_dElapsedWorkTime << "secs";
     c.X = 36; //change to shift location of timer
     c.Y = 0;  //we might use this or we might need to make a new timer to show when the game starts
     g_Console.writeToBuffer(c, ss.str(), 0x59);
