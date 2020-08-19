@@ -374,7 +374,9 @@ void moveBoxes() {
 
         }
 
-
+        if (g_skKeyEvent[K_SPACE].keyDown && bCarryBox[i] == true) {
+            bCarryBox[i] = false;
+        }
     }
 }
 
