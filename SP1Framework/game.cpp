@@ -63,7 +63,7 @@ void init( void )
     g_sChar.m_cLocation.X = 18; //changed character spawn location
     g_sChar.m_cLocation.Y = 2;
 
-    //init box pos
+    //init box and box pos
     for (int i = 0; i < 6; i++) {
         if (boxPtr[i] == nullptr) {
             boxPtr[i] = new Box; // need to delete at end of game
