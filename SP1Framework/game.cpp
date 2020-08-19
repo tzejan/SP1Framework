@@ -255,7 +255,7 @@ void updateMenu() // Menu logic
 
 void updateHome() // Home logic
 {
-
+    processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
 }
 
 void updateTutorial() //Tutorial level logic
@@ -391,6 +391,16 @@ void renderMainMenu()
 {
     Map Menu;
     Menu.chooseMap(0, g_Console);
+    COORD c = g_Console.getConsoleSize();
+    c.Y /= 25;
+    c.X = c.X / 6 + 16;
+    g_Console.writeToBuffer(c, "Main Menu", 0xF0);
+    c.Y += 3;
+    c.X = g_Console.getConsoleSize().X / 6 + 15;
+    g_Console.writeToBuffer(c, "Go to Work", 0xF0);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 6 + 15;
+    g_Console.writeToBuffer(c, "Exit Game", 0xF0);
 }
 
 void renderHome() 
