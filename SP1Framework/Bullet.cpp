@@ -10,7 +10,7 @@ using namespace std;
 
 Bullet::Bullet(SGameChar& player, SMouseEvent& mousepos)
 {
-	if (player::direction == 'U')
+	//if (player::direction == 'U')
 	{
 
 	}
