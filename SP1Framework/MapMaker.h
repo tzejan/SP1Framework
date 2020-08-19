@@ -9,14 +9,14 @@ using namespace std;
 class MapMaker
 {
 private:
-	char MapArray[20][100];
+	
 public:
+	char MapArray[20][100];
 	MapMaker();
 	~MapMaker();
 
 	void Draw(string filepath);
 
-	
 
 };
 

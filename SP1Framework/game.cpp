@@ -41,7 +41,8 @@ void init( void )
     //starting location
     g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
-    map1.Draw("Map Template.txt");
+    
+    map1.Draw("Map Template.txt"); //Puts the Map Template.txt contents into map1's MapArray.
 
 
     g_sChar.m_bActive = true;
@@ -307,7 +308,7 @@ void render()
         break;
     }
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
-    renderInputEvents();    // renders status of input events
+    //renderInputEvents();    // renders status of input events
     renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
 }
 
@@ -341,8 +342,22 @@ void renderSplashScreen()  // renders the splash screen
 
 void renderGame()
 {
-    renderMap();        // renders the map to the buffer first
+    renderMap(); 
+    renderTHEMAP();// renders the map to the buffer first
     renderCharacter();  // renders the character into the buffer
+}
+
+
+//Renders the Map onto the entire screen
+void renderTHEMAP() {
+    COORD c;
+    for (int x = 0; x < g_Console.getConsoleSize().X; x++) {
+        c.X = x;
+        for (int y = 0; y < g_Console.getConsoleSize().Y; y++) {
+            c.Y = y;
+            g_Console.writeToBuffer(c, map1.MapArray[y][x]);
+        }
+    }
 }
 
 void renderMap()
