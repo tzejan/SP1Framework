@@ -1,5 +1,8 @@
 #pragma once
 #include "Entity.h"
+#include "Framework\console.h"
+#include "game.h"
+
 class Box :
 	public Entity
 {
@@ -12,5 +15,7 @@ public:
 	int getTag();//Get itemtag
 	void setTag(int itemtag);//Set itemtag
 	int getAmt();//Get amount
+
+	static void renderBoxes(Console& Console);
 };
 

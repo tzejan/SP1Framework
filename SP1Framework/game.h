@@ -32,6 +32,7 @@ enum EKEYS
     K_RIGHT,
     K_ESCAPE,
     K_SPACE,
+    K_F3,
     K_COUNT,
 };
 
@@ -44,6 +45,15 @@ enum EGAMESTATES
     S_TUT,
     S_GAME,
     S_COUNT
+};
+
+// Enumeration for the different debug states
+enum EDEBUGSTATES
+{
+    D_OFF,
+    D_FRAMES,
+    D_INPUT,
+    D_BOTH
 };
 
 // Enumeration for different item types
