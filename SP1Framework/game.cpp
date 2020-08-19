@@ -405,6 +405,7 @@ void renderGame()
 {
     renderTutorialLevel();        // renders the map to the buffer first
     renderCharacter();  // renders the character into the buffer
+    renderCustomer();
     COORD c;
     // displays the elapsed time
     std::ostringstream ss;
@@ -484,16 +485,26 @@ void renderTutorialLevel()
 }
 
 void renderCustomer()
-{
+{   
+    COORD c = g_Console.getConsoleSize();
+    c.X = 40;
+    c.Y = 13;
     for (int i = 0; i < 6; i++) {
         if (customerPtr[i] == nullptr){
-            customerPtr[i] = new Customer; // spawn customer
+            customerPtr[i] = new Customer; // spawn customer PS:needs to delete the customer 
+            c.X = customerPtr[i]->getPos().getX();
+            c.Y = customerPtr[i]->getPos().getY();
+            g_Console.writeToBuffer(c, ' ', 0x77);
         }
    }
     for (int i = 0; i < 6; i++)
     {
         if (customerPtr[i] != nullptr) {
             int num = rand() % 6 + 1; // randomizing customer item
+           // switch (num) {
+           // case 0 :
+                g_Console.writeToBuffer(c, char(1), 0xBB);
+           // }
         }
     }
 }

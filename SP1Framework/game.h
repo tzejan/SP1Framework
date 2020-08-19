@@ -87,6 +87,7 @@ void renderMainMenu(); //renders the main menu
 void renderHome(); //renders home
 void renderTutorialLevel(); // renders the tutorial level
 
+void renderCustomer();
 void renderCharacter();     // renders the character into the buffer
 void renderFramerate();     // renders debug information, frame rate, elapsed time, etc
 void renderToScreen();      // dump the contents of the buffer to the screen, one frame worth of game
