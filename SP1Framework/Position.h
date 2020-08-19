@@ -2,26 +2,25 @@
 #include <stdlib.h>
 #include <time.h>
 #include <iostream>
-#include <vector>
 
+
+#pragma once
 class Position
 {
 private:
-	int* x;
-	int* y;
+	int x;
+	int y;
+	void gotoxy(int x, int y) const;
 
 public:
 	Position();
+	Position(int x, int y);
 	~Position();
 
-	void setXPosition(int newX);
-	void setYPosition(int newY);
-
-	int getXPosition();
-	int getYPosition();
-
-	bool isCoordinatesAlreadyUsed(std::vector<Position> currentList);
-	void generateRandomMapCoordinates();
+	int getX(void) const;
+	int getY(void) const;
+	void setX(int x);
+	void setY(int y);
 };
 
 

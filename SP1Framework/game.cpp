@@ -9,6 +9,7 @@
 #include <sstream>
 #include <stdlib.h>
 #include <time.h>
+#include "Customer.h"
 
 double  g_dElapsedTime;
 double  g_dDeltaTime;
@@ -18,6 +19,7 @@ SMouseEvent g_mouseEvent;
 // Game specific variables here
 SGameChar   g_sChar;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
+Customer* customerPtr[6] = {nullptr , nullptr , nullptr , nullptr , nullptr , nullptr};
 
 // Console object
 Console g_Console(80, 25, "SP1 Framework");
@@ -416,6 +418,21 @@ void renderTutorialLevel()
 {
     Map map;
     map.chooseMap(1, g_Console);
+}
+
+void renderCustomer()
+{
+    for (int i = 0; i < 6; i++) {
+        if (customerPtr[i] == nullptr){
+            customerPtr[i] = new Customer; // spawn customer
+        }
+   }
+    for (int i = 0; i < 6; i++)
+    {
+        if (customerPtr[i] != nullptr) {
+            int num = rand() % 6 + 1; // randomizing customer item
+        }
+    }
 }
 
 void renderCharacter()

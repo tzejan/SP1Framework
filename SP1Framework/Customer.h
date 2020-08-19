@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h"
+#include "Map.h"
 class Customer :
     public Entity
 {
@@ -9,6 +10,7 @@ private:
 
 public:
     Customer();
+    Customer(Map map);
     ~Customer();
     void moveToShelfContainingItem(int itemToBuy);
     bool entranceWaiting(void);

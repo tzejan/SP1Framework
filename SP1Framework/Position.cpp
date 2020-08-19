@@ -1,59 +1,50 @@
 #include "Position.h"
+#include <Windows.h>
 
-//Constructor fn
+void Position::gotoxy(int x, int y) const
+{
+	COORD scrn;
+	HANDLE hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	scrn.X = x;
+	scrn.Y = y;
+	SetConsoleCursorPosition(hConsoleOutput, scrn);
+}
+
 Position::Position()
 {
-
 	x = 0;
 	y = 0;
-
-	// initialise position coordinates
-	//setPosition(0, 0);
-	return;
 }
 
-//Destructor
+Position::Position(int x, int y)
+{
+	this->x = x;
+	this->y = y;
+}
+
 Position::~Position()
 {
+	//intentionally left blank
 }
 
-void Position::setXPosition(int newX) {
-	*x = newX;
-};
-
-void Position::setYPosition(int newY) {
-	*y = newY;
-};
-
-int Position::getXPosition() {
-	return *x;
+int Position::getX(void) const
+{
+	return x;
 }
 
-int Position::getYPosition() {
-	return *y;
+int Position::getY(void) const
+{
+	return y;
 }
 
-bool Position::isCoordinatesAlreadyUsed(std::vector<Position> currentList) {
-	int entries = currentList.size();
-	for (int i = 0; i < entries; i++) {
-		if (this->getXPosition() == currentList[i].getXPosition()) {
-			if (this->getYPosition() == currentList[i].getYPosition()) {
-				return true;
-			}
-		}
-	}
-	return false;
+void Position::setX(int x)
+{
+	this->x = x;
 }
 
-void Position::generateRandomMapCoordinates() {
-	/* initialize random seed: */
-
-	int newX, newY;
-
-
-	newX = rand() % 80;
-	newY = rand() % 25;
-	setXPosition(newX);
-	setYPosition(newY);
-	return;
+void Position::setY(int y)
+{
+	this->y = y;
 }
+
