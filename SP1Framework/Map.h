@@ -6,17 +6,14 @@
 class Map
 {
 private:
-	const int rowSmall, columnSmall;
-	const int rowBig, columnBig;
+	const int row, column;
 
 public:
 	Map();
 	~Map();
 	
-	int getRowSmall();
-	int getColumnSmall();
-	int getRowBig();
-	int getColumnBig();
+	int getRow();
+	int getColumn();
 	void chooseMap(int lvl, Console& console);
 	void printMap(std::fstream& level, int rows, int column, Console& console);
 };

@@ -5,7 +5,7 @@
 #include <Windows.h>
 #include <iostream>
 
-Map::Map(): rowSmall{ 25 }, columnSmall{ 80 }, rowBig{ 40 }, columnBig{ 120 }
+Map::Map(): row{ 25 }, column{ 80 }
 {
 	//small is the normal console size, big is the map size.
 }
@@ -14,24 +14,14 @@ Map::~Map()
 {
 }
 
-int Map::getRowSmall()
+int Map::getRow()
 {
-	return rowSmall;
+	return row;
 }
 
-int Map::getColumnSmall()
+int Map::getColumn()
 {
-	return columnSmall;
-}
-
-int Map::getRowBig()
-{
-	return rowBig;
-}
-
-int Map::getColumnBig()
-{
-	return columnBig;
+	return column;
 }
 
 void Map::chooseMap(int lvl, Console& console) //this is to choose the map to print out
@@ -41,16 +31,16 @@ void Map::chooseMap(int lvl, Console& console) //this is to choose the map to pr
 	case 0:
 	{
 		std::fstream menu("MainMenu.txt");
-		printMap(menu, rowSmall, columnSmall, console);
+		printMap(menu, row, column, console);
 		break;
 	}
 	case 1:
 	{
 		std::fstream tutorialLevel("Tutorial level.txt");
-		printMap(tutorialLevel, rowBig, columnBig, console);
+		printMap(tutorialLevel, row, column, console);
 		break;
 	}
-	}		
+	}
 }
 
 //put in the level you want to print out, the size of how big it will be and the console obj
