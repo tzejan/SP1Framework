@@ -15,6 +15,7 @@ public:
 	MapMaker();
 	~MapMaker();
 
+	//Takes the Txt file and puts it into the array
 	void Draw(string filepath);
 
 

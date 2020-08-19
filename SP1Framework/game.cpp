@@ -18,9 +18,10 @@ SMouseEvent g_mouseEvent;
 SGameChar   g_sChar;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 MapMaker map1;
+MapMaker hud;
 
 // Console object
-Console g_Console(100, 20, "SP1 Framework");
+Console g_Console(100, 30, "SP1 Framework");
 
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -39,11 +40,11 @@ void init( void )
 
 
     //starting location
-    g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
-    g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
+    g_sChar.m_cLocation.X = 1;
+    g_sChar.m_cLocation.Y = 12;
     
-    map1.Draw("Map Template.txt"); //Puts the Map Template.txt contents into map1's MapArray.
-
+    map1.Draw("Map_Template.txt"); //Puts the Map Template.txt contents into map1's MapArray.
+    hud.Draw("HUD_Template.txt");
 
     g_sChar.m_bActive = true;
 
@@ -344,6 +345,7 @@ void renderGame()
 {
     renderMap(); 
     renderTHEMAP();// renders the map to the buffer first
+    renderHUD();
     renderCharacter();  // renders the character into the buffer
 }
 
@@ -351,11 +353,24 @@ void renderGame()
 //Renders the Map onto the entire screen
 void renderTHEMAP() {
     COORD c;
+    
     for (int x = 0; x < g_Console.getConsoleSize().X; x++) {
         c.X = x;
-        for (int y = 0; y < g_Console.getConsoleSize().Y; y++) {
+        for (int y = 0; y < g_Console.getConsoleSize().Y - 10; y++) {
             c.Y = y;
             g_Console.writeToBuffer(c, map1.MapArray[y][x]);
+        }
+    }
+    
+}
+
+void renderHUD() {
+    COORD c;
+    for (int x = 0; x < g_Console.getConsoleSize().X; x++) {
+        c.X = x;
+        for (int y = 20; y < g_Console.getConsoleSize().Y; y++) {
+            c.Y = y;
+            g_Console.writeToBuffer(c, hud.MapArray[y - 20][x]);
         }
     }
 }
