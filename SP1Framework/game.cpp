@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "Customer.h"
+#include "Box.h"
 
 double  g_dElapsedTime;
 double g_dElapsedWorkTime;
@@ -420,6 +421,7 @@ void renderGame()
     renderTutorialLevel();        // renders the map to the buffer first
     renderCharacter();  // renders the character into the buffer
     renderCustomer();
+    Box::renderBoxes(g_Console);
     COORD c;
     // displays the elapsed time
     std::ostringstream ss;
@@ -497,6 +499,8 @@ void renderTutorialLevel()
     Map map;
     map.chooseMap(1, g_Console);
 }
+
+
 
 void renderCustomer()
 {   
