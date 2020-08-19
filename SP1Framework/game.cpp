@@ -403,6 +403,14 @@ void renderGame()
 {
     renderTutorialLevel();        // renders the map to the buffer first
     renderCharacter();  // renders the character into the buffer
+    COORD c;
+    // displays the elapsed time
+    std::ostringstream ss;
+    ss.str("");
+    ss << g_dElapsedTime << "secs";
+    c.X = 36; //change to shift location of timer
+    c.Y = 0;  //we might use this or we might need to make a new timer to show when the game starts
+    g_Console.writeToBuffer(c, ss.str(), 0x59);
 }
 
 void renderMap()
