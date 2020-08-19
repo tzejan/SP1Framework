@@ -3,6 +3,7 @@
 //
 #include "game.h"
 #include "Map.h"
+#include "Collision.h"
 #include "Framework\console.h"
 #include <iostream>
 #include <iomanip>
@@ -21,9 +22,15 @@ SMouseEvent g_mouseEvent;
 // Game specific variables here
 SGameChar   g_sChar;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
-EGAMESTATES g_ePreviousGameState;
+EGAMESTATES g_ePreviousGameState = S_SPLASHSCREEN; // initial state
 EDEBUGSTATES g_eDebugState = D_OFF; // initial state
+
 Customer* customerPtr[6] = {nullptr , nullptr , nullptr , nullptr , nullptr , nullptr};
+
+Box* boxPtr[6] = { nullptr , nullptr , nullptr , nullptr , nullptr , nullptr };
+Position* boxPosPtr[6] = { nullptr , nullptr , nullptr , nullptr , nullptr , nullptr };
+
+
 
 // Console object
 int g_ConsoleX = 80;
@@ -31,6 +38,7 @@ int g_ConsoleY = 25;
 Console g_Console(g_ConsoleX, g_ConsoleY, "SP1 Framework");
 
 Map map;
+Col col;
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
 //            Initialize variables, allocate memory, load data from file, etc. 
@@ -55,7 +63,17 @@ void init( void )
     g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;*/
 
     g_sChar.m_cLocation.X = 18; //changed character spawn location
-    g_sChar.m_cLocation.Y = 2;
+    g_sChar.m_cLocation.Y = 1;
+
+    //init box and box pos
+    for (int i = 0; i < 6; i++) {
+        if (boxPtr[i] == nullptr) {
+            boxPtr[i] = new Box; // need to delete at end of game
+            boxPosPtr[i] = new Position; //need to delete at end of game
+            boxPosPtr[i]->setX(1);
+            boxPosPtr[i]->setY(i + 2);
+        }
+    }
 
     g_sChar.m_bActive = true;
     // sets the width, height and the font name to use in the console
@@ -97,7 +115,7 @@ void shutdown( void )
 void getInput( void )
 {
     // resets all the keyboard events
-    // memset(g_skKeyEvent, 0, K_COUNT * sizeof(*g_skKeyEvent));
+    memset(g_skKeyEvent, 0, K_COUNT * sizeof(*g_skKeyEvent));
     // then call the console to detect input from user
     g_Console.readConsoleInput();    
 }
@@ -242,7 +260,7 @@ void update(double dt)
             break;
         case S_TUT: updateTutorial();
             break;
-        case S_GAME: g_dElapsedWorkTime += dt; updateGame(); // gameplay logic when we are in the game
+        case S_GAME: g_dElapsedWorkTime += dt; updateGame();// gameplay logic when we are in the game
             break;
     }
 }
@@ -281,30 +299,28 @@ void moveCharacter()
     // COLLISION WITH ENVIRONMENT IS SOLVED HERE
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
-    if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 1) // changed .keyPressed into . keyDown
+    if (g_skKeyEvent[K_UP].keyDown) // changed .keyPressed into . keyDown
     {
-        if (map.getGrid(g_sChar.m_cLocation.Y - 1, g_sChar.m_cLocation.X) == 0)
+        if (col.collidingWith(g_sChar.m_cLocation.Y, g_sChar.m_cLocation.X, -1, 0, map) == 0)
         {
             g_sChar.m_cLocation.Y--;
-        }
+        }        
     }
-    if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 1) // changed .keyPressed into . keyDown
-    {
-        if (map.getGrid(g_sChar.m_cLocation.Y , g_sChar.m_cLocation.X - 1) == 0)
+    if (g_skKeyEvent[K_LEFT].keyDown) // changed .keyPressed into . keyDown
+        if (col.collidingWith(g_sChar.m_cLocation.Y, g_sChar.m_cLocation.X, 0, -1, map) == 0)
         {
             g_sChar.m_cLocation.X--;
         }
-    }
-    if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 2) // changed .keyPressed into . keyDown
+    if (g_skKeyEvent[K_DOWN].keyDown)// changed .keyPressed into . keyDown
     {
-        if (map.getGrid(g_sChar.m_cLocation.Y + 1, g_sChar.m_cLocation.X) == 0)
+        if (col.collidingWith(g_sChar.m_cLocation.Y, g_sChar.m_cLocation.X, +1, 0, map) == 0)
         {
             g_sChar.m_cLocation.Y++;
         }
     }
-    if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 2) // changed .keyPressed into . keyDown
+    if (g_skKeyEvent[K_RIGHT].keyDown) // changed .keyPressed into . keyDown
     {
-        if (map.getGrid(g_sChar.m_cLocation.Y, g_sChar.m_cLocation.X + 1) == 0)
+        if (col.collidingWith(g_sChar.m_cLocation.Y, g_sChar.m_cLocation.X, 0, +1, map) == 0)
         {
             g_sChar.m_cLocation.X++;
         }
@@ -313,8 +329,10 @@ void moveCharacter()
     {
         g_sChar.m_bActive = !g_sChar.m_bActive;        
     }
+}
 
-   
+void moveBoxes() {
+
 }
 
 void checkEnd() //Check if day has ended
@@ -363,6 +381,14 @@ void processInputMenu() //All input processing related to Main Menu
             && g_mouseEvent.mousePosition.Y == 9) //Change to main game state once mouse clicks on the button
             g_eGameState = S_GAME;
     }
+    else if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    {
+        COORD c = g_Console.getConsoleSize();
+        if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 20
+            && g_mouseEvent.mousePosition.X <= c.X / 6 + 29)
+            && g_mouseEvent.mousePosition.Y == 9) //Change to previous game state once mouse clicks on the button
+            g_eGameState = S_GAME;
+    }
 
     if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
     {
@@ -391,10 +417,10 @@ void processInputHome()
     if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
     {
         COORD c = g_Console.getConsoleSize();
-        if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 20
-            && g_mouseEvent.mousePosition.X <= c.X / 6 + 29)
+        if ((g_mouseEvent.mousePosition.X >= c.X - 20
+            && g_mouseEvent.mousePosition.X <= c.X - 17)
             && g_mouseEvent.mousePosition.Y == 9) //Change to main menu state once mouse clicks on the button
-            g_eGameState = S_GAME;
+            g_eGameState = S_MENU;
     }
 }
 
@@ -476,7 +502,7 @@ void renderSplashScreen()  // renders the splash screen
 {
     COORD c = g_Console.getConsoleSize();
     c.Y /= 25;
-    c.X = c.X / 2 - 5;
+    c.X = c.X / 2 - 5; 
     g_Console.writeToBuffer(c, "Fair Prize", 0x03);
     c.Y += 12;
     c.X = g_Console.getConsoleSize().X / 2 - 16;
@@ -488,7 +514,7 @@ void renderGame()
     renderTutorialLevel();        // renders the map to the buffer first
     renderCharacter();  // renders the character into the buffer
     renderCustomer();
-    Box::renderBoxes(g_Console);
+    renderBoxes();
     COORD c;
     // displays the elapsed time
     std::ostringstream ss;
@@ -526,7 +552,10 @@ void renderMainMenu()
     g_Console.writeToBuffer(c, "Main Menu", 0xF0);
     c.Y += 8;
     c.X = g_Console.getConsoleSize().X / 6 + 20;
-    g_Console.writeToBuffer(c, "Go to Work", 0xF0);
+    if (g_ePreviousGameState == S_SPLASHSCREEN)
+        g_Console.writeToBuffer(c, "Start New", 0xF0);
+    else
+        g_Console.writeToBuffer(c, "Resume Work", 0xF0);
     c.Y += 1;
     c.X = g_Console.getConsoleSize().X / 6 + 20;
     g_Console.writeToBuffer(c, "Save", 0xF0);
@@ -614,7 +643,18 @@ void renderTutorialLevel()
     map.chooseMap(1, g_Console);
 }
 
+void renderBoxes() 
+{   
+   
+    g_Console.writeToBuffer(boxPosPtr[0]->getX(), boxPosPtr[0]->getY(), (char)1, 0x55); //toilet paper purple
+    g_Console.writeToBuffer(boxPosPtr[1]->getX(), boxPosPtr[1]->getY(), (char)1, 0x111); //instant noodle dark blue
+    g_Console.writeToBuffer(boxPosPtr[2]->getX(), boxPosPtr[2]->getY(), (char)1, 0xBB); //canned food teal
+    g_Console.writeToBuffer(boxPosPtr[3]->getX(), boxPosPtr[3]->getY(), (char)1, 0xEE); //rice cream
+    g_Console.writeToBuffer(boxPosPtr[4]->getX(), boxPosPtr[4]->getY(), (char)1, 0xAA); //vegetable green
+    g_Console.writeToBuffer(boxPosPtr[5]->getX(), boxPosPtr[5]->getY(), (char)1, 0x99); //bandages blue
 
+
+}
 
 void renderCustomer()
 {   
