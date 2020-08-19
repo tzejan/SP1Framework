@@ -33,6 +33,7 @@ enum EKEYS
     K_ESCAPE,
     K_SPACE, //to pick up boxes
     K_F3,
+    K_F4,
     K_COUNT,
 };
 
