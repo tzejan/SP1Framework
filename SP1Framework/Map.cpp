@@ -7,6 +7,7 @@
 
 Map::Map(): rowSmall{ 25 }, columnSmall{ 80 }, rowBig{ 40 }, columnBig{ 120 }
 {
+	//small is the normal console size, big is the map size.
 }
 
 Map::~Map()
@@ -33,7 +34,7 @@ int Map::getColumnBig()
 	return columnBig;
 }
 
-void Map::chooseMap(int lvl, Console& console)
+void Map::chooseMap(int lvl, Console& console) //this is to choose the map to print out
 {
 	switch (lvl)
 	{
@@ -52,6 +53,8 @@ void Map::chooseMap(int lvl, Console& console)
 	}		
 }
 
+//put in the level you want to print out, the size of how big it will be and the console obj
+//if unsure follow case 1 example.
 void Map::printMap(std::fstream& level, int row, int column, Console& console)
 {
 	COORD c = console.getConsoleSize();
@@ -99,4 +102,6 @@ void Map::printMap(std::fstream& level, int row, int column, Console& console)
 	}
 
 	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
+	//figure out how to delete map ltr
 }
