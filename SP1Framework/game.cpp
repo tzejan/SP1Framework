@@ -21,6 +21,7 @@ SMouseEvent g_mouseEvent;
 // Game specific variables here
 SGameChar   g_sChar;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
+EGAMESTATES g_ePreviousGameState;
 EDEBUGSTATES g_eDebugState = D_OFF; // initial state
 Customer* customerPtr[6] = {nullptr , nullptr , nullptr , nullptr , nullptr , nullptr};
 
@@ -318,7 +319,7 @@ void moveCharacter()
 
 void checkEnd() //Check if day has ended
 {
-    if (g_dElapsedWorkTime >= 60)
+    if (g_dElapsedWorkTime >= 10)
     {
         g_dElapsedWorkTime = 0.0;
         g_eGameState = S_HOME;
@@ -370,6 +371,18 @@ void processInputMenu() //All input processing related to Main Menu
             && g_mouseEvent.mousePosition.X <= c.X / 6 + 29)
             && g_mouseEvent.mousePosition.Y == 12) //Exit once mouse clicks on the button
             g_bQuitGame = true;
+    }
+}
+
+void processInputHome()
+{
+    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    {
+        COORD c = g_Console.getConsoleSize();
+        if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 20
+            && g_mouseEvent.mousePosition.X <= c.X / 6 + 29)
+            && g_mouseEvent.mousePosition.Y == 9) //Change to main menu state once mouse clicks on the button
+            g_eGameState = S_GAME;
     }
 }
 
@@ -514,6 +527,7 @@ void renderHome()
 {
     map.chooseMap(0, g_Console);
     COORD c = g_Console.getConsoleSize();
+    // Game Mechanic stuff
     c.Y /= 25;
     c.X = c.X / 2 - 5;
     g_Console.writeToBuffer(c, "Home", 0xF0);
@@ -525,7 +539,7 @@ void renderHome()
     g_Console.writeToBuffer(c, "State : ", 0xF0);
     c.Y += 1;
     c.X = g_Console.getConsoleSize().X / 8;
-    g_Console.writeToBuffer(c, "X days without medicine", 0xF0);
+    g_Console.writeToBuffer(c, "X days without medicine", 0xF0); //Make this hidden according to Son 1 state
     c.Y += 2;
     c.X = g_Console.getConsoleSize().X / 8;
     g_Console.writeToBuffer(c, "Food (Price) [ ] ", 0xF0);
@@ -540,10 +554,20 @@ void renderHome()
     g_Console.writeToBuffer(c, "State : ", 0xF0);
     c.Y += 1;
     c.X = g_Console.getConsoleSize().X / 8;
-    g_Console.writeToBuffer(c, "X days without medicine", 0xF0);
+    g_Console.writeToBuffer(c, "X days without medicine", 0xF0); //Make this hidden according to Son 2 state
     c.Y += 2;
     c.X = g_Console.getConsoleSize().X / 8;
     g_Console.writeToBuffer(c, "Food (Price) [ ] ", 0xF0);
+
+    // Menu stuff
+    c = g_Console.getConsoleSize();
+    c.Y /= 5;
+    c.X = c.X - 20;
+    g_Console.writeToBuffer(c, "Options", 0xF0);
+    c.Y += 3;
+    g_Console.writeToBuffer(c, "Next Day", 0xF0);
+    c.Y += 1;
+    g_Console.writeToBuffer(c, "Menu", 0xF0);
 }
 
 void renderTutorialLevel()
