@@ -14,6 +14,11 @@ using namespace std;
 double  g_dElapsedTime;
 double  g_dDeltaTime;
 
+char MapArray[80][25];
+
+
+bool paused = false;
+bool level1 = true;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 // Game specific variables here
@@ -26,6 +31,199 @@ Console g_Console(80, 25, "SP1 Framework");
 Bullet* Amount_ofbullet[256] = { nullptr,};
 
 player play(&g_sChar);
+void levelEvents(void) {
+    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) {
+        if (g_mouseEvent.mousePosition.X >= 20 && g_mouseEvent.mousePosition.X <= 23 && g_mouseEvent.mousePosition.Y == 10) {
+            g_bQuitGame = true;
+        }
+        else if (g_mouseEvent.mousePosition.X >= 25 && g_mouseEvent.mousePosition.X <= 31 && g_mouseEvent.mousePosition.Y == 10) {
+            level1 = false;
+        }
+    }
+}
+void levelselect(void) {
+    COORD C;
+    //turn entire screen gray
+    for (int i = 0; i < 80; i++) {
+        for (int j = 0; j < 25; j++) {
+            C.X = i;
+            C.Y = j;
+            g_Console.writeToBuffer(C, " ", 0x7A);
+        }
+    }
+    //background for buttons
+    for (int i = 18; i < 58; i++) {
+        C.X = i;
+        C.Y = 9;
+        g_Console.writeToBuffer(C, " ", 0xBB);
+    }
+    for (int i = 18; i < 58; i++) {
+        C.X = i;
+        C.Y = 10;
+        g_Console.writeToBuffer(C, " ", 0xBB);
+    }
+    for (int i = 18; i < 58; i++) {
+        C.X = i;
+        C.Y = 11;
+        g_Console.writeToBuffer(C, " ", 0xBB);
+    }
+    // random dots
+    for (int i = 0; i < 2; i++) {
+        C.X = 2 + i;
+        C.Y = 3;
+        g_Console.writeToBuffer(C, " ", 0x4a);
+    }
+    for (int i = 0; i < 2; i++) {
+        C.X = 40 + i;
+        C.Y = 1;
+        g_Console.writeToBuffer(C, " ", 0x4a);
+    }
+    for (int i = 0; i < 2; i++) {
+        C.X = 70 + i;
+        C.Y = 13;
+        g_Console.writeToBuffer(C, " ", 0x4a);
+    }
+    for (int i = 0; i < 2; i++) {
+        C.X = 38 + i;
+        C.Y = 18;
+        g_Console.writeToBuffer(C, " ", 0x4a);
+    }
+    for (int i = 0; i < 2; i++) {
+        C.X = 4 + i;
+        C.Y = 13;
+        g_Console.writeToBuffer(C, " ", 0x4a);
+    }
+    for (int i = 0; i < 2; i++) {
+        C.X = 17 + i;
+        C.Y = 17;
+        g_Console.writeToBuffer(C, " ", 0x4a);
+    }
+    for (int i = 0; i < 2; i++) {
+        C.X = 76 + i;
+        C.Y = 23;
+        g_Console.writeToBuffer(C, " ", 0x4a);
+    }
+    for (int i = 0; i < 2; i++) {
+        C.X = 77 + i;
+        C.Y = 5;
+        g_Console.writeToBuffer(C, " ", 0x4a);
+    }
+    //Exit
+    C.X = 20;
+    C.Y = 10;
+    g_Console.writeToBuffer(C, "Exit", 0x3A);
+    //Level 1
+    C.X += 5;
+    g_Console.writeToBuffer(C, "Level 1", 0x3A);
+    //Level 2
+    C.X += 8;
+    g_Console.writeToBuffer(C, "Level 2", 0x3A);
+    //Level 3
+    C.X += 8;
+    g_Console.writeToBuffer(C, "Level 3", 0x3A);
+    //Level 4
+    C.X += 8;
+    g_Console.writeToBuffer(C, "Level 4", 0x3A);
+}
+void pauseEvents(void) {
+    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) {
+        if (g_mouseEvent.mousePosition.X >= 50 && g_mouseEvent.mousePosition.X <= 70 && g_mouseEvent.mousePosition.Y == 7) {
+            level1 = true;
+            paused = false;
+        }
+        else if (g_mouseEvent.mousePosition.X >= 56 && g_mouseEvent.mousePosition.X <= 63 && g_mouseEvent.mousePosition.Y == 15) {
+            paused = false;
+        }
+    }
+}
+void pausemenu(void) {
+    COORD C;
+    //turns entire screen black
+    for (int i = 0; i < 80; i++) {
+        for (int j = 0; j < 25; j++) {
+            C.X = i;
+            C.Y = j;
+            g_Console.writeToBuffer(C, " ", 0x1A);
+        }
+    }
+    //half
+    for (int i = 0; i < 40; i++) {
+        for (int j = 0; j < 25; j++) {
+            C.X = i;
+            C.Y = j;
+            g_Console.writeToBuffer(C, " ", 0xBB);
+        }
+    }
+    //border
+    for (int i = 0; i < 80; i++) {
+        C.X = i;
+        C.Y = 0;
+        g_Console.writeToBuffer(C, " ", 0x5A);
+    }
+    for (int i = 0; i < 80; i++) {
+        C.X = i;
+        C.Y = 24;
+        g_Console.writeToBuffer(C, " ", 0x5A);
+    }
+    for (int i = 0; i < 25; i++) {
+        C.X = 0;
+        C.Y = i;
+        g_Console.writeToBuffer(C, " ", 0x5A);
+    }
+    for (int i = 0; i < 25; i++) {
+        C.X = 1;
+        C.Y = i;
+        g_Console.writeToBuffer(C, " ", 0x5A);
+    }
+    for (int i = 0; i < 80; i++) {
+        C.X = 79;
+        C.Y = i;
+        g_Console.writeToBuffer(C, " ", 0x5A);
+    }
+    for (int i = 0; i < 80; i++) {
+        C.X = 78;
+        C.Y = i;
+        g_Console.writeToBuffer(C, " ", 0x5A);
+    }
+    //p
+    for (int i = 7; i < 11; i++) {
+        for (int j = 5; j < 20; j++) {
+            C.X = i;
+            C.Y = j;
+            g_Console.writeToBuffer(C, " ", 0x4A);
+        }
+    }
+    for (int i = 9; i < 25; i++) {
+        for (int j = 5; j < 6; j++) {
+            C.X = i;
+            C.Y = j;
+            g_Console.writeToBuffer(C, " ", 0x4A);
+        }
+    }
+    for (int i = 9; i < 25; i++) {
+        for (int j = 9; j < 10; j++) {
+            C.X = i;
+            C.Y = j;
+            g_Console.writeToBuffer(C, " ", 0x4A);
+        }
+    }
+    for (int i = 23; i < 27; i++) {
+        for (int j = 5; j < 10; j++) {
+            C.X = i;
+            C.Y = j;
+            g_Console.writeToBuffer(C, " ", 0x4A);
+        }
+    }
+    //Back to level select
+    C.X = 50;
+    C.Y = 7;
+    g_Console.writeToBuffer(C, "Back To Level Select", 0x6A);
+    //continue
+    C.X = 56;
+    C.Y += 8;
+    g_Console.writeToBuffer(C, "Continue", 0x6A);
+
+}
 void healthbar(void) {
     COORD C;
     //border 
@@ -359,7 +557,7 @@ void processUserInput()
 {
     // quits the game if player hits the escape key
     if (g_skKeyEvent[K_ESCAPE].keyReleased)
-        g_bQuitGame = true;    
+        paused = true;
 }
 
 //--------------------------------------------------------------
@@ -377,12 +575,24 @@ void render()
     {
     case S_SPLASHSCREEN: renderSplashScreen();
         break;
-    case S_GAME: renderGame();
+    case S_GAME:
+        if (paused == true) {
+            pausemenu();
+            pauseEvents();
+        }
+        else if (level1 == true) {
+            levelselect();
+            levelEvents();
+        }
+        else {
+            renderGame();
+            renderFramerate();      // renders debug information, frame rate, elapsed time, etc
+            renderInputEvents();    // renders status of input events
+        }
+
         break;
     }
-    healthbar();
-    renderFramerate();      // renders debug information, frame rate, elapsed time, etc
-    renderInputEvents();    // renders status of input events
+
     renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
 }
 
@@ -440,143 +650,171 @@ void renderMap()
     // 0x3D Light Blue
     // 0xFF White
     COORD c;
-    // Black colour
-        
     
+    
+    // Checking for Symbol
+    for (int i = 0; i < 80; i++)
+    {
+        for (int j = 0; j < 25; j++)
+        {
+            // Black -> '*' -> Walls
+            if (MapArray[i][j] == '*')
+            {
+                c.X = i;
+                c.Y = j;
+                g_Console.writeToBuffer(c, "  ", colors[5]);
+            }
+            // Gray -> '@'
+            if (MapArray[i][j] == '@')
+            {
+                c.X = i;
+                c.Y = j;
+                g_Console.writeToBuffer(c, "  ", colors[8]);
+            }
+            // White -> '#'
+            if (MapArray[i][j] == '#')
+            {
+                c.X = i;
+                c.Y = j;
+                g_Console.writeToBuffer(c, "  ", colors[7]);
+            }
+            // Green -> '&'
+            if (MapArray[i][j] == '&')
+            {
+                c.X = i;
+                c.Y = j;
+                g_Console.writeToBuffer(c, "   ", colors[10]);
+            }
+        }
+    }
+    for (int i = 0; i < 80; i++)
+    {
+        if (i < 17 || i > 28 && i < 51 || i > 63 && i < 79)
+        {
+            MapArray[i][4] = '*';
+            MapArray[i][10] = '*';
+            MapArray[i][14] = '*';
+            MapArray[i][20] = '*';
+        }
+        if (i < 5 || i > 9 && i < 15 || i > 19 && i < 25)
+        {
+            MapArray[15][i] = '*';
+            MapArray[29][i] = '*';
+            MapArray[50][i] = '*';
+            MapArray[64][i] = '*';
+        }
     // Gray colour oF ROAD
     for (int i = 17; i < 28; i++)
     {
-        c.X = i;
-        g_Console.writeToBuffer(c, "  ", colors[8]);
-        for (int i = 0; i < 25; i++)
+        for (int j = 0; j < 25; j++)
         {
-            c.Y = i;
-            g_Console.writeToBuffer(c, "  ", colors[8]);
+            MapArray[i][j] = '@';
         }
     }
     for (int i = 52; i < 63; i++)
     {
-        c.X = i;
-        g_Console.writeToBuffer(c, "  ", colors[8]);
-        for (int i = 0; i < 25; i++)
+
+        for (int j = 0; j < 25; j++)
         {
-            c.Y = i;
-            g_Console.writeToBuffer(c, "  ", colors[8]);
+            MapArray[i][j] = '@';
         }
     }
     for (int i = 0; i < 79; i++)
     {
-        c.X = i;
-        g_Console.writeToBuffer(c, "  ", colors[8]);
-        for (int i = 5; i < 10; i++)
+
+        for (int j = 5; j < 10; j++)
         {
-            c.Y = i;
-            g_Console.writeToBuffer(c, "  ", colors[8]);
+            MapArray[i][j] = '@';
         }
     }
     for (int i = 0; i < 79; i++)
     {
-        c.X = i;
-        g_Console.writeToBuffer(c, "  ", colors[8]);
-        for (int i = 15; i < 20; i++)
+
+        for (int j = 15; j < 20; j++)
         {
-            c.Y = i;
-            g_Console.writeToBuffer(c, "  ", colors[8]);
+            MapArray[i][j] = '@';
         }
     }
     // White colour of road
     for (int i = 0; i < 25; i++)
     {
-        if (i == 1 || i == 2 || i == 3 || i == 6 || i == 7 || i == 8 || i == 11 || i == 12 || i == 13 || i == 16 || i == 17 || i == 18 || i == 21 || i == 22 || i == 23)
+        if (i > 0 && i < 4 || i > 5 && i < 9  || i > 10 && i < 14 || i > 15 && i < 19 || i > 20 && i < 24)
         {
-            c.X = 22;
-            c.Y = i;
-            g_Console.writeToBuffer(c, "  ", colors[7]);
-            c.X = 57;
-            c.Y = i;
-            g_Console.writeToBuffer(c, "  ", colors[7]);
+            for (int j = 22; j < 24; j++) 
+            {
+             MapArray[j][i] = '#';
+            }
+            for (int j = 57; j < 59; j++) 
+            {
+                MapArray[j][i] = '#';
+            }
         }
     }
 
 
-    for (int i = 0; i < 79; i++)
+    for (int i = 0; i < 80; i++)
     {
-        if (i == 0 || i == 1 || i == 2 || i == 8 || i == 9 || i == 10 || i == 11 || i == 12 || i == 13 || i == 31 || i == 32 || i == 33 || i == 34 || i == 35 || i == 36 || i == 43 || i == 44 || i == 45 || i == 46 || i == 47 || i == 48 || i == 66 || i == 67 || i == 68 || i == 69 || i == 70 || i == 71 || i == 77 || i == 78)
+        if (i < 3 || i > 7 && i < 14 || i > 30 && i < 37 || i > 42 && i < 49 || i > 65 && i < 72 || i == 77 || i == 78  )
         {
-            c.X = i;
-            c.Y = 7;
-            g_Console.writeToBuffer(c, "  ", colors[7]);
-            c.X = i;
-            c.Y = 17;
-            g_Console.writeToBuffer(c, "  ", colors[7]);
+            MapArray[i][7] = '#';
+            MapArray[i][17] = '#';
         }
     }
     // Green Colour
     for (int i = 0; i < 14; i++)
     {
-        c.X = i;
-        for (int i = 21; i < 25; i++)
+
+        for (int j = 21; j < 25; j++)
         {
-            c.Y = i;
-            g_Console.writeToBuffer(c, "  ", colors[10]);
+            MapArray[i][j] = '&';
         }
-        for (int i = 11; i < 14; i++)
+        for (int j = 11; j < 14; j++)
         {
-            c.Y = i;
-            g_Console.writeToBuffer(c, "  ", colors[10]);
+            MapArray[i][j] = '&';
         }
-        g_Console.writeToBuffer(c, "  ", colors[10]);
-        for (int i = 0; i < 4; i++)
+
+        for (int j = 0; j < 4; j++)
         {
-            c.Y = i;
-            g_Console.writeToBuffer(c, "  ", colors[10]);
+            MapArray[i][j] = '&';
         }
-        g_Console.writeToBuffer(c, "  ", colors[10]);
+
     }
     for (int i = 31; i < 49; i++)
     {
-        c.X = i;
-        for (int i = 21; i < 25; i++)
+
+        for (int j = 21; j < 25; j++)
         {
-            c.Y = i;
-            g_Console.writeToBuffer(c, "  ", colors[10]);
+            MapArray[i][j] = '&';
         }
-        for (int i = 11; i < 14; i++)
+        for (int j = 11; j < 14; j++)
         {
-            c.Y = i;
-            g_Console.writeToBuffer(c, "  ", colors[10]);
+            MapArray[i][j] = '&';
         }
-        g_Console.writeToBuffer(c, "  ", colors[10]);
-        for (int i = 0; i < 4; i++)
+
+        for (int j = 0; j < 4; j++)
         {
-            c.Y = i;
-            g_Console.writeToBuffer(c, "  ", colors[10]);
+            MapArray[i][j] = '&';
         }
-        g_Console.writeToBuffer(c, "  ", colors[10]);
+
     }
-    for (int i = 66; i < 79; i++)
+    for (int i = 66; i < 78; i++)
     {
-        c.X = i;
-        for (int i = 21; i < 25; i++)
+
+        for (int j = 21; j < 25; j++)
         {
-            c.Y = i;
-            g_Console.writeToBuffer(c, "  ", colors[10]);
+            MapArray[i][j] = '&';
         }
-        for (int i = 11; i < 14; i++)
+        for (int j = 11; j < 14; j++)
         {
-            c.Y = i;
-            g_Console.writeToBuffer(c, "  ", colors[10]);
+            MapArray[i][j] = '&';
         }
-        g_Console.writeToBuffer(c, "  ", colors[10]);
-        for (int i = 0; i < 4; i++)
+
+        for (int j = 0; j < 4; j++)
         {
-            c.Y = i;
-            g_Console.writeToBuffer(c, "  ", colors[10]);
+            MapArray[i][j] = '&';
         }
-        g_Console.writeToBuffer(c, "  ", colors[10]);
     }
 }
-
 void renderCharacter()
 {
     // Draw the location of the character
