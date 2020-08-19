@@ -77,6 +77,7 @@ void init( void )
     }
 
     g_sChar.m_bActive = true;
+    g_sChar.moving = false;
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
 
@@ -307,8 +308,9 @@ void updateGame()       // game logic
 {
     g_ePreviousGameState = g_eGameState;
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
-    moveCharacter();    // moves the character, collision detection, physics, etc
-    moveBoxes();
+    moveCharacter(); 
+    moveChara();
+    moveBoxes();// moves the character, collision detection, physics, etc
                         // sound can be played here too.
 }
 
@@ -317,57 +319,116 @@ void moveCharacter()
     // COLLISION WITH ENVIRONMENT IS SOLVED HERE
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
-    if (g_skKeyEvent[K_UP].keyDown) // changed .keyPressed into . keyDown
+    if ((g_skKeyEvent[K_UP].keyDown) && (g_sChar.moving != true)) // changed .keyPressed into . keyDown
     {
+        g_sChar.moving = true;
+        g_sChar.direction = UP;
+      
+    }
+    if ((g_skKeyEvent[K_LEFT].keyDown) && (g_sChar.moving != true)) // changed .keyPressed into . keyDown
+    {
+        g_sChar.moving = true;
+        g_sChar.direction = LEFT;
+    }
+    if ((g_skKeyEvent[K_DOWN].keyDown) && (g_sChar.moving != true))// changed .keyPressed into . keyDown
+    {
+     
+        g_sChar.moving = true;
+        g_sChar.direction = DOWN;
+
+    }
+    if ((g_skKeyEvent[K_RIGHT].keyDown) && (g_sChar.moving != true)) // changed .keyPressed into . keyDown
+    {
+        g_sChar.moving = true;
+        g_sChar.direction = RIGHT;
+    }
+    if (g_skKeyEvent[K_UP].keyReleased)
+    {
+        g_sChar.moving = false;
+        g_sChar.direction = NONE;
+    }
+    if (g_skKeyEvent[K_LEFT].keyReleased)
+    {
+        g_sChar.moving = false;
+        g_sChar.direction = NONE;
+    }
+    if (g_skKeyEvent[K_DOWN].keyReleased)
+    {
+        g_sChar.moving = false;
+        g_sChar.direction = NONE;
+    }
+    if (g_skKeyEvent[K_RIGHT].keyReleased)
+    {
+        g_sChar.moving = false;
+        g_sChar.direction = NONE;
+    }
+    
+    if (g_skKeyEvent[K_SPACE].keyReleased)
+    {
+        g_sChar.m_bActive = !g_sChar.m_bActive;        
+    }
+}
+
+void moveChara()
+{
+    switch (g_sChar.direction)
+    {
+    case UP:
         if (col.collidingWith(g_sChar.m_cLocation.Y, g_sChar.m_cLocation.X, -1, 0, map) == 0)
         {
             g_sChar.m_cLocation.Y--;
-        }        
-    }
-    if (g_skKeyEvent[K_LEFT].keyDown) // changed .keyPressed into . keyDown
-    {
+        }
+        g_ePreviousGameState = g_eGameState;
+        break;
+    case LEFT:
         if (col.collidingWith(g_sChar.m_cLocation.Y, g_sChar.m_cLocation.X, 0, -1, map) == 0)
         {
             g_sChar.m_cLocation.X--;
         }
-    }
-    if (g_skKeyEvent[K_DOWN].keyDown)// changed .keyPressed into . keyDown
-    {
+        g_ePreviousGameState = g_eGameState;
+        break;
+    case DOWN:
         if (col.collidingWith(g_sChar.m_cLocation.Y, g_sChar.m_cLocation.X, +1, 0, map) == 0)
         {
             g_sChar.m_cLocation.Y++;
         }
-    }
-    if (g_skKeyEvent[K_RIGHT].keyDown) // changed .keyPressed into . keyDown
-    {
+        g_ePreviousGameState = g_eGameState;
+        break;
+    case RIGHT:
         if (col.collidingWith(g_sChar.m_cLocation.Y, g_sChar.m_cLocation.X, 0, +1, map) == 0)
         {
             g_sChar.m_cLocation.X++;
         }
+        g_ePreviousGameState = g_eGameState;
+        break;
     }
-    /*if (g_skKeyEvent[K_SPACE].keyReleased)
+    if (g_skKeyEvent[K_SPACE].keyReleased)
     {
-        g_sChar.m_bActive = !g_sChar.m_bActive;        
-    }*/
+        g_sChar.m_bActive = !g_sChar.m_bActive;
+    }
+    
 }
-
-void moveBoxes() {
+void moveBoxes() 
+{
     for (int i = 0; i < 6; i++) {
 
-        if (g_skKeyEvent[K_SPACE].keyReleased && g_sChar.m_cLocation.X == boxPosPtr[i]->getX() + 1 && g_sChar.m_cLocation.Y == boxPosPtr[i]->getY())
+        if (g_skKeyEvent[K_SPACE].keyDown && bCarryBox[i] == true) { //have to hold down space and move away to let go
+            bCarryBox[i] = false;
+        }
+
+        if (bCarryBox[i] == false && g_skKeyEvent[K_SPACE].keyReleased && g_sChar.m_cLocation.X == boxPosPtr[i]->getX() + 1 && g_sChar.m_cLocation.Y == boxPosPtr[i]->getY())
         {
             bCarryBox[i] = true;
         }
-        /*else if (g_skKeyEvent[K_SPACE].keyReleased && g_sChar.m_cLocation.X == boxPosPtr[i]->getX() - 1 && g_sChar.m_cLocation.Y == boxPosPtr[i]->getY()) {
-            bCarryBox[i] = true;
-        }*/
-        else if (g_skKeyEvent[K_SPACE].keyReleased && g_sChar.m_cLocation.X == boxPosPtr[i]->getX() && g_sChar.m_cLocation.Y == boxPosPtr[i]->getY() + 1) {
+        else if (bCarryBox[i] == false && g_skKeyEvent[K_SPACE].keyReleased && g_sChar.m_cLocation.X == boxPosPtr[i]->getX() - 1 && g_sChar.m_cLocation.Y == boxPosPtr[i]->getY()) {
             bCarryBox[i] = true;
         }
-        else if (g_skKeyEvent[K_SPACE].keyReleased && g_sChar.m_cLocation.X == boxPosPtr[i]->getX() && g_sChar.m_cLocation.Y == boxPosPtr[i]->getY() - 1) {
+        else if (bCarryBox[i] == false && g_skKeyEvent[K_SPACE].keyReleased && g_sChar.m_cLocation.X == boxPosPtr[i]->getX() && g_sChar.m_cLocation.Y == boxPosPtr[i]->getY() + 1) {
             bCarryBox[i] = true;
         }
-
+        else if (bCarryBox[i] == false && g_skKeyEvent[K_SPACE].keyReleased && g_sChar.m_cLocation.X == boxPosPtr[i]->getX() && g_sChar.m_cLocation.Y == boxPosPtr[i]->getY() - 1) {
+            bCarryBox[i] = true;
+        }
 
 
         if (bCarryBox[i] == true && g_skKeyEvent[K_RIGHT].keyDown) {
@@ -388,11 +449,6 @@ void moveBoxes() {
         else if (bCarryBox[i] == true && g_skKeyEvent[K_DOWN].keyDown) {
             boxPosPtr[i]->setX(g_sChar.m_cLocation.X);
             boxPosPtr[i]->setY(g_sChar.m_cLocation.Y + 1);
-
-        }
-
-        if (g_skKeyEvent[K_SPACE].keyDown && bCarryBox[i] == true) {
-            bCarryBox[i] = false;
         }
     }
 }
@@ -763,19 +819,19 @@ void renderCustomer()
 
                 switch (i) {
                 case 0:
-                    if (time % 10 != 0) {
+                    if (time % 10 != 1) {
                         c.X = 79;
                         c.Y = 13;
                         g_Console.writeToBuffer(c, char(1), 0x122);
                     }
                 case 1:
-                    if (time % 10 != 1) {
+                    if (time % 25 != 2) {
                         c.X = 37;
                         c.Y = 7;
                         g_Console.writeToBuffer(c, char(1), 0x122);
                     }
                 case 2:
-                   if (time % 30 != 2) {
+                   if (time % 10 != 0) {
                         c.X = 37;
                         c.Y = 13;
                         g_Console.writeToBuffer(c, char(1), 0x122);
