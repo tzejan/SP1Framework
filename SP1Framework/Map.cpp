@@ -78,8 +78,25 @@ void Map::printMap(std::fstream& level, int row, int column, Console& console)
 				console.writeToBuffer(c, ' ', 0x77); //light gray
 				break;
 			case 4:
-				console.writeToBuffer(c, ' ', 0x00); //black
+				console.writeToBuffer(c, ' ', 0x55); //toilet paper purple
 				break;
+			case 5:
+				console.writeToBuffer(c, ' ', 0x111); //instant noodle dark blue
+				break;
+			case 6:
+				console.writeToBuffer(c, ' ', 0xBB); //canned food teal
+				break;
+			case 7:
+				console.writeToBuffer(c, ' ', 0xEE); //rice cream
+				break;
+			case 8:
+				console.writeToBuffer(c, ' ', 0xAA); //vegetable green
+				break;
+			case 9:
+				console.writeToBuffer(c, ' ', 0x99); //bandages blue
+				break;
+
+
 			}
 		}
 
