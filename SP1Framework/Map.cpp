@@ -8,7 +8,7 @@
 Map::Map(): mapArray {0}
 {
 	//small is the normal console size, big is the map size.
-}
+} 
 
 Map::~Map()
 {

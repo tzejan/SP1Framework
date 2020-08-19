@@ -31,7 +31,7 @@ enum EKEYS
     K_LEFT,
     K_RIGHT,
     K_ESCAPE,
-    K_SPACE,
+    K_SPACE, //to pick up boxes
     K_F3,
     K_COUNT,
 };
@@ -86,7 +86,10 @@ void updateMenu();            // Menu logic
 void updateHome();            // Home logic
 void updateTutorial();        // Tutorial logic
 void updateGame();          // Game logic
+
 void moveCharacter();       // moves the character, collision detection, physics, etc
+void moveBoxes();
+
 void processUserInput();    // checks if you should change states or do something else with the game, e.g. pause, exit
 void clearScreen();         // clears the current screen and draw from scratch 
 void renderSplashScreen();  // renders the splash screen
@@ -97,6 +100,7 @@ void renderMainMenu(); //renders the main menu
 void renderHome(); //renders home
 void renderTutorialLevel(); // renders the tutorial level
 
+void renderBoxes();
 void renderCustomer();
 void renderCharacter();     // renders the character into the buffer
 void renderFramerate();     // renders debug information, frame rate, elapsed time, etc

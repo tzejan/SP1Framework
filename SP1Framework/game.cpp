@@ -22,7 +22,13 @@ SMouseEvent g_mouseEvent;
 SGameChar   g_sChar;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 EDEBUGSTATES g_eDebugState = D_OFF; // initial state
+
 Customer* customerPtr[6] = {nullptr , nullptr , nullptr , nullptr , nullptr , nullptr};
+
+Box* boxPtr[6] = { nullptr , nullptr , nullptr , nullptr , nullptr , nullptr };
+Position* boxPosPtr[6] = { nullptr , nullptr , nullptr , nullptr , nullptr , nullptr };
+
+
 
 // Console object
 int g_ConsoleX = 80;
@@ -54,6 +60,16 @@ void init( void )
 
     g_sChar.m_cLocation.X = 18; //changed character spawn location
     g_sChar.m_cLocation.Y = 2;
+
+    //init box pos
+    for (int i = 0; i < 6; i++) {
+        if (boxPtr[i] == nullptr) {
+            boxPtr[i] = new Box; // need to delete at end of game
+            boxPosPtr[i] = new Position; //need to delete at end of game
+            boxPosPtr[i]->setX(1);
+            boxPosPtr[i]->setY(i + 2);
+        }
+    }
 
     g_sChar.m_bActive = true;
     // sets the width, height and the font name to use in the console
@@ -303,6 +319,10 @@ void moveCharacter()
    
 }
 
+void moveBoxes() {
+
+}
+
 void checkEnd() //Check if day has ended
 {
     if (g_dElapsedWorkTime >= 10)
@@ -435,7 +455,7 @@ void renderSplashScreen()  // renders the splash screen
 {
     COORD c = g_Console.getConsoleSize();
     c.Y /= 25;
-    c.X = c.X / 2 - 5;
+    c.X = c.X / 2 - 5; 
     g_Console.writeToBuffer(c, "Fair Prize", 0x03);
     c.Y += 12;
     c.X = g_Console.getConsoleSize().X / 2 - 16;
@@ -447,7 +467,7 @@ void renderGame()
     renderTutorialLevel();        // renders the map to the buffer first
     renderCharacter();  // renders the character into the buffer
     renderCustomer();
-    Box::renderBoxes(g_Console);
+    renderBoxes();
     COORD c;
     // displays the elapsed time
     std::ostringstream ss;
@@ -526,7 +546,18 @@ void renderTutorialLevel()
     map.chooseMap(1, g_Console);
 }
 
+void renderBoxes() 
+{   
+   
+    g_Console.writeToBuffer(boxPosPtr[0]->getX(), boxPosPtr[0]->getY(), (char)1, 0x55); //toilet paper purple
+    g_Console.writeToBuffer(boxPosPtr[1]->getX(), boxPosPtr[1]->getY(), (char)1, 0x111); //instant noodle dark blue
+    g_Console.writeToBuffer(boxPosPtr[2]->getX(), boxPosPtr[2]->getY(), (char)1, 0xBB); //canned food teal
+    g_Console.writeToBuffer(boxPosPtr[3]->getX(), boxPosPtr[3]->getY(), (char)1, 0xEE); //rice cream
+    g_Console.writeToBuffer(boxPosPtr[4]->getX(), boxPosPtr[4]->getY(), (char)1, 0xAA); //vegetable green
+    g_Console.writeToBuffer(boxPosPtr[5]->getX(), boxPosPtr[5]->getY(), (char)1, 0x99); //bandages blue
 
+
+}
 
 void renderCustomer()
 {   
