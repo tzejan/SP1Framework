@@ -75,7 +75,7 @@ void Map::printMap(std::fstream& level, int row, int column, Console& console)
 				console.writeToBuffer(c, ' ', 0x66);
 				break;
 			case 3:
-				console.writeToBuffer(c, ' ', 0x100);
+				console.writeToBuffer(c, ' ', 0x77);
 				break;
 			case 4:
 				console.writeToBuffer(c, ' ', 0x100);
