@@ -134,6 +134,8 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
     {
     case S_SPLASHSCREEN: gameplayMouseHandler(mouseEvent); // handle mouse input for splash screen
         break;
+    case S_MENU: gameplayMouseHandler(mouseEvent); // handle mouse input for menu
+        break;
     case S_GAME: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
         break;
     }
@@ -245,7 +247,10 @@ void updateSplashScreen()    // Splash screen logic
 
 void updateMenu() // Menu logic
 {
-
+    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    {
+        g_eGameState = S_GAME;
+    }
 }
 
 void updateHome() // Home logic
