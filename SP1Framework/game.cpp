@@ -109,6 +109,8 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
     {
     case S_SPLASHSCREEN: // don't handle anything for splash screen
         break;
+    case S_HOME: gameplayKBHandler(keyboardEvent); // handle home menu keyboard menu
+        break;
     case S_GAME: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
         break;
     }
@@ -137,6 +139,8 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
     case S_SPLASHSCREEN: gameplayMouseHandler(mouseEvent); // handle mouse input for splash screen
         break;
     case S_MENU: gameplayMouseHandler(mouseEvent); // handle mouse input for menu
+        break;
+    case S_HOME: gameplayMouseHandler(mouseEvent); // handle mouse input for home menu
         break;
     case S_GAME: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
         break;
@@ -340,15 +344,15 @@ void processUserInput()
     case S_SPLASHSCREEN: processInputSplash(); break;
     case S_MENU: processInputMenu(); break;
     case S_HOME: 
-        if (g_skKeyEvent[K_ESCAPE].keyReleased)// quits the game if player hits the escape key
+        if (g_skKeyEvent[K_ESCAPE].keyReleased)// opens main menu if player hits the escape key
             g_eGameState = S_MENU; 
         break;
     case S_TUT:
-        if (g_skKeyEvent[K_ESCAPE].keyReleased)// quits the game if player hits the escape key
+        if (g_skKeyEvent[K_ESCAPE].keyReleased)// opens main menu if player hits the escape key
             g_eGameState = S_MENU;
         break;
     case S_GAME:
-        if (g_skKeyEvent[K_ESCAPE].keyReleased)// quits the game if player hits the escape key
+        if (g_skKeyEvent[K_ESCAPE].keyReleased)// opens main menu if player hits the escape key
             g_eGameState = S_MENU;
         checkEnd();
         break;
