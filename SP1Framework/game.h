@@ -78,4 +78,10 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent);   // handles keyb
 void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent); // handles mouse events for gameplay 
 
 
+//our functions
+void renderTHEMAP();
+
+
+
+
 #endif // _GAME_H
