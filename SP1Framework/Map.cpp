@@ -37,10 +37,18 @@ void Map::chooseMap(int lvl, Console& console)
 {
 	switch (lvl)
 	{
+	case 0:
+	{
+		std::fstream menu("MainMenu.txt");
+		printMap(menu, rowBig, columnBig, console);
+		break;
+	}
 	case 1:
+	{
 		std::fstream tutorialLevel("Tutorial level.txt");
 		printMap(tutorialLevel, rowBig, columnBig, console);
 		break;
+	}
 	}		
 }
 

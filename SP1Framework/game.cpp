@@ -235,6 +235,12 @@ void updateSplashScreen()    // Splash screen logic
             && g_mouseEvent.mousePosition.Y == g_Console.getConsoleSize().Y / 3 + 1) //Change to main game state once mouse clicks on the button
             g_eGameState = S_GAME;
     }
+    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    {
+        if ((g_mouseEvent.mousePosition.X >= g_Console.getConsoleSize().X / 2 - 15 || g_mouseEvent.mousePosition.X <= g_Console.getConsoleSize().X / 2 + 13)
+            && g_mouseEvent.mousePosition.Y == g_Console.getConsoleSize().Y / 3 + 1) //Change to main game state once mouse clicks on the button
+            g_eGameState = S_GAME;
+    }
 }
 
 void updateMenu() // Menu logic
@@ -378,7 +384,8 @@ void renderMap()
 
 void renderMainMenu() 
 {
-    
+    Map Menu;
+    Menu.chooseMap(0, g_Console);
 }
 
 void renderHome() 
