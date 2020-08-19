@@ -13,5 +13,5 @@ Entity::~Entity()
 
 Position Entity::getPos(void)
 {
-	return Position();
+	return pos;
 }

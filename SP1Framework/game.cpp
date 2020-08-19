@@ -21,6 +21,7 @@ SMouseEvent g_mouseEvent;
 // Game specific variables here
 SGameChar   g_sChar;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
+EDEBUGSTATES g_eDebugState = D_OFF; // initial state
 Customer* customerPtr[6] = {nullptr , nullptr , nullptr , nullptr , nullptr , nullptr};
 
 // Console object
@@ -177,6 +178,7 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent) //movement
     case 0x44: key = K_RIGHT; break; // changed VK_RIGHT to 0x44 "D"
     case VK_SPACE: key = K_SPACE; break;
     case VK_ESCAPE: key = K_ESCAPE; break; 
+    case VK_F3: key = K_F3; break;
     }
     // a key pressed event would be one with bKeyDown == true
     // a key released event would be one with bKeyDown == false
@@ -310,6 +312,21 @@ void checkEnd() //Check if day has ended
     }
 }
 
+void processDebugState() //Toggle debug options
+{
+    if (g_skKeyEvent[6].keyDown)
+    {
+        if (g_eDebugState == D_OFF)
+        {
+            g_eDebugState = D_BOTH;
+        }
+        else
+        {
+            g_eDebugState = D_OFF;
+        }
+    }
+}
+
 void processInputSplash() // All input processing related to Splashscreen
 {
     COORD c = g_Console.getConsoleSize();
@@ -363,6 +380,7 @@ void processUserInput()
         checkEnd();
         break;
     }
+    processDebugState();
 }
 
 //--------------------------------------------------------------
@@ -388,8 +406,16 @@ void render()// make render functions for our level and put it in the switch cas
         break;
     }
 
+    switch (g_eDebugState)
+    {
+    case D_OFF: break;
+    case D_FRAMES: renderFramerate(); break;
+    case D_INPUT: renderInputEvents(); break;
+    case D_BOTH: renderFramerate(); renderInputEvents(); break;
+    }
+
     //renderFramerate();      // renders debug information, frame rate, elapsed time, etc
-    renderInputEvents();    // renders status of input events
+    //renderInputEvents();    // renders status of input events
     renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
 }
 
