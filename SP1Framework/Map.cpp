@@ -82,13 +82,13 @@ void Map::printMap(std::fstream& level, int row, int column, Console& console)
 			}
 		}
 
-		for (int y = 0; y < row; y++)
-		{
-			delete[] (mapArray + y);
-		}
+		//for (int y = 0; y < row; y++)
+		//{
+		//	delete[] (mapArray + y);
+		//}
 
-		delete[] mapArray;
+		//delete[] mapArray;
 	}
 
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 }
