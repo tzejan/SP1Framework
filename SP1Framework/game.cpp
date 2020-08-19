@@ -289,6 +289,11 @@ void moveCharacter()
    
 }
 
+void checkEnd() //Check if day has ended
+{
+
+}
+
 void processInputSplash() // All input processing related to Splashscreen
 {
     COORD c = g_Console.getConsoleSize();
@@ -438,7 +443,24 @@ void renderMainMenu()
 
 void renderHome() 
 {
-
+    Map Home;
+    Home.chooseMap(0, g_Console);
+    COORD c = g_Console.getConsoleSize();
+    c.Y /= 25;
+    c.X = c.X / 2 - 5;
+    g_Console.writeToBuffer(c, "Home", 0xF0);
+    c.Y += 3;
+    c.X = g_Console.getConsoleSize().X / 6 + 15;
+    g_Console.writeToBuffer(c, "TBF", 0xF0);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 6 + 15;
+    g_Console.writeToBuffer(c, "TBF", 0xF0);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 6 + 15;
+    g_Console.writeToBuffer(c, "TBF", 0xF0);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 6 + 15;
+    g_Console.writeToBuffer(c, "TBF", 0xF0);
 }
 
 void renderTutorialLevel()
