@@ -52,7 +52,7 @@ void MakesBullet()
     {
         if (Amount_ofbullet[i] == nullptr)
         {
-            Amount_ofbullet[i] = new Bullet(g_sChar, g_mouseEvent);
+            Amount_ofbullet[i] = new Bullet(g_sChar, play.GetDirection());
             return;
         }
     }

@@ -5,11 +5,10 @@ class Bullet
 {
 public:
 	int x, y;
-	int goal_x, goal_y;
-	int gradient;
-	int c;
 
-	Bullet(SGameChar& player, SMouseEvent& mousepos);
+	char direction;
+
+	Bullet(SGameChar& player, char direction);
 	~Bullet();
 	
 
