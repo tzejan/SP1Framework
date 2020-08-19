@@ -13,7 +13,8 @@ using namespace std;
 #include "Bullet.h"
 double  g_dElapsedTime;
 double  g_dDeltaTime;
-
+bool paused = false;
+bool level1 = true;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 // Game specific variables here
@@ -26,6 +27,199 @@ Console g_Console(80, 25, "SP1 Framework");
 Bullet* Amount_ofbullet[256] = { nullptr,};
 
 player play(&g_sChar);
+void levelEvents(void) {
+    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) {
+        if (g_mouseEvent.mousePosition.X >= 20 && g_mouseEvent.mousePosition.X <= 23 && g_mouseEvent.mousePosition.Y == 10) {
+            g_bQuitGame = true;
+        }
+        else if (g_mouseEvent.mousePosition.X >= 25 && g_mouseEvent.mousePosition.X <= 31 && g_mouseEvent.mousePosition.Y == 10) {
+            level1 = false;
+        }
+    }
+}
+void levelselect(void) {
+    COORD C;
+    //turn entire screen gray
+    for (int i = 0; i < 80; i++) {
+        for (int j = 0; j < 25; j++) {
+            C.X = i;
+            C.Y = j;
+            g_Console.writeToBuffer(C, " ", 0x7A);
+        }
+    }
+    //background for buttons
+    for (int i = 18; i < 58; i++) {
+        C.X = i;
+        C.Y = 9;
+        g_Console.writeToBuffer(C, " ", 0xBB);
+    }
+    for (int i = 18; i < 58; i++) {
+        C.X = i;
+        C.Y = 10;
+        g_Console.writeToBuffer(C, " ", 0xBB);
+    }
+    for (int i = 18; i < 58; i++) {
+        C.X = i;
+        C.Y = 11;
+        g_Console.writeToBuffer(C, " ", 0xBB);
+    }
+    // random dots
+    for (int i = 0; i < 2; i++) {
+        C.X = 2 + i;
+        C.Y = 3;
+        g_Console.writeToBuffer(C, " ", 0x4a);
+    }
+    for (int i = 0; i < 2; i++) {
+        C.X = 40 + i;
+        C.Y = 1;
+        g_Console.writeToBuffer(C, " ", 0x4a);
+    }
+    for (int i = 0; i < 2; i++) {
+        C.X = 70 + i;
+        C.Y = 13;
+        g_Console.writeToBuffer(C, " ", 0x4a);
+    }
+    for (int i = 0; i < 2; i++) {
+        C.X = 38 + i;
+        C.Y = 18;
+        g_Console.writeToBuffer(C, " ", 0x4a);
+    }
+    for (int i = 0; i < 2; i++) {
+        C.X = 4 + i;
+        C.Y = 13;
+        g_Console.writeToBuffer(C, " ", 0x4a);
+    }
+    for (int i = 0; i < 2; i++) {
+        C.X = 17 + i;
+        C.Y = 17;
+        g_Console.writeToBuffer(C, " ", 0x4a);
+    }
+    for (int i = 0; i < 2; i++) {
+        C.X = 76 + i;
+        C.Y = 23;
+        g_Console.writeToBuffer(C, " ", 0x4a);
+    }
+    for (int i = 0; i < 2; i++) {
+        C.X = 77 + i;
+        C.Y = 5;
+        g_Console.writeToBuffer(C, " ", 0x4a);
+    }
+    //Exit
+    C.X = 20;
+    C.Y = 10;
+    g_Console.writeToBuffer(C, "Exit", 0x3A);
+    //Level 1
+    C.X += 5;
+    g_Console.writeToBuffer(C, "Level 1", 0x3A);
+    //Level 2
+    C.X += 8;
+    g_Console.writeToBuffer(C, "Level 2", 0x3A);
+    //Level 3
+    C.X += 8;
+    g_Console.writeToBuffer(C, "Level 3", 0x3A);
+    //Level 4
+    C.X += 8;
+    g_Console.writeToBuffer(C, "Level 4", 0x3A);
+}
+void pauseEvents(void) {
+    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) {
+        if (g_mouseEvent.mousePosition.X >= 50 && g_mouseEvent.mousePosition.X <= 70 && g_mouseEvent.mousePosition.Y == 7) {
+            level1 = true;
+            paused = false;
+        }
+        else if (g_mouseEvent.mousePosition.X >= 56 && g_mouseEvent.mousePosition.X <= 63 && g_mouseEvent.mousePosition.Y == 15) {
+            paused = false;
+        }
+    }
+}
+void pausemenu(void) {
+    COORD C;
+    //turns entire screen black
+    for (int i = 0; i < 80; i++) {
+        for (int j = 0; j < 25; j++) {
+            C.X = i;
+            C.Y = j;
+            g_Console.writeToBuffer(C, " ", 0x1A);
+        }
+    }
+    //half
+    for (int i = 0; i < 40; i++) {
+        for (int j = 0; j < 25; j++) {
+            C.X = i;
+            C.Y = j;
+            g_Console.writeToBuffer(C, " ", 0xBB);
+        }
+    }
+    //border
+    for (int i = 0; i < 80; i++) {
+        C.X = i;
+        C.Y = 0;
+        g_Console.writeToBuffer(C, " ", 0x5A);
+    }
+    for (int i = 0; i < 80; i++) {
+        C.X = i;
+        C.Y = 24;
+        g_Console.writeToBuffer(C, " ", 0x5A);
+    }
+    for (int i = 0; i < 25; i++) {
+        C.X = 0;
+        C.Y = i;
+        g_Console.writeToBuffer(C, " ", 0x5A);
+    }
+    for (int i = 0; i < 25; i++) {
+        C.X = 1;
+        C.Y = i;
+        g_Console.writeToBuffer(C, " ", 0x5A);
+    }
+    for (int i = 0; i < 80; i++) {
+        C.X = 79;
+        C.Y = i;
+        g_Console.writeToBuffer(C, " ", 0x5A);
+    }
+    for (int i = 0; i < 80; i++) {
+        C.X = 78;
+        C.Y = i;
+        g_Console.writeToBuffer(C, " ", 0x5A);
+    }
+    //p
+    for (int i = 7; i < 11; i++) {
+        for (int j = 5; j < 20; j++) {
+            C.X = i;
+            C.Y = j;
+            g_Console.writeToBuffer(C, " ", 0x4A);
+        }
+    }
+    for (int i = 9; i < 25; i++) {
+        for (int j = 5; j < 6; j++) {
+            C.X = i;
+            C.Y = j;
+            g_Console.writeToBuffer(C, " ", 0x4A);
+        }
+    }
+    for (int i = 9; i < 25; i++) {
+        for (int j = 9; j < 10; j++) {
+            C.X = i;
+            C.Y = j;
+            g_Console.writeToBuffer(C, " ", 0x4A);
+        }
+    }
+    for (int i = 23; i < 27; i++) {
+        for (int j = 5; j < 10; j++) {
+            C.X = i;
+            C.Y = j;
+            g_Console.writeToBuffer(C, " ", 0x4A);
+        }
+    }
+    //Back to level select
+    C.X = 50;
+    C.Y = 7;
+    g_Console.writeToBuffer(C, "Back To Level Select", 0x6A);
+    //continue
+    C.X = 56;
+    C.Y += 8;
+    g_Console.writeToBuffer(C, "Continue", 0x6A);
+
+}
 void healthbar(void) {
     COORD C;
     //border 
@@ -359,7 +553,7 @@ void processUserInput()
 {
     // quits the game if player hits the escape key
     if (g_skKeyEvent[K_ESCAPE].keyReleased)
-        g_bQuitGame = true;    
+        paused = true;
 }
 
 //--------------------------------------------------------------
@@ -377,12 +571,24 @@ void render()
     {
     case S_SPLASHSCREEN: renderSplashScreen();
         break;
-    case S_GAME: renderGame();
+    case S_GAME:
+        if (paused == true) {
+            pausemenu();
+            pauseEvents();
+        }
+        else if (level1 == true) {
+            levelselect();
+            levelEvents();
+        }
+        else {
+            renderGame();
+            renderFramerate();      // renders debug information, frame rate, elapsed time, etc
+            renderInputEvents();    // renders status of input events
+        }
+
         break;
     }
-    healthbar();
-    renderFramerate();      // renders debug information, frame rate, elapsed time, etc
-    renderInputEvents();    // renders status of input events
+
     renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
 }
 
