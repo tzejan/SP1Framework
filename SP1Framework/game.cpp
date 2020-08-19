@@ -277,28 +277,36 @@ void updateGame()       // game logic
 
 void moveCharacter()
 {    
+    // COLLISION WITH ENVIRONMENT IS SOLVED HERE
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
     if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 1) // changed .keyPressed into . keyDown
     {
-        /*if (mapArray[g_sChar.m_cLocation.X][g_sChar.m_cLocation.Y] == '0')
+        if (map.getGrid(g_sChar.m_cLocation.Y - 1, g_sChar.m_cLocation.X) == 0)
         {
             g_sChar.m_cLocation.Y--;
-        }*/
-        g_sChar.m_cLocation.Y--;
+        }
     }
     if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 1) // changed .keyPressed into . keyDown
     {
-        g_sChar.m_cLocation.X--;
+        if (map.getGrid(g_sChar.m_cLocation.Y , g_sChar.m_cLocation.X - 1) == 0)
+        {
+            g_sChar.m_cLocation.X--;
+        }
     }
     if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 2) // changed .keyPressed into . keyDown
     {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.Y++;
+        if (map.getGrid(g_sChar.m_cLocation.Y + 1, g_sChar.m_cLocation.X) == 0)
+        {
+            g_sChar.m_cLocation.Y++;
+        }
     }
     if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 2) // changed .keyPressed into . keyDown
     {
-        g_sChar.m_cLocation.X++;
+        if (map.getGrid(g_sChar.m_cLocation.Y, g_sChar.m_cLocation.X + 1) == 0)
+        {
+            g_sChar.m_cLocation.X++;
+        }
     }
     if (g_skKeyEvent[K_SPACE].keyReleased)
     {
