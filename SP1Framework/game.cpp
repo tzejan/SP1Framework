@@ -302,8 +302,8 @@ void checkEnd() //Check if day has ended
 {
     if (g_dElapsedWorkTime >= 10)
     {
-        g_eGameState = S_HOME;
         g_dElapsedWorkTime = 0.0;
+        g_eGameState = S_HOME;
     }
 }
 
