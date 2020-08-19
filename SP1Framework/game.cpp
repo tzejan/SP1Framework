@@ -650,23 +650,8 @@ void renderMap()
     // 0x3D Light Blue
     // 0xFF White
     COORD c;
-    for (int i = 0; i < 80; i++)
-    {
-        if (i < 17 || i > 28 && i < 51 || i > 63 && i < 79)
-        {
-            MapArray[i][4] = '*';
-            MapArray[i][10] = '*';
-            MapArray[i][14] = '*';
-            MapArray[i][20] = '*';
-        }
-        if (i < 5 || i > 9 && i < 15 || i > 19 && i < 25)
-        {
-            MapArray[15][i] = '*';
-            MapArray[29][i] = '*';
-            MapArray[50][i] = '*';
-            MapArray[64][i] = '*';
-        }
-    }
+    
+    
     // Checking for Symbol
     for (int i = 0; i < 80; i++)
     {
@@ -702,7 +687,22 @@ void renderMap()
             }
         }
     }
-
+    for (int i = 0; i < 80; i++)
+    {
+        if (i < 17 || i > 28 && i < 51 || i > 63 && i < 79)
+        {
+            MapArray[i][4] = '*';
+            MapArray[i][10] = '*';
+            MapArray[i][14] = '*';
+            MapArray[i][20] = '*';
+        }
+        if (i < 5 || i > 9 && i < 15 || i > 19 && i < 25)
+        {
+            MapArray[15][i] = '*';
+            MapArray[29][i] = '*';
+            MapArray[50][i] = '*';
+            MapArray[64][i] = '*';
+        }
     // Gray colour oF ROAD
     for (int i = 17; i < 28; i++)
     {
