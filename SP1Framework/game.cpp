@@ -3,9 +3,15 @@
 //
 #include "game.h"
 #include "Framework\console.h"
+#include "map.h"
+#include "maze_01.h"
+#include "playerVL.h"
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+
+maze_01 maze_1;
+
 
 double  g_dElapsedTime;
 double  g_dDeltaTime;
@@ -26,6 +32,7 @@ Console g_Console(80, 25, "SP1 Framework");
 // Input    : void
 // Output   : void
 //--------------------------------------------------------------
+
 void init( void )
 {
     // Set precision for floating point output
@@ -231,32 +238,41 @@ void moveCharacter()
 {    
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
-    if (g_skKeyEvent[K_UP].keyReleased && g_sChar.m_cLocation.Y > 0)
+    COORD c;
+    if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 0 && maze_1.getMapVar((g_sChar.m_cLocation.X - 17), (g_sChar.m_cLocation.Y - 1)) != '#')
     {
-        //Beep(1440, 30);
+        Beep(783.99, 30);
         g_sChar.m_cLocation.Y--;       
     }
-    if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar.m_cLocation.X > 0)
+    if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 15 && maze_1.getMapVar((g_sChar.m_cLocation.X - 18), g_sChar.m_cLocation.Y) != '#')
     {
-        //Beep(1440, 30);
+        Beep(783.99, 30);
         g_sChar.m_cLocation.X--;        
     }
-    if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
+    if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && maze_1.getMapVar((g_sChar.m_cLocation.X - 17), (g_sChar.m_cLocation.Y + 1)) != '#')
     {
-        //Beep(1440, 30);
+        Beep(783.99, 30);
         g_sChar.m_cLocation.Y++;        
     }
-    if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
+    if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 64 && maze_1.getMapVar((g_sChar.m_cLocation.X - 16), g_sChar.m_cLocation.Y) != '#')
     {
-        //Beep(1440, 30);
+        Beep(783.99, 30);
         g_sChar.m_cLocation.X++;        
     }
-    if (g_skKeyEvent[K_SPACE].keyReleased)
+    if (g_skKeyEvent[K_SPACE].keyDown)
     {
-        g_sChar.m_bActive = !g_sChar.m_bActive;        
+        g_sChar.m_bActive = !g_sChar.m_bActive;
+        Beep(293.67, 150); // D4
+        Beep(293.67, 150); // D4
+        Beep(587.33, 240); // D5
+        Beep(440, 600); // A4
+        Beep(415.3, 240); // G4#
+        Beep(392, 240); // G4
+        Beep(349.23, 240); // F4
+        Beep(293.67, 150); // D4
+        Beep(349.23, 150); // F4
+        Beep(392, 150); // G4
     }
-
-   
 }
 void processUserInput()
 {
@@ -305,7 +321,7 @@ void renderSplashScreen()  // renders the splash screen
     COORD c = g_Console.getConsoleSize();
     c.Y /= 3;
     c.X = c.X / 2 - 9;
-    g_Console.writeToBuffer(c, "A game in 3 seconds", 0x03);
+    g_Console.writeToBuffer(c, "M - Reversal", 0x03);
     c.Y += 1;
     c.X = g_Console.getConsoleSize().X / 2 - 20;
     g_Console.writeToBuffer(c, "Press <Space> to change character colour", 0x09);
@@ -322,10 +338,11 @@ void renderGame()
 
 void renderMap()
 {
+
     // Set up sample colours, and output shadings
     const WORD colors[] = {
         0x1A, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
-        0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6
+        0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6, 0, 0x434343
     };
 
     COORD c;
@@ -336,17 +353,41 @@ void renderMap()
         colour(colors[i]);
         g_Console.writeToBuffer(c, " °±²Û", colors[i]);
     }
+    for (int i = 0; i < 50; i++) {
+        for (int j = 0; j < 25; j++) {
+            c.X = 15 + i;
+            c.Y = j;
+            g_Console.writeToBuffer(c, " ", colors[13]);
+        }
+    }
+    for (int i = 0; i < 50; i++) {
+        for (int j = 0; j < 25; j++) {
+            c.X = 17 + i;
+            c.Y = j;
+            if (c.X <= g_sChar.m_cLocation.X + 6 && c.X >= g_sChar.m_cLocation.X - 6) {
+                if (c.Y <= g_sChar.m_cLocation.Y + 3 && c.Y >= g_sChar.m_cLocation.Y - 3) {
+                    if (maze_1.getMapVar(i, j) != '#') {
+                        g_Console.writeToBuffer(c, " ", colors[12]);
+                    }
+                    else
+                        g_Console.writeToBuffer(c, "±", colors[11]);
+                }
+            }
+        }
+    }
 }
 
 void renderCharacter()
 {
     // Draw the location of the character
     WORD charColor = 0x0C;
+    COORD c;
     if (g_sChar.m_bActive)
     {
         charColor = 0x0A;
     }
     g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
+    
 }
 
 void renderFramerate()
@@ -371,78 +412,5 @@ void renderFramerate()
 // this is an example of how you would use the input events
 void renderInputEvents()
 {
-    // keyboard events
-    COORD startPos = {50, 2};
-    std::ostringstream ss;
-    std::string key;
-    for (int i = 0; i < K_COUNT; ++i)
-    {
-        ss.str("");
-        switch (i)
-        {
-        case K_UP: key = "UP";
-            break;
-        case K_DOWN: key = "DOWN";
-            break;
-        case K_LEFT: key = "LEFT";
-            break;
-        case K_RIGHT: key = "RIGHT";
-            break;
-        case K_SPACE: key = "SPACE";
-            break;
-        default: continue;
-        }
-        if (g_skKeyEvent[i].keyDown)
-            ss << key << " pressed";
-        else if (g_skKeyEvent[i].keyReleased)
-            ss << key << " released";
-        else
-            ss << key << " not pressed";
 
-        COORD c = { startPos.X, startPos.Y + i };
-        g_Console.writeToBuffer(c, ss.str(), 0x17);
-    }
-
-    // mouse events    
-    ss.str("");
-    ss << "Mouse position (" << g_mouseEvent.mousePosition.X << ", " << g_mouseEvent.mousePosition.Y << ")";
-    g_Console.writeToBuffer(g_mouseEvent.mousePosition, ss.str(), 0x59);
-    ss.str("");
-    switch (g_mouseEvent.eventFlags)
-    {
-    case 0:
-        if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
-        {
-            ss.str("Left Button Pressed");
-            g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 1, ss.str(), 0x59);
-        }
-        else if (g_mouseEvent.buttonState == RIGHTMOST_BUTTON_PRESSED)
-        {
-            ss.str("Right Button Pressed");
-            g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 2, ss.str(), 0x59);
-        }
-        else
-        {
-            ss.str("Some Button Pressed");
-            g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 3, ss.str(), 0x59);
-        }
-        break;
-    case DOUBLE_CLICK:
-        ss.str("Double Clicked");
-        g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 4, ss.str(), 0x59);
-        break;        
-    case MOUSE_WHEELED:
-        if (g_mouseEvent.buttonState & 0xFF000000)
-            ss.str("Mouse wheeled down");
-        else
-            ss.str("Mouse wheeled up");
-        g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 5, ss.str(), 0x59);
-        break;
-    default:        
-        break;
-    }
-    
 }
-
-
-
