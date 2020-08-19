@@ -21,7 +21,9 @@ SGameChar   g_sChar;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 
 // Console object
-Console g_Console(80, 25, "SP1 Framework");
+int g_ConsoleX = 80;
+int g_ConsoleY = 25;
+Console g_Console(g_ConsoleX, g_ConsoleY, "SP1 Framework");
 
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -43,8 +45,12 @@ void init( void )
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
 
-    g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
-    g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
+   /* g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
+    g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;*/
+
+    g_sChar.m_cLocation.X = 18; //changed character spawn location
+    g_sChar.m_cLocation.Y = 2;
+
     g_sChar.m_bActive = true;
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
@@ -267,25 +273,22 @@ void moveCharacter()
 {    
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
-    if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 0) // changed .keyPressed into . keyDown
+    if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 1) // changed .keyPressed into . keyDown
     {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.Y--;       
+    g_sChar.m_cLocation.Y--;
     }
-    if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 0) // changed .keyPressed into . keyDown
+    if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 1) // changed .keyPressed into . keyDown
     {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.X--;        
+    g_sChar.m_cLocation.X--;
     }
-    if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1) // changed .keyPressed into . keyDown
+    if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 2) // changed .keyPressed into . keyDown
     {
         //Beep(1440, 30);
-        g_sChar.m_cLocation.Y++;        
+        g_sChar.m_cLocation.Y++;
     }
-    if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1) // changed .keyPressed into . keyDown
+    if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 2) // changed .keyPressed into . keyDown
     {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.X++;        
+        g_sChar.m_cLocation.X++;
     }
     if (g_skKeyEvent[K_SPACE].keyReleased)
     {
@@ -383,7 +386,7 @@ void render()// make render functions for our level and put it in the switch cas
     }
 
     //renderFramerate();      // renders debug information, frame rate, elapsed time, etc
-    renderInputEvents();    // renders status of input events
+   // renderInputEvents();    // renders status of input events
     renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
 }
 
