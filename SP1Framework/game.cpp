@@ -11,6 +11,7 @@
 #include <time.h>
 
 double  g_dElapsedTime;
+double g_dElapsedWorkTime;
 double  g_dDeltaTime;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
@@ -36,7 +37,8 @@ void init( void )
     srand((unsigned int)time(NULL));
 
     // Set precision for floating point output
-    g_dElapsedTime = 0.0;    
+    g_dElapsedTime = 0.0;
+    g_dElapsedWorkTime = 0.0;
 
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
@@ -223,7 +225,7 @@ void update(double dt)
             break;
         case S_TUT: updateTutorial();
             break;
-        case S_GAME: updateGame(); // gameplay logic when we are in the game
+        case S_GAME: g_dElapsedWorkTime += dt; updateGame(); // gameplay logic when we are in the game
             break;
     }
 }
@@ -231,30 +233,12 @@ void update(double dt)
 
 void updateSplashScreen()    // Splash screen logic
 {
-    COORD c = g_Console.getConsoleSize();
-    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
-    {
-        if ((g_mouseEvent.mousePosition.X >= c.X / 2 - 15 || g_mouseEvent.mousePosition.X <= c.X / 2 + 13)
-            && g_mouseEvent.mousePosition.Y == c.Y / 3 + 1) //Change to main game state once mouse clicks on the button
-            g_eGameState = S_GAME;
-    }
-    if (g_mouseEvent.buttonState == RIGHTMOST_BUTTON_PRESSED)
-    {
-        if ((g_mouseEvent.mousePosition.X >= g_Console.getConsoleSize().X / 2 - 15 || g_mouseEvent.mousePosition.X <= g_Console.getConsoleSize().X / 2 + 13)
-            && g_mouseEvent.mousePosition.Y == g_Console.getConsoleSize().Y / 3 + 1) //Change to menu state once mouse clicks on the button
-            g_eGameState = S_MENU;
-    }
+    processUserInput();
 }
 
 void updateMenu() // Menu logic
 {
-    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
-    {
-        COORD c = g_Console.getConsoleSize();
-        if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 15 || g_mouseEvent.mousePosition.X <= c.X / 6 + 24)
-            && g_mouseEvent.mousePosition.Y == c.Y / 10) //Change to main game state once mouse clicks on the button
-        g_eGameState = S_GAME;
-    }
+    processUserInput();
 }
 
 void updateHome() // Home logic
@@ -273,6 +257,8 @@ void updateGame()       // game logic
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
                         // sound can be played here too.
+    if (g_dElapsedWorkTime >= 10)
+        g_eGameState = S_HOME;
 }
 
 void moveCharacter()
@@ -306,11 +292,60 @@ void moveCharacter()
 
    
 }
+
+void checkEnd() //Check if day has ended
+{
+
+}
+
+void processInputSplash() // All input processing related to Splashscreen
+{
+    COORD c = g_Console.getConsoleSize();
+    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    {
+        if (g_mouseEvent.mousePosition.X >= c.X / 2 - 16
+            && g_mouseEvent.mousePosition.X <= c.X / 2 + 17
+            && g_mouseEvent.mousePosition.Y == c.Y / 25 + 12) //Change to main game state once mouse clicks on the button
+            g_eGameState = S_MENU;
+    }
+}
+
+void processInputMenu() //All input processing related to Main Menu
+{
+    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    {
+        COORD c = g_Console.getConsoleSize();
+        if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 15
+            && g_mouseEvent.mousePosition.X <= c.X / 6 + 24)
+            && g_mouseEvent.mousePosition.Y == 4) //Change to main game state once mouse clicks on the button
+            g_eGameState = S_GAME;
+    }
+
+    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    {
+        COORD c = g_Console.getConsoleSize();
+        if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 15
+            && g_mouseEvent.mousePosition.X <= c.X / 6 + 24)
+            && g_mouseEvent.mousePosition.Y == 7) //Exit once mouse clicks on the button
+            g_bQuitGame = true;
+    }
+}
+
 void processUserInput()
 {
-    // quits the game if player hits the escape key
-    if (g_skKeyEvent[K_ESCAPE].keyReleased)
-        g_bQuitGame = true;    
+    switch (g_eGameState)
+    {
+    case S_SPLASHSCREEN: processInputSplash(); break;
+    case S_MENU: processInputMenu(); break;
+    case S_TUT:
+        if (g_skKeyEvent[K_ESCAPE].keyReleased)// quits the game if player hits the escape key
+            g_eGameState = S_MENU;
+        break;
+    case S_GAME:
+        if (g_skKeyEvent[K_ESCAPE].keyReleased)// quits the game if player hits the escape key
+            g_eGameState = S_MENU;
+        break;
+    }
 }
 
 //--------------------------------------------------------------
@@ -336,8 +371,8 @@ void render()// make render functions for our level and put it in the switch cas
         break;
     }
 
-    renderFramerate();      // renders debug information, frame rate, elapsed time, etc
-    //renderInputEvents();    // renders status of input events
+    //renderFramerate();      // renders debug information, frame rate, elapsed time, etc
+    renderInputEvents();    // renders status of input events
     renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
 }
 
@@ -356,15 +391,12 @@ void renderToScreen()
 void renderSplashScreen()  // renders the splash screen
 {
     COORD c = g_Console.getConsoleSize();
-    c.Y /= 3;
+    c.Y /= 25;
     c.X = c.X / 2 - 5;
     g_Console.writeToBuffer(c, "Fair Prize", 0x03);
-    c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 2 - 15;
-    g_Console.writeToBuffer(c, "Left click to start the game!", 0x09);
-    c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 2 - 9;
-    g_Console.writeToBuffer(c, "Press 'Esc' to quit", 0x09);
+    c.Y += 12;
+    c.X = g_Console.getConsoleSize().X / 2 - 16;
+    g_Console.writeToBuffer(c, "Left click here to start the game!", 0x09);
 }
 
 void renderGame()
@@ -397,11 +429,17 @@ void renderMainMenu()
     Menu.chooseMap(0, g_Console);
     COORD c = g_Console.getConsoleSize();
     c.Y /= 25;
-    c.X = c.X / 6 + 16;
+    c.X = c.X / 2 - 5;
     g_Console.writeToBuffer(c, "Main Menu", 0xF0);
     c.Y += 3;
     c.X = g_Console.getConsoleSize().X / 6 + 15;
     g_Console.writeToBuffer(c, "Go to Work", 0xF0);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 6 + 15;
+    g_Console.writeToBuffer(c, "Save", 0xF0);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 6 + 15;
+    g_Console.writeToBuffer(c, "Load", 0xF0);
     c.Y += 1;
     c.X = g_Console.getConsoleSize().X / 6 + 15;
     g_Console.writeToBuffer(c, "Exit Game", 0xF0);
@@ -409,7 +447,24 @@ void renderMainMenu()
 
 void renderHome() 
 {
-
+    Map Home;
+    Home.chooseMap(0, g_Console);
+    COORD c = g_Console.getConsoleSize();
+    c.Y /= 25;
+    c.X = c.X / 2 - 5;
+    g_Console.writeToBuffer(c, "Home", 0xF0);
+    c.Y += 3;
+    c.X = g_Console.getConsoleSize().X / 6 + 15;
+    g_Console.writeToBuffer(c, "TBF", 0xF0);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 6 + 15;
+    g_Console.writeToBuffer(c, "TBF", 0xF0);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 6 + 15;
+    g_Console.writeToBuffer(c, "TBF", 0xF0);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 6 + 15;
+    g_Console.writeToBuffer(c, "TBF", 0xF0);
 }
 
 void renderTutorialLevel()
@@ -421,7 +476,7 @@ void renderTutorialLevel()
 void renderCharacter()
 {
     // Draw the location of the character
-    WORD charColor = 0xFF;
+    WORD charColor = 0x99;
     if (g_sChar.m_bActive)
     {
         charColor = 0xCC;
@@ -490,38 +545,20 @@ void renderInputEvents()
     ss << "Mouse position (" << g_mouseEvent.mousePosition.X << ", " << g_mouseEvent.mousePosition.Y << ")";
     g_Console.writeToBuffer(g_mouseEvent.mousePosition, ss.str(), 0x59);
     ss.str("");
+    switch (g_mouseEvent.buttonState)
+    {
+    case FROM_LEFT_1ST_BUTTON_PRESSED:
+    { ss.str("LMB PRESSED"); g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 1, ss.str(), 0x59); break; }
+    case RIGHTMOST_BUTTON_PRESSED:
+    { ss.str("RMB PRESSED"); g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 2, ss.str(), 0x59); break; }
+    }
+    
     switch (g_mouseEvent.eventFlags)
     {
-    case 0:
-        if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
-        {
-            ss.str("Left Button Pressed");
-            g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 1, ss.str(), 0x59);
-        }
-        else if (g_mouseEvent.buttonState == RIGHTMOST_BUTTON_PRESSED)
-        {
-            ss.str("Right Button Pressed");
-            g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 2, ss.str(), 0x59);
-        }
-        else
-        {
-            ss.str("Some Button Pressed");
-            g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 3, ss.str(), 0x59);
-        }
-        break;
     case DOUBLE_CLICK:
-        ss.str("Double Clicked");
-        g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 4, ss.str(), 0x59);
-        break;        
+    { ss.str("DBL CLICKED"); g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 3, ss.str(), 0x59); break; }
     case MOUSE_WHEELED:
-        if (g_mouseEvent.buttonState & 0xFF000000)
-            ss.str("Mouse wheeled down");
-        else
-            ss.str("Mouse wheeled up");
-        g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 5, ss.str(), 0x59);
-        break;
-    default:        
-        break;
+    { ss.str("MOUSE WHEEL"); g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 4, ss.str(), 0x59); break; }
     }
     
 }
