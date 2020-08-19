@@ -108,10 +108,10 @@
     <ClInclude Include="Son.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Lvl3.txt" />
+    <Text Include="Lvl2.txt" />
+    <Text Include="Lvl3txt" />
     <Text Include="Lvl4.txt" />
-    <Text Include="Lvl5.txt" />
-    <Text Include="Lvl6.txt" />
+    <Text Include="Lvl5txt" />
     <Text Include="MainMenu.txt" />
     <Text Include="Tutorial level.txt" />
   </ItemGroup>
