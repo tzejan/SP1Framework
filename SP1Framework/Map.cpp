@@ -76,7 +76,7 @@ void Map::printMap(std::fstream& level, int row, int column, Console& console)
 			switch (*(*(mapArray + y) + x))
 			{
 			case 0:
-				console.writeToBuffer(c, ' ', 0xFF);
+				console.writeToBuffer(c, ' ', 0xF0); //white
 				break;
 			case 1:
 				console.writeToBuffer(c, ' ', 0x88);
