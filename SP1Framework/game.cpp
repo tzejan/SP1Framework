@@ -294,6 +294,7 @@ void updateEndofWorkScreen()
 
 void updateHome() // Home logic
 {
+    g_ePreviousGameState = g_eGameState;
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
 }
 
@@ -305,6 +306,7 @@ void updateTutorial() //Tutorial level logic
 
 void updateGame()       // game logic
 {
+    g_ePreviousGameState = g_eGameState;
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter(); 
     moveChara();
@@ -399,13 +401,34 @@ void moveChara()
         }
         g_ePreviousGameState = g_eGameState;
         break;
- 
+    }
     if (g_skKeyEvent[K_SPACE].keyReleased)
     {
-        g_sChar.m_bActive = !g_sChar.m_bActive;        
+        g_sChar.m_bActive = !g_sChar.m_bActive;
     }
+    
 }
+void moveBoxes() 
+{
+    for (int i = 0; i < 6; i++) {
 
+        if (g_skKeyEvent[K_SPACE].keyDown && bCarryBox[i] == true) { //have to hold down space and move away to let go
+            bCarryBox[i] = false;
+        }
+
+        if (bCarryBox[i] == false && g_skKeyEvent[K_SPACE].keyReleased && g_sChar.m_cLocation.X == boxPosPtr[i]->getX() + 1 && g_sChar.m_cLocation.Y == boxPosPtr[i]->getY())
+        {
+            bCarryBox[i] = true;
+        }
+        else if (bCarryBox[i] == false && g_skKeyEvent[K_SPACE].keyReleased && g_sChar.m_cLocation.X == boxPosPtr[i]->getX() - 1 && g_sChar.m_cLocation.Y == boxPosPtr[i]->getY()) {
+            bCarryBox[i] = true;
+        }
+        else if (bCarryBox[i] == false && g_skKeyEvent[K_SPACE].keyReleased && g_sChar.m_cLocation.X == boxPosPtr[i]->getX() && g_sChar.m_cLocation.Y == boxPosPtr[i]->getY() + 1) {
+            bCarryBox[i] = true;
+        }
+        else if (bCarryBox[i] == false && g_skKeyEvent[K_SPACE].keyReleased && g_sChar.m_cLocation.X == boxPosPtr[i]->getX() && g_sChar.m_cLocation.Y == boxPosPtr[i]->getY() - 1) {
+            bCarryBox[i] = true;
+        }
 
 
         if (bCarryBox[i] == true && g_skKeyEvent[K_RIGHT].keyDown) {
@@ -426,11 +449,6 @@ void moveChara()
         else if (bCarryBox[i] == true && g_skKeyEvent[K_DOWN].keyDown) {
             boxPosPtr[i]->setX(g_sChar.m_cLocation.X);
             boxPosPtr[i]->setY(g_sChar.m_cLocation.Y + 1);
-
-        }
-
-        if (g_skKeyEvent[K_SPACE].keyDown && bCarryBox[i] == true) {
-            bCarryBox[i] = false;
         }
     }
 }
@@ -678,6 +696,8 @@ void renderMainMenu()
     c.X = g_Console.getConsoleSize().X / 6 + 20;
     if (g_ePreviousGameState == S_SPLASHSCREEN)
         g_Console.writeToBuffer(c, "Start New", 0xF0);
+    else if (g_ePreviousGameState == S_HOME)
+        g_Console.writeToBuffer(c, "Back Home", 0xF0);
     else
         g_Console.writeToBuffer(c, "Resume Work", 0xF0);
     c.Y += 1;
@@ -802,19 +822,19 @@ void renderCustomer()
 
                 switch (i) {
                 case 0:
-                    if (time % 10 != 0) {
+                    if (time % 10 != 1) {
                         c.X = 79;
                         c.Y = 13;
                         g_Console.writeToBuffer(c, char(1), 0x122);
                     }
                 case 1:
-                    if (time % 10 != 1) {
+                    if (time % 25 != 2) {
                         c.X = 37;
                         c.Y = 7;
                         g_Console.writeToBuffer(c, char(1), 0x122);
                     }
                 case 2:
-                   if (time % 30 != 2) {
+                   if (time % 10 != 0) {
                         c.X = 37;
                         c.Y = 13;
                         g_Console.writeToBuffer(c, char(1), 0x122);
