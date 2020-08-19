@@ -545,10 +545,10 @@ void moveCharacter()
         g_sChar.m_cLocation.X++;    
         play.SetDirection('R');
     }
-    if (g_skKeyEvent[K_SPACE].keyReleased)
+    if (g_skKeyEvent[K_SPACE].keyDown)
     {
-        g_sChar.m_bActive = !g_sChar.m_bActive;
-        
+        /*g_sChar.m_bActive = !g_sChar.m_bActive;*/
+        MakesBullet();
     }
 
    
@@ -644,23 +644,8 @@ void renderMap()
     // 0x3D Light Blue
     // 0xFF White
     COORD c;
-    for (int i = 0; i < 80; i++)
-    {
-        if (i < 17 || i > 28 && i < 51 || i > 63 && i < 79)
-        {
-            MapArray[i][4] = '*';
-            MapArray[i][10] = '*';
-            MapArray[i][14] = '*';
-            MapArray[i][20] = '*';
-        }
-        if (i < 5 || i > 9 && i < 15 || i > 19 && i < 25)
-        {
-            MapArray[15][i] = '*';
-            MapArray[29][i] = '*';
-            MapArray[50][i] = '*';
-            MapArray[64][i] = '*';
-        }
-    }
+    
+    
     // Checking for Symbol
     for (int i = 0; i < 80; i++)
     {
@@ -696,116 +681,132 @@ void renderMap()
             }
         }
     }
-
-    // Gray colour oF ROAD
-    for (int i = 17; i < 28; i++)
-    {
-        for (int j = 0; j < 25; j++)
-        {
-            MapArray[i][j] = '@';
-        }
-    }
-    for (int i = 52; i < 63; i++)
-    {
-
-        for (int j = 0; j < 25; j++)
-        {
-            MapArray[i][j] = '@';
-        }
-    }
-    for (int i = 0; i < 79; i++)
-    {
-
-        for (int j = 5; j < 10; j++)
-        {
-            MapArray[i][j] = '@';
-        }
-    }
-    for (int i = 0; i < 79; i++)
-    {
-
-        for (int j = 15; j < 20; j++)
-        {
-            MapArray[i][j] = '@';
-        }
-    }
-    // White colour of road
-    for (int i = 0; i < 25; i++)
-    {
-        if (i > 0 && i < 4 || i > 5 && i < 9  || i > 10 && i < 14 || i > 15 && i < 19 || i > 20 && i < 24)
-        {
-            for (int j = 22; j < 24; j++) 
-            {
-             MapArray[j][i] = '#';
-            }
-            for (int j = 57; j < 59; j++) 
-            {
-                MapArray[j][i] = '#';
-            }
-        }
-    }
-
-
     for (int i = 0; i < 80; i++)
     {
-        if (i < 3 || i > 7 && i < 14 || i > 30 && i < 37 || i > 42 && i < 49 || i > 65 && i < 72 || i == 77 || i == 78  )
+        if (i < 17 || i > 28 && i < 51 || i > 63 && i < 79)
         {
-            MapArray[i][7] = '#';
-            MapArray[i][17] = '#';
+            MapArray[i][4] = '*';
+            MapArray[i][10] = '*';
+            MapArray[i][14] = '*';
+            MapArray[i][20] = '*';
         }
-    }
-    // Green Colour
-    for (int i = 0; i < 14; i++)
-    {
+        if (i < 5 || i > 9 && i < 15 || i > 19 && i < 25)
+        {
+            MapArray[15][i] = '*';
+            MapArray[29][i] = '*';
+            MapArray[50][i] = '*';
+            MapArray[64][i] = '*';
+        }
+        // Gray colour oF ROAD
+        for (int i = 17; i < 28; i++)
+        {
+            for (int j = 0; j < 25; j++)
+            {
+                MapArray[i][j] = '@';
+            }
+        }
+        for (int i = 52; i < 63; i++)
+        {
 
-        for (int j = 21; j < 25; j++)
-        {
-            MapArray[i][j] = '&';
+            for (int j = 0; j < 25; j++)
+            {
+                MapArray[i][j] = '@';
+            }
         }
-        for (int j = 11; j < 14; j++)
+        for (int i = 0; i < 79; i++)
         {
-            MapArray[i][j] = '&';
+
+            for (int j = 5; j < 10; j++)
+            {
+                MapArray[i][j] = '@';
+            }
+        }
+        for (int i = 0; i < 79; i++)
+        {
+
+            for (int j = 15; j < 20; j++)
+            {
+                MapArray[i][j] = '@';
+            }
+        }
+        // White colour of road
+        for (int i = 0; i < 25; i++)
+        {
+            if (i > 0 && i < 4 || i > 5 && i < 9 || i > 10 && i < 14 || i > 15 && i < 19 || i > 20 && i < 24)
+            {
+                for (int j = 22; j < 24; j++)
+                {
+                    MapArray[j][i] = '#';
+                }
+                for (int j = 57; j < 59; j++)
+                {
+                    MapArray[j][i] = '#';
+                }
+            }
         }
 
-        for (int j = 0; j < 4; j++)
-        {
-            MapArray[i][j] = '&';
-        }
 
-    }
-    for (int i = 31; i < 49; i++)
-    {
-
-        for (int j = 21; j < 25; j++)
+        for (int i = 0; i < 80; i++)
         {
-            MapArray[i][j] = '&';
+            if (i < 3 || i > 7 && i < 14 || i > 30 && i < 37 || i > 42 && i < 49 || i > 65 && i < 72 || i == 77 || i == 78)
+            {
+                MapArray[i][7] = '#';
+                MapArray[i][17] = '#';
+            }
         }
-        for (int j = 11; j < 14; j++)
+        // Green Colour
+        for (int i = 0; i < 14; i++)
         {
-            MapArray[i][j] = '&';
-        }
 
-        for (int j = 0; j < 4; j++)
-        {
-            MapArray[i][j] = '&';
-        }
+            for (int j = 21; j < 25; j++)
+            {
+                MapArray[i][j] = '&';
+            }
+            for (int j = 11; j < 14; j++)
+            {
+                MapArray[i][j] = '&';
+            }
 
-    }
-    for (int i = 66; i < 78; i++)
-    {
+            for (int j = 0; j < 4; j++)
+            {
+                MapArray[i][j] = '&';
+            }
 
-        for (int j = 21; j < 25; j++)
-        {
-            MapArray[i][j] = '&';
         }
-        for (int j = 11; j < 14; j++)
+        for (int i = 31; i < 49; i++)
         {
-            MapArray[i][j] = '&';
-        }
 
-        for (int j = 0; j < 4; j++)
+            for (int j = 21; j < 25; j++)
+            {
+                MapArray[i][j] = '&';
+            }
+            for (int j = 11; j < 14; j++)
+            {
+                MapArray[i][j] = '&';
+            }
+
+            for (int j = 0; j < 4; j++)
+            {
+                MapArray[i][j] = '&';
+            }
+
+        }
+        for (int i = 66; i < 78; i++)
         {
-            MapArray[i][j] = '&';
+
+            for (int j = 21; j < 25; j++)
+            {
+                MapArray[i][j] = '&';
+            }
+            for (int j = 11; j < 14; j++)
+            {
+                MapArray[i][j] = '&';
+            }
+
+            for (int j = 0; j < 4; j++)
+            {
+                MapArray[i][j] = '&';
+            }
         }
     }
 }

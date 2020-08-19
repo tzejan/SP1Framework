@@ -12,6 +12,8 @@ Bullet::Bullet(SGameChar& player, char direction)
 {
 	this->direction = direction;
 
+	x = player.m_cLocation.X;
+	y = player.m_cLocation.Y;
 	
 }
 
@@ -22,6 +24,9 @@ Bullet::~Bullet()
 
 void Bullet::UpdateXandY(Console& console)
 {
+	COORD c;
+	
+
 
 	if (direction == 'U')
 	{
@@ -33,11 +38,17 @@ void Bullet::UpdateXandY(Console& console)
 	}
 	if (direction == 'L')
 	{
-		x -= 1;
+		x -= 2;
 	}
 	if (direction == 'R')
 	{
-		x += 1;
+		x += 2;
 	}
-	
+	c.X = x;
+	c.Y = y;
+
+	if (x >= 0 && x < 80 && y >= 0 && y < 25)
+	{
+		console.writeToBuffer(c, "*", 0x3D);
+	}
 }
