@@ -137,7 +137,11 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
 {    
     switch (g_eGameState)
     {
-    case S_SPLASHSCREEN: // don't handle anything for splash screen
+    case S_SPLASHSCREEN: gameplayKBHandler(keyboardEvent);// handle anything for splash screen
+        break;
+    case S_MENU: gameplayKBHandler(keyboardEvent);
+        break;
+    case S_ENDOFWORKSCREEN: gameplayKBHandler(keyboardEvent);
         break;
     case S_HOME: gameplayKBHandler(keyboardEvent); // handle home menu keyboard menu
         break;
