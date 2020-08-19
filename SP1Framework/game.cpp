@@ -319,7 +319,7 @@ void moveCharacter()
 
 void checkEnd() //Check if day has ended
 {
-    if (g_dElapsedWorkTime >= 10)
+    if (g_dElapsedWorkTime >= 5)
     {
         g_dElapsedWorkTime = 0.0;
         g_eGameState = S_ENDOFWORKSCREEN;
@@ -374,6 +374,18 @@ void processInputMenu() //All input processing related to Main Menu
     }
 }
 
+void processInputEndOfWorkScreen()
+{
+    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    {
+        COORD c = g_Console.getConsoleSize();
+        if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 15
+            && g_mouseEvent.mousePosition.X <= c.X / 6 + 36)
+            && g_mouseEvent.mousePosition.Y == 13) //Change to home state once mouse clicks on the button
+            g_eGameState = S_HOME;
+    }
+}
+
 void processInputHome()
 {
     if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
@@ -392,6 +404,7 @@ void processUserInput()
     {
     case S_SPLASHSCREEN: processInputSplash(); break;
     case S_MENU: processInputMenu(); break;
+    case S_ENDOFWORKSCREEN: processInputEndOfWorkScreen(); break;
     case S_HOME: 
         if (g_skKeyEvent[K_ESCAPE].keyReleased)// opens main menu if player hits the escape key
             g_eGameState = S_MENU; 
@@ -577,32 +590,23 @@ void renderEndOfWorkScreen()
     map.chooseMap(0, g_Console);
     COORD c = g_Console.getConsoleSize();
     c.Y /= 25;
-    c.X = c.X / 2 - 5;
+    c.X = c.X / 2 - 10;
     g_Console.writeToBuffer(c, "End of day report", 0xF0);
     c.Y += 8;
-    c.X = g_Console.getConsoleSize().X / 8;
+    c.X = g_Console.getConsoleSize().X / 6 + 15;
     g_Console.writeToBuffer(c, "Customers served: [ ]", 0xF0);
     c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 8;
+    c.X = g_Console.getConsoleSize().X / 6 + 15;
     g_Console.writeToBuffer(c, "Complaints given: [ ]", 0xF0);
     c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 8;
+    c.X = g_Console.getConsoleSize().X / 6 + 15;
     g_Console.writeToBuffer(c, "Strikes: [ ]", 0xF0);
     c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 8;
+    c.X = g_Console.getConsoleSize().X / 6 + 15;
     g_Console.writeToBuffer(c, "Todays pay: [ ]", 0xF0);
     c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 8;
+    c.X = g_Console.getConsoleSize().X / 6 + 15;
     g_Console.writeToBuffer(c, "Click here to go home", 0xF0);
-
-    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
-    {
-        COORD c = g_Console.getConsoleSize();
-        if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 20
-            && g_mouseEvent.mousePosition.X <= c.X / 6 + 29)
-            && g_mouseEvent.mousePosition.Y == 9) //Change to main game state once mouse clicks on the button
-            g_eGameState = S_HOME;
-    }
 }
 
 void renderTutorialLevel()
