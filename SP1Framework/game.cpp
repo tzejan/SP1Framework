@@ -205,6 +205,7 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent) //movement
     case VK_SPACE: key = K_SPACE; break;
     case VK_ESCAPE: key = K_ESCAPE; break; 
     case VK_F3: key = K_F3; break;
+    case VK_F4: key = K_F4; break;
     }
     // a key pressed event would be one with bKeyDown == true
     // a key released event would be one with bKeyDown == false
@@ -380,7 +381,8 @@ void moveBoxes() {
 
 void checkEnd() //Check if day has ended
 {
-    if (g_dElapsedWorkTime >= 5)
+    //if (g_dElapsedWorkTime >= 5)
+    if (g_skKeyEvent[K_F4].keyDown)
     {
         g_dElapsedWorkTime = 0.0;
         g_eGameState = S_ENDOFWORKSCREEN;
