@@ -5,7 +5,7 @@
 #include <Windows.h>
 #include <iostream>
 
-Map::Map(): rowSmall{ 25 }, columnSmall{ 80 }, rowBig{ 50 }, columnBig{ 160 }
+Map::Map(): rowSmall{ 25 }, columnSmall{ 80 }, rowBig{ 40 }, columnBig{ 120 }
 {
 }
 
