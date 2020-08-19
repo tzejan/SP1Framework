@@ -29,7 +29,7 @@ Customer* customerPtr[6] = {nullptr , nullptr , nullptr , nullptr , nullptr , nu
 
 Box* boxPtr[6] = { nullptr , nullptr , nullptr , nullptr , nullptr , nullptr };
 Position* boxPosPtr[6] = { nullptr , nullptr , nullptr , nullptr , nullptr , nullptr };
-
+bool bCarryBox[6] = { false, false, false, false, false, false };
 
 
 // Console object
@@ -297,6 +297,7 @@ void updateGame()       // game logic
 {
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
+    moveBoxes();
                         // sound can be played here too.
 }
 
@@ -331,14 +332,43 @@ void moveCharacter()
             g_sChar.m_cLocation.X++;
         }
     }
-    if (g_skKeyEvent[K_SPACE].keyReleased)
+    /*if (g_skKeyEvent[K_SPACE].keyReleased)
     {
         g_sChar.m_bActive = !g_sChar.m_bActive;        
-    }
+    }*/
 }
 
 void moveBoxes() {
+    for (int i = 0; i < 6; i++) {
 
+        if (g_skKeyEvent[K_SPACE].keyReleased && g_sChar.m_cLocation.X == boxPosPtr[i]->getX() + 1 && g_sChar.m_cLocation.Y == boxPosPtr[i]->getY())
+        {
+            bCarryBox[i] = true;
+        }
+
+        if (bCarryBox[i] == true && g_skKeyEvent[K_RIGHT].keyDown) {
+            boxPosPtr[i]->setX(g_sChar.m_cLocation.X + 1);
+            boxPosPtr[i]->setY(g_sChar.m_cLocation.Y);
+
+        }
+        else if (bCarryBox[i] == true && g_skKeyEvent[K_LEFT].keyDown) {
+            boxPosPtr[i]->setX(g_sChar.m_cLocation.X - 1);
+            boxPosPtr[i]->setY(g_sChar.m_cLocation.Y);
+
+        }
+        else if (bCarryBox[i] == true && g_skKeyEvent[K_UP].keyDown) {
+            boxPosPtr[i]->setX(g_sChar.m_cLocation.X);
+            boxPosPtr[i]->setY(g_sChar.m_cLocation.Y - 1);
+
+        }
+        else if (bCarryBox[i] == true && g_skKeyEvent[K_DOWN].keyDown) {
+            boxPosPtr[i]->setX(g_sChar.m_cLocation.X);
+            boxPosPtr[i]->setY(g_sChar.m_cLocation.Y + 1);
+
+        }
+
+
+    }
 }
 
 void checkEnd() //Check if day has ended
