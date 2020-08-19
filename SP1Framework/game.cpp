@@ -29,6 +29,7 @@ int g_ConsoleX = 80;
 int g_ConsoleY = 25;
 Console g_Console(g_ConsoleX, g_ConsoleY, "SP1 Framework");
 
+Map map;
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
 //            Initialize variables, allocate memory, load data from file, etc. 
@@ -478,8 +479,7 @@ void renderMap()
 
 void renderMainMenu() 
 {
-    Map Menu;
-    Menu.chooseMap(0, g_Console);
+    map.chooseMap(0, g_Console);
     COORD c = g_Console.getConsoleSize();
     c.Y /= 25;
     c.X = c.X / 2 - 5;
@@ -500,8 +500,7 @@ void renderMainMenu()
 
 void renderHome() 
 {
-    Map Home;
-    Home.chooseMap(0, g_Console);
+    map.chooseMap(0, g_Console);
     COORD c = g_Console.getConsoleSize();
     c.Y /= 25;
     c.X = c.X / 2 - 5;
@@ -522,7 +521,6 @@ void renderHome()
 
 void renderTutorialLevel()
 {
-    Map map;
     map.chooseMap(1, g_Console);
 }
 
