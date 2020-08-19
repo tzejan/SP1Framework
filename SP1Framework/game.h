@@ -84,6 +84,7 @@ void shutdown    ( void );      // do clean up, free memory
 
 void updateSplashScreen();    // waits for time to pass in splash screen
 void updateMenu();            // Menu logic
+void updateEndofWorkScreen(); // End of Work logic
 void updateHome();            // Home logic
 void updateTutorial();        // Tutorial logic
 void updateGame();          // Game logic
