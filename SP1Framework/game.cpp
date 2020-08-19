@@ -360,8 +360,8 @@ void processInputMenu() //All input processing related to Main Menu
         COORD c = g_Console.getConsoleSize();
         if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 20
             && g_mouseEvent.mousePosition.X <= c.X / 6 + 29)
-            && g_mouseEvent.mousePosition.Y == 9) //Change to main game state once mouse clicks on the button
-            g_eGameState = S_GAME;
+            && g_mouseEvent.mousePosition.Y == 9) //Change to previous game state once mouse clicks on the button
+            g_eGameState = g_ePreviousGameState;
     }
 
     if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
@@ -382,7 +382,7 @@ void processInputHome()
         if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 20
             && g_mouseEvent.mousePosition.X <= c.X / 6 + 29)
             && g_mouseEvent.mousePosition.Y == 9) //Change to main menu state once mouse clicks on the button
-            g_eGameState = g_ePreviousGameState;
+            g_eGameState = S_MENU;
     }
 }
 
