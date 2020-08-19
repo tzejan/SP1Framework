@@ -21,7 +21,7 @@ SMouseEvent g_mouseEvent;
 // Game specific variables here
 SGameChar   g_sChar;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
-EGAMESTATES g_ePreviousGameState;
+EGAMESTATES g_ePreviousGameState = S_SPLASHSCREEN; // initial state
 EDEBUGSTATES g_eDebugState = D_OFF; // initial state
 Customer* customerPtr[6] = {nullptr , nullptr , nullptr , nullptr , nullptr , nullptr};
 
@@ -236,13 +236,13 @@ void update(double dt)
     {
         case S_SPLASHSCREEN: updateSplashScreen(); // game logic for the splash screen
             break;
-        case S_MENU: updateMenu();
+        case S_MENU: g_ePreviousGameState = S_MENU; updateMenu();
             break;
-        case S_HOME: updateHome();
+        case S_HOME: g_ePreviousGameState = S_HOME; updateHome();
             break;
-        case S_TUT: updateTutorial();
+        case S_TUT: g_ePreviousGameState = S_TUT; updateTutorial();
             break;
-        case S_GAME: g_dElapsedWorkTime += dt; updateGame(); // gameplay logic when we are in the game
+        case S_GAME: g_ePreviousGameState = S_GAME; g_dElapsedWorkTime += dt; updateGame(); // gameplay logic when we are in the game
             break;
     }
 }
@@ -382,7 +382,7 @@ void processInputHome()
         if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 20
             && g_mouseEvent.mousePosition.X <= c.X / 6 + 29)
             && g_mouseEvent.mousePosition.Y == 9) //Change to main menu state once mouse clicks on the button
-            g_eGameState = S_GAME;
+            g_eGameState = g_ePreviousGameState;
     }
 }
 
