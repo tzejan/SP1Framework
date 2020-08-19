@@ -20,24 +20,31 @@ void Customer::moveToShelfContainingItem(int itemToBuy)//brings them to the shel
 	case 1:
 		pos.setXPosition(0); //change when we spawn them
 		pos.setYPosition(0); // ^
+		break;
 	case 2:
 		pos.setXPosition(0); //change when we spawn them
 		pos.setYPosition(0); // ^
+		break;
 	case 3:
 		pos.setXPosition(0); //change when we spawn them
 		pos.setYPosition(0); // ^
+		break;
 	case 4:
 		pos.setXPosition(0); //change when we spawn them
 		pos.setYPosition(0); // ^
+		break;
 	case 5:
 		pos.setXPosition(0); //change when we spawn them
 		pos.setYPosition(0); // ^
+		break;
 	case 6:
 		pos.setXPosition(0); //change when we spawn them
 		pos.setYPosition(0); // ^
+		break;
 	default:
 		pos.setXPosition(0); //change when we spawn them
 		pos.setYPosition(0); // ^
+		break;
 	}
 }
 
