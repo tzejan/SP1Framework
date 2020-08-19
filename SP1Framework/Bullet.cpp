@@ -38,11 +38,11 @@ void Bullet::UpdateXandY(Console& console)
 	}
 	if (direction == 'L')
 	{
-		x -= 1;
+		x -= 2;
 	}
 	if (direction == 'R')
 	{
-		x += 1;
+		x += 2;
 	}
 	c.X = x;
 	c.Y = y;
