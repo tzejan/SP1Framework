@@ -41,7 +41,7 @@ void Map::chooseMap(int lvl, Console& console) //this is to choose the map to pr
 		break;
 	}
 	case 2:
-		std::fstream level
+		std::fstream level;
 	}
 }
 

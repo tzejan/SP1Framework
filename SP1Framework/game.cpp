@@ -343,18 +343,18 @@ void processInputMenu() //All input processing related to Main Menu
     if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
     {
         COORD c = g_Console.getConsoleSize();
-        if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 15
-            && g_mouseEvent.mousePosition.X <= c.X / 6 + 24)
-            && g_mouseEvent.mousePosition.Y == 4) //Change to main game state once mouse clicks on the button
+        if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 20
+            && g_mouseEvent.mousePosition.X <= c.X / 6 + 29)
+            && g_mouseEvent.mousePosition.Y == 9) //Change to main game state once mouse clicks on the button
             g_eGameState = S_GAME;
     }
 
     if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
     {
         COORD c = g_Console.getConsoleSize();
-        if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 15
-            && g_mouseEvent.mousePosition.X <= c.X / 6 + 24)
-            && g_mouseEvent.mousePosition.Y == 7) //Exit once mouse clicks on the button
+        if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 20
+            && g_mouseEvent.mousePosition.X <= c.X / 6 + 29)
+            && g_mouseEvent.mousePosition.Y == 12) //Exit once mouse clicks on the button
             g_bQuitGame = true;
     }
 }
@@ -482,17 +482,17 @@ void renderMainMenu()
     c.Y /= 25;
     c.X = c.X / 2 - 5;
     g_Console.writeToBuffer(c, "Main Menu", 0xF0);
-    c.Y += 3;
-    c.X = g_Console.getConsoleSize().X / 6 + 15;
+    c.Y += 8;
+    c.X = g_Console.getConsoleSize().X / 6 + 20;
     g_Console.writeToBuffer(c, "Go to Work", 0xF0);
     c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 6 + 15;
+    c.X = g_Console.getConsoleSize().X / 6 + 20;
     g_Console.writeToBuffer(c, "Save", 0xF0);
     c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 6 + 15;
+    c.X = g_Console.getConsoleSize().X / 6 + 20;
     g_Console.writeToBuffer(c, "Load", 0xF0);
     c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 6 + 15;
+    c.X = g_Console.getConsoleSize().X / 6 + 20;
     g_Console.writeToBuffer(c, "Exit Game", 0xF0);
 }
 
