@@ -352,6 +352,17 @@ void moveBoxes() {
         {
             bCarryBox[i] = true;
         }
+        /*else if (g_skKeyEvent[K_SPACE].keyReleased && g_sChar.m_cLocation.X == boxPosPtr[i]->getX() - 1 && g_sChar.m_cLocation.Y == boxPosPtr[i]->getY()) {
+            bCarryBox[i] = true;
+        }*/
+        else if (g_skKeyEvent[K_SPACE].keyReleased && g_sChar.m_cLocation.X == boxPosPtr[i]->getX() && g_sChar.m_cLocation.Y == boxPosPtr[i]->getY() + 1) {
+            bCarryBox[i] = true;
+        }
+        else if (g_skKeyEvent[K_SPACE].keyReleased && g_sChar.m_cLocation.X == boxPosPtr[i]->getX() && g_sChar.m_cLocation.Y == boxPosPtr[i]->getY() - 1) {
+            bCarryBox[i] = true;
+        }
+
+
 
         if (bCarryBox[i] == true && g_skKeyEvent[K_RIGHT].keyDown) {
             boxPosPtr[i]->setX(g_sChar.m_cLocation.X + 1);
