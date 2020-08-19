@@ -234,14 +234,9 @@ void updateSplashScreen()    // Splash screen logic
     COORD c = g_Console.getConsoleSize();
     if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
     {
-        if ((g_mouseEvent.mousePosition.X >= c.X / 2 - 15 || g_mouseEvent.mousePosition.X <= c.X / 2 + 13)
+        if (g_mouseEvent.mousePosition.X >= c.X / 2 - 15 
+            && g_mouseEvent.mousePosition.X <= c.X / 2 + 13
             && g_mouseEvent.mousePosition.Y == c.Y / 3 + 1) //Change to main game state once mouse clicks on the button
-            g_eGameState = S_GAME;
-    }
-    if (g_mouseEvent.buttonState == RIGHTMOST_BUTTON_PRESSED)
-    {
-        if ((g_mouseEvent.mousePosition.X >= g_Console.getConsoleSize().X / 2 - 15 || g_mouseEvent.mousePosition.X <= g_Console.getConsoleSize().X / 2 + 13)
-            && g_mouseEvent.mousePosition.Y == g_Console.getConsoleSize().Y / 3 + 1) //Change to menu state once mouse clicks on the button
             g_eGameState = S_MENU;
     }
 }
@@ -251,8 +246,9 @@ void updateMenu() // Menu logic
     if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
     {
         COORD c = g_Console.getConsoleSize();
-        if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 15 || g_mouseEvent.mousePosition.X <= c.X / 6 + 24)
-            && g_mouseEvent.mousePosition.Y == c.Y / 10) //Change to main game state once mouse clicks on the button
+        if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 15 
+            && g_mouseEvent.mousePosition.X <= c.X / 6 + 24)
+            && g_mouseEvent.mousePosition.Y == 4) //Change to main game state once mouse clicks on the button
         g_eGameState = S_GAME;
     }
 }
@@ -337,7 +333,7 @@ void render()// make render functions for our level and put it in the switch cas
     }
 
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
-    //renderInputEvents();    // renders status of input events
+    renderInputEvents();    // renders status of input events
     renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
 }
 
