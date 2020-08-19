@@ -96,7 +96,7 @@ void shutdown( void )
 void getInput( void )
 {
     // resets all the keyboard events
-    memset(g_skKeyEvent, 0, K_COUNT * sizeof(*g_skKeyEvent));
+    // memset(g_skKeyEvent, 0, K_COUNT * sizeof(*g_skKeyEvent));
     // then call the console to detect input from user
     g_Console.readConsoleInput();    
 }
@@ -526,7 +526,10 @@ void renderHome()
     c.Y += 1;
     c.X = g_Console.getConsoleSize().X / 8;
     g_Console.writeToBuffer(c, "X days without medicine", 0xF0);
-    c.Y += 9;
+    c.Y += 2;
+    c.X = g_Console.getConsoleSize().X / 8;
+    g_Console.writeToBuffer(c, "Food (Price) [ ] ", 0xF0);
+    c.Y += 7;
     c.X = g_Console.getConsoleSize().X / 8;
     g_Console.writeToBuffer(c, "Son 2", 0xF0);
     c.Y += 1;
@@ -535,6 +538,9 @@ void renderHome()
     c.Y += 1;
     c.X = g_Console.getConsoleSize().X / 8;
     g_Console.writeToBuffer(c, "X days without medicine", 0xF0);
+    c.Y += 2;
+    c.X = g_Console.getConsoleSize().X / 8;
+    g_Console.writeToBuffer(c, "Food (Price) [ ] ", 0xF0);
 }
 
 void renderTutorialLevel()
