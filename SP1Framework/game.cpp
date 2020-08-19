@@ -352,6 +352,8 @@ void renderGame()
 
 
 //Renders the Map onto the entire screen
+//We need to change this part so that it only renders things on the map thats within the fog of war only
+//need to make a function to find where the fog of war is based on the player coords
 void renderTHEMAP() {
     COORD c;
     
