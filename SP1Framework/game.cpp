@@ -321,7 +321,7 @@ void checkEnd() //Check if day has ended
     if (g_dElapsedWorkTime >= 60)
     {
         g_dElapsedWorkTime = 0.0;
-        g_eGameState = S_HOME;
+        g_eGameState = S_ENDOFWORKSCREEN;
     }
 }
 
@@ -412,6 +412,8 @@ void render()// make render functions for our level and put it in the switch cas
     case S_SPLASHSCREEN: renderSplashScreen();
         break;
     case S_MENU: renderMainMenu();
+        break;
+    case S_ENDOFWORKSCREEN: renderEndOfWorkScreen();
         break;
     case S_HOME: renderHome();
         break;
@@ -546,6 +548,30 @@ void renderHome()
     g_Console.writeToBuffer(c, "Food (Price) [ ] ", 0xF0);
 }
 
+void renderEndOfWorkScreen()
+{
+    map.chooseMap(0, g_Console);
+    COORD c = g_Console.getConsoleSize();
+    c.Y /= 25;
+    c.X = c.X / 2 - 5;
+    g_Console.writeToBuffer(c, "End of day report", 0xF0);
+    c.Y += 8;
+    c.X = g_Console.getConsoleSize().X / 8;
+    g_Console.writeToBuffer(c, "Customers served: [ ]", 0xF0);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 8;
+    g_Console.writeToBuffer(c, "Complaints given: [ ]", 0xF0);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 8;
+    g_Console.writeToBuffer(c, "Strikes: [ ]", 0xF0);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 8;
+    g_Console.writeToBuffer(c, "Todays pay: [ ]", 0xF0);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 8;
+    g_Console.writeToBuffer(c, "Click here to go home", 0xF0);
+}
+
 void renderTutorialLevel()
 {
     map.chooseMap(1, g_Console);
@@ -582,10 +608,10 @@ void renderCustomer()
                     }
                 case 1:
                     if (time % 10 != 1) {
-                    c.X = 37;
-                    c.Y = 7;
-                    g_Console.writeToBuffer(c, char(1), 0x122);
-                }
+                        c.X = 37;
+                        c.Y = 7;
+                        g_Console.writeToBuffer(c, char(1), 0x122);
+                    }
                 case 2:
                    if (time % 30 != 2) {
                         c.X = 37;
