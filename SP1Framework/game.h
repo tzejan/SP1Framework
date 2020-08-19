@@ -100,8 +100,7 @@ void updateHome();            // Home logic
 void updateTutorial();        // Tutorial logic
 void updateGame();          // Game logic
 
-void moveCharacter(); 
-void moveChara();// moves the character, collision detection, physics, etc
+void moveCharacter(); // moves the character, collision detection, physics, etc
 void moveBoxes();
 
 void processUserInput();    // checks if you should change states or do something else with the game, e.g. pause, exit
