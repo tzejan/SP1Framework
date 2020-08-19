@@ -7,13 +7,14 @@
 #include <iomanip>
 #include <sstream>
 #include<stdio.h> 
+#include "Map.h"
 using namespace std;
 #include "Bullet.h"
 double  g_dElapsedTime;
 double  g_dDeltaTime;
+
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
-
 // Game specific variables here
 SGameChar   g_sChar;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
@@ -39,6 +40,8 @@ void CheckAndUpdate()
     }
 
 }
+
+
 
 void MakesBullet()
 {
@@ -385,103 +388,10 @@ void renderMap()
     // 0x2D Green
     // 0x3D Light Blue
     // 0xFF White
-
     COORD c;
     // Black colour
-    for (int i = 0; i < 17; i++)
-    {
-        c.X = i;
-        c.Y = 4;
-        g_Console.writeToBuffer(c, " ", colors[5]);
-        c.X = i;
-        c.Y = 10;
-        g_Console.writeToBuffer(c, " ", colors[5]);
-        c.X = i;
-        c.Y = 14;
-        g_Console.writeToBuffer(c, " ", colors[5]);
-        c.X = i;
-        c.Y = 20;
-        g_Console.writeToBuffer(c, " ", colors[5]);
-
-
-    }
-    for (int i = 0; i < 5; i++)
-    {
-        c.X = 15;
-        c.Y = i;
-        g_Console.writeToBuffer(c, "  ", colors[5]);
-        c.X = 29;
-        c.Y = i;
-        g_Console.writeToBuffer(c, "  ", colors[5]);
-        c.X = 50;
-        c.Y = i;
-        g_Console.writeToBuffer(c, "  ", colors[5]);
-        c.X = 64;
-        c.Y = i;
-        g_Console.writeToBuffer(c, "  ", colors[5]);
-    }
-    for (int i = 20; i < 25; i++)
-    {
-        c.X = 15;
-        c.Y = i;
-        g_Console.writeToBuffer(c, "  ", colors[5]);
-        c.X = 29;
-        c.Y = i;
-        g_Console.writeToBuffer(c, "  ", colors[5]);
-        c.X = 50;
-        c.Y = i;
-        g_Console.writeToBuffer(c, "  ", colors[5]);
-        c.X = 64;
-        c.Y = i;
-        g_Console.writeToBuffer(c, "  ", colors[5]);
-    }
-    for (int i = 10; i < 15; i++)
-    {
-        c.X = 15;
-        c.Y = i;
-        g_Console.writeToBuffer(c, "  ", colors[5]);
-        c.X = 29;
-        c.Y = i;
-        g_Console.writeToBuffer(c, "  ", colors[5]);
-        c.X = 50;
-        c.Y = i;
-        g_Console.writeToBuffer(c, "  ", colors[5]);
-        c.X = 64;
-        c.Y = i;
-        g_Console.writeToBuffer(c, "  ", colors[5]);
-
-
-
-    }
-    for (int i = 29; i < 51; i++)
-    {
-        c.X = i;
-        c.Y = 4;
-        g_Console.writeToBuffer(c, "  ", colors[5]);
-        c.X = i;
-        c.Y = 10;
-        g_Console.writeToBuffer(c, "  ", colors[5]);
-        c.X = i;
-        c.Y = 14;
-        g_Console.writeToBuffer(c, "  ", colors[5]);
-        c.X = i;
-        c.Y = 20;
-        g_Console.writeToBuffer(c, "  ", colors[5]);
-    }
-    for (int i = 64; i < 79; i++) {
-        c.X = i;
-        c.Y = 4;
-        g_Console.writeToBuffer(c, "  ", colors[5]);
-        c.X = i;
-        c.Y = 10;
-        g_Console.writeToBuffer(c, "  ", colors[5]);
-        c.X = i;
-        c.Y = 14;
-        g_Console.writeToBuffer(c, "  ", colors[5]);
-        c.X = i;
-        c.Y = 20;
-        g_Console.writeToBuffer(c, "  ", colors[5]);
-    }
+        
+    
     // Gray colour oF ROAD
     for (int i = 17; i < 28; i++)
     {

@@ -10,3 +10,14 @@ ipch/
 *.db-shm
 *.db-wal
 *.opendb
+.vs/SP1Framework/v16/Browse.VC.db
+*.vs
+*.tlog
+*.iobj
+*.ipdb
+*.idb
+*.pdb
+*.recipe
+*.log
+*.ilk
+*.db

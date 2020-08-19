@@ -17,7 +17,7 @@ Bullet::Bullet(SGameChar& player, SMouseEvent& mousepos)
 
 	gradient = (goal_y - y) / (goal_x - x);
 	c = y - (gradient * x);
-
+	
 }
 
 Bullet::~Bullet()
