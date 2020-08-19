@@ -3,6 +3,7 @@
 //
 #include "game.h"
 #include "Map.h"
+#include "Collision.h"
 #include "Framework\console.h"
 #include <iostream>
 #include <iomanip>
@@ -37,6 +38,7 @@ int g_ConsoleY = 25;
 Console g_Console(g_ConsoleX, g_ConsoleY, "SP1 Framework");
 
 Map map;
+Col col;
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
 //            Initialize variables, allocate memory, load data from file, etc. 
@@ -61,7 +63,7 @@ void init( void )
     g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;*/
 
     g_sChar.m_cLocation.X = 18; //changed character spawn location
-    g_sChar.m_cLocation.Y = 2;
+    g_sChar.m_cLocation.Y = 1;
 
     //init box and box pos
     for (int i = 0; i < 6; i++) {
@@ -297,30 +299,28 @@ void moveCharacter()
     // COLLISION WITH ENVIRONMENT IS SOLVED HERE
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
-    if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 1) // changed .keyPressed into . keyDown
+    if (g_skKeyEvent[K_UP].keyDown) // changed .keyPressed into . keyDown
     {
-        if (map.getGrid(g_sChar.m_cLocation.Y - 1, g_sChar.m_cLocation.X) == 0)
+        if (col.collidingWith(g_sChar.m_cLocation.Y, g_sChar.m_cLocation.X, -1, 0, map) == 0)
         {
             g_sChar.m_cLocation.Y--;
-        }
+        }        
     }
-    if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 1) // changed .keyPressed into . keyDown
-    {
-        if (map.getGrid(g_sChar.m_cLocation.Y , g_sChar.m_cLocation.X - 1) == 0)
+    if (g_skKeyEvent[K_LEFT].keyDown) // changed .keyPressed into . keyDown
+        if (col.collidingWith(g_sChar.m_cLocation.Y, g_sChar.m_cLocation.X, 0, -1, map) == 0)
         {
             g_sChar.m_cLocation.X--;
         }
-    }
-    if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 2) // changed .keyPressed into . keyDown
+    if (g_skKeyEvent[K_DOWN].keyDown)// changed .keyPressed into . keyDown
     {
-        if (map.getGrid(g_sChar.m_cLocation.Y + 1, g_sChar.m_cLocation.X) == 0)
+        if (col.collidingWith(g_sChar.m_cLocation.Y, g_sChar.m_cLocation.X, +1, 0, map) == 0)
         {
             g_sChar.m_cLocation.Y++;
         }
     }
-    if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 2) // changed .keyPressed into . keyDown
+    if (g_skKeyEvent[K_RIGHT].keyDown) // changed .keyPressed into . keyDown
     {
-        if (map.getGrid(g_sChar.m_cLocation.Y, g_sChar.m_cLocation.X + 1) == 0)
+        if (col.collidingWith(g_sChar.m_cLocation.Y, g_sChar.m_cLocation.X, 0, +1, map) == 0)
         {
             g_sChar.m_cLocation.X++;
         }
@@ -329,8 +329,6 @@ void moveCharacter()
     {
         g_sChar.m_bActive = !g_sChar.m_bActive;        
     }
-
-   
 }
 
 void moveBoxes() {
