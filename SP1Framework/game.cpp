@@ -569,19 +569,19 @@ void renderCustomer()
                     if (time % 10 != 0) {
                         c.X = 79;
                         c.Y = 13;
-                        g_Console.writeToBuffer(c, char(1), 0xBB);
+                        g_Console.writeToBuffer(c, char(1), 0x122);
                     }
                 case 1:
                     if (time % 10 != 1) {
                     c.X = 37;
                     c.Y = 7;
-                    g_Console.writeToBuffer(c, char(1), 0xBB);
+                    g_Console.writeToBuffer(c, char(1), 0x122);
                 }
                 case 2:
                    if (time % 30 != 2) {
                         c.X = 37;
                         c.Y = 13;
-                        g_Console.writeToBuffer(c, char(1), 0xBB);
+                        g_Console.writeToBuffer(c, char(1), 0x122);
                    }
             }
         }
