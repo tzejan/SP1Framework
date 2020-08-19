@@ -448,7 +448,7 @@ void renderFramerate()
 void renderInputEvents()
 {
     // keyboard events
-    COORD startPos = {50, 2};
+    COORD startPos = {100, 2};
     std::ostringstream ss;
     std::string key;
     for (int i = 0; i < K_COUNT; ++i)
