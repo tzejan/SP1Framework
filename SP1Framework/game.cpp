@@ -613,13 +613,7 @@ void renderSplashScreen()  // renders the splash screen
     COORD c = g_Console.getConsoleSize();
     c.Y /= 3;
     c.X = c.X / 2 - 9;
-    g_Console.writeToBuffer(c, "A game in 3 seconds", 0x03);
-    c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 2 - 20;
-    g_Console.writeToBuffer(c, "Press <Space> to change character colour", 0x09);
-    c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 2 - 9;
-    g_Console.writeToBuffer(c, "Press 'Esc' to quit", 0x09);
+    g_Console.writeToBuffer(c, "Loading....", 0x03);
 }
 
 void renderGame()
@@ -835,14 +829,14 @@ void renderFramerate()
     ss << 1.0 / g_dDeltaTime << "fps";
     c.X = g_Console.getConsoleSize().X - 9;
     c.Y = 0;
-    g_Console.writeToBuffer(c, ss.str());
+    //g_Console.writeToBuffer(c, ss.str());
 
     // displays the elapsed time
     ss.str("");
     ss << g_dElapsedTime << "secs";
     c.X = 0;
     c.Y = 0;
-    g_Console.writeToBuffer(c, ss.str(), 0x59);
+   // g_Console.writeToBuffer(c, ss.str(), 0x59);
 }
 
 // this is an example of how you would use the input events
@@ -877,13 +871,13 @@ void renderInputEvents()
             ss << key << " not pressed";
 
         COORD c = { startPos.X, startPos.Y + i };
-        g_Console.writeToBuffer(c, ss.str(), 0x17);
+      //  g_Console.writeToBuffer(c, ss.str(), 0x17);
     }
 
     // mouse events    
     ss.str("");
     ss << "Mouse position (" << g_mouseEvent.mousePosition.X << ", " << g_mouseEvent.mousePosition.Y << ")";
-    g_Console.writeToBuffer(g_mouseEvent.mousePosition, ss.str(), 0x59);
+   // g_Console.writeToBuffer(g_mouseEvent.mousePosition, ss.str(), 0x59);
     ss.str("");
     switch (g_mouseEvent.eventFlags)
     {
@@ -892,30 +886,30 @@ void renderInputEvents()
         {
 
             ss.str("Left Button Pressed");
-            g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 1, ss.str(), 0x59);
+           // g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 1, ss.str(), 0x59);
             MakesBullet();
         }
         else if (g_mouseEvent.buttonState == RIGHTMOST_BUTTON_PRESSED)
         {
             ss.str("Right Button Pressed");
-            g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 2, ss.str(), 0x59);
+           // g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 2, ss.str(), 0x59);
         }
         else
         {
             ss.str("Some Button Pressed");
-            g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 3, ss.str(), 0x59);
+          //  g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 3, ss.str(), 0x59);
         }
         break;
     case DOUBLE_CLICK:
         ss.str("Double Clicked");
-        g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 4, ss.str(), 0x59);
+      //  g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 4, ss.str(), 0x59);
         break;        
     case MOUSE_WHEELED:
         if (g_mouseEvent.buttonState & 0xFF000000)
             ss.str("Mouse wheeled down");
         else
             ss.str("Mouse wheeled up");
-        g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 5, ss.str(), 0x59);
+       // g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 5, ss.str(), 0x59);
         break;
     default:        
         break;
