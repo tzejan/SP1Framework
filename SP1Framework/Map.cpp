@@ -40,7 +40,7 @@ void Map::chooseMap(int lvl, Console& console)
 	case 0:
 	{
 		std::fstream menu("MainMenu.txt");
-		printMap(menu, rowBig, columnBig, console);
+		printMap(menu, rowSmall, columnSmall, console);
 		break;
 	}
 	case 1:

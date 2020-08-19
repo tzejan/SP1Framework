@@ -239,7 +239,7 @@ void updateSplashScreen()    // Splash screen logic
     {
         if ((g_mouseEvent.mousePosition.X >= g_Console.getConsoleSize().X / 2 - 15 || g_mouseEvent.mousePosition.X <= g_Console.getConsoleSize().X / 2 + 13)
             && g_mouseEvent.mousePosition.Y == g_Console.getConsoleSize().Y / 3 + 1) //Change to main game state once mouse clicks on the button
-            g_eGameState = S_GAME;
+            g_eGameState = S_MENU;
     }
 }
 
