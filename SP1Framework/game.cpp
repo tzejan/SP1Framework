@@ -11,6 +11,7 @@
 #include <time.h>
 
 double  g_dElapsedTime;
+double g_dElapsedWorkTime;
 double  g_dDeltaTime;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
@@ -36,7 +37,8 @@ void init( void )
     srand((unsigned int)time(NULL));
 
     // Set precision for floating point output
-    g_dElapsedTime = 0.0;    
+    g_dElapsedTime = 0.0;
+    g_dElapsedWorkTime = 0.0;
 
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
@@ -223,7 +225,7 @@ void update(double dt)
             break;
         case S_TUT: updateTutorial();
             break;
-        case S_GAME: updateGame(); // gameplay logic when we are in the game
+        case S_GAME: g_dElapsedWorkTime += dt; updateGame(); // gameplay logic when we are in the game
             break;
     }
 }
@@ -255,6 +257,8 @@ void updateGame()       // game logic
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
                         // sound can be played here too.
+    if (g_dElapsedWorkTime >= 10)
+        g_eGameState = S_HOME;
 }
 
 void moveCharacter()
@@ -367,7 +371,7 @@ void render()// make render functions for our level and put it in the switch cas
         break;
     }
 
-    renderFramerate();      // renders debug information, frame rate, elapsed time, etc
+    //renderFramerate();      // renders debug information, frame rate, elapsed time, etc
     renderInputEvents();    // renders status of input events
     renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
 }
