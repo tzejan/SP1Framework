@@ -46,6 +46,18 @@ enum EGAMESTATES
     S_COUNT
 };
 
+// Enumeration for different item types
+enum ItemType
+{
+    I_RICE,
+    I_TOILETPAPER,
+    I_CANNED,
+    I_INSTANTNOODLE,
+    I_VEGGIE,
+    I_BANDAGE,
+    I_COUNT
+};
+
 // struct for the game character
 struct SGameChar
 {

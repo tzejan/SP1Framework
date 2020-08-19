@@ -11,6 +11,7 @@ Customer::Customer()//sets which item they want to buy and how much to do so
 
 Customer::~Customer()
 {
+
 }
 
 void Customer::moveToShelfContainingItem(int itemToBuy)//brings them to the shelf depending on what item they are buying
