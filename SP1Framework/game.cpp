@@ -23,7 +23,9 @@ EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 Customer* customerPtr[6] = {nullptr , nullptr , nullptr , nullptr , nullptr , nullptr};
 
 // Console object
-Console g_Console(80, 25, "SP1 Framework");
+int g_ConsoleX = 80;
+int g_ConsoleY = 25;
+Console g_Console(g_ConsoleX, g_ConsoleY, "SP1 Framework");
 
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -45,8 +47,12 @@ void init( void )
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
 
-    g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
-    g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
+   /* g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
+    g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;*/
+
+    g_sChar.m_cLocation.X = 18; //changed character spawn location
+    g_sChar.m_cLocation.Y = 2;
+
     g_sChar.m_bActive = true;
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
@@ -111,6 +117,8 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
     {
     case S_SPLASHSCREEN: // don't handle anything for splash screen
         break;
+    case S_HOME: gameplayKBHandler(keyboardEvent); // handle home menu keyboard menu
+        break;
     case S_GAME: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
         break;
     }
@@ -139,6 +147,8 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
     case S_SPLASHSCREEN: gameplayMouseHandler(mouseEvent); // handle mouse input for splash screen
         break;
     case S_MENU: gameplayMouseHandler(mouseEvent); // handle mouse input for menu
+        break;
+    case S_HOME: gameplayMouseHandler(mouseEvent); // handle mouse input for home menu
         break;
     case S_GAME: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
         break;
@@ -259,33 +269,28 @@ void updateGame()       // game logic
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
                         // sound can be played here too.
-    if (g_dElapsedWorkTime >= 10)
-        g_eGameState = S_HOME;
 }
 
 void moveCharacter()
 {    
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
-    if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 0) // changed .keyPressed into . keyDown
+    if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 1) // changed .keyPressed into . keyDown
     {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.Y--;       
+    g_sChar.m_cLocation.Y--;
     }
-    if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 0) // changed .keyPressed into . keyDown
+    if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 1) // changed .keyPressed into . keyDown
     {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.X--;        
+    g_sChar.m_cLocation.X--;
     }
-    if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1) // changed .keyPressed into . keyDown
+    if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 2) // changed .keyPressed into . keyDown
     {
         //Beep(1440, 30);
-        g_sChar.m_cLocation.Y++;        
+        g_sChar.m_cLocation.Y++;
     }
-    if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1) // changed .keyPressed into . keyDown
+    if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 2) // changed .keyPressed into . keyDown
     {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.X++;        
+        g_sChar.m_cLocation.X++;
     }
     if (g_skKeyEvent[K_SPACE].keyReleased)
     {
@@ -297,7 +302,11 @@ void moveCharacter()
 
 void checkEnd() //Check if day has ended
 {
-
+    if (g_dElapsedWorkTime >= 10)
+    {
+        g_dElapsedWorkTime = 0.0;
+        g_eGameState = S_HOME;
+    }
 }
 
 void processInputSplash() // All input processing related to Splashscreen
@@ -339,13 +348,18 @@ void processUserInput()
     {
     case S_SPLASHSCREEN: processInputSplash(); break;
     case S_MENU: processInputMenu(); break;
+    case S_HOME: 
+        if (g_skKeyEvent[K_ESCAPE].keyReleased)// opens main menu if player hits the escape key
+            g_eGameState = S_MENU; 
+        break;
     case S_TUT:
-        if (g_skKeyEvent[K_ESCAPE].keyReleased)// quits the game if player hits the escape key
+        if (g_skKeyEvent[K_ESCAPE].keyReleased)// opens main menu if player hits the escape key
             g_eGameState = S_MENU;
         break;
     case S_GAME:
-        if (g_skKeyEvent[K_ESCAPE].keyReleased)// quits the game if player hits the escape key
+        if (g_skKeyEvent[K_ESCAPE].keyReleased)// opens main menu if player hits the escape key
             g_eGameState = S_MENU;
+        checkEnd();
         break;
     }
 }
@@ -374,7 +388,7 @@ void render()// make render functions for our level and put it in the switch cas
     }
 
     //renderFramerate();      // renders debug information, frame rate, elapsed time, etc
-    renderInputEvents();    // renders status of input events
+   // renderInputEvents();    // renders status of input events
     renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
 }
 
@@ -410,7 +424,7 @@ void renderGame()
     // displays the elapsed time
     std::ostringstream ss;
     ss.str("");
-    ss << g_dElapsedTime << "secs";
+    ss << g_dElapsedWorkTime << "secs";
     c.X = 36; //change to shift location of timer
     c.Y = 0;  //we might use this or we might need to make a new timer to show when the game starts
     g_Console.writeToBuffer(c, ss.str(), 0x59);
