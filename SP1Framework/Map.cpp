@@ -69,16 +69,16 @@ void Map::printMap(std::fstream& level, int row, int column, Console& console)
 				console.writeToBuffer(c, ' ', 0xF0); //white
 				break;
 			case 1:
-				console.writeToBuffer(c, ' ', 0x88);
+				console.writeToBuffer(c, ' ', 0x88); //gold
 				break;
 			case 2:
-				console.writeToBuffer(c, ' ', 0x66);
+				console.writeToBuffer(c, ' ', 0x66); //dark gray
 				break;
 			case 3:
-				console.writeToBuffer(c, ' ', 0x77);
+				console.writeToBuffer(c, ' ', 0x77); //light gray
 				break;
 			case 4:
-				console.writeToBuffer(c, ' ', 0x00);
+				console.writeToBuffer(c, ' ', 0x00); //black
 				break;
 			}
 		}
