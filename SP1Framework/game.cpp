@@ -231,35 +231,12 @@ void update(double dt)
 
 void updateSplashScreen()    // Splash screen logic
 {
-    COORD c = g_Console.getConsoleSize();
-    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
-    {
-        if (g_mouseEvent.mousePosition.X >= c.X / 2 - 16 
-            && g_mouseEvent.mousePosition.X <= c.X / 2 + 17
-            && g_mouseEvent.mousePosition.Y == c.Y / 25 + 12) //Change to main game state once mouse clicks on the button
-            g_eGameState = S_MENU;
-    }
+    processUserInput();
 }
 
 void updateMenu() // Menu logic
 {
-    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
-    {
-        COORD c = g_Console.getConsoleSize();
-        if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 15 
-            && g_mouseEvent.mousePosition.X <= c.X / 6 + 24)
-            && g_mouseEvent.mousePosition.Y == 4) //Change to main game state once mouse clicks on the button
-        g_eGameState = S_GAME;
-    }
-
-    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
-    {
-        COORD c = g_Console.getConsoleSize();
-        if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 15
-            && g_mouseEvent.mousePosition.X <= c.X / 6 + 24)
-            && g_mouseEvent.mousePosition.Y == 5) //Change to main game state once mouse clicks on the button
-            g_bQuitGame = true;
-    }
+    processUserInput();
 }
 
 void updateHome() // Home logic
@@ -311,11 +288,55 @@ void moveCharacter()
 
    
 }
+
+void processInputSplash() // All input processing related to Splashscreen
+{
+    COORD c = g_Console.getConsoleSize();
+    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    {
+        if (g_mouseEvent.mousePosition.X >= c.X / 2 - 16
+            && g_mouseEvent.mousePosition.X <= c.X / 2 + 17
+            && g_mouseEvent.mousePosition.Y == c.Y / 25 + 12) //Change to main game state once mouse clicks on the button
+            g_eGameState = S_MENU;
+    }
+}
+
+void processInputMenu() //All input processing related to Main Menu
+{
+    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    {
+        COORD c = g_Console.getConsoleSize();
+        if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 15
+            && g_mouseEvent.mousePosition.X <= c.X / 6 + 24)
+            && g_mouseEvent.mousePosition.Y == 4) //Change to main game state once mouse clicks on the button
+            g_eGameState = S_GAME;
+    }
+
+    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    {
+        COORD c = g_Console.getConsoleSize();
+        if ((g_mouseEvent.mousePosition.X >= c.X / 6 + 15
+            && g_mouseEvent.mousePosition.X <= c.X / 6 + 24)
+            && g_mouseEvent.mousePosition.Y == 7) //Exit once mouse clicks on the button
+            g_bQuitGame = true;
+    }
+}
+
 void processUserInput()
 {
-    // quits the game if player hits the escape key
-    if (g_skKeyEvent[K_ESCAPE].keyReleased)
-        g_eGameState = S_MENU;
+    switch (g_eGameState)
+    {
+    case S_SPLASHSCREEN: processInputSplash(); break;
+    case S_MENU: processInputMenu(); break;
+    case S_TUT:
+        if (g_skKeyEvent[K_ESCAPE].keyReleased)// quits the game if player hits the escape key
+            g_eGameState = S_MENU;
+        break;
+    case S_GAME:
+        if (g_skKeyEvent[K_ESCAPE].keyReleased)// quits the game if player hits the escape key
+            g_eGameState = S_MENU;
+        break;
+    }
 }
 
 //--------------------------------------------------------------
@@ -399,11 +420,17 @@ void renderMainMenu()
     Menu.chooseMap(0, g_Console);
     COORD c = g_Console.getConsoleSize();
     c.Y /= 25;
-    c.X = c.X / 6 + 16;
+    c.X = c.X / 2 - 5;
     g_Console.writeToBuffer(c, "Main Menu", 0xF0);
     c.Y += 3;
     c.X = g_Console.getConsoleSize().X / 6 + 15;
     g_Console.writeToBuffer(c, "Go to Work", 0xF0);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 6 + 15;
+    g_Console.writeToBuffer(c, "Save", 0xF0);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 6 + 15;
+    g_Console.writeToBuffer(c, "Load", 0xF0);
     c.Y += 1;
     c.X = g_Console.getConsoleSize().X / 6 + 15;
     g_Console.writeToBuffer(c, "Exit Game", 0xF0);
