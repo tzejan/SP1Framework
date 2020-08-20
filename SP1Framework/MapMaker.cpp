@@ -8,7 +8,7 @@ MapMaker::~MapMaker()
 {
 }
 
-void MapMaker::Draw(string filepath)
+void MapMaker::Load(string filepath)
 {
 	string Map;
 	int row = 0;

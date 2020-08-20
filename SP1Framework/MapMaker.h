@@ -17,7 +17,7 @@ public:
 	~MapMaker();
 
 	//Takes the Txt file and puts it into the array
-	void Draw(string filepath);
+	void Load(string filepath);
 
 	//Gets character from Coordinate
 	char getFromCoord(COORD c);
