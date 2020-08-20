@@ -43,8 +43,8 @@ void init( void )
     g_sChar.m_cLocation.X = 1;
     g_sChar.m_cLocation.Y = 11;
     
-    map1.Load("Map_Template.txt"); //Puts the Map Template.txt contents into map1's MapArray.
-    hud.Load("HUD_Template.txt");
+    map1.Load(".Txt/Map_Template.txt"); //Puts the Map Template.txt contents into map1's MapArray.
+    hud.Load(".Txt/HUD_Template.txt");
 
     g_sChar.m_bActive = true;
 
