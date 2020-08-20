@@ -1,4 +1,5 @@
 #pragma once
+#include "Framework/console.h"
 #include <windows.h>
 
 
