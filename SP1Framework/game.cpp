@@ -10,8 +10,8 @@
 #include <iomanip>
 #include <sstream>
 
+map* currentMap;
 maze_01 maze_1;
-
 
 double  g_dElapsedTime;
 double  g_dDeltaTime;
@@ -25,6 +25,7 @@ EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 // Console object
 Console g_Console(80, 25, "SP1 Framework");
 
+
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
 //            Initialize variables, allocate memory, load data from file, etc. 
@@ -35,14 +36,15 @@ Console g_Console(80, 25, "SP1 Framework");
 
 void init( void )
 {
+    currentMap = new maze_01;
     // Set precision for floating point output
     g_dElapsedTime = 0.0;    
 
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
 
-    g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
-    g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
+    g_sChar.m_cLocation.X = 16;
+    g_sChar.m_cLocation.Y = 1;
     g_sChar.m_bActive = true;
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
@@ -238,40 +240,32 @@ void moveCharacter()
 {    
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
-    COORD c;
-    if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 0 && maze_1.getMapVar((g_sChar.m_cLocation.X - 17), (g_sChar.m_cLocation.Y - 1)) != '#')
+    int pos_x = g_sChar.m_cLocation.X - 15;
+    int pos_y = g_sChar.m_cLocation.Y;
+
+    if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 0 && checkCollision(pos_x, pos_y - 1) != 1)
     {
-        Beep(783.99, 30);
+        //Beep(783.99, 30);
         g_sChar.m_cLocation.Y--;       
     }
-    if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 15 && maze_1.getMapVar((g_sChar.m_cLocation.X - 18), g_sChar.m_cLocation.Y) != '#')
+    if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 15 && checkCollision(pos_x - 1, pos_y) != 1)
     {
-        Beep(783.99, 30);
+        //Beep(783.99, 30);
         g_sChar.m_cLocation.X--;        
     }
-    if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && maze_1.getMapVar((g_sChar.m_cLocation.X - 17), (g_sChar.m_cLocation.Y + 1)) != '#')
+    if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && checkCollision(pos_x, pos_y + 1) != 1)
     {
-        Beep(783.99, 30);
+        //Beep(783.99, 30);
         g_sChar.m_cLocation.Y++;        
     }
-    if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 64 && maze_1.getMapVar((g_sChar.m_cLocation.X - 16), g_sChar.m_cLocation.Y) != '#')
+    if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 64 && checkCollision(pos_x + 1, pos_y) != 1)
     {
-        Beep(783.99, 30);
+        //Beep(783.99, 30);
         g_sChar.m_cLocation.X++;        
     }
     if (g_skKeyEvent[K_SPACE].keyDown)
     {
         g_sChar.m_bActive = !g_sChar.m_bActive;
-        Beep(293.67, 150); // D4
-        Beep(293.67, 150); // D4
-        Beep(587.33, 240); // D5
-        Beep(440, 600); // A4
-        Beep(415.3, 240); // G4#
-        Beep(392, 240); // G4
-        Beep(349.23, 240); // F4
-        Beep(293.67, 150); // D4
-        Beep(349.23, 150); // F4
-        Beep(392, 150); // G4
     }
 }
 void processUserInput()
@@ -362,7 +356,7 @@ void renderMap()
     }
     for (int i = 0; i < 50; i++) {
         for (int j = 0; j < 25; j++) {
-            c.X = 17 + i;
+            c.X = 15 + i;
             c.Y = j;
             if (c.X <= g_sChar.m_cLocation.X + 6 && c.X >= g_sChar.m_cLocation.X - 6) {
                 if (c.Y <= g_sChar.m_cLocation.Y + 3 && c.Y >= g_sChar.m_cLocation.Y - 3) {
@@ -414,3 +408,15 @@ void renderInputEvents()
 {
 
 }
+
+int checkCollision(int x, int y) {
+    int collideType = 0;
+    if (currentMap->getMapVar(x, y) == '#') {
+        collideType = 1;
+    }
+    else if (currentMap->getMapVar(x, y) == 'C') {
+        collideType = 2;
+    }
+    return collideType;
+}
+
