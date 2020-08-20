@@ -1,14 +1,18 @@
 #pragma once
 #include "Framework/console.h"
+#include "game.h"
+#include "MapMaker.h"
 #include <windows.h>
 
 
 class Entity
 {
-private:
+protected:
 	COORD c;
 	char display;
 public:
+
+
 	Entity();
 	Entity(COORD _c, char _display);
 	Entity(int y_pos, int x_pos, char display);
@@ -28,7 +32,11 @@ public:
 	char get_display();
 	void set_display(char _display);
 
-	
-	
 
+	//check if collision with COORD.
+	//does collision code.
+	virtual bool collide(COORD entity_pos) = 0;
+
+	//move based on key pressed
+	virtual void move(int button_pressed) = 0;
 };
