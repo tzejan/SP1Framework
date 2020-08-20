@@ -1,5 +1,5 @@
 // This is the main file for the game logic and function
-//
+// Do all the work here
 //
 #include "game.h"
 #include "MapMaker.h"
@@ -43,7 +43,7 @@ void init( void )
     g_sChar.m_cLocation.X = 1;
     g_sChar.m_cLocation.Y = 11;
     
-    map1.Load(".Txt/Map_Template.txt"); //Puts the Map Template.txt contents into map1's MapArray.
+    map1.Load(".Txt/Tutorial.txt"); //Puts the Map Template.txt contents into map1's MapArray.
     hud.Load(".Txt/HUD Template.txt");
 
     g_sChar.m_bActive = true;
