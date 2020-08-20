@@ -46,6 +46,8 @@ void Entity::set_display(char _display)
 	display = _display;
 }
 
+
+
 void Entity::set_pos(COORD _c)
 {
 	c = _c;

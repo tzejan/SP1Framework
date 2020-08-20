@@ -2,6 +2,8 @@
 // Do all the work here
 //
 #include "game.h"
+#include "Player.h"
+#include "Entity.h"
 #include "MapMaker.h"
 #include "Framework\console.h"
 #include <iostream>
@@ -20,8 +22,12 @@ EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 MapMaker map1;
 MapMaker hud;
 
+
+
 // Console object
 Console g_Console(100, 30, "SP1 Framework");
+
+Player player(2, 2);
 
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -42,6 +48,8 @@ void init( void )
     //starting location
     g_sChar.m_cLocation.X = 1;
     g_sChar.m_cLocation.Y = 11;
+
+  
     
     map1.Load(".Txt/Tutorial.txt"); //Puts the Map Template.txt contents into map1's MapArray.
     hud.Load(".Txt/HUD Template.txt");
@@ -198,6 +206,23 @@ void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
     g_mouseEvent.eventFlags = mouseEvent.dwEventFlags;
 }
 
+int getPlayerInput()
+{
+    if (g_skKeyEvent[K_UP].keyReleased) {
+        return K_UP;
+    }
+    if (g_skKeyEvent[K_DOWN].keyReleased) {
+        return K_DOWN;
+    }
+    if (g_skKeyEvent[K_LEFT].keyReleased) {
+        return K_LEFT;
+    }
+    if (g_skKeyEvent[K_RIGHT].keyReleased) {
+        return K_RIGHT;
+    }
+    return K_COUNT;
+}
+
 //--------------------------------------------------------------
 // Purpose  : Update function
 //            This is the update function
@@ -242,10 +267,12 @@ void updateGame()       // gameplay logic
 {
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
 
+    player.move(getPlayerInput());
   
 
     moveCharacter();    // moves the character, collision detection, physics, etc
                         // sound can be played here too.
+    
 }
 
 
@@ -413,7 +440,8 @@ void renderCharacter()
     {
         charColor = 0x0A;
     }
-    g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
+    g_Console.writeToBuffer(g_sChar.m_cLocation, player.get_display(), charColor);
+    g_Console.writeToBuffer(player.get_pos(), '@', 0x0D);
 }
 
 void renderFramerate()

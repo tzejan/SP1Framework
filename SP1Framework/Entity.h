@@ -9,7 +9,6 @@ class Entity
 {
 protected:
 	COORD c;
-	SKeyEvent KeyEvent[K_COUNT];
 	char display;
 public:
 
@@ -34,13 +33,10 @@ public:
 	void set_display(char _display);
 
 
-	//move based on key pressed
-	virtual void move() = 0;
-
 	//check if collision with COORD.
 	//does collision code.
 	virtual bool collide(COORD entity_pos) = 0;
 
-	//updates position accordingly
-	void update_pos();
+	//move based on key pressed
+	virtual void move(int button_pressed) = 0;
 };
