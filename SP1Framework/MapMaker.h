@@ -4,7 +4,7 @@
 #include <fstream>
 #include <string>
 
-
+/*hi*/
 using namespace std;
 
 class MapMaker
