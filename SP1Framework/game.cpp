@@ -31,6 +31,79 @@ Console g_Console(80, 25, "SP1 Framework");
 Bullet* Amount_ofbullet[256] = { nullptr,};
 
 player play(&g_sChar);
+void createbottommiddle(int g) {
+    COORD c;
+    int k = 2;
+    for (int i = g; i < g + 5; i++) {
+        if (i < g + 3) {
+            for (int j = 20 + k; j < 25; j++) {
+                c.X = i;
+                c.Y = j;
+                g_Console.writeToBuffer(c, " ", 0x5A);
+            }
+            if (k != 0) {
+                k--;
+            }
+        }
+        else {
+            k++;
+            for (int j = 20 + k; j < 25; j++) {
+                c.X = i;
+                c.Y = j;
+                g_Console.writeToBuffer(c, " ", 0x5A);
+            }
+        }
+    }
+}
+void createtopmiddle(int g) {
+    COORD c;
+    int k = 2;
+    for (int i = g; i <g+5 ; i++) {
+        if (i < g+3) {
+            for (int j = 0; j < 5 - k; j++) {
+                c.X = i;
+                c.Y = j;
+                g_Console.writeToBuffer(c, " ", 0x5A);
+            }
+            if (k != 0) {
+                k--;
+            }
+        }
+        else {
+            k++;
+            for (int j = 0; j < 5 - k; j++) {
+                c.X = i;
+                c.Y = j;
+                g_Console.writeToBuffer(c, " ", 0x5A);
+            }
+        }
+
+    }
+}
+void Ammunition(void) {
+    COORD C;
+    //border
+    for (int i = 0; i < 24; i++) {
+        C.X = i;
+        C.Y = 4;
+        g_Console.writeToBuffer(C, " ", 0x9A);
+    }
+    for (int i = 0; i < 2; i++) {
+        C.X = i;
+        C.Y = 3;
+        g_Console.writeToBuffer(C, " ", 0x9A);
+    }
+    for (int i = 22; i < 24; i++) {
+        C.X = i;
+        C.Y = 3;
+        g_Console.writeToBuffer(C, " ", 0x9A);
+    }
+    for (int i = 2; i < 22; i++) {
+        C.X = i;
+        C.Y = 3;
+        g_Console.writeToBuffer(C, " ", 0x5A);
+    }
+}
 void levelEvents(void) {
     if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) {
         if (g_mouseEvent.mousePosition.X >= 20 && g_mouseEvent.mousePosition.X <= 23 && g_mouseEvent.mousePosition.Y == 10) {
@@ -76,7 +149,7 @@ void levelselect(void) {
     for (int i = 0; i < 2; i++) {
         C.X = 40 + i;
         C.Y = 1;
-        g_Console.writeToBuffer(C, " ", 0x4a);
+        g_Console.writeToBuffer(C, " ", 0x3a);
     }
     for (int i = 0; i < 2; i++) {
         C.X = 70 + i;
@@ -86,7 +159,7 @@ void levelselect(void) {
     for (int i = 0; i < 2; i++) {
         C.X = 38 + i;
         C.Y = 18;
-        g_Console.writeToBuffer(C, " ", 0x4a);
+        g_Console.writeToBuffer(C, " ", 0x3a);
     }
     for (int i = 0; i < 2; i++) {
         C.X = 4 + i;
@@ -96,7 +169,7 @@ void levelselect(void) {
     for (int i = 0; i < 2; i++) {
         C.X = 17 + i;
         C.Y = 17;
-        g_Console.writeToBuffer(C, " ", 0x4a);
+        g_Console.writeToBuffer(C, " ", 0x3a);
     }
     for (int i = 0; i < 2; i++) {
         C.X = 76 + i;
@@ -106,24 +179,24 @@ void levelselect(void) {
     for (int i = 0; i < 2; i++) {
         C.X = 77 + i;
         C.Y = 5;
-        g_Console.writeToBuffer(C, " ", 0x4a);
+        g_Console.writeToBuffer(C, " ", 0x3a);
     }
     //Exit
     C.X = 20;
     C.Y = 10;
-    g_Console.writeToBuffer(C, "Exit", 0x3A);
+    g_Console.writeToBuffer(C, "Exit", 0x8B);
     //Level 1
     C.X += 5;
-    g_Console.writeToBuffer(C, "Level 1", 0x3A);
+    g_Console.writeToBuffer(C, "Level 1", 0x8B);
     //Level 2
     C.X += 8;
-    g_Console.writeToBuffer(C, "Level 2", 0x3A);
+    g_Console.writeToBuffer(C, "Level 2", 0x8B);
     //Level 3
     C.X += 8;
-    g_Console.writeToBuffer(C, "Level 3", 0x3A);
+    g_Console.writeToBuffer(C, "Level 3", 0x8B);
     //Level 4
     C.X += 8;
-    g_Console.writeToBuffer(C, "Level 4", 0x3A);
+    g_Console.writeToBuffer(C, "Level 4", 0x8B);
 }
 void pauseEvents(void) {
     if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) {
@@ -186,29 +259,29 @@ void pausemenu(void) {
         g_Console.writeToBuffer(C, " ", 0x5A);
     }
     //p
-    for (int i = 7; i < 11; i++) {
+    for (int i = 10; i < 14; i++) {
         for (int j = 5; j < 20; j++) {
             C.X = i;
             C.Y = j;
             g_Console.writeToBuffer(C, " ", 0x4A);
         }
     }
-    for (int i = 9; i < 25; i++) {
-        for (int j = 5; j < 6; j++) {
+    for (int i = 10; i < 25; i++) {
+        for (int j = 5; j < 7; j++) {
             C.X = i;
             C.Y = j;
             g_Console.writeToBuffer(C, " ", 0x4A);
         }
     }
-    for (int i = 9; i < 25; i++) {
-        for (int j = 9; j < 10; j++) {
+    for (int i = 10; i < 25; i++) {
+        for (int j = 9; j < 11; j++) {
             C.X = i;
             C.Y = j;
             g_Console.writeToBuffer(C, " ", 0x4A);
         }
     }
     for (int i = 23; i < 27; i++) {
-        for (int j = 5; j < 10; j++) {
+        for (int j = 5; j < 11; j++) {
             C.X = i;
             C.Y = j;
             g_Console.writeToBuffer(C, " ", 0x4A);
@@ -217,11 +290,11 @@ void pausemenu(void) {
     //Back to level select
     C.X = 50;
     C.Y = 7;
-    g_Console.writeToBuffer(C, "Back To Level Select", 0x6A);
+    g_Console.writeToBuffer(C, "Back To Level Select", 0x8B);
     //continue
     C.X = 56;
     C.Y += 8;
-    g_Console.writeToBuffer(C, "Continue", 0x6A);
+    g_Console.writeToBuffer(C, "Continue", 0x8B);
 
 }
 void healthbar(void) {
@@ -506,7 +579,7 @@ void update(double dt)
 
 void splashScreenWait()    // waits for time to pass in splash screen
 {
-    if (g_dElapsedTime > 3.0) // wait for 3 seconds to switch to game mode, else do nothing
+    if (g_dElapsedTime > 8.0) // wait for 8 seconds to switch to game mode, else do nothing
         g_eGameState = S_GAME;
 }
 
@@ -586,6 +659,8 @@ void render()
         }
         else {
             renderGame();
+            Ammunition();
+            healthbar();
             renderFramerate();      // renders debug information, frame rate, elapsed time, etc
             renderInputEvents();    // renders status of input events
         }
@@ -610,9 +685,75 @@ void renderToScreen()
 
 void renderSplashScreen()  // renders the splash screen
 {
-    COORD c = g_Console.getConsoleSize();
-    c.Y /= 3;
-    c.X = c.X / 2 - 9;
+    COORD c;
+    for (int i = 0; i < 80; i++) {
+        for (int j = 0; j < 25; j++) {
+            c.X = i;
+            c.Y = j;
+            g_Console.writeToBuffer(c, " ", 0x7A);
+        }
+    }
+    int k = 0;
+    //top left
+    for (int j = 0; j < 8; j++) {
+            for (int i = 0; i < 5; i++) {
+                if (i < 8 - j) {
+                    c.X = i;
+                    c.Y = j;
+                    g_Console.writeToBuffer(c, " ", 0x5A);
+                }    
+        }
+    }
+    //bottom left
+    for (int i = 0; i < 5; i++) {
+        for (int j = 17+i; j < 25; j++) {
+                c.X = i;
+                c.Y = j;
+                g_Console.writeToBuffer(c, " ", 0x5A);
+        }
+    }
+    //top right
+    for (int i = 75; i < 80; i++) {
+        for (int j = 0; j < 4+k; j++) {
+            c.X = i;
+            c.Y = j;
+            g_Console.writeToBuffer(c, " ", 0x5A);
+        }
+        k++;
+    }
+    //bottom right
+    k = 0;
+    for (int i = 75; i < 80; i++) {
+        for (int j = 21-k; j < 25; j++) {
+            c.X = i;
+            c.Y = j;
+            g_Console.writeToBuffer(c, " ", 0x5A);
+        }
+        k++;
+    }
+    //top middle
+    createtopmiddle(9);
+    createtopmiddle(16);
+    createtopmiddle(23);
+    createtopmiddle(30);
+    createtopmiddle(37);
+    createtopmiddle(44);
+    createtopmiddle(51);
+    createtopmiddle(58);
+    createtopmiddle(65);
+    //bottom middle
+    createbottommiddle(8);
+    createbottommiddle(16);
+    createbottommiddle(23);
+    createbottommiddle(30);
+    createbottommiddle(37);
+    createbottommiddle(44);
+    createbottommiddle(51);
+    createbottommiddle(58);
+    createbottommiddle(65);
+    c.X = 33;
+    c.Y = g_Console.getConsoleSize().Y / 2;
+    //loading bar
     g_Console.writeToBuffer(c, "Loading....", 0x03);
 }
 
