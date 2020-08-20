@@ -30,10 +30,10 @@ Console g_Console(100, 30, "SP1 Framework");
 // Input    : void
 // Output   : void
 //--------------------------------------------------------------
-void init( void )
+void init(void)
 {
     // Set precision for floating point output
-    g_dElapsedTime = 0.0;    
+    g_dElapsedTime = 0.0;
 
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
@@ -42,9 +42,17 @@ void init( void )
     //starting location
     g_sChar.m_cLocation.X = 1;
     g_sChar.m_cLocation.Y = 11;
+<<<<<<< Updated upstream
     
     map1.Load(".Txt/Map_Template.txt"); //Puts the Map Template.txt contents into map1's MapArray.
+=======
+
+    map1.Load(".Txt/Tutorial.txt"); //Puts the Map Template.txt contents into map1's MapArray.
+>>>>>>> Stashed changes
     hud.Load(".Txt/HUD Template.txt");
+
+
+
 
     g_sChar.m_bActive = true;
 

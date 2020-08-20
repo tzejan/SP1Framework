@@ -3,19 +3,23 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "Entity.h"
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 using namespace std;
 
 class MapMaker
 {
 private:
+	char MapArray[20][100];
+	
 	
 public:
-	char MapArray[20][100];
 	MapMaker();
 	~MapMaker();
-
 	//Takes the Txt file and puts it into the array
 	void Load(string filepath);
 
