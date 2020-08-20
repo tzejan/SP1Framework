@@ -43,8 +43,8 @@ void init( void )
     g_sChar.m_cLocation.X = 1;
     g_sChar.m_cLocation.Y = 11;
     
-    map1.Draw("Map_Template.txt"); //Puts the Map Template.txt contents into map1's MapArray.
-    hud.Draw("HUD_Template.txt");
+    map1.Load(".Txt/Map_Template.txt"); //Puts the Map Template.txt contents into map1's MapArray.
+    hud.Load(".Txt/HUD Template.txt");
 
     g_sChar.m_bActive = true;
 
@@ -374,39 +374,17 @@ void renderSplashScreen()  // renders the splash screen
 void renderGame()
 {
     renderMap(); 
-    renderTHEMAP();// renders the map to the buffer first
+    map1.Render(0, 0, 100, 20, g_Console);// renders the map to the buffer first
     
     renderCharacter();  // renders the character into the buffer
-    renderHUD();
+    hud.Render(0,20,100,30,g_Console);
 }
 
 
 //Renders the Map onto the entire screen
 //We need to change this part so that it only renders things on the map thats within the fog of war only
 //need to make a function to find where the fog of war is based on the player coords
-void renderTHEMAP() {
-    COORD c;
-    
-    for (int x = 0; x < g_Console.getConsoleSize().X; x++) {
-        c.X = x;
-        for (int y = 0; y < g_Console.getConsoleSize().Y - 10; y++) {
-            c.Y = y;
-            g_Console.writeToBuffer(c, map1.MapArray[y][x]);
-        }
-    }
-    
-}
 
-void renderHUD() {
-    COORD c;
-    for (int x = 0; x < g_Console.getConsoleSize().X; x++) {
-        c.X = x;
-        for (int y = 20; y < g_Console.getConsoleSize().Y; y++) {
-            c.Y = y;
-            g_Console.writeToBuffer(c, hud.MapArray[y - 20][x]);
-        }
-    }
-}
 
 void renderMap()
 {

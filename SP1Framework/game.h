@@ -81,8 +81,6 @@ void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent); // handles mous
 
 
 //our functions
-void renderTHEMAP();
-void renderHUD();
 
 
 
