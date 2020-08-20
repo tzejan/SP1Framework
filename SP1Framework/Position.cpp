@@ -1,38 +1,21 @@
 #include "Position.h"
 
-position::position(): x(-99), y(-99)
+int Position::GetX()
 {
+	return x;
 }
 
-position::position(int x, int y): x(x), y(y)
-{  
+int  Position::GetY()
+{
+	return y;
 }
 
-position::~position()
+void  Position::SetX(int Xnum)
 {
-	//left blank intentionally
+	x = Xnum;
 }
 
-int position::GetXY(char xy)
+void  Position::SetY(int Ynum)
 {
-	if (xy == 'x')
-	{
-		return x;
-	}
-	else if (xy =='y')
-	{
-		return y;
-	}
-}
-
-void position::SetXY(char xy, int value)
-{
-	if (xy == 'x')
-	{
-		x = value;
-	}
-	else if (xy == 'y')
-	{
-		y = value;
-	}
+	y = Ynum;
 }

@@ -9,3 +9,8 @@ int firehydrant::GetTotalHydrant()
 {
 	return total_no_of_hydrant;
 }
+
+void firehydrant::RandomHydrantSpawn()
+{
+
+}
