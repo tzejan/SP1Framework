@@ -32,11 +32,12 @@ public:
 	char get_display();
 	void set_display(char _display);
 
-
 	//check if collision with COORD.
 	//does collision code.
 	virtual bool collide(COORD entity_pos) = 0;
+	virtual bool collide(int entity_xpos, int entity_ypos) = 0;
 
-	//move based on key pressed
+	//Move based on enum EKEYS button pressed
 	virtual void move(int button_pressed) = 0;
+
 };

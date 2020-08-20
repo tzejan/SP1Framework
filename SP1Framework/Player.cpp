@@ -47,3 +47,12 @@ bool Player::collide(COORD entity_pos)
 {
     return false;
 }
+
+bool Player::collide(int entity_xpos, int entity_ypos)
+{
+    COORD entity;
+    entity.X = entity_xpos;
+    entity.Y = entity_ypos;
+
+    return collide(entity);
+}
