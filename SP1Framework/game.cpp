@@ -10,6 +10,9 @@
 #include <iomanip>
 #include <sstream>
 #include <cmath>
+#include <stdio.h>
+#include <irrKlang.h>
+#include <conio.h>
 
 double  g_dElapsedTime;
 double  g_dDeltaTime;
@@ -544,6 +547,5 @@ void renderInputEvents()
     }
     
 }
-
 
 
