@@ -5,13 +5,15 @@
 #include "Framework\console.h"
 #include "map.h"
 #include "maze_01.h"
+#include "maze_05.h"
 #include "playerVL.h"
 #include <iostream>
 #include <iomanip>
 #include <sstream>
 
-map* currentMap;
-maze_01 maze_1;
+int cMap = 0;
+
+map* currentMap[5];
 
 double  g_dElapsedTime;
 double  g_dDeltaTime;
@@ -36,15 +38,16 @@ Console g_Console(80, 25, "SP1 Framework");
 
 void init( void )
 {
-    currentMap = new maze_01;
+    currentMap[0] = new maze_01;
+    currentMap[1] = new maze_05;
     // Set precision for floating point output
     g_dElapsedTime = 0.0;    
 
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
 
-    g_sChar.m_cLocation.X = 16;
-    g_sChar.m_cLocation.Y = 1;
+    g_sChar.m_cLocation.X = 15 + 1;
+    g_sChar.m_cLocation.Y = 23;
     g_sChar.m_bActive = true;
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
@@ -266,6 +269,7 @@ void moveCharacter()
     if (g_skKeyEvent[K_SPACE].keyDown)
     {
         g_sChar.m_bActive = !g_sChar.m_bActive;
+        changeMap(2);
     }
 }
 void processUserInput()
@@ -360,7 +364,7 @@ void renderMap()
             c.Y = j;
             if (c.X <= g_sChar.m_cLocation.X + 6 && c.X >= g_sChar.m_cLocation.X - 6) {
                 if (c.Y <= g_sChar.m_cLocation.Y + 3 && c.Y >= g_sChar.m_cLocation.Y - 3) {
-                    if (maze_1.getMapVar(i, j) != '#') {
+                    if (currentMap[cMap]->getMapVar(i, j) != '#') {
                         g_Console.writeToBuffer(c, " ", colors[12]);
                     }
                     else
@@ -411,12 +415,25 @@ void renderInputEvents()
 
 int checkCollision(int x, int y) {
     int collideType = 0;
-    if (currentMap->getMapVar(x, y) == '#') {
+    if (currentMap[cMap]->getMapVar(x, y) == '#') {
         collideType = 1;
     }
-    else if (currentMap->getMapVar(x, y) == 'C') {
+    else if (currentMap[cMap]->getMapVar(x, y) == 'C') {
         collideType = 2;
     }
     return collideType;
 }
 
+void changeMap(int m) {
+    switch (m) {
+    case 1 :
+        cMap = 0;
+        g_sChar.m_cLocation.X = 15 + 1;
+        g_sChar.m_cLocation.Y = 24;
+        break;
+    case 2 :
+        cMap = 1;
+        g_sChar.m_cLocation.X = 15 + 1;
+        g_sChar.m_cLocation.Y = 1;
+    }
+}

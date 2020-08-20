@@ -51,7 +51,7 @@ struct SGameChar
 };
 
 int checkCollision(int x, int y);
-
+void changeMap(int m);
 
 void init        ( void );      // initialize your variables, allocate memory, etc
 void getInput    ( void );      // get input from player

@@ -84,6 +84,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="maze_01.cpp" />
+    <ClCompile Include="maze_05.cpp" />
     <ClCompile Include="playerVL.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -92,6 +93,7 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="maze_01.h" />
+    <ClInclude Include="maze_05.h" />
     <ClInclude Include="playerVL.h" />
     <ClInclude Include="Position.h" />
     <ClInclude Include="resource.h" />
