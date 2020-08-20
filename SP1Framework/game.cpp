@@ -12,12 +12,14 @@
 #include <Windows.h>
 #include "mmsystem.h"
 #include "Bullet.h"
+#include <stdlib.h>
 using namespace std;
-
 double  g_dElapsedTime;
 double  g_dDeltaTime;
 bool checktime = false;
+bool randomtext = false;
 int k = 0;
+int randomNO=0;
 char MapArray[80][25];
 
 bool soundcheck = false;
@@ -117,6 +119,7 @@ void levelEvents(void) {
             level1 = false;
             checktime = true;
             soundcheck = true;
+            randomtext = true;
             k = g_dElapsedTime;
             g_eGameState = S_SPLASHSCREEN;
         }
@@ -208,11 +211,11 @@ void levelselect(void) {
 }
 void pauseEvents(void) {
     if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) {
-        if (g_mouseEvent.mousePosition.X >= 50 && g_mouseEvent.mousePosition.X <= 70 && g_mouseEvent.mousePosition.Y == 7) {
+        if (g_mouseEvent.mousePosition.X >= 49 && g_mouseEvent.mousePosition.X <= 69 && g_mouseEvent.mousePosition.Y == 7) {
             level1 = true;
             paused = false;
         }
-        else if (g_mouseEvent.mousePosition.X >= 56 && g_mouseEvent.mousePosition.X <= 63 && g_mouseEvent.mousePosition.Y == 15) {
+        else if (g_mouseEvent.mousePosition.X >= 55 && g_mouseEvent.mousePosition.X <= 62 && g_mouseEvent.mousePosition.Y == 15) {
             paused = false;
             soundcheck = true;
         }
@@ -229,11 +232,11 @@ void pausemenu(void) {
         }
     }
     //half
-    for (int i = 0; i < 40; i++) {
+    for (int i = 0; i < 41; i++) {
         for (int j = 0; j < 25; j++) {
             C.X = i;
             C.Y = j;
-            g_Console.writeToBuffer(C, " ", 0xBB);
+            g_Console.writeToBuffer(C, " ", 0x3A);
         }
     }
     //border
@@ -267,43 +270,68 @@ void pausemenu(void) {
         C.Y = i;
         g_Console.writeToBuffer(C, " ", 0x5A);
     }
+    for (int i = 0; i < 25; i++) {
+        C.X = 40;
+        C.Y = i;
+        g_Console.writeToBuffer(C, " ", 0x5A);
+    }
     //p
-    for (int i = 10; i < 14; i++) {
+    for (int i = 12; i < 16; i++) {
         for (int j = 5; j < 20; j++) {
             C.X = i;
             C.Y = j;
             g_Console.writeToBuffer(C, " ", 0x4A);
         }
     }
-    for (int i = 10; i < 25; i++) {
+    for (int i = 12; i < 27; i++) {
         for (int j = 5; j < 7; j++) {
             C.X = i;
             C.Y = j;
             g_Console.writeToBuffer(C, " ", 0x4A);
         }
     }
-    for (int i = 10; i < 25; i++) {
+    for (int i = 12; i < 27; i++) {
         for (int j = 9; j < 11; j++) {
             C.X = i;
             C.Y = j;
             g_Console.writeToBuffer(C, " ", 0x4A);
         }
     }
-    for (int i = 23; i < 27; i++) {
+    for (int i = 25; i < 29; i++) {
         for (int j = 5; j < 11; j++) {
             C.X = i;
             C.Y = j;
             g_Console.writeToBuffer(C, " ", 0x4A);
         }
     }
+    //button border
+    for (int i = 47; i < 71; i++) {
+        for (int j = 6; j < 9; j++) {
+            C.X = i;
+            C.Y = j;
+            g_Console.writeToBuffer(C, " ");
+        }
+    }
+    for (int i = 53; i < 65; i++) {
+        for (int j = 14; j < 17; j++) {
+            C.X = i;
+            C.Y = j;
+            g_Console.writeToBuffer(C, " ");
+        }
+    }
     //Back to level select
-    C.X = 50;
+    C.X = 49;
     C.Y = 7;
     g_Console.writeToBuffer(C, "Back To Level Select", 0x8B);
     //continue
-    C.X = 56;
+    C.X = 55;
     C.Y += 8;
     g_Console.writeToBuffer(C, "Continue", 0x8B);
+    //top middle
+    createtopmiddle(38);
+    //bottom middle
+    createbottommiddle(38);
+    
 
 }
 void healthbar(void) {
@@ -669,7 +697,8 @@ void render()
     clearScreen();      // clears the current screen and draw from scratch 
     switch (g_eGameState)
     {
-    case S_SPLASHSCREEN: renderSplashScreen();
+    case S_SPLASHSCREEN: 
+        renderSplashScreen();
         break;
     case S_GAME:
         if (paused == true) {
@@ -711,51 +740,106 @@ void renderToScreen()
 
 void renderSplashScreen()  // renders the splash screen
 {
-    COORD c;
-    for (int i = 0; i < 80; i++) {
-        for (int j = 0; j < 25; j++) {
-            c.X = i;
-            c.Y = j;
-            g_Console.writeToBuffer(c, " ", 0x7A);
-        }
+    srand(time(NULL));
+    if (randomtext == true) {
+        randomNO = rand() % 4;
+        randomtext = false;
     }
-    int k = 0;
-    //top left
-    for (int j = 0; j < 8; j++) {
+    COORD c;
+    if (level1 != false) {
+        //turns entire screen gray
+        for (int i = 0; i < 80; i++) {
+            for (int j = 0; j < 25; j++) {
+                c.X = i;
+                c.Y = j;
+                g_Console.writeToBuffer(c, " ", 0x7A);
+            }
+        }
+        int k = 0;
+        //top left
+        for (int j = 0; j < 8; j++) {
             for (int i = 0; i < 5; i++) {
                 if (i < 8 - j) {
                     c.X = i;
                     c.Y = j;
                     g_Console.writeToBuffer(c, " ", 0x5A);
-                }    
+                }
+            }
         }
-    }
-    //bottom left
-    for (int i = 0; i < 5; i++) {
-        for (int j = 17+i; j < 25; j++) {
+        //bottom left
+        for (int i = 0; i < 5; i++) {
+            for (int j = 17 + i; j < 25; j++) {
                 c.X = i;
                 c.Y = j;
                 g_Console.writeToBuffer(c, " ", 0x5A);
+            }
+        }
+        //top right
+        for (int i = 75; i < 80; i++) {
+            for (int j = 0; j < 4 + k; j++) {
+                c.X = i;
+                c.Y = j;
+                g_Console.writeToBuffer(c, " ", 0x5A);
+            }
+            k++;
+        }
+        //bottom right
+        k = 0;
+        for (int i = 75; i < 80; i++) {
+            for (int j = 21 - k; j < 25; j++) {
+                c.X = i;
+                c.Y = j;
+                g_Console.writeToBuffer(c, " ", 0x5A);
+            }
+            k++;
         }
     }
-    //top right
-    for (int i = 75; i < 80; i++) {
-        for (int j = 0; j < 4+k; j++) {
-            c.X = i;
-            c.Y = j;
-            g_Console.writeToBuffer(c, " ", 0x5A);
+    else {
+        for (int i = 0; i < 80; i++) {
+            for (int j = 0; j < 25; j++) {
+                c.X = i;
+                c.Y = j;
+                g_Console.writeToBuffer(c, " ", 0xAA);
+            }
         }
-        k++;
-    }
-    //bottom right
-    k = 0;
-    for (int i = 75; i < 80; i++) {
-        for (int j = 21-k; j < 25; j++) {
-            c.X = i;
-            c.Y = j;
-            g_Console.writeToBuffer(c, " ", 0x5A);
+        int k = 0;
+        //top left
+        for (int j = 0; j < 8; j++) {
+            for (int i = 0; i < 5; i++) {
+                if (i < 8 - j) {
+                    c.X = i;
+                    c.Y = j;
+                    g_Console.writeToBuffer(c, " ", 0x4A);
+                }
+            }
         }
-        k++;
+        //bottom left
+        for (int i = 0; i < 5; i++) {
+            for (int j = 17 + i; j < 25; j++) {
+                c.X = i;
+                c.Y = j;
+                g_Console.writeToBuffer(c, " ", 0x4A);
+            }
+        }
+        //top right
+        for (int i = 75; i < 80; i++) {
+            for (int j = 0; j < 4 + k; j++) {
+                c.X = i;
+                c.Y = j;
+                g_Console.writeToBuffer(c, " ", 0x4A);
+            }
+            k++;
+        }
+        //bottom right
+        k = 0;
+        for (int i = 75; i < 80; i++) {
+            for (int j = 21 - k; j < 25; j++) {
+                c.X = i;
+                c.Y = j;
+                g_Console.writeToBuffer(c, " ", 0x4A);
+            }
+            k++;
+        }
     }
     //top middle
     createtopmiddle(9);
@@ -781,6 +865,29 @@ void renderSplashScreen()  // renders the splash screen
     c.Y = g_Console.getConsoleSize().Y / 2;
     //loading bar
     g_Console.writeToBuffer(c, "Loading....", 0x03);
+    //random text at bottom
+    if (level1 == false) {
+        if (randomNO ==0) {
+            c.X = 27;
+            c.Y++;
+            g_Console.writeToBuffer(c, "Imma firin my....water");
+        }
+        else if (randomNO == 1) {
+            c.X = 21;
+            c.Y++;
+            g_Console.writeToBuffer(c, "Spacebar to shoot,arrow keys to move");
+        }
+        else if (randomNO == 2) {
+            c.X = 8;
+            c.Y++;
+            g_Console.writeToBuffer(c, "Did you know?Phlogistion is created by four braindead Students? ");
+        }
+        else if (randomNO == 3) {
+            c.X = 31;
+            c.Y++;
+            g_Console.writeToBuffer(c, "Welcome to hell!");
+        }
+    }
 }
 
 void renderGame()
