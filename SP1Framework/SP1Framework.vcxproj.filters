@@ -42,6 +42,9 @@
     <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\console.h">
@@ -62,5 +65,31 @@
     <ClInclude Include="Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\include\SDL_mixer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\libvorbis-0.dll" />
+    <None Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\libvorbisfile-3.dll" />
+    <None Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\SDL2_mixer.dll" />
+    <None Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\libFLAC-8.dll" />
+    <None Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\libmodplug-1.dll" />
+    <None Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\libmpg123-0.dll" />
+    <None Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\libogg-0.dll" />
+    <None Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\libopus-0.dll" />
+    <None Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\libopusfile-0.dll" />
+    <None Include="..\..\..\..\Desktop\sound\SDL2-devel-2.0.12-VC\SDL2-2.0.12\lib\x64\SDL2.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\LICENSE.FLAC.txt" />
+    <Text Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\LICENSE.modplug.txt" />
+    <Text Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\LICENSE.mpg123.txt" />
+    <Text Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\LICENSE.ogg-vorbis.txt" />
+    <Text Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\LICENSE.opus.txt" />
+    <Text Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\LICENSE.opusfile.txt" />
   </ItemGroup>
 </Project>
