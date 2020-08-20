@@ -48,6 +48,13 @@
     <ClCompile Include="Position.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
+    <ClCompile Include="LevelMap.cpp">
+=======
+    <ClCompile Include="firehydrant.cpp">
+>>>>>>> ae03b55b9d16f26d055e0e7058637abf79f5381e
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\console.h">
@@ -74,5 +81,19 @@
     <ClInclude Include="Position.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
+    <ClInclude Include="LevelMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Level1.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+=======
+    <ClInclude Include="firehydrant.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+>>>>>>> ae03b55b9d16f26d055e0e7058637abf79f5381e
   </ItemGroup>
 </Project>

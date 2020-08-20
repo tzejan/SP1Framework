@@ -7,16 +7,26 @@
 #include <iomanip>
 #include <sstream>
 #include<stdio.h> 
-#include "Map.h"
 #include "player.h"
+<<<<<<< HEAD
+#include "LevelMap.h"
 using namespace std;
+=======
+#include <Windows.h>
+#include "mmsystem.h"
+>>>>>>> ae03b55b9d16f26d055e0e7058637abf79f5381e
 #include "Bullet.h"
+#include <stdlib.h>
+using namespace std;
 double  g_dElapsedTime;
 double  g_dDeltaTime;
-
+bool checktime = false;
+bool randomtext = false;
+int k = 0;
+int randomNO=0;
 char MapArray[80][25];
 
-
+bool soundcheck = false;
 bool paused = false;
 bool level1 = true;
 SKeyEvent g_skKeyEvent[K_COUNT];
@@ -31,6 +41,79 @@ Console g_Console(80, 25, "SP1 Framework");
 Bullet* Amount_ofbullet[256] = { nullptr,};
 
 player play(&g_sChar);
+void createbottommiddle(int g) {
+    COORD c;
+    int k = 2;
+    for (int i = g; i < g + 5; i++) {
+        if (i < g + 3) {
+            for (int j = 20 + k; j < 25; j++) {
+                c.X = i;
+                c.Y = j;
+                g_Console.writeToBuffer(c, " ", 0x5A);
+            }
+            if (k != 0) {
+                k--;
+            }
+        }
+        else {
+            k++;
+            for (int j = 20 + k; j < 25; j++) {
+                c.X = i;
+                c.Y = j;
+                g_Console.writeToBuffer(c, " ", 0x5A);
+            }
+        }
+    }
+}
+void createtopmiddle(int g) {
+    COORD c;
+    int k = 2;
+    for (int i = g; i <g+5 ; i++) {
+        if (i < g+3) {
+            for (int j = 0; j < 5 - k; j++) {
+                c.X = i;
+                c.Y = j;
+                g_Console.writeToBuffer(c, " ", 0x5A);
+            }
+            if (k != 0) {
+                k--;
+            }
+        }
+        else {
+            k++;
+            for (int j = 0; j < 5 - k; j++) {
+                c.X = i;
+                c.Y = j;
+                g_Console.writeToBuffer(c, " ", 0x5A);
+            }
+        }
+
+    }
+}
+void Ammunition(void) {
+    COORD C;
+    //border
+    for (int i = 0; i < 24; i++) {
+        C.X = i;
+        C.Y = 4;
+        g_Console.writeToBuffer(C, " ", 0x9A);
+    }
+    for (int i = 0; i < 2; i++) {
+        C.X = i;
+        C.Y = 3;
+        g_Console.writeToBuffer(C, " ", 0x9A);
+    }
+    for (int i = 22; i < 24; i++) {
+        C.X = i;
+        C.Y = 3;
+        g_Console.writeToBuffer(C, " ", 0x9A);
+    }
+    for (int i = 2; i < 22; i++) {
+        C.X = i;
+        C.Y = 3;
+        g_Console.writeToBuffer(C, " ", 0x5A);
+    }
+}
 void levelEvents(void) {
     if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) {
         if (g_mouseEvent.mousePosition.X >= 20 && g_mouseEvent.mousePosition.X <= 23 && g_mouseEvent.mousePosition.Y == 10) {
@@ -38,6 +121,11 @@ void levelEvents(void) {
         }
         else if (g_mouseEvent.mousePosition.X >= 25 && g_mouseEvent.mousePosition.X <= 31 && g_mouseEvent.mousePosition.Y == 10) {
             level1 = false;
+            checktime = true;
+            soundcheck = true;
+            randomtext = true;
+            k = g_dElapsedTime;
+            g_eGameState = S_SPLASHSCREEN;
         }
     }
 }
@@ -76,7 +164,7 @@ void levelselect(void) {
     for (int i = 0; i < 2; i++) {
         C.X = 40 + i;
         C.Y = 1;
-        g_Console.writeToBuffer(C, " ", 0x4a);
+        g_Console.writeToBuffer(C, " ", 0x3a);
     }
     for (int i = 0; i < 2; i++) {
         C.X = 70 + i;
@@ -86,7 +174,7 @@ void levelselect(void) {
     for (int i = 0; i < 2; i++) {
         C.X = 38 + i;
         C.Y = 18;
-        g_Console.writeToBuffer(C, " ", 0x4a);
+        g_Console.writeToBuffer(C, " ", 0x3a);
     }
     for (int i = 0; i < 2; i++) {
         C.X = 4 + i;
@@ -96,7 +184,7 @@ void levelselect(void) {
     for (int i = 0; i < 2; i++) {
         C.X = 17 + i;
         C.Y = 17;
-        g_Console.writeToBuffer(C, " ", 0x4a);
+        g_Console.writeToBuffer(C, " ", 0x3a);
     }
     for (int i = 0; i < 2; i++) {
         C.X = 76 + i;
@@ -106,33 +194,34 @@ void levelselect(void) {
     for (int i = 0; i < 2; i++) {
         C.X = 77 + i;
         C.Y = 5;
-        g_Console.writeToBuffer(C, " ", 0x4a);
+        g_Console.writeToBuffer(C, " ", 0x3a);
     }
     //Exit
     C.X = 20;
     C.Y = 10;
-    g_Console.writeToBuffer(C, "Exit", 0x3A);
+    g_Console.writeToBuffer(C, "Exit", 0x8B);
     //Level 1
     C.X += 5;
-    g_Console.writeToBuffer(C, "Level 1", 0x3A);
+    g_Console.writeToBuffer(C, "Level 1", 0x8B);
     //Level 2
     C.X += 8;
-    g_Console.writeToBuffer(C, "Level 2", 0x3A);
+    g_Console.writeToBuffer(C, "Level 2", 0x8B);
     //Level 3
     C.X += 8;
-    g_Console.writeToBuffer(C, "Level 3", 0x3A);
+    g_Console.writeToBuffer(C, "Level 3", 0x8B);
     //Level 4
     C.X += 8;
-    g_Console.writeToBuffer(C, "Level 4", 0x3A);
+    g_Console.writeToBuffer(C, "Level 4", 0x8B);
 }
 void pauseEvents(void) {
     if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) {
-        if (g_mouseEvent.mousePosition.X >= 50 && g_mouseEvent.mousePosition.X <= 70 && g_mouseEvent.mousePosition.Y == 7) {
+        if (g_mouseEvent.mousePosition.X >= 49 && g_mouseEvent.mousePosition.X <= 69 && g_mouseEvent.mousePosition.Y == 7) {
             level1 = true;
             paused = false;
         }
-        else if (g_mouseEvent.mousePosition.X >= 56 && g_mouseEvent.mousePosition.X <= 63 && g_mouseEvent.mousePosition.Y == 15) {
+        else if (g_mouseEvent.mousePosition.X >= 55 && g_mouseEvent.mousePosition.X <= 62 && g_mouseEvent.mousePosition.Y == 15) {
             paused = false;
+            soundcheck = true;
         }
     }
 }
@@ -147,11 +236,11 @@ void pausemenu(void) {
         }
     }
     //half
-    for (int i = 0; i < 40; i++) {
+    for (int i = 0; i < 41; i++) {
         for (int j = 0; j < 25; j++) {
             C.X = i;
             C.Y = j;
-            g_Console.writeToBuffer(C, " ", 0xBB);
+            g_Console.writeToBuffer(C, " ", 0x3A);
         }
     }
     //border
@@ -185,43 +274,68 @@ void pausemenu(void) {
         C.Y = i;
         g_Console.writeToBuffer(C, " ", 0x5A);
     }
+    for (int i = 0; i < 25; i++) {
+        C.X = 40;
+        C.Y = i;
+        g_Console.writeToBuffer(C, " ", 0x5A);
+    }
     //p
-    for (int i = 7; i < 11; i++) {
+    for (int i = 12; i < 16; i++) {
         for (int j = 5; j < 20; j++) {
             C.X = i;
             C.Y = j;
             g_Console.writeToBuffer(C, " ", 0x4A);
         }
     }
-    for (int i = 9; i < 25; i++) {
-        for (int j = 5; j < 6; j++) {
+    for (int i = 12; i < 27; i++) {
+        for (int j = 5; j < 7; j++) {
             C.X = i;
             C.Y = j;
             g_Console.writeToBuffer(C, " ", 0x4A);
         }
     }
-    for (int i = 9; i < 25; i++) {
-        for (int j = 9; j < 10; j++) {
+    for (int i = 12; i < 27; i++) {
+        for (int j = 9; j < 11; j++) {
             C.X = i;
             C.Y = j;
             g_Console.writeToBuffer(C, " ", 0x4A);
         }
     }
-    for (int i = 23; i < 27; i++) {
-        for (int j = 5; j < 10; j++) {
+    for (int i = 25; i < 29; i++) {
+        for (int j = 5; j < 11; j++) {
             C.X = i;
             C.Y = j;
             g_Console.writeToBuffer(C, " ", 0x4A);
+        }
+    }
+    //button border
+    for (int i = 47; i < 71; i++) {
+        for (int j = 6; j < 9; j++) {
+            C.X = i;
+            C.Y = j;
+            g_Console.writeToBuffer(C, " ");
+        }
+    }
+    for (int i = 53; i < 65; i++) {
+        for (int j = 14; j < 17; j++) {
+            C.X = i;
+            C.Y = j;
+            g_Console.writeToBuffer(C, " ");
         }
     }
     //Back to level select
-    C.X = 50;
+    C.X = 49;
     C.Y = 7;
-    g_Console.writeToBuffer(C, "Back To Level Select", 0x6A);
+    g_Console.writeToBuffer(C, "Back To Level Select", 0x8B);
     //continue
-    C.X = 56;
+    C.X = 55;
     C.Y += 8;
-    g_Console.writeToBuffer(C, "Continue", 0x6A);
+    g_Console.writeToBuffer(C, "Continue", 0x8B);
+    //top middle
+    createtopmiddle(38);
+    //bottom middle
+    createbottommiddle(38);
+    
 
 }
 void healthbar(void) {
@@ -473,7 +587,13 @@ void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
     g_mouseEvent.buttonState = mouseEvent.dwButtonState;
     g_mouseEvent.eventFlags = mouseEvent.dwEventFlags;
 }
+void splashScreenWait2(int g) {
+    if (g_dElapsedTime > 5.0 + g) {
+        g_eGameState = S_GAME;
+        checktime = false;
+    }
 
+}
 //--------------------------------------------------------------
 // Purpose  : Update function
 //            This is the update function
@@ -491,22 +611,28 @@ void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
 void update(double dt)
 {
     // get the delta time
+   
     g_dElapsedTime += dt;
     g_dDeltaTime = dt;
 
     switch (g_eGameState)
     {
-        case S_SPLASHSCREEN : splashScreenWait(); // game logic for the splash screen
+        case S_SPLASHSCREEN :
+            if (checktime == true) {
+                splashScreenWait2(k);
+            }
+            else {
+                splashScreenWait(); // game logic for the splash screen
+            }
             break;
         case S_GAME: updateGame(); // gameplay logic when we are in the game
             break;
     }
 }
 
-
 void splashScreenWait()    // waits for time to pass in splash screen
 {
-    if (g_dElapsedTime > 3.0) // wait for 3 seconds to switch to game mode, else do nothing
+    if (g_dElapsedTime > 5.0) // wait for 8 seconds to switch to game mode, else do nothing
         g_eGameState = S_GAME;
 }
 
@@ -556,8 +682,10 @@ void moveCharacter()
 void processUserInput()
 {
     // quits the game if player hits the escape key
-    if (g_skKeyEvent[K_ESCAPE].keyReleased)
+    if (g_skKeyEvent[K_ESCAPE].keyReleased) {
         paused = true;
+        PlaySound(NULL, 0, 0);
+    }
 }
 
 //--------------------------------------------------------------
@@ -573,7 +701,8 @@ void render()
     clearScreen();      // clears the current screen and draw from scratch 
     switch (g_eGameState)
     {
-    case S_SPLASHSCREEN: renderSplashScreen();
+    case S_SPLASHSCREEN: 
+        renderSplashScreen();
         break;
     case S_GAME:
         if (paused == true) {
@@ -585,14 +714,19 @@ void render()
             levelEvents();
         }
         else {
+            if (soundcheck == true) {
+                PlaySound(TEXT("414214__sirkoto51__anime-fight-music-loop-1.wav"), NULL, SND_ASYNC|SND_LOOP);
+                soundcheck = false;
+            }
             renderGame();
+            Ammunition();
+            healthbar();
             renderFramerate();      // renders debug information, frame rate, elapsed time, etc
             renderInputEvents();    // renders status of input events
         }
-
         break;
     }
-
+    
     renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
 }
 
@@ -610,10 +744,154 @@ void renderToScreen()
 
 void renderSplashScreen()  // renders the splash screen
 {
-    COORD c = g_Console.getConsoleSize();
-    c.Y /= 3;
-    c.X = c.X / 2 - 9;
+    srand(time(NULL));
+    if (randomtext == true) {
+        randomNO = rand() % 4;
+        randomtext = false;
+    }
+    COORD c;
+    if (level1 != false) {
+        //turns entire screen gray
+        for (int i = 0; i < 80; i++) {
+            for (int j = 0; j < 25; j++) {
+                c.X = i;
+                c.Y = j;
+                g_Console.writeToBuffer(c, " ", 0x7A);
+            }
+        }
+        int k = 0;
+        //top left
+        for (int j = 0; j < 8; j++) {
+            for (int i = 0; i < 5; i++) {
+                if (i < 8 - j) {
+                    c.X = i;
+                    c.Y = j;
+                    g_Console.writeToBuffer(c, " ", 0x5A);
+                }
+            }
+        }
+        //bottom left
+        for (int i = 0; i < 5; i++) {
+            for (int j = 17 + i; j < 25; j++) {
+                c.X = i;
+                c.Y = j;
+                g_Console.writeToBuffer(c, " ", 0x5A);
+            }
+        }
+        //top right
+        for (int i = 75; i < 80; i++) {
+            for (int j = 0; j < 4 + k; j++) {
+                c.X = i;
+                c.Y = j;
+                g_Console.writeToBuffer(c, " ", 0x5A);
+            }
+            k++;
+        }
+        //bottom right
+        k = 0;
+        for (int i = 75; i < 80; i++) {
+            for (int j = 21 - k; j < 25; j++) {
+                c.X = i;
+                c.Y = j;
+                g_Console.writeToBuffer(c, " ", 0x5A);
+            }
+            k++;
+        }
+    }
+    else {
+        for (int i = 0; i < 80; i++) {
+            for (int j = 0; j < 25; j++) {
+                c.X = i;
+                c.Y = j;
+                g_Console.writeToBuffer(c, " ", 0xAA);
+            }
+        }
+        int k = 0;
+        //top left
+        for (int j = 0; j < 8; j++) {
+            for (int i = 0; i < 5; i++) {
+                if (i < 8 - j) {
+                    c.X = i;
+                    c.Y = j;
+                    g_Console.writeToBuffer(c, " ", 0x4A);
+                }
+            }
+        }
+        //bottom left
+        for (int i = 0; i < 5; i++) {
+            for (int j = 17 + i; j < 25; j++) {
+                c.X = i;
+                c.Y = j;
+                g_Console.writeToBuffer(c, " ", 0x4A);
+            }
+        }
+        //top right
+        for (int i = 75; i < 80; i++) {
+            for (int j = 0; j < 4 + k; j++) {
+                c.X = i;
+                c.Y = j;
+                g_Console.writeToBuffer(c, " ", 0x4A);
+            }
+            k++;
+        }
+        //bottom right
+        k = 0;
+        for (int i = 75; i < 80; i++) {
+            for (int j = 21 - k; j < 25; j++) {
+                c.X = i;
+                c.Y = j;
+                g_Console.writeToBuffer(c, " ", 0x4A);
+            }
+            k++;
+        }
+    }
+    //top middle
+    createtopmiddle(9);
+    createtopmiddle(16);
+    createtopmiddle(23);
+    createtopmiddle(30);
+    createtopmiddle(37);
+    createtopmiddle(44);
+    createtopmiddle(51);
+    createtopmiddle(58);
+    createtopmiddle(65);
+    //bottom middle
+    createbottommiddle(8);
+    createbottommiddle(16);
+    createbottommiddle(23);
+    createbottommiddle(30);
+    createbottommiddle(37);
+    createbottommiddle(44);
+    createbottommiddle(51);
+    createbottommiddle(58);
+    createbottommiddle(65);
+    c.X = 33;
+    c.Y = g_Console.getConsoleSize().Y / 2;
+    //loading bar
     g_Console.writeToBuffer(c, "Loading....", 0x03);
+    //random text at bottom
+    if (level1 == false) {
+        if (randomNO ==0) {
+            c.X = 27;
+            c.Y++;
+            g_Console.writeToBuffer(c, "Imma firin my....water");
+        }
+        else if (randomNO == 1) {
+            c.X = 21;
+            c.Y++;
+            g_Console.writeToBuffer(c, "Spacebar to shoot,arrow keys to move");
+        }
+        else if (randomNO == 2) {
+            c.X = 8;
+            c.Y++;
+            g_Console.writeToBuffer(c, "Did you know?Phlogistion is created by four braindead Students? ");
+        }
+        else if (randomNO == 3) {
+            c.X = 31;
+            c.Y++;
+            g_Console.writeToBuffer(c, "Welcome to hell!");
+        }
+    }
 }
 
 void renderGame()
@@ -644,65 +922,67 @@ void renderMap()
     // 0x3D Light Blue
     // 0xFF White
     COORD c;
-    
-    
+    LevelMap Level1;
     // Checking for Symbol
-    for (int i = 0; i < 80; i++)
-    {
-        for (int j = 0; j < 25; j++)
+    
+       
+        for (int i = 0; i < 80; i++)
         {
-            // Black -> '*' -> Walls
-            if (MapArray[i][j] == '*')
+            for (int j = 0; j < 25; j++)
             {
-                c.X = i;
-                c.Y = j;
-                g_Console.writeToBuffer(c, "  ", colors[5]);
-            }
-            // Gray -> '@'
-            if (MapArray[i][j] == '@')
-            {
-                c.X = i;
-                c.Y = j;
-                g_Console.writeToBuffer(c, "  ", colors[8]);
-            }
-            // White -> '#'
-            if (MapArray[i][j] == '#')
-            {
-                c.X = i;
-                c.Y = j;
-                g_Console.writeToBuffer(c, "  ", colors[7]);
-            }
-            // Green -> '&'
-            if (MapArray[i][j] == '&')
-            {
-                c.X = i;
-                c.Y = j;
-                g_Console.writeToBuffer(c, "   ", colors[10]);
+                // Black -> '*' -> Walls
+                if (MapArray[i][j] == 'x')
+                {
+                    c.X = i;
+                    c.Y = j;
+                    g_Console.writeToBuffer(c, "  ", colors[5]);
+                }
+                // Gray -> '@'
+                if (MapArray[i][j] == '.')
+                {
+                    c.X = i;
+                    c.Y = j;
+                    g_Console.writeToBuffer(c, "  ", colors[8]);
+                }
+                // White -> '#'
+                if (MapArray[i][j] == '#')
+                {
+                    c.X = i;
+                    c.Y = j;
+                    g_Console.writeToBuffer(c, "  ", colors[7]);
+                }
+                // Green -> '&'
+                if (MapArray[i][j] == '&')
+                {
+                    c.X = i;
+                    c.Y = j;
+                    g_Console.writeToBuffer(c, "   ", colors[10]);
+                }
             }
         }
-    }
+    
     for (int i = 0; i < 80; i++)
     {
         if (i < 17 || i > 28 && i < 51 || i > 63 && i < 79)
         {
-            MapArray[i][4] = '*';
-            MapArray[i][10] = '*';
-            MapArray[i][14] = '*';
-            MapArray[i][20] = '*';
+            MapArray[i][4] = 'x';
+            MapArray[i][10] = 'x';
+            MapArray[i][14] = 'x';
+            MapArray[i][20] = 'x';
         }
         if (i < 5 || i > 9 && i < 15 || i > 19 && i < 25)
         {
-            MapArray[15][i] = '*';
-            MapArray[29][i] = '*';
-            MapArray[50][i] = '*';
-            MapArray[64][i] = '*';
+            MapArray[15][i] = 'x';
+            MapArray[29][i] = 'x';
+            MapArray[50][i] = 'x';
+            MapArray[64][i] = 'x';
         }
         // Gray colour oF ROAD
         for (int i = 17; i < 28; i++)
         {
             for (int j = 0; j < 25; j++)
             {
-                MapArray[i][j] = '@';
+                MapArray[i][j] = '.';
             }
         }
         for (int i = 52; i < 63; i++)
@@ -710,7 +990,7 @@ void renderMap()
 
             for (int j = 0; j < 25; j++)
             {
-                MapArray[i][j] = '@';
+                MapArray[i][j] = '.';
             }
         }
         for (int i = 0; i < 79; i++)
@@ -718,7 +998,7 @@ void renderMap()
 
             for (int j = 5; j < 10; j++)
             {
-                MapArray[i][j] = '@';
+                MapArray[i][j] = '.';
             }
         }
         for (int i = 0; i < 79; i++)
@@ -726,7 +1006,7 @@ void renderMap()
 
             for (int j = 15; j < 20; j++)
             {
-                MapArray[i][j] = '@';
+                MapArray[i][j] = '.';
             }
         }
         // White colour of road

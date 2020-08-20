@@ -1,19 +1,14 @@
 #pragma once
-class position
+class Position
 {
-private:
-	int x;
-	int y;
+protected:
+	int x, y;
 public:
-	position();
-	position(int x, int y);
-	~position();
-
-	//gettters
-	int GetXY(char xy);
-
-	//setters
-	void SetXY(char xy, int value);
+	int GetX();
+	int GetY();
+	void SetX(int Xnum);
+	void SetY(int Ynum);
 
 };
+
 
