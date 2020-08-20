@@ -579,7 +579,7 @@ void update(double dt)
 
 void splashScreenWait()    // waits for time to pass in splash screen
 {
-    if (g_dElapsedTime > 8.0) // wait for 8 seconds to switch to game mode, else do nothing
+    if (g_dElapsedTime > 5.0) // wait for 8 seconds to switch to game mode, else do nothing
         g_eGameState = S_GAME;
 }
 
@@ -664,10 +664,9 @@ void render()
             renderFramerate();      // renders debug information, frame rate, elapsed time, etc
             renderInputEvents();    // renders status of input events
         }
-
         break;
     }
-
+    
     renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
 }
 
