@@ -13,7 +13,8 @@ using namespace std;
 #include "Bullet.h"
 double  g_dElapsedTime;
 double  g_dDeltaTime;
-
+bool checktime = false;
+int k = 0;
 char MapArray[80][25];
 
 
@@ -111,6 +112,9 @@ void levelEvents(void) {
         }
         else if (g_mouseEvent.mousePosition.X >= 25 && g_mouseEvent.mousePosition.X <= 31 && g_mouseEvent.mousePosition.Y == 10) {
             level1 = false;
+            checktime = true;
+            k = g_dElapsedTime;
+            g_eGameState = S_SPLASHSCREEN;
         }
     }
 }
@@ -546,7 +550,13 @@ void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
     g_mouseEvent.buttonState = mouseEvent.dwButtonState;
     g_mouseEvent.eventFlags = mouseEvent.dwEventFlags;
 }
+void splashScreenWait2(int g) {
+    if (g_dElapsedTime > 5.0 + g) {
+        g_eGameState = S_GAME;
+        checktime = false;
+    }
 
+}
 //--------------------------------------------------------------
 // Purpose  : Update function
 //            This is the update function
@@ -564,18 +574,24 @@ void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
 void update(double dt)
 {
     // get the delta time
+   
     g_dElapsedTime += dt;
     g_dDeltaTime = dt;
 
     switch (g_eGameState)
     {
-        case S_SPLASHSCREEN : splashScreenWait(); // game logic for the splash screen
+        case S_SPLASHSCREEN :
+            if (checktime == true) {
+                splashScreenWait2(k);
+            }
+            else {
+                splashScreenWait(); // game logic for the splash screen
+            }
             break;
         case S_GAME: updateGame(); // gameplay logic when we are in the game
             break;
     }
 }
-
 
 void splashScreenWait()    // waits for time to pass in splash screen
 {
