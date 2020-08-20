@@ -1,6 +1,6 @@
 #include "Sound.h"
 #include <SDL.h>
-using namespace std;
+
 
 Sound::Sound()
 {
@@ -39,9 +39,5 @@ void Sound::addSoundEffect(const char* path)
 
 void Sound::playSoundEffect(const int which) const
 {
-	if (which > mSoundEffectBank.size() - 1)
-	{
-
-	}
 	Mix_PlayChannel(-1, mSoundEffectBank[which], 0);
 }
