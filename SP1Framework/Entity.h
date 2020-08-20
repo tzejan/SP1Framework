@@ -18,13 +18,16 @@ public:
 	int get_x_pos();
 	int get_y_pos();
 	
-	//Get Entity's symbol
-	char get_display();
-
 	//Set COORD or X and Y pos separately
 	void set_pos(COORD _c);
 	void set_ypos(int _y_pos);
 	void set_xpos(int _x_pos);
+
+	//Get/Set Entity's symbol
+	char get_display();
+	void set_display(char _display);
+
+	
 	
 
 };
