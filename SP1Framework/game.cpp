@@ -53,20 +53,10 @@ void init(void)
     //starting location
     g_sChar.m_cLocation.X = 1;
     g_sChar.m_cLocation.Y = 11;
-<<<<<<< HEAD
 
-  
-    
-    map1.Load(".Txt/Tutorial.txt"); //Puts the Map Template.txt contents into map1's MapArray.
-=======
-<<<<<<< Updated upstream
-    
-    map1.Load(".Txt/Map_Template.txt"); //Puts the Map Template.txt contents into map1's MapArray.
-=======
 
     map1.Load(".Txt/Tutorial.txt"); //Puts the Map Template.txt contents into map1's MapArray.
->>>>>>> Stashed changes
->>>>>>> master
+
     hud.Load(".Txt/HUD Template.txt");
 
 
