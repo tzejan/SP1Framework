@@ -82,6 +82,11 @@ char MapMaker::getFromCoord(SHORT x, SHORT y)
 
 }
 
+char** MapMaker::getMapArray()
+{
+	return MapArray;
+}
+
 
 
 

@@ -29,5 +29,7 @@ public:
 	char getFromCoord(COORD c);
 	char getFromCoord(SHORT x, SHORT y);
 	
+	char** getMapArray();
+
 };
 
