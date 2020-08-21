@@ -81,7 +81,7 @@ void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent); // handles mous
 
 
 //our functions
-
+int getPlayerInput();
 
 
 #endif // _GAME_H
