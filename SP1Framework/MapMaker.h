@@ -6,6 +6,8 @@
 #include "Entity.h"
 
 
+/*hi*/
+
 using namespace std;
 
 class MapMaker

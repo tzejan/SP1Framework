@@ -42,13 +42,9 @@ void init(void)
     //starting location
     g_sChar.m_cLocation.X = 1;
     g_sChar.m_cLocation.Y = 11;
-<<<<<<< Updated upstream
-    
-    map1.Load(".Txt/Map_Template.txt"); //Puts the Map Template.txt contents into map1's MapArray.
-=======
+
 
     map1.Load(".Txt/Tutorial.txt"); //Puts the Map Template.txt contents into map1's MapArray.
->>>>>>> Stashed changes
     hud.Load(".Txt/HUD Template.txt");
 
 

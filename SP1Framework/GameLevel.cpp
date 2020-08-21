@@ -1,8 +1,8 @@
 #include "GameLevel.h"
 
-GameLevel::GameLevel() : filename(0)
+GameLevel::GameLevel() : filename("")
 {
-
+	map_entities = NULL;
 }
 
 GameLevel::GameLevel(string filepath)
@@ -13,5 +13,7 @@ GameLevel::GameLevel(string filepath)
 
 GameLevel::~GameLevel()
 {
+	delete map_entities;
 	filename = "";
+	map_entities = NULL;
 }
