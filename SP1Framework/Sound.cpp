@@ -1,4 +1,4 @@
-/*#include "Sound.h"
+#include "Sound.h"
 #include <SDL.h>
 
 
@@ -40,4 +40,4 @@ void Sound::addSoundEffect(const char* path)
 void Sound::playSoundEffect(const int which) const
 {
 	Mix_PlayChannel(-1, mSoundEffectBank[which], 0);
-}*/
+}
