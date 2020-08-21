@@ -17,3 +17,8 @@ GameLevel::~GameLevel()
 	filename = "";
 	map_entities = NULL;
 }
+
+void GameLevel::Load()
+{
+	this_map.Load(filename);
+}

@@ -17,7 +17,7 @@ public:
 	//abstract functions
 
 	//functions
-
+	void Load();
 
 };
 
