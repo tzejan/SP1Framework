@@ -64,3 +64,5 @@ char MapMaker::getFromCoord(SHORT x, SHORT y)
 
 
 
+
+
