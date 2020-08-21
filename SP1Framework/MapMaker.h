@@ -8,6 +8,7 @@
 
 /*hi*/
 
+
 using namespace std;
 
 class MapMaker

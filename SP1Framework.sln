@@ -1,21 +1,31 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SP1Framework", "SP1Framework\SP1Framework.vcxproj", "{1A587CA1-7340-416F-94D6-7C400A833946}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
 		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{1A587CA1-7340-416F-94D6-7C400A833946}.Debug|Win32.ActiveCfg = Debug|Win32
 		{1A587CA1-7340-416F-94D6-7C400A833946}.Debug|Win32.Build.0 = Debug|Win32
+		{1A587CA1-7340-416F-94D6-7C400A833946}.Debug|x64.ActiveCfg = Debug|x64
+		{1A587CA1-7340-416F-94D6-7C400A833946}.Debug|x64.Build.0 = Debug|x64
 		{1A587CA1-7340-416F-94D6-7C400A833946}.Release|Win32.ActiveCfg = Release|Win32
 		{1A587CA1-7340-416F-94D6-7C400A833946}.Release|Win32.Build.0 = Release|Win32
+		{1A587CA1-7340-416F-94D6-7C400A833946}.Release|x64.ActiveCfg = Release|x64
+		{1A587CA1-7340-416F-94D6-7C400A833946}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {378AB08D-C75E-4F12-B30B-312C6D4FAB36}
+	EndGlobalSection
 EndGlobal
-//hii
