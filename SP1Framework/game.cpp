@@ -5,6 +5,7 @@
 #include "Framework\console.h"
 #include "map.h"
 #include "maze_01.h"
+#include "maze_02.h"
 #include "maze_05.h"
 #include "playerVL.h"
 #include <iostream>
@@ -39,7 +40,7 @@ Console g_Console(80, 25, "SP1 Framework");
 void init( void )
 {
     currentMap[0] = new maze_01;
-    currentMap[1] = new maze_05;
+    currentMap[1] = new maze_02;
     // Set precision for floating point output
     g_dElapsedTime = 0.0;    
 
@@ -433,7 +434,7 @@ void changeMap(int m) {
         break;
     case 2 :
         cMap = 1;
-        g_sChar.m_cLocation.X = 15 + 1;
-        g_sChar.m_cLocation.Y = 1;
+        g_sChar.m_cLocation.X = 15 + 11;
+        g_sChar.m_cLocation.Y = 11;
     }
 }

@@ -45,6 +45,12 @@
     <ClCompile Include="maze_05.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="maze_02.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="maze_03.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\console.h">
@@ -72,6 +78,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="maze_05.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="maze_02.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="maze_03.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
