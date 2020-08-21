@@ -1,20 +1,15 @@
 #include "Player.h"
-<<<<<<< HEAD
 
-=======
 #include "MapMaker.h"
->>>>>>> master
+
 Player::Player(COORD c_pos)
 {
 	set_pos(c_pos);
 	set_display((char)1);
 }
 
-<<<<<<< HEAD
-Player::Player(int y_pos, int x_pos)
-=======
 Player::Player(int y_pos, int x_pos) 
->>>>>>> master
+
 {
 	set_xpos(x_pos);
 	set_ypos(y_pos);
@@ -24,7 +19,7 @@ Player::Player(int y_pos, int x_pos)
 Player::~Player()
 {
 }
-<<<<<<< HEAD
+
 
 void Player::move(int button_pressed)
 {
@@ -65,5 +60,3 @@ bool Player::collide(int entity_xpos, int entity_ypos)
 
     return collide(entity);
 }
-=======
->>>>>>> master
