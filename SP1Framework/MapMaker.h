@@ -5,10 +5,7 @@
 #include <string>
 #include "Entity.h"
 
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
 using namespace std;
 
 class MapMaker
