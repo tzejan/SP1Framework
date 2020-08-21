@@ -90,6 +90,9 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="MapMaker.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\..\Desktop\HUD test.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

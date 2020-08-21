@@ -30,10 +30,10 @@ Console g_Console(100, 30, "SP1 Framework");
 // Input    : void
 // Output   : void
 //--------------------------------------------------------------
-void init( void )
+void init(void)
 {
     // Set precision for floating point output
-    g_dElapsedTime = 0.0;    
+    g_dElapsedTime = 0.0;
 
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
@@ -41,10 +41,18 @@ void init( void )
 
     //starting location
     g_sChar.m_cLocation.X = 1;
-    g_sChar.m_cLocation.Y = 12;
+    g_sChar.m_cLocation.Y = 11;
+<<<<<<< Updated upstream
     
-    map1.Draw("Map_Template.txt"); //Puts the Map Template.txt contents into map1's MapArray.
-    hud.Draw("HUD_Template.txt");
+    map1.Load(".Txt/Map_Template.txt"); //Puts the Map Template.txt contents into map1's MapArray.
+=======
+
+    map1.Load(".Txt/Tutorial.txt"); //Puts the Map Template.txt contents into map1's MapArray.
+>>>>>>> Stashed changes
+    hud.Load(".Txt/HUD Template.txt");
+
+
+
 
     g_sChar.m_bActive = true;
 
@@ -248,26 +256,53 @@ void updateGame()       // gameplay logic
                         // sound can be played here too.
 }
 
+
+
 void moveCharacter()
 {    
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
-    if (g_skKeyEvent[K_UP].keyReleased && g_sChar.m_cLocation.Y > 0)
+
+    /*if (g_skKeyEvent[K_UP].keyReleased && g_sChar.m_cLocation.Y - 1 == '#')
     {
         //Beep(1440, 30);
-        g_sChar.m_cLocation.Y -= 2;       
+        g_sChar.m_cLocation.Y -= 0;
     }
-    if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar.m_cLocation.X > 0)
+
+    if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar.m_cLocation.Y + 1 == '#')
     {
         //Beep(1440, 30);
-        g_sChar.m_cLocation.X -= 2;        
+        g_sChar.m_cLocation.Y -= 0;
     }
-    if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
+
+    if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar.m_cLocation.X + 1 == '#')
+    {
+        //Beep(1440, 30);
+        g_sChar.m_cLocation.X -= 0;
+    }
+
+    if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar.m_cLocation.X - 1 == '#')
+    {
+        //Beep(1440, 30);
+        g_sChar.m_cLocation.X -= 0;
+    }*/
+
+   if (g_skKeyEvent[K_UP].keyReleased && g_sChar.m_cLocation.Y > 0 && map1.getFromCoord(g_sChar.m_cLocation.X, g_sChar.m_cLocation.Y-1) == ' ')
+    {
+        //Beep(1440, 30);
+        g_sChar.m_cLocation.Y -= 1;       
+    }
+    if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar.m_cLocation.X > 0 && map1.getFromCoord(g_sChar.m_cLocation.X-1, g_sChar.m_cLocation.Y) == ' ')
+    {
+        //Beep(1440, 30);
+        g_sChar.m_cLocation.X -= 1;        
+    }
+    if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && map1.getFromCoord(g_sChar.m_cLocation.X, g_sChar.m_cLocation.Y+1) == ' ')
     {
         //Beep(1440, 30);
         g_sChar.m_cLocation.Y++;        
     }
-    if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
+    if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1 && map1.getFromCoord(g_sChar.m_cLocation.X+1, g_sChar.m_cLocation.Y) == ' ')
     {
         //Beep(1440, 30);
         g_sChar.m_cLocation.X++;        
@@ -277,11 +312,14 @@ void moveCharacter()
         g_sChar.m_bActive = !g_sChar.m_bActive;        
     }
 
-   
+    /*if (map1.getFromCoord(g_sChar.m_cLocation.X, g_sChar.m_cLocation.Y) == '#')
+    {
+        g_sChar.m_cLocation.Y += 0;
+    }*/
 }
 
 
-void processUserInput()
+void processUserInput() 
 {
     // quits the game if player hits the escape key
     if (g_skKeyEvent[K_ESCAPE].keyReleased)
@@ -344,39 +382,17 @@ void renderSplashScreen()  // renders the splash screen
 void renderGame()
 {
     renderMap(); 
-    renderTHEMAP();// renders the map to the buffer first
+    map1.Render(0, 0, 100, 20, g_Console);// renders the map to the buffer first
     
     renderCharacter();  // renders the character into the buffer
-    renderHUD();
+    hud.Render(0,20,100,30,g_Console);
 }
 
 
 //Renders the Map onto the entire screen
 //We need to change this part so that it only renders things on the map thats within the fog of war only
 //need to make a function to find where the fog of war is based on the player coords
-void renderTHEMAP() {
-    COORD c;
-    
-    for (int x = 0; x < g_Console.getConsoleSize().X; x++) {
-        c.X = x;
-        for (int y = 0; y < g_Console.getConsoleSize().Y - 10; y++) {
-            c.Y = y;
-            g_Console.writeToBuffer(c, map1.MapArray[y][x]);
-        }
-    }
-    
-}
 
-void renderHUD() {
-    COORD c;
-    for (int x = 0; x < g_Console.getConsoleSize().X; x++) {
-        c.X = x;
-        for (int y = 20; y < g_Console.getConsoleSize().Y; y++) {
-            c.Y = y;
-            g_Console.writeToBuffer(c, hud.MapArray[y - 20][x]);
-        }
-    }
-}
 
 void renderMap()
 {
