@@ -14,7 +14,9 @@ public:
 	GameLevel(string filepath);
 	~GameLevel();
 
+	//abstract functions
 
+	//functions
 
 
 };

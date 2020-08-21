@@ -20,7 +20,7 @@ void MapMaker::Load(string filepath)
 	int row = 0;
 	ifstream file_(filepath);
 	if (file_.is_open()) {
-
+		//Gets size of map
 		while (getline(file_, Map))
 		{
 			no_of_col = static_cast<int>(Map.length());
@@ -28,12 +28,18 @@ void MapMaker::Load(string filepath)
 			no_of_row++;
 
 		}
+		//Allocate Memory for MapArray
 		MapArray = new char* [no_of_row];
 		for (int i = 0; i < no_of_row; i++) {
 			MapArray[i] = new char[no_of_col];
 		}
+
+
+		//Resets the getline
 		file_.clear();
 		file_.seekg(0, ios::beg);
+
+		//Puts each character in the file in the array
 		while (getline(file_, Map))
 		{
 			for (int i = 0; i < Map.length(); i++) {
