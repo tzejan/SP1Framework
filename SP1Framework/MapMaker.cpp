@@ -1,11 +1,17 @@
 #include "MapMaker.h"
 
-MapMaker::MapMaker():MapArray { ' ' }
+MapMaker::MapMaker() : no_of_row(0), no_of_col(0)
 {
+	MapArray = NULL;
 }
 
 MapMaker::~MapMaker()
 {
+	for (int i = 0; i < no_of_row; i++) {
+		delete[] MapArray[i];
+	}
+	delete[] MapArray;
+	MapArray = NULL;
 }
 
 void MapMaker::Load(string filepath)
@@ -14,9 +20,23 @@ void MapMaker::Load(string filepath)
 	int row = 0;
 	ifstream file_(filepath);
 	if (file_.is_open()) {
+
 		while (getline(file_, Map))
 		{
-			for (int i = 0; i < static_cast<int>(Map.length()); i++) {
+			no_of_col = static_cast<int>(Map.length());
+			cout << Map[row] << endl;
+			no_of_row++;
+
+		}
+		MapArray = new char* [no_of_row];
+		for (int i = 0; i < no_of_row; i++) {
+			MapArray[i] = new char[no_of_col];
+		}
+		file_.clear();
+		file_.seekg(0, ios::beg);
+		while (getline(file_, Map))
+		{
+			for (int i = 0; i < Map.length(); i++) {
 				MapArray[row][i] = Map[i];
 			}
 			row++;

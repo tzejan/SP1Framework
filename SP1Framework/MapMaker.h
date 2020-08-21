@@ -6,16 +6,14 @@
 #include "Entity.h"
 
 
-/*hi*/
-
 
 using namespace std;
 
 class MapMaker
 {
 private:
-	char MapArray[20][100];
-	
+	char** MapArray;
+	int no_of_row, no_of_col;
 	
 public:
 	MapMaker();
