@@ -93,6 +93,29 @@ char** MapMaker::getMapArray()
 	return MapArray;
 }
 
+int MapMaker::getEntityCount()
+{
+	int count = 0;
+	for (int row = 0; row < (sizeof(getMapArray()) / sizeof(*getMapArray())); row++) {
+		for (int col = 0; col < (sizeof(getMapArray()[row]) / sizeof(*getMapArray()[row])); col++) {
+			switch (getFromCoord(col, row)) {
+			case 'P':
+			case 'G':
+			case ']':
+			case '[':
+			case '&':
+			case '%':
+			case '$':
+
+				count++;
+				break;
+			default:
+			}
+		}
+	}
+	return count;
+}
+
 
 
 

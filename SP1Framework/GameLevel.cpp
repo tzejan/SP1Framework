@@ -1,5 +1,6 @@
 #include "GameLevel.h"
 
+
 GameLevel::GameLevel() : filename("")
 {
 	map_entities = NULL;
@@ -13,10 +14,17 @@ GameLevel::GameLevel(string filepath)
 
 GameLevel::~GameLevel()
 {
-	delete map_entities;
+	delete[] map_entities;
 	filename = "";
 	map_entities = NULL;
 }
+
+void GameLevel::CreateEntities()
+{
+	
+	map_entities = new Entity* [this_map.getEntityCount()];
+}
+
 
 void GameLevel::Load()
 {

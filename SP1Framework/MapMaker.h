@@ -30,6 +30,7 @@ public:
 	char getFromCoord(SHORT x, SHORT y);
 	
 	char** getMapArray();
+	int getEntityCount();
 
 };
 

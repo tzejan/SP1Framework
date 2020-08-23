@@ -7,7 +7,10 @@ class GameLevel
 private:
 	MapMaker this_map;
 	string filename;
-	Entity* map_entities;
+	Entity** map_entities;
+
+	//protected functions
+	void CreateEntities();
 
 public:
 	GameLevel();
@@ -17,7 +20,10 @@ public:
 	//abstract functions
 
 	//functions
+	
 	void Load();
+
+	
 
 };
 
