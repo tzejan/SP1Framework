@@ -1,29 +1,56 @@
 #include "MapMaker.h"
 
-MapMaker::MapMaker():MapArray { ' ' }
+
+MapMaker::MapMaker()
 {
+	MapArray = NULL;
+	no_of_rows = 0;
+	no_of_col = 0;
 }
 
 MapMaker::~MapMaker()
 {
+	for (int row = 0; row < no_of_rows; row++) {
+		delete[] MapArray[row];
+
+	}
+	delete[] MapArray;
+	MapArray = NULL;
 }
 
 void MapMaker::Load(string filepath)
 {
 	string Map;
-	int row = 0;
 	ifstream file_(filepath);
 	if (file_.is_open()) {
+
+		//Gets no_of_col and no_of_row based on file
 		while (getline(file_, Map))
 		{
-			for (int i = 0; i < static_cast<int>(Map.length()); i++) {
-				MapArray[row][i] = Map[i];
-			}
-			row++;
+			no_of_col = static_cast<int>(Map.length());
+			
+			no_of_rows++;
 		}
 		file_.close();
 	}
-	
+	MapArray = new char* [no_of_rows];
+	for (int row = 0; row < no_of_rows; row++) {
+		MapArray[row] = new char[no_of_col];
+	}
+	ifstream file2_(filepath);
+	if (file2_.is_open()) {
+		int row = 0;
+		while (getline(file2_, Map))
+		{
+			for (int col = 0; col < no_of_col; col++) {
+				MapArray[row][col] = Map[col];
+			}
+			row++;
+
+		}
+
+		file2_.close();
+	}
 }
 
 void MapMaker::Render(COORD origin, COORD end, Console& g_Console)
@@ -34,7 +61,7 @@ void MapMaker::Render(COORD origin, COORD end, Console& g_Console)
 		c.X = x;
 		for (int y = origin.Y; y < end.Y; y++) {
 			c.Y = y;
-			g_Console.writeToBuffer(c, MapArray[y - origin.Y][x - origin.X]);
+			g_Console.writeToBuffer(c, getFromCoord(c.X - origin.X,c.Y - origin.Y));
 		}
 	}
 }
@@ -60,6 +87,35 @@ char MapMaker::getFromCoord(SHORT x, SHORT y)
 
 	return MapArray[y][x];
 
+}
+
+char** MapMaker::getMapArray()
+{
+	return MapArray;
+}
+
+int MapMaker::getEntityCount()
+{
+	int count = 0;
+	/*for (int row = 0; row < no_of_rows; row++) {
+		for (int col = 0; col < no_of_col; col++) {
+			switch (getFromCoord(col, row)) {
+			case 'P':
+			case 'G':
+			case ']':
+			case '[':
+			case '&':
+			case '%':
+			case '$':
+
+				count++;
+				break;
+			default:
+				break;
+			}
+		}
+	}*/
+	return count;
 }
 
 

@@ -12,10 +12,9 @@
 #include <sstream>
 #include <cmath>
 #include <stdio.h>
-#include <conio.h>
+#include <stdlib.h>
+#include <time.h>
 #include <Windows.h>
-#include <MMsystem.h>
-#include "Sound.h"
 
 double  g_dElapsedTime;
 double  g_dDeltaTime;
@@ -33,8 +32,8 @@ MapMaker hud;
 // Console object
 Console g_Console(100, 30, "SP1 Framework");
 
-Player player(2, 2);
-Guard guard(2, 66);
+Player player(2, 2, &map1);
+Guard guard(2, 66, &map1);
 
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -45,6 +44,8 @@ Guard guard(2, 66);
 //--------------------------------------------------------------
 void init(void)
 {
+
+    srand(time(NULL));
     // Set precision for floating point output
     g_dElapsedTime = 0.0;
 
@@ -55,10 +56,9 @@ void init(void)
     //starting location
     g_sChar.m_cLocation.X = 1;
     g_sChar.m_cLocation.Y = 11;
-
-
-    map1.Load(".Txt/Tutorial.txt"); //Puts the Map Template.txt contents into map1's MapArray.
-
+  
+    
+    map1.Load(".Txt/D1.txt"); //Puts the Map Template.txt contents into map1's MapArray.
     hud.Load(".Txt/HUD Template.txt");
 
 
@@ -278,7 +278,13 @@ void updateGame()       // gameplay logic
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
 
     player.move(getPlayerInput());
-  
+    if (static_cast<int>(g_dElapsedTime) % 6 == 0) {
+        guard.move(rand() % K_COUNT);
+    }
+
+    if (guard.get_x_pos() == player.get_x_pos() && guard.get_y_pos() == player.get_y_pos()) {
+        g_bQuitGame = true;
+    }
 
     moveCharacter();    // moves the character, collision detection, physics, etc
                         // sound can be played here too.
@@ -297,58 +303,9 @@ void moveCharacter()
     int effect = 0;
     se.playSoundEffect(effect);*/
 
-    Entity* g = new Guard(2, 66);
+    
 
-   if (g_skKeyEvent[K_UP].keyReleased && g_sChar.m_cLocation.Y > 0 && map1.getFromCoord(g_sChar.m_cLocation.X, g_sChar.m_cLocation.Y-1) != '#')
-    {
-       if (g->get_y_pos() != '#' && g->get_x_pos() != '#')
-       {
-           guard.move_down(1);
-           g_sChar.m_cLocation.Y -= 1;
-
-           if (g->get_y_pos() - 1 == '#')
-           {
-               guard.move_down(1);
-           }
-
-           if (map1.getFromCoord(g_sChar.m_cLocation.X, g_sChar.m_cLocation.Y - 1) == 'G')
-           {
-               g_bQuitGame = true;
-           }
-
-           /*se.playSoundEffect(effect);*/
-
-       }
-    }
-    if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar.m_cLocation.X > 0 && map1.getFromCoord(g_sChar.m_cLocation.X-1, g_sChar.m_cLocation.Y) != '#')
-    {
-        if (map1.getFromCoord(g_sChar.m_cLocation.X-1, g_sChar.m_cLocation.Y) == guard.get_x_pos())
-        {
-            g_bQuitGame = true;
-        }
-        g_sChar.m_cLocation.X -= 1;        
-    }
-    if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && map1.getFromCoord(g_sChar.m_cLocation.X, g_sChar.m_cLocation.Y+1) != '#')
-    {
-        if (map1.getFromCoord(g_sChar.m_cLocation.X, g_sChar.m_cLocation.Y+1) == 'G')
-        {
-            g_bQuitGame = true;
-        }
-        g_sChar.m_cLocation.Y++;        
-    }
-    if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1 && map1.getFromCoord(g_sChar.m_cLocation.X+1, g_sChar.m_cLocation.Y) != '#')
-    {
-        if (map1.getFromCoord(g_sChar.m_cLocation.X+1, g_sChar.m_cLocation.Y) == 'G')
-        {
-            g_bQuitGame = true;
-        }
-        g_sChar.m_cLocation.X++;        
-    }
-    if (g_skKeyEvent[K_SPACE].keyReleased)
-    {
-        g_sChar.m_bActive = !g_sChar.m_bActive;        
-    }
-
+   
 }
 
 
@@ -454,9 +411,9 @@ void renderCharacter()
     {
         charColor = 0x0A;
     }
-    g_Console.writeToBuffer(g_sChar.m_cLocation, player.get_display(), charColor);
-    g_Console.writeToBuffer(player.get_pos(), '@', 0x0D);
-    g_Console.writeToBuffer(guard.get_pos(), 'G', 0x0D);
+    //g_Console.writeToBuffer(g_sChar.m_cLocation, player.get_display(), charColor);
+    g_Console.writeToBuffer(player.get_pos(), player.get_display(), 0x0A);
+    g_Console.writeToBuffer(guard.get_pos(), 'G', 0x03);
     
 }
 

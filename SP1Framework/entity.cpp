@@ -5,20 +5,22 @@ Entity::Entity()
 	c.X = 0;
 	c.Y = 0;
 	display = ' ';
+	entity_map = NULL;
 }
 
-Entity::Entity(COORD _c, char _display)
+Entity::Entity(COORD _c, char _display, MapMaker* map)
 {
 	c = _c;
 	display = _display;
+	entity_map = map;
 }
 
-Entity::Entity(int _y_pos, int _x_pos, char _display)
+Entity::Entity(int _y_pos, int _x_pos, char _display, MapMaker* map)
 {
 	c.Y = _y_pos;
 	c.X = _x_pos;
 	display = _display;
-
+	entity_map = map;
 }
 
 int Entity::get_y_pos()

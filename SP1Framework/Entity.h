@@ -4,18 +4,18 @@
 #include "MapMaker.h"
 #include <windows.h>
 
-
 class Entity
 {
 protected:
 	COORD c;
+	MapMaker* entity_map;
 	char display;
 public:
 
 
 	Entity();
-	Entity(COORD _c, char _display);
-	Entity(int _y_pos, int _x_pos, char _display);
+	Entity(COORD _c, char _display, MapMaker* map);
+	Entity(int _y_pos, int _x_pos, char _display, MapMaker* map);
 	
 	
 	//Get COORD or X and Y pos separately

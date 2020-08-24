@@ -8,8 +8,8 @@ class Guard : public Entity
 private:
 
 public:
-	Guard(COORD c_pos);
-	Guard(int y_pos, int x_pos);
+	Guard(COORD c_pos, MapMaker* map);
+	Guard(int y_pos, int x_pos, MapMaker* map);
 	~Guard();
 
 
