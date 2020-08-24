@@ -31,7 +31,6 @@ void MapMaker::Load(string filepath)
 			
 			no_of_rows++;
 		}
-
 		file_.close();
 	}
 	MapArray = new char* [no_of_rows];

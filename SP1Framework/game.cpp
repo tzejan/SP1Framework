@@ -55,7 +55,7 @@ void init(void)
     g_sChar.m_cLocation.Y = 11;
   
     
-    map1.Load(".Txt/Maze3.txt"); //Puts the Map Template.txt contents into map1's MapArray.
+    map1.Load(".Txt/D1.txt"); //Puts the Map Template.txt contents into map1's MapArray.
     hud.Load(".Txt/HUD Template.txt");
 
 
