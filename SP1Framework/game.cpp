@@ -12,8 +12,8 @@
 #include <sstream>
 #include <cmath>
 #include <stdio.h>
-#include <conio.h>
 #include <Windows.h>
+
 
 double  g_dElapsedTime;
 double  g_dDeltaTime;

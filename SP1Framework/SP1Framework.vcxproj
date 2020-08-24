@@ -68,22 +68,21 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\user\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\include;C:\Users\user\Desktop\sound\SDL2-devel-2.0.12-VC\SDL2-2.0.12\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\user\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64;C:\Users\user\Desktop\sound\SDL2-devel-2.0.12-VC\SDL2-2.0.12\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\user\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\include;C:\Users\user\Desktop\sound\SDL2-devel-2.0.12-VC\SDL2-2.0.12\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\user\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64;C:\Users\user\Desktop\sound\SDL2-devel-2.0.12-VC\SDL2-2.0.12\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>SDL2-devel-2.0.12-VC\SDL2-2.0.12\include;SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\include;$(IncludePath)</IncludePath>
-    <LibraryPath>SDL2-devel-2.0.12-VC\SDL2-2.0.12\lib\x64;SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64;$(LibraryPath)</LibraryPath>
-
+	<IncludePath>$(IncludePath)</IncludePath>
+	<LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -96,7 +95,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>winmm.lib;SDL2.lib;SDL2main.lib;SDL_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -106,13 +105,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\user\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>winmm.lib;SDL2.lib;SDL2main.lib;SDL_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Users\user\Desktop\sound\SDL2-devel-2.0.12-VC\SDL2-2.0.12\lib\x64;C:\Users\user\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -148,7 +147,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>winmm.lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -160,10 +159,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapMaker.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Sound.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\include\SDL_mixer.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Framework\console.h" />
     <ClInclude Include="Framework\timer.h" />
@@ -171,27 +168,6 @@
     <ClInclude Include="guard.h" />
     <ClInclude Include="MapMaker.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="Sound.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\..\Desktop\sound\SDL2-devel-2.0.12-VC\SDL2-2.0.12\lib\x64\SDL2.dll" />
-    <None Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\libFLAC-8.dll" />
-    <None Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\libmodplug-1.dll" />
-    <None Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\libmpg123-0.dll" />
-    <None Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\libogg-0.dll" />
-    <None Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\libopus-0.dll" />
-    <None Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\libopusfile-0.dll" />
-    <None Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\libvorbis-0.dll" />
-    <None Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\libvorbisfile-3.dll" />
-    <None Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\SDL2_mixer.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\LICENSE.FLAC.txt" />
-    <Text Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\LICENSE.modplug.txt" />
-    <Text Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\LICENSE.mpg123.txt" />
-    <Text Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\LICENSE.ogg-vorbis.txt" />
-    <Text Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\LICENSE.opus.txt" />
-    <Text Include="..\..\..\..\Desktop\sound\SDL2_mixer-devel-2.0.4-VC\SDL2_mixer-2.0.4\lib\x64\LICENSE.opusfile.txt" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\..\..\Desktop\HUD test.txt" />
