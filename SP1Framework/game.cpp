@@ -316,6 +316,7 @@ void moveCharacter()
            /*se.playSoundEffect(effect);*/
 
        }
+
     }
     if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar.m_cLocation.X > 0 && map1.getFromCoord(g_sChar.m_cLocation.X-1, g_sChar.m_cLocation.Y) != '#')
     {
