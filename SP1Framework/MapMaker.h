@@ -10,9 +10,11 @@ using namespace std;
 class MapMaker
 {
 private:
-	
+	char** MapArray;
+	int no_of_rows, no_of_col;
+
 public:
-	char MapArray[20][100];
+	//char MapArray[20][100];
 	MapMaker();
 	~MapMaker();
 

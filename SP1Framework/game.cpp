@@ -51,7 +51,7 @@ void init( void )
 
   
     
-    map1.Load(".Txt/Tutorial.txt"); //Puts the Map Template.txt contents into map1's MapArray.
+    map1.Load(".Txt/Maze3.txt"); //Puts the Map Template.txt contents into map1's MapArray.
     hud.Load(".Txt/HUD Template.txt");
 
     g_sChar.m_bActive = true;

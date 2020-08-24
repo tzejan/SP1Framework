@@ -1,11 +1,19 @@
 #include "MapMaker.h"
 
-MapMaker::MapMaker():MapArray { ' ' }
+MapMaker::MapMaker()
 {
+	MapArray = NULL;
+	no_of_rows = 0;
+	no_of_col = 0;
 }
 
 MapMaker::~MapMaker()
 {
+	for (int row = 0; row < no_of_rows; row++) {
+		delete[] MapArray[row];
+	}
+	delete[] MapArray;
+	MapArray = NULL;
 }
 
 void MapMaker::Load(string filepath)
@@ -14,16 +22,41 @@ void MapMaker::Load(string filepath)
 	int row = 0;
 	ifstream file_(filepath);
 	if (file_.is_open()) {
+
+		//Gets no_of_col and no_of_row based on file
 		while (getline(file_, Map))
 		{
-			for (int i = 0; i < static_cast<int>(Map.length()); i++) {
-				MapArray[row][i] = Map[i];
-			}
-			row++;
+			no_of_col = static_cast<int>(Map.length());
+			
+			no_of_rows++;
 		}
+
+
+		
+
+
+
+		
 		file_.close();
 	}
-	
+	MapArray = new char* [no_of_rows];
+	for (int row = 0; row < no_of_rows; row++) {
+		MapArray[row] = new char[no_of_col];
+	}
+	ifstream file2_(filepath);
+	if (file2_.is_open()) {
+
+		while (getline(file2_, Map))
+		{
+			for (int col = 0; col < no_of_col; col++) {
+				MapArray[row][col] = Map[col];
+			}
+			row++;
+
+		}
+
+		file2_.close();
+	}
 }
 
 void MapMaker::Render(COORD origin, COORD end, Console& g_Console)
