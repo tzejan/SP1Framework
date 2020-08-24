@@ -392,7 +392,7 @@ void renderGame()
     map1.Render(0, 0, 100, 20, g_Console);// renders the map to the buffer first
     
     renderCharacter();  // renders the character into the buffer
-    //renderFOG();
+    renderFOG();
     hud.Render(0,20,100,30,g_Console);
 }
 
