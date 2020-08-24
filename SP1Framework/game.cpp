@@ -3,6 +3,7 @@
 //
 #include "game.h"
 #include "Player.h"
+#include "guard.h"
 #include "Entity.h"
 #include "MapMaker.h"
 #include "Framework\console.h"
@@ -33,6 +34,7 @@ MapMaker hud;
 Console g_Console(100, 30, "SP1 Framework");
 
 Player player(2, 2);
+guard guard(2, 56);
 
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -442,6 +444,7 @@ void renderCharacter()
     }
     g_Console.writeToBuffer(g_sChar.m_cLocation, player.get_display(), charColor);
     g_Console.writeToBuffer(player.get_pos(), '@', 0x0D);
+    g_Console.writeToBuffer(guard.get_pos(), 'G', 0x0D);
 }
 
 void renderFramerate()
