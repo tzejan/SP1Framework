@@ -63,4 +63,22 @@ void Entity::set_xpos(int _x_pos)
 	c.X = _x_pos;
 }
 
+void Entity::move_up(int distance)
+{
+	c.Y -= distance;
+}
 
+void Entity::move_down(int distance)
+{
+	c.Y += distance;
+}
+
+void Entity::move_left(int distance)
+{
+	c.X -= distance;
+}
+
+void Entity::move_right(int distance)
+{
+	c.X += distance;
+}

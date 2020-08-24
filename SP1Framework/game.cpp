@@ -3,6 +3,7 @@
 //
 #include "game.h"
 #include "Player.h"
+#include "guard.h"
 #include "Entity.h"
 #include "MapMaker.h"
 #include "Framework\console.h"
@@ -33,6 +34,7 @@ MapMaker hud;
 Console g_Console(100, 30, "SP1 Framework");
 
 Player player(2, 2);
+Guard guard(2, 66);
 
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -289,52 +291,56 @@ void moveCharacter()
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
 
-    /*if (g_skKeyEvent[K_UP].keyReleased && g_sChar.m_cLocation.Y - 1 == '#')
-    {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.Y -= 0;
-    }
-
-    if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar.m_cLocation.Y + 1 == '#')
-    {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.Y -= 0;
-    }
-
-    if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar.m_cLocation.X + 1 == '#')
-    {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.X -= 0;
-    }
-
-    if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar.m_cLocation.X - 1 == '#')
-    {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.X -= 0;
-    }*/
-
-    Sound se;
+    /*Sound se;
     se.addSoundEffect("C:/Users/user/Desktop/sound/Minecraft - stone1.mp3");
     int effect = 0;
-    se.playSoundEffect(effect);
-   if (g_skKeyEvent[K_UP].keyReleased && g_sChar.m_cLocation.Y > 0 && map1.getFromCoord(g_sChar.m_cLocation.X, g_sChar.m_cLocation.Y-1) == ' ')
+    se.playSoundEffect(effect);*/
+
+    Entity* g = new Guard(2, 66);
+
+   if (g_skKeyEvent[K_UP].keyReleased && g_sChar.m_cLocation.Y > 0 && map1.getFromCoord(g_sChar.m_cLocation.X, g_sChar.m_cLocation.Y-1) != '#')
     {
-        g_sChar.m_cLocation.Y -= 1;
-        se.playSoundEffect(effect);
+       if (g->get_y_pos() != '#' && g->get_x_pos() != '#')
+       {
+           guard.move_down(1);
+           g_sChar.m_cLocation.Y -= 1;
+
+           if (g->get_y_pos() - 1 == '#')
+           {
+               guard.move_down(1);
+           }
+
+           if (map1.getFromCoord(g_sChar.m_cLocation.X, g_sChar.m_cLocation.Y - 1) == 'G')
+           {
+               g_bQuitGame = true;
+           }
+
+           /*se.playSoundEffect(effect);*/
+
+       }
     }
-    if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar.m_cLocation.X > 0 && map1.getFromCoord(g_sChar.m_cLocation.X-1, g_sChar.m_cLocation.Y) == ' ')
+    if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar.m_cLocation.X > 0 && map1.getFromCoord(g_sChar.m_cLocation.X-1, g_sChar.m_cLocation.Y) != '#')
     {
-        //Beep(1440, 30);
+        if (map1.getFromCoord(g_sChar.m_cLocation.X-1, g_sChar.m_cLocation.Y) == guard.get_x_pos())
+        {
+            g_bQuitGame = true;
+        }
         g_sChar.m_cLocation.X -= 1;        
     }
-    if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && map1.getFromCoord(g_sChar.m_cLocation.X, g_sChar.m_cLocation.Y+1) == ' ')
+    if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && map1.getFromCoord(g_sChar.m_cLocation.X, g_sChar.m_cLocation.Y+1) != '#')
     {
-        //Beep(1440, 30);
+        if (map1.getFromCoord(g_sChar.m_cLocation.X, g_sChar.m_cLocation.Y+1) == 'G')
+        {
+            g_bQuitGame = true;
+        }
         g_sChar.m_cLocation.Y++;        
     }
-    if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1 && map1.getFromCoord(g_sChar.m_cLocation.X+1, g_sChar.m_cLocation.Y) == ' ')
+    if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1 && map1.getFromCoord(g_sChar.m_cLocation.X+1, g_sChar.m_cLocation.Y) != '#')
     {
-        //Beep(1440, 30);
+        if (map1.getFromCoord(g_sChar.m_cLocation.X+1, g_sChar.m_cLocation.Y) == 'G')
+        {
+            g_bQuitGame = true;
+        }
         g_sChar.m_cLocation.X++;        
     }
     if (g_skKeyEvent[K_SPACE].keyReleased)
@@ -342,10 +348,6 @@ void moveCharacter()
         g_sChar.m_bActive = !g_sChar.m_bActive;        
     }
 
-    /*if (map1.getFromCoord(g_sChar.m_cLocation.X, g_sChar.m_cLocation.Y) == '#')
-    {
-        g_sChar.m_cLocation.Y += 0;
-    }*/
 }
 
 
@@ -453,6 +455,8 @@ void renderCharacter()
     }
     g_Console.writeToBuffer(g_sChar.m_cLocation, player.get_display(), charColor);
     g_Console.writeToBuffer(player.get_pos(), '@', 0x0D);
+    g_Console.writeToBuffer(guard.get_pos(), 'G', 0x0D);
+    
 }
 
 void renderFramerate()

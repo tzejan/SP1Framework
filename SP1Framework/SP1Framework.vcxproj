@@ -155,7 +155,7 @@
     <ClCompile Include="Framework\console.cpp" />
     <ClCompile Include="Framework\timer.cpp" />
     <ClCompile Include="game.cpp" />
-    <ClCompile Include="GameLevel.cpp" />
+    <ClCompile Include="guard.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapMaker.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -167,7 +167,7 @@
     <ClInclude Include="Framework\console.h" />
     <ClInclude Include="Framework\timer.h" />
     <ClInclude Include="game.h" />
-    <ClInclude Include="GameLevel.h" />
+    <ClInclude Include="guard.h" />
     <ClInclude Include="MapMaker.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Sound.h" />

@@ -23,40 +23,15 @@ Player::~Player()
 
 void Player::move(int button_pressed)
 {
-    //if (!collide(this->get_pos())) {
-        if (button_pressed == K_UP)
-        {
-            //Beep(1440, 30);
-            set_ypos(get_pos().Y - 1);
-        }
-        if (button_pressed == K_LEFT)
-        {
-            //Beep(1440, 30);
-            set_xpos(get_pos().X - 1);
-        }
-        if (button_pressed == K_DOWN)
-        {
-            //Beep(1440, 30);
-            set_ypos(get_pos().Y + 1);
-        }
-        if (button_pressed ==  K_RIGHT)
-        {
-            //Beep(1440, 30);
-            set_xpos(get_pos().X + 1);
-        }
-    //}
 }
 
 bool Player::collide(COORD entity_pos)
 {
+    collide(entity_pos.X, entity_pos.Y);
     return false;
 }
 
 bool Player::collide(int entity_xpos, int entity_ypos)
 {
-    COORD entity;
-    entity.X = entity_xpos;
-    entity.Y = entity_ypos;
-
-    return collide(entity);
+	return false;
 }

@@ -16,6 +16,7 @@ private:
 	int no_of_rows, no_of_col;
 
 
+
 public:
 	MapMaker();
 	~MapMaker();

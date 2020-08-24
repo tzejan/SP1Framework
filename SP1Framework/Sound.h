@@ -1,4 +1,4 @@
-#pragma once
+/*#pragma once
 #include <vector>
 #include <SDL_mixer.h>
 
@@ -13,4 +13,4 @@ public:
 private:
 	std::vector<Mix_Chunk*> mSoundEffectBank;
 
-};
+};*/
