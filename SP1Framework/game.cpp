@@ -10,6 +10,11 @@
 #include <iomanip>
 #include <sstream>
 #include <cmath>
+#include <stdio.h>
+#include <conio.h>
+#include <Windows.h>
+#include <MMsystem.h>
+#include "Sound.h"
 
 double  g_dElapsedTime;
 double  g_dDeltaTime;
@@ -36,10 +41,10 @@ Player player(2, 2);
 // Input    : void
 // Output   : void
 //--------------------------------------------------------------
-void init( void )
+void init(void)
 {
     // Set precision for floating point output
-    g_dElapsedTime = 0.0;    
+    g_dElapsedTime = 0.0;
 
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
@@ -48,11 +53,13 @@ void init( void )
     //starting location
     g_sChar.m_cLocation.X = 1;
     g_sChar.m_cLocation.Y = 11;
-
   
     
     map1.Load(".Txt/Maze3.txt"); //Puts the Map Template.txt contents into map1's MapArray.
     hud.Load(".Txt/HUD Template.txt");
+
+
+
 
     g_sChar.m_bActive = true;
 
@@ -306,10 +313,14 @@ void moveCharacter()
         g_sChar.m_cLocation.X -= 0;
     }*/
 
+    Sound se;
+    se.addSoundEffect("C:/Users/user/Desktop/sound/Minecraft - stone1.mp3");
+    int effect = 0;
+    se.playSoundEffect(effect);
    if (g_skKeyEvent[K_UP].keyReleased && g_sChar.m_cLocation.Y > 0 && map1.getFromCoord(g_sChar.m_cLocation.X, g_sChar.m_cLocation.Y-1) == ' ')
     {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.Y -= 1;       
+        g_sChar.m_cLocation.Y -= 1;
+        se.playSoundEffect(effect);
     }
     if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar.m_cLocation.X > 0 && map1.getFromCoord(g_sChar.m_cLocation.X-1, g_sChar.m_cLocation.Y) == ' ')
     {
@@ -544,6 +555,5 @@ void renderInputEvents()
     }
     
 }
-
 
 
