@@ -8,8 +8,9 @@ class Player : public Entity
 private:
 
 public:
-	Player(COORD c_pos);
-	Player(int y_pos, int x_pos);
+
+	Player(COORD c_pos, MapMaker* map);
+	Player(int y_pos, int x_pos, MapMaker* map);
 	~Player();
 	
 
