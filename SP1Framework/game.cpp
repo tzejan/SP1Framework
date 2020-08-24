@@ -12,8 +12,9 @@
 #include <sstream>
 #include <cmath>
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include <Windows.h>
-
 
 double  g_dElapsedTime;
 double  g_dDeltaTime;
@@ -43,6 +44,8 @@ Guard guard(2, 66, &map1);
 //--------------------------------------------------------------
 void init(void)
 {
+
+    srand(time(NULL));
     // Set precision for floating point output
     g_dElapsedTime = 0.0;
 
@@ -275,7 +278,13 @@ void updateGame()       // gameplay logic
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
 
     player.move(getPlayerInput());
-    guard.move(getPlayerInput());
+    if (static_cast<int>(g_dElapsedTime) % 6 == 0) {
+        guard.move(rand() % K_COUNT);
+    }
+
+    if (guard.get_x_pos() == player.get_x_pos() && guard.get_y_pos() == player.get_y_pos()) {
+        g_bQuitGame = true;
+    }
 
     moveCharacter();    // moves the character, collision detection, physics, etc
                         // sound can be played here too.
@@ -403,8 +412,8 @@ void renderCharacter()
         charColor = 0x0A;
     }
     //g_Console.writeToBuffer(g_sChar.m_cLocation, player.get_display(), charColor);
-    g_Console.writeToBuffer(player.get_pos(), player.get_display(), 0x0D);
-    g_Console.writeToBuffer(guard.get_pos(), 'G', 0x0D);
+    g_Console.writeToBuffer(player.get_pos(), player.get_display(), 0x0A);
+    g_Console.writeToBuffer(guard.get_pos(), 'G', 0x03);
     
 }
 
