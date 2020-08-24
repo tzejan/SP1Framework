@@ -14,8 +14,6 @@
 #include <stdio.h>
 #include <conio.h>
 #include <Windows.h>
-#include <MMsystem.h>
-#include "Sound.h"
 
 double  g_dElapsedTime;
 double  g_dDeltaTime;

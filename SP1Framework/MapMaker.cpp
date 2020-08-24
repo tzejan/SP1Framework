@@ -21,7 +21,6 @@ MapMaker::~MapMaker()
 void MapMaker::Load(string filepath)
 {
 	string Map;
-	int row = 0;
 	ifstream file_(filepath);
 	if (file_.is_open()) {
 
@@ -33,12 +32,6 @@ void MapMaker::Load(string filepath)
 			no_of_rows++;
 		}
 
-
-		
-
-
-
-		
 		file_.close();
 	}
 	MapArray = new char* [no_of_rows];
@@ -47,7 +40,7 @@ void MapMaker::Load(string filepath)
 	}
 	ifstream file2_(filepath);
 	if (file2_.is_open()) {
-
+		int row = 0;
 		while (getline(file2_, Map))
 		{
 			for (int col = 0; col < no_of_col; col++) {
@@ -69,7 +62,7 @@ void MapMaker::Render(COORD origin, COORD end, Console& g_Console)
 		c.X = x;
 		for (int y = origin.Y; y < end.Y; y++) {
 			c.Y = y;
-			g_Console.writeToBuffer(c, MapArray[y - origin.Y][x - origin.X]);
+			g_Console.writeToBuffer(c, getFromCoord(c.X - origin.X,c.Y - origin.Y));
 		}
 	}
 }
@@ -105,7 +98,7 @@ char** MapMaker::getMapArray()
 int MapMaker::getEntityCount()
 {
 	int count = 0;
-	for (int row = 0; row < no_of_rows; row++) {
+	/*for (int row = 0; row < no_of_rows; row++) {
 		for (int col = 0; col < no_of_col; col++) {
 			switch (getFromCoord(col, row)) {
 			case 'P':
@@ -122,7 +115,7 @@ int MapMaker::getEntityCount()
 				break;
 			}
 		}
-	}
+	}*/
 	return count;
 }
 
