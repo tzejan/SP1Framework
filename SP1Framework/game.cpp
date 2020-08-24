@@ -314,14 +314,14 @@ void moveCharacter()
         g_sChar.m_cLocation.X -= 0;
     }*/
 
-    Sound se;
+    /*Sound se;
     se.addSoundEffect("C:/Users/user/Desktop/sound/Minecraft - stone1.mp3");
     int effect = 0;
-    se.playSoundEffect(effect);
+    se.playSoundEffect(effect);*/
    if (g_skKeyEvent[K_UP].keyReleased && g_sChar.m_cLocation.Y > 0 && map1.getFromCoord(g_sChar.m_cLocation.X, g_sChar.m_cLocation.Y-1) == ' ')
     {
         g_sChar.m_cLocation.Y -= 1;
-        se.playSoundEffect(effect);
+        /*se.playSoundEffect(effect);*/
     }
     if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar.m_cLocation.X > 0 && map1.getFromCoord(g_sChar.m_cLocation.X-1, g_sChar.m_cLocation.Y) == ' ')
     {
