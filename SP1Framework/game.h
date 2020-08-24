@@ -82,6 +82,6 @@ void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent); // handles mous
 
 //our functions
 int getPlayerInput();
-
+void renderFOG(); //Dear Evan. This is hardcoded. Do not use this.
 
 #endif // _GAME_H
