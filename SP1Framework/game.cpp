@@ -290,52 +290,42 @@ void moveCharacter()
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
 
-    /*if (g_skKeyEvent[K_UP].keyReleased && g_sChar.m_cLocation.Y - 1 == '#')
-    {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.Y -= 0;
-    }
-
-    if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar.m_cLocation.Y + 1 == '#')
-    {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.Y -= 0;
-    }
-
-    if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar.m_cLocation.X + 1 == '#')
-    {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.X -= 0;
-    }
-
-    if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar.m_cLocation.X - 1 == '#')
-    {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.X -= 0;
-    }*/
-
     /*Sound se;
     se.addSoundEffect("C:/Users/user/Desktop/sound/Minecraft - stone1.mp3");
     int effect = 0;
     se.playSoundEffect(effect);*/
-   if (g_skKeyEvent[K_UP].keyReleased && g_sChar.m_cLocation.Y > 0 && map1.getFromCoord(g_sChar.m_cLocation.X, g_sChar.m_cLocation.Y-1) == ' ')
+   if (g_skKeyEvent[K_UP].keyReleased && g_sChar.m_cLocation.Y > 0 && map1.getFromCoord(g_sChar.m_cLocation.X, g_sChar.m_cLocation.Y-1) != '#')
     {
+       if (map1.getFromCoord(g_sChar.m_cLocation.X-1, g_sChar.m_cLocation.Y-1) == 'G')
+       {
+           g_bQuitGame = true;
+       }
+
         g_sChar.m_cLocation.Y -= 1;
         /*se.playSoundEffect(effect);*/
     }
-    if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar.m_cLocation.X > 0 && map1.getFromCoord(g_sChar.m_cLocation.X-1, g_sChar.m_cLocation.Y) == ' ')
+    if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar.m_cLocation.X > 0 && map1.getFromCoord(g_sChar.m_cLocation.X-1, g_sChar.m_cLocation.Y) != '#')
     {
-        //Beep(1440, 30);
+        if (map1.getFromCoord(g_sChar.m_cLocation.X-1, g_sChar.m_cLocation.Y-1) == 'G')
+        {
+            g_bQuitGame = true;
+        }
         g_sChar.m_cLocation.X -= 1;        
     }
-    if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && map1.getFromCoord(g_sChar.m_cLocation.X, g_sChar.m_cLocation.Y+1) == ' ')
+    if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1 && map1.getFromCoord(g_sChar.m_cLocation.X, g_sChar.m_cLocation.Y+1) != '#')
     {
-        //Beep(1440, 30);
+        if (map1.getFromCoord(g_sChar.m_cLocation.X-1, g_sChar.m_cLocation.Y-1) == 'G')
+        {
+            g_bQuitGame = true;
+        }
         g_sChar.m_cLocation.Y++;        
     }
-    if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1 && map1.getFromCoord(g_sChar.m_cLocation.X+1, g_sChar.m_cLocation.Y) == ' ')
+    if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1 && map1.getFromCoord(g_sChar.m_cLocation.X+1, g_sChar.m_cLocation.Y) != '#')
     {
-        //Beep(1440, 30);
+        if (map1.getFromCoord(g_sChar.m_cLocation.X-1, g_sChar.m_cLocation.Y-1) == 'G')
+        {
+            g_bQuitGame = true;
+        }
         g_sChar.m_cLocation.X++;        
     }
     if (g_skKeyEvent[K_SPACE].keyReleased)
@@ -343,10 +333,8 @@ void moveCharacter()
         g_sChar.m_bActive = !g_sChar.m_bActive;        
     }
 
-    /*if (map1.getFromCoord(g_sChar.m_cLocation.X, g_sChar.m_cLocation.Y) == '#')
-    {
-        g_sChar.m_cLocation.Y += 0;
-    }*/
+
+
 }
 
 

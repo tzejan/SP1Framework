@@ -12,13 +12,12 @@ using namespace std;
 
 class MapMaker
 {
-private:
-	char MapArray[20][100];
-	
+private:	
 	
 public:
 	MapMaker();
 	~MapMaker();
+	char MapArray[20][100];
 	//Takes the Txt file and puts it into the array
 	void Load(string filepath);
 

@@ -47,15 +47,7 @@ void Player::move(int button_pressed)
 
 bool Player::collide(COORD entity_pos)
 {
+    collide(entity_pos.X, entity_pos.Y);
     return false;
-}
-
-bool Player::collide(int entity_xpos, int entity_ypos)
-{
-    COORD entity;
-    entity.X = entity_xpos;
-    entity.Y = entity_ypos;
-
-    return collide(entity);
 }
 
