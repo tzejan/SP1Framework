@@ -15,7 +15,7 @@ public:
 
 	Entity();
 	Entity(COORD _c, char _display);
-	Entity(int y_pos, int x_pos, char display);
+	Entity(int _y_pos, int _x_pos, char _display);
 	
 	
 	//Get COORD or X and Y pos separately
@@ -39,5 +39,11 @@ public:
 
 	//Move based on enum EKEYS button pressed
 	virtual void move(int button_pressed) = 0;
+
+	//Allow the entity to move
+	void move_up(int distance);
+	void move_down(int distance);
+	void move_left(int distance);
+	void move_right(int distance);
 
 };

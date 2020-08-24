@@ -3,14 +3,14 @@
 #include <iostream>
 
 
-class guard : public Entity
+class Guard : public Entity
 {
 private:
 
 public:
-	guard(COORD c_pos);
-	guard(int y_pos, int x_pos);
-	~guard();
+	Guard(COORD c_pos);
+	Guard(int y_pos, int x_pos);
+	~Guard();
 
 
 	void move(int button_pressed);
