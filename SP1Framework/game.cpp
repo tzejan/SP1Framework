@@ -32,8 +32,8 @@ MapMaker hud;
 // Console object
 Console g_Console(100, 30, "SP1 Framework");
 
-Player player(2, 2, &map1);
-Guard guard(2, 66, &map1);
+Player player(1, 2, &map1);
+Guard guard(3, 67, &map1);
 
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -58,7 +58,7 @@ void init(void)
     g_sChar.m_cLocation.Y = 11;
   
     
-    map1.Load(".Txt/Tutorial.txt"); //Puts the Map Template.txt contents into map1's MapArray.
+    map1.Load(".Txt/D1.txt"); //Puts the Map Template.txt contents into map1's MapArray.
     hud.Load(".Txt/HUD Template.txt");
 
 
@@ -430,8 +430,8 @@ void renderCharacter()
         charColor = 0x0A;
     }
     //g_Console.writeToBuffer(g_sChar.m_cLocation, player.get_display(), charColor);
-    g_Console.writeToBuffer(player.get_pos(), player.get_display(), 0x0A);
-    g_Console.writeToBuffer(guard.get_pos(), 'G', 0x03);
+    g_Console.writeToBuffer(player.get_pos(), player.get_display(), 0x0D);
+    g_Console.writeToBuffer(guard.get_pos(), guard.get_display(), 0xFC);
 
     //HARDCODED EXIT
     g_Console.writeToBuffer(94, 15, 233, 0x03);
