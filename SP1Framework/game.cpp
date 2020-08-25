@@ -38,8 +38,8 @@ MapMaker hud;
 // Console object
 Console g_Console(100, 30, "SP1 Framework");
 
-Player player(2, 2, &map1);
-Guard guard(2, 66, &map1);
+Player player(1, 2, &map1);
+Guard guard(3, 67, &map1);
 
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -435,8 +435,8 @@ void renderCharacter()
         charColor = 0x0A;
     }
     //g_Console.writeToBuffer(g_sChar.m_cLocation, player.get_display(), charColor);
-    g_Console.writeToBuffer(player.get_pos(), player.get_display(), 0x0A);
-    g_Console.writeToBuffer(guard.get_pos(), 'G', 0x03);
+    g_Console.writeToBuffer(player.get_pos(), player.get_display(), 0x0D);
+    g_Console.writeToBuffer(guard.get_pos(), guard.get_display(), 0xFC);
 
     //HARDCODED EXIT
     g_Console.writeToBuffer(94, 15, 233, 0x03);
