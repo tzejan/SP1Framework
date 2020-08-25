@@ -16,8 +16,14 @@
 #include <time.h>
 #include <Windows.h>
 #include <irrKlang.h>
+#include <stdio.h>
+#include <conio.h>
 
+// Irrklang linker
 using namespace irrklang;
+#pragma comment(lib, "irrKlang.lib")
+
+
 
 double  g_dElapsedTime;
 double  g_dDeltaTime;
@@ -32,7 +38,7 @@ MapMaker hud;
 
 
 // Start IrrKlang Sound Engine
-// ISoundEngine* engine = createIrrKlangDevice();
+ISoundEngine* engine = createIrrKlangDevice();
 
 
 // Console object
