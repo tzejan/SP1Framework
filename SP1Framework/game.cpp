@@ -230,6 +230,7 @@ void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
 int getPlayerInput()
 {
     if (g_skKeyEvent[K_UP].keyReleased) {
+        engine->play2D("bell.wav");
         return K_UP;
     }
     if (g_skKeyEvent[K_DOWN].keyReleased) {
