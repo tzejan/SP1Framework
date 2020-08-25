@@ -80,9 +80,9 @@
     <LinkIncremental>false</LinkIncremental>
     <ExecutablePath>$(VC_ExecutablePath_x32);$(CommonExecutablePath)</ExecutablePath>
     <ReferencePath>$(VC_ReferencesPath_x32);</ReferencePath>
-    <LibraryPath>C:\Users\h2oev\Documents\GitHub\SP1Framework\SP1Framework\Dependencies\irrKlang-1.6.0\lib\Win32-visualStudio;$(VC_LibraryPath_x32);$(WindowsSDK_LibraryPath_x32)</LibraryPath>
+    <LibraryPath>$(SolutionDir)SP1Framework\Dependencies\irrKlang-1.6.0\lib\Win32-visualStudio;$(VC_LibraryPath_x32);$(WindowsSDK_LibraryPath_x32)</LibraryPath>
     <ExcludePath>$(CommonExcludePath);$(VC_ExecutablePath_x32);$(VC_LibraryPath_x32)</ExcludePath>
-    <IncludePath>C:\Users\h2oev\Documents\GitHub\SP1Framework\SP1Framework\Dependencies\irrKlang-1.6.0\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)SP1Framework\Dependencies\irrKlang-1.6.0\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
