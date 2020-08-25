@@ -15,6 +15,9 @@
 #include <stdlib.h>
 #include <time.h>
 #include <Windows.h>
+#include <irrKlang.h>
+
+using namespace irrklang;
 
 double  g_dElapsedTime;
 double  g_dDeltaTime;
@@ -27,6 +30,9 @@ EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 MapMaker map1;
 MapMaker hud;
 
+
+// Start IrrKlang Sound Engine
+// ISoundEngine* engine = createIrrKlangDevice();
 
 
 // Console object
@@ -60,7 +66,6 @@ void init(void)
     
     map1.Load(".Txt/D1.txt"); //Puts the Map Template.txt contents into map1's MapArray.
     hud.Load(".Txt/HUD Template.txt");
-
 
 
 
