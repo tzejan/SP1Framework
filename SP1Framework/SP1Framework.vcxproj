@@ -79,15 +79,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <ExecutablePath>$(VC_ExecutablePath_x32);$(CommonExecutablePath)</ExecutablePath>
-    <ReferencePath>$(VC_ReferencesPath_x32);</ReferencePath>
+    <ReferencePath>$(VC_ReferencesPath_x32)</ReferencePath>
     <LibraryPath>$(SolutionDir)SP1Framework\Dependencies\irrKlang-1.6.0\lib\Win32-visualStudio;$(VC_LibraryPath_x32);$(WindowsSDK_LibraryPath_x32)</LibraryPath>
     <ExcludePath>$(CommonExcludePath);$(VC_ExecutablePath_x32);$(VC_LibraryPath_x32)</ExcludePath>
     <IncludePath>$(SolutionDir)SP1Framework\Dependencies\irrKlang-1.6.0\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(IncludePath)</IncludePath>
-    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)SP1Framework\Dependencies\irrKlang-64bit-1.6.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)SP1Framework\Dependencies\irrKlang-64bit-1.6.0\lib\Winx64-visualStudio;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -137,6 +137,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

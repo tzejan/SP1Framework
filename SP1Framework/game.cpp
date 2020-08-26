@@ -18,6 +18,7 @@
 #include <irrKlang.h>
 #include <stdio.h>
 #include <conio.h>
+#include "Dependencies/irrKlang-1.6.0/include/irrKlang.h"
 
 // Irrklang linker
 using namespace irrklang;
@@ -229,17 +230,21 @@ void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
 
 int getPlayerInput()
 {
+    
     if (g_skKeyEvent[K_UP].keyReleased) {
-        engine->play2D("bell.wav");
+        engine->play2D("walk_sound.wav");
         return K_UP;
     }
     if (g_skKeyEvent[K_DOWN].keyReleased) {
+        engine->play2D("walk_sound.wav");
         return K_DOWN;
     }
     if (g_skKeyEvent[K_LEFT].keyReleased) {
+        engine->play2D("walk_sound.wav");
         return K_LEFT;
     }
     if (g_skKeyEvent[K_RIGHT].keyReleased) {
+        engine->play2D("walk_sound.wav");
         return K_RIGHT;
     }
     return K_COUNT;
