@@ -37,6 +37,7 @@ void init( void )
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
 
+    player.setSym(94);
     player.setCoordX(g_Console.getConsoleSize().X / 2);
     player.setCoordY(g_Console.getConsoleSize().Y / 2);
     player.setm_bActive(false);
@@ -79,7 +80,7 @@ void shutdown( void )
 void getInput( void )
 {
     // resets all the keyboard events
-    memset(g_skKeyEvent, 0, K_COUNT * sizeof(*g_skKeyEvent));
+   // memset(g_skKeyEvent, 0, K_COUNT * sizeof(*g_skKeyEvent));
     // then call the console to detect input from user
     g_Console.readConsoleInput();    
 }
@@ -258,25 +259,29 @@ void moveCharacter()
 {    
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
-    if (g_skKeyEvent[K_UP].keyDown && player.getCoordY() > 0)
+    if (g_skKeyEvent[K_UP].keyDown && player.getCoordY() > 1)
     {
         //Beep(1440, 30);
         player.setCoordY(player.getCoordY()-1);
+        player.setSym(94);
     }
     if (g_skKeyEvent[K_LEFT].keyDown && player.getCoordX() > 0)
     {
         //Beep(1440, 30);
         player.setCoordX(player.getCoordX() - 1);
+        player.setSym(60);
     }
     if (g_skKeyEvent[K_DOWN].keyDown && player.getCoordY() < g_Console.getConsoleSize().Y - 1)
     {
         //Beep(1440, 30);
         player.setCoordY(player.getCoordY() + 1);
+        player.setSym(118);
     }
     if (g_skKeyEvent[K_RIGHT].keyDown && player.getCoordX() < g_Console.getConsoleSize().X - 1)
     {
         //Beep(1440, 30);
         player.setCoordX(player.getCoordX() + 1);
+        player.setSym(62);
     }
     if (g_skKeyEvent[K_SPACE].keyReleased)
     {
@@ -321,7 +326,7 @@ void render()
 void clearScreen()
 {
     // Clears the buffer with this colour attribute
-    g_Console.clearBuffer(0x1F);
+    g_Console.clearBuffer(0x00);
 }
 
 void renderToScreen()
@@ -379,7 +384,7 @@ void renderCharacter()
     COORD temp;
     temp.X = player.getCoordX();
     temp.Y = player.getCoordY();
-    g_Console.writeToBuffer(temp, (char)48, charColor);
+    g_Console.writeToBuffer(temp, player.getSym(), 0x17);
 }
 
 void renderFramerate()

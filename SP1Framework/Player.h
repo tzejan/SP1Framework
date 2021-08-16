@@ -4,6 +4,10 @@ class Player :
     public entity
 {
 private:
+
+public:
+
+    Player();
     
 };
 

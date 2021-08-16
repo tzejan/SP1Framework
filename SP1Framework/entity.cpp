@@ -24,3 +24,13 @@ void entity::setm_bActive(bool i)
 {
     m_bActive = i;
 }
+
+void entity::setSym(char a)
+{
+    sym = a;
+}
+
+char entity::getSym()
+{
+    return sym;
+}
