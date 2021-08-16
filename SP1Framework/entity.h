@@ -7,6 +7,7 @@ protected:
 	COORD Location;
 	bool  m_bActive;
 	char sym;
+
 public:
 	int getCoordX();
 	int getCoordY();
