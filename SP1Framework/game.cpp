@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <sstream>
 #include "entity.h"
+#include "player.h"
 
 double  g_dElapsedTime;
 double  g_dDeltaTime;
@@ -15,7 +16,7 @@ SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 
 // Game specific variables here
-entity   Player;
+Player  player;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 
 // Console object
@@ -36,9 +37,9 @@ void init( void )
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
 
-    Player.setCoordX(g_Console.getConsoleSize().X / 2);
-    Player.setCoordY(g_Console.getConsoleSize().Y / 2);
-    Player.setm_bActive(false);
+    player.setCoordX(g_Console.getConsoleSize().X / 2);
+    player.setCoordY(g_Console.getConsoleSize().Y / 2);
+    player.setm_bActive(false);
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
 
@@ -257,29 +258,29 @@ void moveCharacter()
 {    
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
-    if (g_skKeyEvent[K_UP].keyDown && Player.getCoordY() > 0)
+    if (g_skKeyEvent[K_UP].keyDown && player.getCoordY() > 0)
     {
         //Beep(1440, 30);
-        Player.setCoordY(Player.getCoordY()-1);
+        player.setCoordY(player.getCoordY()-1);
     }
-    if (g_skKeyEvent[K_LEFT].keyDown && Player.getCoordX() > 0)
+    if (g_skKeyEvent[K_LEFT].keyDown && player.getCoordX() > 0)
     {
         //Beep(1440, 30);
-        Player.setCoordX(Player.getCoordX() - 1);
+        player.setCoordX(player.getCoordX() - 1);
     }
-    if (g_skKeyEvent[K_DOWN].keyDown && Player.getCoordY() < g_Console.getConsoleSize().Y - 1)
+    if (g_skKeyEvent[K_DOWN].keyDown && player.getCoordY() < g_Console.getConsoleSize().Y - 1)
     {
         //Beep(1440, 30);
-        Player.setCoordY(Player.getCoordY() + 1);
+        player.setCoordY(player.getCoordY() + 1);
     }
-    if (g_skKeyEvent[K_RIGHT].keyDown && Player.getCoordX() < g_Console.getConsoleSize().X - 1)
+    if (g_skKeyEvent[K_RIGHT].keyDown && player.getCoordX() < g_Console.getConsoleSize().X - 1)
     {
         //Beep(1440, 30);
-        Player.setCoordX(Player.getCoordX() + 1);
+        player.setCoordX(player.getCoordX() + 1);
     }
     if (g_skKeyEvent[K_SPACE].keyReleased)
     {
-       // Player.m_bActive = !Player.m_bActive;        
+       // player.m_bActive = !player.m_bActive;        
     }
 
    
@@ -371,13 +372,13 @@ void renderCharacter()
 {
     // Draw the location of the character
     WORD charColor = 0x0C;
-    //if (Player.m_bActive)
+    //if (player.m_bActive)
    // {
     //    charColor = 0x0A;
     //}
     COORD temp;
-    temp.X = Player.getCoordX();
-    temp.Y = Player.getCoordY();
+    temp.X = player.getCoordX();
+    temp.Y = player.getCoordY();
     g_Console.writeToBuffer(temp, (char)48, charColor);
 }
 

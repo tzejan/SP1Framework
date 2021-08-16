@@ -2,13 +2,11 @@
 
 int entity::getCoordX()
 {
-
     return Location.X;
 }
 
 int entity::getCoordY()
 {
-
     return Location.Y;
 }
 
