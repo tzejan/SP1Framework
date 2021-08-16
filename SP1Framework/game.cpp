@@ -35,8 +35,8 @@ void init( void )
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
 
-    Player.m_cLocation.X = g_Console.getConsoleSize().X / 2;
-    Player.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
+    Player.Location.X = g_Console.getConsoleSize().X / 2;
+    Player.Location.Y = g_Console.getConsoleSize().Y / 2;
     Player.m_bActive = false;
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
@@ -256,25 +256,25 @@ void moveCharacter()
 {    
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
-    if (g_skKeyEvent[K_UP].keyDown && Player.m_cLocation.Y > 0)
+    if (g_skKeyEvent[K_UP].keyDown && Player.Location.Y > 0)
     {
         //Beep(1440, 30);
-        Player.m_cLocation.Y--;       
+        Player.Location.Y--;       
     }
-    if (g_skKeyEvent[K_LEFT].keyDown && Player.m_cLocation.X > 0)
+    if (g_skKeyEvent[K_LEFT].keyDown && Player.Location.X > 0)
     {
         //Beep(1440, 30);
-        Player.m_cLocation.X--;        
+        Player.Location.X--;        
     }
-    if (g_skKeyEvent[K_DOWN].keyDown && Player.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
+    if (g_skKeyEvent[K_DOWN].keyDown && Player.Location.Y < g_Console.getConsoleSize().Y - 1)
     {
         //Beep(1440, 30);
-        Player.m_cLocation.Y++;        
+        Player.Location.Y++;        
     }
-    if (g_skKeyEvent[K_RIGHT].keyDown && Player.m_cLocation.X < g_Console.getConsoleSize().X - 1)
+    if (g_skKeyEvent[K_RIGHT].keyDown && Player.Location.X < g_Console.getConsoleSize().X - 1)
     {
         //Beep(1440, 30);
-        Player.m_cLocation.X++;        
+        Player.Location.X++;        
     }
     if (g_skKeyEvent[K_SPACE].keyReleased)
     {
@@ -374,7 +374,7 @@ void renderCharacter()
     {
         charColor = 0x0A;
     }
-    g_Console.writeToBuffer(Player.m_cLocation, (char)48, charColor);
+    g_Console.writeToBuffer(Player.Location, (char)48, charColor);
 }
 
 void renderFramerate()

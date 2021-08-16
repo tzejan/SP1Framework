@@ -47,7 +47,7 @@ enum EGAMESTATES
 // struct for the game character
 struct SGameChar
 {
-    COORD m_cLocation;
+    COORD Location;
     bool  m_bActive;
 };
 
