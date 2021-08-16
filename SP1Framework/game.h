@@ -45,11 +45,11 @@ enum EGAMESTATES
 };
 
 // struct for the game character
-struct SGameChar
-{
-    COORD Location;
-    bool  m_bActive;
-};
+//struct SGameChar
+//{
+//    COORD Location;
+//    bool  m_bActive;
+//};
 
 void init        ( void );      // initialize your variables, allocate memory, etc
 void getInput    ( void );      // get input from player

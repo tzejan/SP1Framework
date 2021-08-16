@@ -1,10 +1,16 @@
 #pragma once
+#include <Windows.h>
+
 class entity
 {
-private:
+protected:
 	COORD Location;
+	bool  m_bActive;
 public:
-	int getX();
-	int getY();
+	int getCoordX();
+	int getCoordY();
+	void setCoordX(int i);
+	void setCoordY(int i);
+	void setm_bActive(bool i);
 };
 

@@ -6,6 +6,7 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include "entity.h"
 
 double  g_dElapsedTime;
 double  g_dDeltaTime;
@@ -14,7 +15,7 @@ SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 
 // Game specific variables here
-SGameChar   Player;
+entity   Player;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 
 // Console object
@@ -35,9 +36,9 @@ void init( void )
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
 
-    Player.Location.X = g_Console.getConsoleSize().X / 2;
-    Player.Location.Y = g_Console.getConsoleSize().Y / 2;
-    Player.m_bActive = false;
+    Player.setCoordX(g_Console.getConsoleSize().X / 2);
+    Player.setCoordY(g_Console.getConsoleSize().Y / 2);
+    Player.setm_bActive(false);
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
 
@@ -256,29 +257,29 @@ void moveCharacter()
 {    
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
-    if (g_skKeyEvent[K_UP].keyDown && Player.Location.Y > 0)
+    if (g_skKeyEvent[K_UP].keyDown && Player.getCoordY() > 0)
     {
         //Beep(1440, 30);
-        Player.Location.Y--;       
+        Player.setCoordY(Player.getCoordY()-1);
     }
-    if (g_skKeyEvent[K_LEFT].keyDown && Player.Location.X > 0)
+    if (g_skKeyEvent[K_LEFT].keyDown && Player.getCoordX() > 0)
     {
         //Beep(1440, 30);
-        Player.Location.X--;        
+        Player.setCoordX(Player.getCoordX() - 1);
     }
-    if (g_skKeyEvent[K_DOWN].keyDown && Player.Location.Y < g_Console.getConsoleSize().Y - 1)
+    if (g_skKeyEvent[K_DOWN].keyDown && Player.getCoordY() < g_Console.getConsoleSize().Y - 1)
     {
         //Beep(1440, 30);
-        Player.Location.Y++;        
+        Player.setCoordY(Player.getCoordY() + 1);
     }
-    if (g_skKeyEvent[K_RIGHT].keyDown && Player.Location.X < g_Console.getConsoleSize().X - 1)
+    if (g_skKeyEvent[K_RIGHT].keyDown && Player.getCoordX() < g_Console.getConsoleSize().X - 1)
     {
         //Beep(1440, 30);
-        Player.Location.X++;        
+        Player.setCoordX(Player.getCoordX() + 1);
     }
     if (g_skKeyEvent[K_SPACE].keyReleased)
     {
-        Player.m_bActive = !Player.m_bActive;        
+       // Player.m_bActive = !Player.m_bActive;        
     }
 
    
@@ -370,11 +371,14 @@ void renderCharacter()
 {
     // Draw the location of the character
     WORD charColor = 0x0C;
-    if (Player.m_bActive)
-    {
-        charColor = 0x0A;
-    }
-    g_Console.writeToBuffer(Player.Location, (char)48, charColor);
+    //if (Player.m_bActive)
+   // {
+    //    charColor = 0x0A;
+    //}
+    COORD temp;
+    temp.X = Player.getCoordX();
+    temp.Y = Player.getCoordY();
+    g_Console.writeToBuffer(temp, (char)48, charColor);
 }
 
 void renderFramerate()
