@@ -76,5 +76,7 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent);      // define this fun
 void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent);   // handles keyboard events for gameplay 
 void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent); // handles mouse events for gameplay 
 
+void displayScored();
+void updateScord();
 
 #endif // _GAME_H
