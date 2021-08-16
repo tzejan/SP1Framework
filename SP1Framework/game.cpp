@@ -17,7 +17,7 @@ SGameChar   g_sChar;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 
 // Console object
-Console g_Console(80, 25, "SP1 Framework");
+Console g_Console(40, 30, "SP1 Framework");
 
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -329,14 +329,29 @@ void renderMap()
     };
 
     COORD c;
-    for (int i = 0; i < 12; ++i)
+    for (int row = 0; row < 40; ++row)
     {
-        c.X = 5 * i;
-        c.Y = i + 1;
-        colour(colors[i]);
-        g_Console.writeToBuffer(c, " °±²Û", colors[i]);
+        for (int col = 0; col < 30; ++col) 
+        {
+            if (col == 0 || col == 29) 
+            {
+                c.X = row;
+                c.Y = col;
+                colour(colors[1]);
+            }
+            else if (row == 0 || row == 39) 
+            {
+                c.X = row;
+                c.Y = col;
+                colour(colors[1]);
+            }
+
+            g_Console.writeToBuffer(c, " ", colors[1]); //wat the shit is this
+        }
+
     }
 }
+
 
 void renderCharacter()
 {
@@ -346,7 +361,7 @@ void renderCharacter()
     {
         charColor = 0x0A;
     }
-    g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
+    g_Console.writeToBuffer(g_sChar.m_cLocation, (char)3, charColor);
 }
 
 void renderFramerate()
