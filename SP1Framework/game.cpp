@@ -156,14 +156,13 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent)
     
     switch (keyboardEvent.uChar.AsciiChar)
     {
-    case 87: key = K_UP; break;
-    case 83: key = K_DOWN; break;
-    case 65: key = K_LEFT; break; 
-    case 68: key = K_RIGHT; break; 
-
+    case 87:
     case 119: key = K_UP; break;
+    case 83:
     case 115: key = K_DOWN; break;
+    case 65: 
     case 97: key = K_LEFT; break;
+    case 68:
     case 100: key = K_RIGHT; break;
     case VK_SPACE: key = K_SPACE; break;
     case VK_ESCAPE: key = K_ESCAPE; break; 
