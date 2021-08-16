@@ -40,6 +40,7 @@ enum EGAMESTATES
 {
     S_SPLASHSCREEN,
     S_GAME,
+    S_Lose,
     S_COUNT
 };
 
@@ -77,6 +78,6 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent);   // handles keyb
 void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent); // handles mouse events for gameplay 
 
 void displayScored();
-void updateScord();
+void updateScord(int s);
 
 #endif // _GAME_H

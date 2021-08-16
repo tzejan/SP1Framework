@@ -9,7 +9,7 @@
 
 double  g_dElapsedTime;
 double  g_dDeltaTime;
-int score=0;
+float score=0;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 
@@ -196,7 +196,16 @@ void displayScored()
     COORD c;
     c.X = 0;
     c.Y = 0;
-    g_Console.writeToBuffer(c, "dfgklsjfadsfklgdgfljfzdbkjl", 0x59);
+    std::string s;
+    std::ostringstream ss;
+    int WS= floor(score);
+    ss <<"SCORE : "<< std::to_string(WS);
+    g_Console.writeToBuffer(c, ss.str(), 0x17);
+}
+
+void updateScord(int s)
+{
+    score += s;
 }
 
 //--------------------------------------------------------------
@@ -217,13 +226,14 @@ void update(double dt)
 {
     // get the delta time
     g_dElapsedTime += dt;
+  
     g_dDeltaTime = dt;
-    score +=dt;
     switch (g_eGameState)
     {
         case S_SPLASHSCREEN : splashScreenWait(); // game logic for the splash screen
             break;
-        case S_GAME: updateGame(); // gameplay logic when we are in the game
+        case S_GAME: updateGame();
+            score += 0.01;// gameplay logic when we are in the game
             break;
     }
 }
@@ -298,10 +308,12 @@ void render()
     case S_GAME: renderGame();
         break;
     }
-   // renderFramerate();      // renders debug information, frame rate, elapsed time, etc
-    renderInputEvents();    // renders status of input events
-    renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
     displayScored();
+
+    //renderFramerate();      // renders debug information, frame rate, elapsed time, etc
+  //  renderInputEvents();    // renders status of input events
+    renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
+    
 }
 
 void clearScreen()
