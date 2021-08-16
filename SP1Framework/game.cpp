@@ -310,7 +310,7 @@ void render()
     }
     displayScored();
 
-    //renderFramerate();      // renders debug information, frame rate, elapsed time, etc
+    renderFramerate();      // renders debug information, frame rate, elapsed time, etc
   //  renderInputEvents();    // renders status of input events
     renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
     
@@ -389,11 +389,11 @@ void renderFramerate()
     g_Console.writeToBuffer(c, ss.str());
 
     // displays the elapsed time
-    ss.str("");
+    /*ss.str("");
     ss << g_dElapsedTime << "secs";
     c.X = 0;
     c.Y = 0;
-    g_Console.writeToBuffer(c, ss.str(), 0x59);
+    g_Console.writeToBuffer(c, ss.str(), 0x59);*/
 }
 
 
