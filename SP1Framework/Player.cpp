@@ -44,10 +44,30 @@ bool Player::isCollided(GameObject* obj)
 
 bool Player::checkForCollision(GameObject* obj, int direction) 
 {
-	if (myPosition.GetPosX() + 1 == obj->GetPosX() && myPosition.GetPosY() + 1 == obj->GetPosY())
-		return true;
-	else
-		return false;
+	switch (direction)
+	{
+		case 1: // UP
+			if (myPosition.GetPosX() == obj->GetPosX() && myPosition.GetPosY() - 1 == obj->GetPosY())
+				return true;
+
+		case 2: // LEFT
+			if (myPosition.GetPosX() - 1 == obj->GetPosX() && myPosition.GetPosY() == obj->GetPosY())
+				return true;
+
+		case 3: // DOWN
+			if (myPosition.GetPosX() == obj->GetPosX() && myPosition.GetPosY() + 1 == obj->GetPosY())
+				return true;
+
+		case 4: // RIGHT
+			if (myPosition.GetPosX() + 1 == obj->GetPosX() && myPosition.GetPosY() == obj->GetPosY())
+				return true;
+
+		default: // STOP
+			break;
+	}
+
+	// If there is no collision
+	return false;
 }
 
 void Player::MoveObject(int x, int y)
