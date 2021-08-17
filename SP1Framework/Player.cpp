@@ -9,6 +9,8 @@ Player::Player()
 {
 	isPlayerCreate = true;
 	myPosition.SetMarker('P');
+	myPosition.UpdatePosition(10, 10, true);
+
 	std::cout << "Player have been created!" << std::endl;
 }
 
@@ -50,7 +52,7 @@ bool Player::checkForCollision(GameObject* obj, int direction)
 
 void Player::MoveObject(int x, int y)
 {
-	myPosition.UpdatePosition(x, y);
+	myPosition.UpdatePosition(x, y, false);
 }
 
 bool Player::CheckOnPlayer()

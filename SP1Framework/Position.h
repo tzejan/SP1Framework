@@ -10,7 +10,7 @@ public:
 	Position();
 	~Position();
 
-	void UpdatePosition(int x, int y);
+	void UpdatePosition(int x, int y, bool set);
 	void SetMarker(char m);
 
 	const int GetPosX();
