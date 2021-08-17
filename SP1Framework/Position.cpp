@@ -1,4 +1,5 @@
 #include "Position.h"
+#include <iostream>
 
 Position::Position()
 {
@@ -9,13 +10,21 @@ Position::Position()
 
 Position::~Position()
 {
-	// Remove Position
+	std::cout << "Position have been removed from GameObject!" << std::endl;
 }
 
-void Position::UpdatePosition(int x, int y)
+void Position::UpdatePosition(int x, int y, bool set)
 {
-	PosX += x;
-	PosY += y;
+	if (set)
+	{
+		PosX = x;
+		PosY = y;
+	}
+	else
+	{
+		PosX += x;
+		PosY += y;
+	}
 }
 
 void Position::SetMarker(char m)
