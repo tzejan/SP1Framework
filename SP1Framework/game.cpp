@@ -6,6 +6,9 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <fstream>
+
+using namespace std;
 
 double  g_dElapsedTime;
 double  g_dDeltaTime;
@@ -328,34 +331,61 @@ void renderGame()
 
 void renderMap()
 {
-    // Set up sample colours, and output shadings
+    //Set up sample colours, and output shadings
     const WORD colors[] = {
         0x1A, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
         0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6
     };
 
     COORD c;
-    for (int row = 0; row < 40; ++row)
+    //for (int row = 0; row < 40; ++row)
+    //{
+    //    for (int col = 0; col < 30; ++col) 
+    //    {
+    //        if (col == 0 || col == 29) 
+    //        {
+    //            c.X = row;
+    //            c.Y = col;
+    //            colour(colors[1]);
+    //        }
+    //        else if (row == 0 || row == 39) 
+    //        {
+    //            c.X = row;
+    //            c.Y = col;
+    //            colour(colors[1]);
+    //        }
+
+    //        g_Console.writeToBuffer(c, " ", colors[3]); //wat the shit is this
+    //    }
+
+    //}
+
+    ifstream file_("Map.txt");
+    string line_;
+    int rows = 0;
+    
+    while (getline(file_, line_))
     {
-        for (int col = 0; col < 30; ++col) 
+        for (int columns = 0; columns < line_.size(); columns++)
         {
-            if (col == 0 || col == 29) 
+            if (line_[columns] == '1')
             {
-                c.X = row;
-                c.Y = col;
-                colour(colors[1]);
+                c.X = rows;
+                c.Y = columns;
+                g_Console.writeToBuffer(c, " ", colors[2]);
             }
-            else if (row == 0 || row == 39) 
+            else if (line_[columns] == '0')
             {
-                c.X = row;
-                c.Y = col;
-                colour(colors[1]);
+                c.X = rows;
+                c.Y = columns;
+                g_Console.writeToBuffer(c, " ", colors[1]);
             }
-
-            g_Console.writeToBuffer(c, " ", colors[1]); //wat the shit is this
         }
-
+        rows++;
     }
+    
+    
+
 }
 
 
