@@ -6,17 +6,20 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <vector>
 #include "entity.h"
 #include "player.h"
+#include "bullet.h"
 
-float x = 0;
-float y = 0;
-
+int face = 1;
+int lastface = 1;
 double  g_dElapsedTime;
 double  g_dDeltaTime;
 float score=0;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
+
+std::vector<bullet> b;
 
 // Game specific variables here
 Player  player;
@@ -84,7 +87,7 @@ void shutdown( void )
 void getInput( void )
 {
     // resets all the keyboard events
-   // memset(g_skKeyEvent, 0, K_COUNT * sizeof(*g_skKeyEvent));
+    //memset(g_skKeyEvent, 0, K_COUNT * sizeof(*g_skKeyEvent));
     // then call the console to detect input from user
     g_Console.readConsoleInput();    
 }
@@ -205,6 +208,7 @@ void displayScored()
     std::string s;
     std::ostringstream ss;
     int WS= floor(score);
+     WS = lastface;
     ss <<"SCORE : "<< std::to_string(WS);
     g_Console.writeToBuffer(c, ss.str(), 0x17);
 }
@@ -256,6 +260,7 @@ void updateGame()       // gameplay logic
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
                         // sound can be played here too.
+    moveBullet();
 }
 
 void moveCharacter()
@@ -264,31 +269,50 @@ void moveCharacter()
     // providing a beep sound whenver we shift the character
     if (g_skKeyEvent[K_UP].keyDown && player.getCoordY() > 1)
     {
+        face += 1;
         player.movement(1);
     }
-   
     else if (g_skKeyEvent[K_DOWN].keyDown && player.getCoordY() < g_Console.getConsoleSize().Y - 1)
     {
-
+        face -= 1;
         player.movement(2);
     }
     if (g_skKeyEvent[K_LEFT].keyDown && player.getCoordX() > 0)
     {
-
+        face -= 3;
         player.movement(3);
     }
     else if (g_skKeyEvent[K_RIGHT].keyDown && player.getCoordX() < g_Console.getConsoleSize().X - 1)
     {
-
+        face += 3;
         player.movement(4);
     }
-    if (g_skKeyEvent[K_SPACE].keyReleased)
+    if (face != 0)
     {
-       // player.m_bActive = !player.m_bActive;        
+        lastface = face;
     }
+    if (g_skKeyEvent[K_SPACE].keyDown)
+    {
+        createBullet();
+    }
+ 
+    face = 0;
 
    
 }
+void createBullet()
+{
+    b.push_back(bullet(player.getCoordX(), player.getCoordY(), lastface));
+}
+
+void moveBullet()
+{
+    for (int i = 0; i < b.size(); i++)
+    {
+        b[i].movement(b[i].GetDirection());
+    }
+}
+
 void processUserInput()
 {
     // quits the game if player hits the escape key
@@ -317,7 +341,7 @@ void render()
     displayScored();
 
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
-  //  renderInputEvents();    // renders status of input events
+    renderInputEvents();    // renders status of input events
     renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
     
 }
@@ -352,6 +376,7 @@ void renderGame()
 {
     renderMap();        // renders the map to the buffer first
     renderCharacter();  // renders the character into the buffer
+    renderBullet();
 }
 
 void renderMap()
@@ -377,13 +402,24 @@ void renderCharacter()
     // Draw the location of the character
     WORD charColor = 0x0C;
     //if (player.m_bActive)
-   // {
+    //{
     //    charColor = 0x0A;
     //}
     COORD temp;
     temp.X = player.getCoordX();
     temp.Y = player.getCoordY();
     g_Console.writeToBuffer(temp, player.getSym(), 0x17);
+}
+
+void renderBullet()
+{
+    for (int i = 0; i < b.size(); i++)
+    {
+        COORD temp;
+        temp.X = b[i].getCoordX();
+        temp.Y = b[i].getCoordY();
+        g_Console.writeToBuffer(temp, b[i].getSym(), 0x17);
+    }
 }
 
 void renderFramerate()

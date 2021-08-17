@@ -80,4 +80,8 @@ void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent); // handles mous
 void displayScored();
 void updateScord(int s);
 
+void renderBullet();
+void moveBullet();
+void createBullet();
+
 #endif // _GAME_H
