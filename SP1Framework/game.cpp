@@ -10,6 +10,7 @@
 
 using namespace std;
 
+double timeToMove = 5;
 double  g_dElapsedTime;
 double  g_dDeltaTime;
 SKeyEvent g_skKeyEvent[K_COUNT];
@@ -22,6 +23,8 @@ EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 
 // Console object
 Console g_Console(40, 30, "SP1 Framework");
+
+#pragma region Startup
 
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -41,9 +44,12 @@ void init( void )
     g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
     g_sChar.m_bActive = true;
+
     Enemy.m_cLocation.X = g_Console.getConsoleSize().X - 5;
     Enemy.m_cLocation.Y = g_Console.getConsoleSize().Y - 29;
     Enemy.m_bActive = true;
+
+
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
 
@@ -66,6 +72,10 @@ void shutdown( void )
 
     g_Console.clearBuffer();
 }
+
+#pragma endregion
+
+#pragma region Handlers
 
 //--------------------------------------------------------------
 // Purpose  : Get all the console input events
@@ -190,6 +200,9 @@ void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
     g_mouseEvent.buttonState = mouseEvent.dwButtonState;
     g_mouseEvent.eventFlags = mouseEvent.dwEventFlags;
 }
+#pragma endregion
+
+#pragma region Update Functions
 
 //--------------------------------------------------------------
 // Purpose  : Update function
@@ -231,6 +244,7 @@ void updateGame()       // gameplay logic
 {
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
+    moveEnemy();
                         // sound can be played here too.
 }
 
@@ -265,6 +279,16 @@ void moveCharacter()
 
    
 }
+
+void moveEnemy()
+{
+    if (g_dElapsedTime >= timeToMove) 
+    {
+        timeToMove = g_dElapsedTime + 0.8;
+        Enemy.m_cLocation.Y++;
+    }
+}
+
 void processUserInput()
 {
     // quits the game if player hits the escape key
@@ -325,7 +349,7 @@ void renderGame()
 {
     renderMap();        // renders the map to the buffer first
     renderCharacter();  // renders the character into the buffer
-    renderEnemy();
+    renderEnemy();  //renders the enemy (prototype)
     
 }
 
@@ -387,7 +411,6 @@ void renderMap()
     
 
 }
-
 
 void renderCharacter()
 {
@@ -495,19 +518,14 @@ void renderInputEvents()
 
     
 }
+
 void renderEnemy()
 {
-    
     g_Console.writeToBuffer(Enemy.m_cLocation, (char)10);
-    
-    Enemy.m_cLocation.Y += 25 * g_dDeltaTime;
     
 }
 
-void Enemymovement()
-{
-    
-}
+#pragma endregion
 
 
 
