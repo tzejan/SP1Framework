@@ -19,7 +19,7 @@ float score=0;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 
-std::vector<bullet> b;
+std::vector<bullet*> b;
 
 // Game specific variables here
 Player  player;
@@ -208,7 +208,7 @@ void displayScored()
     std::string s;
     std::ostringstream ss;
     int WS= floor(score);
-     WS = lastface;
+    WS = b.size();
     ss <<"SCORE : "<< std::to_string(WS);
     g_Console.writeToBuffer(c, ss.str(), 0x17);
 }
@@ -302,14 +302,15 @@ void moveCharacter()
 }
 void createBullet()
 {
-    b.push_back(bullet(player.getCoordX(), player.getCoordY(), lastface));
+    b.push_back(new bullet(player.getCoordX(), player.getCoordY(), lastface));
 }
 
 void moveBullet()
 {
     for (int i = 0; i < b.size(); i++)
     {
-        b[i].movement(b[i].GetDirection());
+        b[i]->movement(b[i]->GetDirection());
+        destroyBullet(i);
     }
 }
 
@@ -341,9 +342,21 @@ void render()
     displayScored();
 
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
-    renderInputEvents();    // renders status of input events
+    //renderInputEvents();    // renders status of input events
     renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
     
+}
+void destroyBullet(int i)
+{
+    
+    if (b[i]->getCoordX() > g_Console.getConsoleSize().X ||
+        b[i]->getCoordY() > g_Console.getConsoleSize().Y ||
+        b[i]->getCoordX() < 0 ||
+        b[i]->getCoordY() < 0)
+    {
+        delete b[i];
+        b.erase(b.begin() + i);
+    }
 }
 
 void clearScreen()
@@ -416,9 +429,9 @@ void renderBullet()
     for (int i = 0; i < b.size(); i++)
     {
         COORD temp;
-        temp.X = b[i].getCoordX();
-        temp.Y = b[i].getCoordY();
-        g_Console.writeToBuffer(temp, b[i].getSym(), 0x17);
+        temp.X = b[i]->getCoordX();
+        temp.Y = b[i]->getCoordY();
+        g_Console.writeToBuffer(temp, b[i]->getSym(), 0x17);
     }
 }
 

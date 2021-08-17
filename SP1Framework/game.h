@@ -83,5 +83,6 @@ void updateScord(int s);
 void renderBullet();
 void moveBullet();
 void createBullet();
+void destroyBullet(int i);
 
 #endif // _GAME_H
