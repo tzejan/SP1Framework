@@ -8,7 +8,7 @@ bool Player::JewelCapture = false;
 Player::Player()
 {
 	isPlayerCreate = true;
-	myPosition.SetMarker('N');
+	myPosition.SetMarker('P');
 	std::cout << "Player have been created!" << std::endl;
 }
 
@@ -30,9 +30,6 @@ void Player::Interact(GameObject* obj)
 			JewelCapture = true; // Player got the jewel
 			break;
 	}
-
-	// Remove object when interacted
-	delete obj;
 }
 
 bool Player::isCollided(GameObject* obj)
