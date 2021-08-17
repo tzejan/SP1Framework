@@ -78,6 +78,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bullet.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="Framework\console.cpp" />
     <ClCompile Include="Framework\timer.cpp" />
@@ -86,6 +87,7 @@
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bullet.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="Framework\console.h" />
     <ClInclude Include="Framework\timer.h" />

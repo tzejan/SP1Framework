@@ -9,7 +9,6 @@
 #include "entity.h"
 #include "player.h"
 
-float testing = 0.1;
 float x = 0;
 float y = 0;
 
@@ -42,6 +41,7 @@ void init( void )
     g_eGameState = S_SPLASHSCREEN;
 
     player.setSym(94);
+    player.setspeed(0.1);
     player.setCoordX(g_Console.getConsoleSize().X / 2);
     player.setCoordY(g_Console.getConsoleSize().Y / 2);
     player.setm_bActive(false);
@@ -264,65 +264,23 @@ void moveCharacter()
     // providing a beep sound whenver we shift the character
     if (g_skKeyEvent[K_UP].keyDown && player.getCoordY() > 1)
     {
-        //Beep(1440, 30);
-        if (y > 0)
-        {
-            y = -1;
-        }
-
-        y -= testing;
-        if (ceill(y) <= -1)
-        {
-            player.setCoordY(player.getCoordY() -1);
-            player.setSym(94);
-            y = 0;
-        }
+        player.movement(1);
     }
    
     else if (g_skKeyEvent[K_DOWN].keyDown && player.getCoordY() < g_Console.getConsoleSize().Y - 1)
     {
-        if (y < 0)
-        {
-            y = 1;
-        }
-        y += testing;
-        if (floor(y) >= 1)
-        {
-            //Beep(1440, 30);
-            player.setCoordY(player.getCoordY() + 1);
-            player.setSym(118);
-            y = 0;
-        }
+
+        player.movement(2);
     }
     if (g_skKeyEvent[K_LEFT].keyDown && player.getCoordX() > 0)
     {
-        if (x > 0)
-        {
-            x = -1;
-        }
-        x -= testing;
-        if (ceill(x) <= -1)
-        {
-            //Beep(1440, 30);
-            player.setCoordX(player.getCoordX() - 1);
-            player.setSym(60);
-            x = 0;
-        }
+
+        player.movement(3);
     }
     else if (g_skKeyEvent[K_RIGHT].keyDown && player.getCoordX() < g_Console.getConsoleSize().X - 1)
     {
-        if (x < 0)
-        {
-            x = 1;
-        }
-        x += testing;
-        if (floor(x) >= 1)
-        {
-            //Beep(1440, 30);
-            player.setCoordX(player.getCoordX() + 1);
-            player.setSym(62);
-            x = 0;
-        }
+
+        player.movement(4);
     }
     if (g_skKeyEvent[K_SPACE].keyReleased)
     {

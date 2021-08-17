@@ -34,3 +34,13 @@ char entity::getSym()
 {
     return sym;
 }
+
+float entity::getSpeed()
+{
+    return speed;
+}
+
+void entity::setspeed(float i)
+{
+    speed = i;
+}

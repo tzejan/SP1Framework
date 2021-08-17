@@ -3,10 +3,15 @@
 
 class entity
 {
-protected:
+private:
 	COORD Location;
 	bool  m_bActive;
 	char sym;
+	float speed;
+
+protected:
+	float mx;
+	float my;
 
 public:
 	int getCoordX();
@@ -16,5 +21,9 @@ public:
 	void setm_bActive(bool i);
 	void setSym(char a);
 	char getSym();
+	float getSpeed();
+	void setspeed(float i);
+
+	virtual void movement(int dir) = 0;
 };
 
