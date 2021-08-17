@@ -8,6 +8,8 @@ bool g_bQuitGame = false;                    // Set to true if you want to quit 
 const unsigned char gc_ucFPS = 100;                // FPS of this game
 const unsigned int gc_uFrameTime = 1000 / gc_ucFPS;    // time for each frame
 
+bool gO = false;
+
 //main loop declaration
 void mainLoop( void );
 
@@ -36,10 +38,38 @@ void mainLoop( void )
 {
     g_Timer.startTimer();    // Start timer to calculate how long it takes to render this frame
     while (!g_bQuitGame)      // run this loop until user wants to quit 
-    {        
-        getInput();                         // get keyboard input
-        update(g_Timer.getElapsedTime());   // update the game
-        render();                           // render the graphics output to screen
-        g_Timer.waitUntil(gc_uFrameTime);   // Frame rate limiter. Limits each frame to a specified time in ms.      
+    {   
+
+        update(g_Timer.getElapsedTime());
+        getInput();
+        render2();
+        update(g_Timer.getElapsedTime());
+        g_Timer.waitUntil(gc_uFrameTime);
+        if (renderMenu() == 1)
+        {
+            while (!gO)
+            {
+                CStopWatch h_Timer;
+                h_Timer.startTimer();
+                getInput();
+                render();
+                update(h_Timer.getElapsedTime());
+            }
+        }
+        else if (renderMenu() == 2)
+        {
+            while (!gO)
+            {
+                CStopWatch h_Timer;
+                h_Timer.startTimer();
+                getInput();
+                render3();
+                update(h_Timer.getElapsedTime());
+            }
+        }
+        else if (renderMenu() == 3)
+        {
+            g_bQuitGame = true;
+        }
     }    
 }

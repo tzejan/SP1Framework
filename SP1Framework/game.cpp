@@ -60,6 +60,52 @@ void shutdown( void )
     g_Console.clearBuffer();
 }
 
+void render2(void) // for rendering the menu
+{
+    clearScreen();
+    renderMenu();
+    renderFramerate();
+    //renderInputEvents();
+    renderToScreen();
+}
+
+int renderMenu(void)
+{
+    int choice;
+    COORD b, s, q;
+    std::ostringstream bb, ss, qq;
+
+    b.X = 18; b.Y = 10;
+    s.X = 18; s.Y = 15;
+    q.X = 18; q.Y = 20;
+
+    bb << "Start";
+    ss << "Score";
+    qq << "Quit";
+
+    g_Console.writeToBuffer(b, bb.str(), 0xF0);
+    g_Console.writeToBuffer(s, ss.str(), 0xF0);
+    g_Console.writeToBuffer(q, qq.str(), 0xF0);
+
+    if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && ((g_mouseEvent.mousePosition.X >= 18) && (g_mouseEvent.mousePosition.X <= 23)) && ((g_mouseEvent.mousePosition.Y >= 10) && (g_mouseEvent.mousePosition.Y <= 13)))
+        return choice = 1;
+    else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && ((g_mouseEvent.mousePosition.X >= 18) && (g_mouseEvent.mousePosition.X <= 23)) && ((g_mouseEvent.mousePosition.Y >= 15) && (g_mouseEvent.mousePosition.Y <= 18)))
+        return choice = 2;
+    else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && ((g_mouseEvent.mousePosition.X >= 18) && (g_mouseEvent.mousePosition.X <= 23)) && ((g_mouseEvent.mousePosition.Y >= 20) && (g_mouseEvent.mousePosition.Y <= 23)))
+        return choice = 3;
+}
+
+void render3(void)
+{
+    clearScreen();
+    renderScore();
+    renderToScreen();
+}
+
+void renderScore(void)
+{
+}
+
 //--------------------------------------------------------------
 // Purpose  : Get all the console input events
 //            This function sets up the keyboard and mouse input from the console.
@@ -214,6 +260,8 @@ void update(double dt)
 }
 
 
+
+
 void splashScreenWait()    // waits for time to pass in splash screen
 {
     if (g_dElapsedTime > 3.0) // wait for 3 seconds to switch to game mode, else do nothing
@@ -231,27 +279,28 @@ void moveCharacter()
 {    
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
-    if (g_skKeyEvent[K_UP].keyReleased && g_sChar.m_cLocation.Y > 0)
+    if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 1) // originally 0 and -1 but with additional 1, player will not be able to go into the borders
+                                                                 // change this according to the UI to prevent player from going into the it.
     {
         //Beep(1440, 30);
         g_sChar.m_cLocation.Y--;       
     }
-    if (g_skKeyEvent[K_LEFT].keyReleased && g_sChar.m_cLocation.X > 0)
+    if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 1) // player move when key is down and stops if it releases, originally was move when released (single movements)
     {
         //Beep(1440, 30);
         g_sChar.m_cLocation.X--;        
     }
-    if (g_skKeyEvent[K_DOWN].keyReleased && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
+    if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 2)
     {
         //Beep(1440, 30);
         g_sChar.m_cLocation.Y++;        
     }
-    if (g_skKeyEvent[K_RIGHT].keyReleased && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
+    if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 2)
     {
         //Beep(1440, 30);
         g_sChar.m_cLocation.X++;        
     }
-    if (g_skKeyEvent[K_SPACE].keyReleased)
+    if (g_skKeyEvent[K_SPACE].keyDown)
     {
         g_sChar.m_bActive = !g_sChar.m_bActive;        
     }
@@ -284,7 +333,7 @@ void render()
         break;
     }
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
-    renderInputEvents();    // renders status of input events
+    //renderInputEvents();    // renders status of input events
     renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
 }
 
