@@ -17,6 +17,7 @@ void Player::movement(int dir)
 	
 	if (dir == 1)
 	{
+		setSym(94);
 		if (my > 0)
 		{
 			my = -1;
@@ -26,12 +27,12 @@ void Player::movement(int dir)
 		if (ceil(my) <= -1)
 		{
 			setCoordY(getCoordY() - 1);
-			setSym(94);
 			my = 0;
 		}
 	}
 	if (dir == 2)
 	{
+		setSym(118);
 		if (my < 0)
 		{
 			my = 1;
@@ -41,12 +42,14 @@ void Player::movement(int dir)
 		{
 			//Beep(1440, 30);
 			setCoordY(getCoordY() + 1);
-			setSym(118);
+		
 			my = 0;
 		}
 	}
 	if (dir == 3)
 	{
+		setSym(60);
+
 		if (mx > 0)
 		{
 			mx = -1;
@@ -56,12 +59,13 @@ void Player::movement(int dir)
 		{
 			//Beep(1440, 30);
 			setCoordX(getCoordX() - 1);
-			setSym(60);
 			mx = 0;
 		}
 	}
 	if (dir == 4)
 	{
+		setSym(62);
+
 		if (mx < 0)
 		{
 			mx = 1;
@@ -71,7 +75,6 @@ void Player::movement(int dir)
 		{
 			//Beep(1440, 30);
 			setCoordX(getCoordX() + 1);
-			setSym(62);
 			mx = 0;
 		}
 	}
