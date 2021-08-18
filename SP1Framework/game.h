@@ -72,6 +72,13 @@ void renderToScreen();      // dump the contents of the buffer to the screen, on
 void renderInputEvents();   // renders the status of input events
 void renderEnemy();         // renders the enemy into the buffer
 void Enemymovement();       // moves enemy, collision detection, physics
+void renderBullet();
+void BulletMove();
+void checkCollision();
+void renderGameInfo();
+void renderPowerUp();
+void movePowerUp();
+void checkKilled();
 
 // keyboard and mouse input event managers
 void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent);  // define this function for the console to call when there are keyboard events

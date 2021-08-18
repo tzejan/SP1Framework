@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <sstream>
 #include <fstream>
+#include <time.h>
 
 using namespace std;
 
@@ -19,6 +20,12 @@ SMouseEvent g_mouseEvent;
 // Game specific variables here
 SGameChar   g_sChar;
 SGameChar   Enemy;
+SGameChar   BulletTest;
+SGameChar   PowerUp;
+
+int number = rand()%37 -2;
+int ekilled = 0;
+
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 
 // Console object
@@ -45,10 +52,15 @@ void init( void )
     g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
     g_sChar.m_bActive = true;
 
-    Enemy.m_cLocation.X = g_Console.getConsoleSize().X - 5;
+    Enemy.m_cLocation.X = g_Console.getConsoleSize().X - number;
     Enemy.m_cLocation.Y = g_Console.getConsoleSize().Y - 29;
     Enemy.m_bActive = true;
 
+    BulletTest.m_cLocation.X = g_sChar.m_cLocation.X;
+    BulletTest.m_cLocation.Y = g_sChar.m_cLocation.Y - 1;
+    BulletTest.m_bActive = false;
+
+    PowerUp.m_bActive = false;
 
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
@@ -245,6 +257,8 @@ void updateGame()       // gameplay logic
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
     moveEnemy();
+    BulletMove();
+    checkCollision();
                         // sound can be played here too.
 }
 
@@ -272,9 +286,9 @@ void moveCharacter()
         //Beep(1440, 30);
         g_sChar.m_cLocation.X++;        
     }
-    if (g_skKeyEvent[K_SPACE].keyReleased)
+    if (g_skKeyEvent[K_SPACE].keyDown)
     {
-        g_sChar.m_bActive = !g_sChar.m_bActive;        
+        BulletTest.m_bActive = true;
     }
 
    
@@ -293,7 +307,10 @@ void processUserInput()
 {
     // quits the game if player hits the escape key
     if (g_skKeyEvent[K_ESCAPE].keyReleased)
-        g_bQuitGame = true;    
+    {
+        g_bQuitGame = true;
+    }
+    
 }
 
 //--------------------------------------------------------------
@@ -316,6 +333,7 @@ void render()
     }
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
     renderInputEvents();    // renders status of input events
+    renderGameInfo();
     renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
 }
 
@@ -350,6 +368,7 @@ void renderGame()
     renderMap();        // renders the map to the buffer first
     renderCharacter();  // renders the character into the buffer
     renderEnemy();  //renders the enemy (prototype)
+    renderBullet(); //render spaceship bullet
     
 }
 
@@ -523,6 +542,84 @@ void renderEnemy()
 {
     g_Console.writeToBuffer(Enemy.m_cLocation, (char)10);
     
+}
+
+void renderBullet()
+{
+    if (BulletTest.m_bActive == true)
+    {
+        g_Console.writeToBuffer(BulletTest.m_cLocation, (char)6);
+        BulletTest.m_cLocation.Y += 25 * g_dDeltaTime;
+    }
+    
+}
+
+void BulletMove()
+{
+    if (BulletTest.m_bActive == true)
+    {
+        BulletTest.m_cLocation.Y = BulletTest.m_cLocation.Y - 1;
+        if (BulletTest.m_cLocation.Y == 0)
+        {
+
+            BulletTest.m_cLocation.X = g_sChar.m_cLocation.X;
+            BulletTest.m_cLocation.Y = g_sChar.m_cLocation.Y - 1; // resets the position to front of space ship
+            BulletTest.m_bActive = false; // stops rendering
+        }
+
+    }
+    else
+    {
+        BulletTest.m_cLocation.X = g_sChar.m_cLocation.X;
+        BulletTest.m_cLocation.Y = g_sChar.m_cLocation.Y - 1;
+    }
+  
+}
+
+void checkCollision()
+{
+    if (BulletTest.m_bActive == true)
+    {
+        if (BulletTest.m_cLocation.X == Enemy.m_cLocation.X && BulletTest.m_cLocation.Y == Enemy.m_cLocation.Y)
+        {
+            Enemy.m_bActive = false;
+            Enemy.m_cLocation.X = g_Console.getConsoleSize().X - rand() % 38 - 2;
+            Enemy.m_cLocation.Y = g_Console.getConsoleSize().Y - 29;
+            Enemy.m_bActive = true;
+
+            BulletTest.m_cLocation.X = g_sChar.m_cLocation.X;
+            BulletTest.m_cLocation.Y = g_sChar.m_cLocation.Y - 1; // resets the position to front of space ship
+            BulletTest.m_bActive = false; // stops rendering
+
+            ekilled++;
+        }
+        
+    }
+   
+}
+
+void renderGameInfo()
+{
+    COORD info;
+    info.X = g_Console.getConsoleSize().X - 18;
+    info.Y = g_Console.getConsoleSize().Y - 1;
+    g_Console.writeToBuffer(info, "Enemies killed: " + to_string(ekilled));
+}
+
+void renderPowerUp()
+{
+    if (PowerUp.m_bActive == true)
+    {
+        g_Console.writeToBuffer(Enemy.m_cLocation, (char)16);
+    }
+}
+
+void checkKilled()
+{
+    if (ekilled == 10)
+    {
+        PowerUp.m_bActive = true;
+    }
 }
 
 #pragma endregion
