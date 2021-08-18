@@ -17,7 +17,7 @@ SGameChar   g_sChar;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 
 // Console object
-Console g_Console(80, 25, "SP1 Framework");
+Console g_Console(120, 50, "SP1 Framework");
 
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -206,7 +206,7 @@ void update(double dt)
 
     switch (g_eGameState)
     {
-        case S_SPLASHSCREEN : splashScreenWait(); // game logic for the splash screen
+        case S_SPLASHSCREEN: splashScreenWait(); // game logic for the splash screen
             break;
         case S_GAME: updateGame(); // gameplay logic when we are in the game
             break;
@@ -304,8 +304,8 @@ void renderSplashScreen()  // renders the splash screen
 {
     COORD c = g_Console.getConsoleSize();
     c.Y /= 3;
-    c.X = c.X / 2 - 9;
-    g_Console.writeToBuffer(c, "A game in 3 seconds", 0x03);
+    c.X = c.X / 2 - 16;
+    g_Console.writeToBuffer(c, "Press 'W, A, S, D' to move around", 0x03);
     c.Y += 1;
     c.X = g_Console.getConsoleSize().X / 2 - 20;
     g_Console.writeToBuffer(c, "Press <Space> to change character colour", 0x09);
@@ -316,11 +316,11 @@ void renderSplashScreen()  // renders the splash screen
 
 void renderGame()
 {
-    renderMap();        // renders the map to the buffer first
+    //renderMap();        // renders the map to the buffer first
     renderCharacter();  // renders the character into the buffer
 }
 
-void renderMap()
+/*void renderMap()
 {
     // Set up sample colours, and output shadings
     const WORD colors[] = {
@@ -336,7 +336,7 @@ void renderMap()
         colour(colors[i]);
         g_Console.writeToBuffer(c, " °±²Û", colors[i]);
     }
-}
+}*/
 
 void renderCharacter()
 {
@@ -392,19 +392,19 @@ void renderInputEvents()
             break;
         default: continue;
         }
-        if (g_skKeyEvent[i].keyDown)
+        /*if (g_skKeyEvent[i].keyDown)
             ss << key << " pressed";
         else if (g_skKeyEvent[i].keyReleased)
             ss << key << " released";
         else
             ss << key << " not pressed";
-
+        */
         COORD c = { startPos.X, startPos.Y + i };
         g_Console.writeToBuffer(c, ss.str(), 0x17);
     }
 
     // mouse events    
-    ss.str("");
+    /*ss.str("");
     ss << "Mouse position (" << g_mouseEvent.mousePosition.X << ", " << g_mouseEvent.mousePosition.Y << ")";
     g_Console.writeToBuffer(g_mouseEvent.mousePosition, ss.str(), 0x59);
     ss.str("");
@@ -432,15 +432,15 @@ void renderInputEvents()
         g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 4, ss.str(), 0x59);
         break;        
     case MOUSE_WHEELED:
-        if (g_mouseEvent.buttonState & 0xFF000000)
-            ss.str("Mouse wheeled down");
-        else
-            ss.str("Mouse wheeled up");
+        if (g_mouseEvent.buttonState & 0xFF000000) 
+           ss.str("Mouse wheeled down");
+        else 
+           ss.str("Mouse wheeled up");
         g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 5, ss.str(), 0x59);
         break;
     default:        
         break;
-    }
+    }*/
     
 }
 
