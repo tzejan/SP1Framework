@@ -25,6 +25,11 @@ void entity::setm_bActive(bool i)
     m_bActive = i;
 }
 
+bool entity::getm_activr()
+{
+    return m_bActive;
+}
+
 void entity::setSym(char a)
 {
     sym = a;
@@ -43,4 +48,24 @@ float entity::getSpeed()
 void entity::setspeed(float i)
 {
     speed = i;
+}
+
+
+float entity::getFireRate()
+{
+    return FireRate;
+}
+
+void entity::SetFireRate(float i)
+{
+    FireRate = i;
+}
+float entity::getFireC()
+{
+    return fireCharge;
+}
+
+void entity::SetFireC(float i)
+{
+    fireCharge = i;
 }

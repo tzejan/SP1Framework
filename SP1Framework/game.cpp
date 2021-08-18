@@ -47,7 +47,7 @@ void init( void )
     player.setspeed(0.1);
     player.setCoordX(g_Console.getConsoleSize().X / 2);
     player.setCoordY(g_Console.getConsoleSize().Y / 2);
-    player.setm_bActive(false);
+    player.setm_bActive(true);
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
 
@@ -199,6 +199,18 @@ void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
     g_mouseEvent.buttonState = mouseEvent.dwButtonState;
     g_mouseEvent.eventFlags = mouseEvent.dwEventFlags;
 }
+void rechargeFire()
+{
+    if (player.getm_activr() == false)
+    {
+        player.SetFireC(player.getFireC()+0.01);
+        if (player.getFireC() >= player.getFireRate())
+        {
+            player.setm_bActive(true);
+            player.SetFireC(0);
+        }
+    }
+}
 
 void displayScored()
 {
@@ -259,7 +271,7 @@ void updateGame()       // gameplay logic
 {
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
-                        // sound can be played here too.
+    rechargeFire();                    // sound can be played here too.
     moveBullet();
 }
 
@@ -291,9 +303,11 @@ void moveCharacter()
     {
         lastface = face;
     }
-    if (g_skKeyEvent[K_SPACE].keyDown)
+    if (g_skKeyEvent[K_SPACE].keyDown && player.getm_activr()==true)
     {
         createBullet();
+        player.setm_bActive(false);
+
     }
  
     face = 0;
@@ -388,8 +402,8 @@ void renderSplashScreen()  // renders the splash screen
 void renderGame()
 {
     renderMap();        // renders the map to the buffer first
-    renderCharacter();  // renders the character into the buffer
     renderBullet();
+    renderCharacter();  // renders the character into the buffer
 }
 
 void renderMap()

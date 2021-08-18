@@ -1,5 +1,7 @@
 #pragma once
 #include "entity.h"
+#include <iostream>
+
 class bullet :
     public entity
 {

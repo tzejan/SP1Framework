@@ -5,9 +5,13 @@ class entity
 {
 private:
 	COORD Location;
-	bool  m_bActive;
 	char sym;
 	float speed;
+
+	//fireing
+	bool  m_bActive;
+	float FireRate;
+	float fireCharge;
 
 protected:
 	float mx;
@@ -19,10 +23,16 @@ public:
 	void setCoordX(int i);
 	void setCoordY(int i);
 	void setm_bActive(bool i);
+	bool getm_activr();
 	void setSym(char a);
 	char getSym();
 	float getSpeed();
 	void setspeed(float i);
+
+	float getFireRate();
+	void SetFireRate(float i);
+	float getFireC();
+	void SetFireC(float i);
 
 	virtual void movement(int dir) = 0;
 };

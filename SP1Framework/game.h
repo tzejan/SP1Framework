@@ -85,4 +85,6 @@ void moveBullet();
 void createBullet();
 void destroyBullet(int i);
 
+void rechargeFire();
+
 #endif // _GAME_H

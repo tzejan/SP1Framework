@@ -7,6 +7,7 @@ bullet::bullet()
 	setCoordY(0);
 	mx = 0;
 	my = 0;
+	setspeed(0.5);
 }
 
 bullet::bullet(int posX, int posY,int dir)
@@ -18,61 +19,197 @@ bullet::bullet(int posX, int posY,int dir)
 	direection = dir;
 	mx = 0;
 	my = 0;
+	setspeed(0.2f);
 }
 
 void bullet::movement(int dir)
 {
 	if (dir == 1)
 	{
-		setSym(124);
 		//up
-		setCoordY(getCoordY() - 1);
+		setSym(124);
+		if (my > 0)
+		{
+			my = -1;
+		}
+
+		my -= getSpeed();
+		if (ceil(my) <= -1)
+		{
+			setCoordY(getCoordY() - 1);
+	
+			my = 0;
+		}
 	}
 	else if (dir == -1)
 	{
 		setSym(124);
 		//down
-		setCoordY(getCoordY() + 1);
+		if (my < 0)
+		{
+			my = 1;
+		}
+		my += getSpeed();
+		if (floor(my) >= 1)
+		{
+			//Beep(1440, 30);
+			setCoordY(getCoordY() + 1);
+
+			my = 0;
+		}
 	}
 	else if (dir == 3)
 	{
 		setSym(45);
-		setCoordX(getCoordX() + 1);
+		
 		//right
+		if (mx < 0)
+		{
+			mx = 1;
+		}
+		mx += getSpeed();
+		if (floor(mx) >= 1)
+		{
+			//Beep(1440, 30);
+			setCoordX(getCoordX() + 1);
+		
+			mx = 0;
+		}
 	}
 	else if (dir == -3)
 	{
 		setSym(45);
 		//left
-		setCoordX(getCoordX() - 1);
+		if (mx > 0)
+		{
+			mx = -1;
+		}
+		mx -= getSpeed();
+		if (ceill(mx) <= -1)
+		{
+			//Beep(1440, 30);
+			setCoordX(getCoordX() - 1);
+		
+			mx = 0;
+		}
 	}
 	else if (dir == 4)
 	{
 		setSym(47);
 		//rightup
-		setCoordX(getCoordX() + 1);
-		setCoordY(getCoordY() - 1);
+		if (mx < 0)
+		{
+			mx = 1;
+		}
+		mx += getSpeed();
+		if (floor(mx) >= 1)
+		{
+			//Beep(1440, 30);
+			setCoordX(getCoordX() + 1);
+
+			mx = 0;
+		}
+		setSym(124);
+		if (my > 0)
+		{
+			my = -1;
+		}
+
+		my -= getSpeed();
+		if (ceil(my) <= -1)
+		{
+			setCoordY(getCoordY() - 1);
+
+			my = 0;
+		}
 	}
 	else if (dir == -4)
 	{
 		setSym(47);
 		//leftdown
-		setCoordX(getCoordX() - 1);
-		setCoordY(getCoordY() + 1);
+		if (mx > 0)
+		{
+			mx = -1;
+		}
+		mx -= getSpeed();
+		if (ceill(mx) <= -1)
+		{
+			//Beep(1440, 30);
+			setCoordX(getCoordX() - 1);
+
+			mx = 0;
+		}
+		if (my < 0)
+		{
+			my = 1;
+		}
+		my += getSpeed();
+		if (floor(my) >= 1)
+		{
+			//Beep(1440, 30);
+			setCoordY(getCoordY() + 1);
+
+			my = 0;
+		}
 	}
 	else if (dir == -2)
 	{
 		setSym(92);
 		//leftup
-		setCoordX(getCoordX() - 1);
-		setCoordY(getCoordY() - 1);
+		if (mx > 0)
+		{
+			mx = -1;
+		}
+		mx -= getSpeed();
+		if (ceill(mx) <= -1)
+		{
+			//Beep(1440, 30);
+			setCoordX(getCoordX() - 1);
+
+			mx = 0;
+		}
+		setSym(124);
+		if (my > 0)
+		{
+			my = -1;
+		}
+
+		my -= getSpeed();
+		if (ceil(my) <= -1)
+		{
+			setCoordY(getCoordY() - 1);
+
+			my = 0;
+		}
 	}
 	else if (dir == 2)
 	{
 		setSym(92);
 		//downright
-		setCoordX(getCoordX() + 1);
-		setCoordY(getCoordY() + 1);
+		if (mx < 0)
+		{
+			mx = 1;
+		}
+		mx += getSpeed();
+		if (floor(mx) >= 1)
+		{
+			//Beep(1440, 30);
+			setCoordX(getCoordX() + 1);
+
+			mx = 0;
+		}
+		if (my < 0)
+		{
+			my = 1;
+		}
+		my += getSpeed();
+		if (floor(my) >= 1)
+		{
+			//Beep(1440, 30);
+			setCoordY(getCoordY() + 1);
+
+			my = 0;
+		}
 	}
 }
 

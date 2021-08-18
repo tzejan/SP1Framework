@@ -5,6 +5,8 @@ Player::Player()
 	setSym(0);
 	setCoordX(0);
 	setCoordY(0);
+	SetFireRate(1);
+	SetFireC(0);
 	mx = 0;
 	my = 0;
 }
