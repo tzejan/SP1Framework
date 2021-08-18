@@ -56,6 +56,8 @@ void update      ( double dt ); // update the game and the state of the game
 void render      ( void );      // renders the current state of the game to the console
 void shutdown    ( void );      // do clean up, free memory
 
+void resetTimer(void); // resets the timer and scrn state for when the user enters a new game from menu
+
 void render2(void); // for rendering menu
 int renderMenu(void); // will be inside render3
 void render3(void); // for rendering score

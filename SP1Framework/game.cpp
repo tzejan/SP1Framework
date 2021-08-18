@@ -60,11 +60,16 @@ void shutdown( void )
     g_Console.clearBuffer();
 }
 
+void resetTimer(void)
+{
+    g_dElapsedTime = 0.0;
+    g_eGameState = S_SPLASHSCREEN;
+}
+
 void render2(void) // for rendering the menu
 {
     clearScreen();
     renderMenu();
-    renderFramerate();
     //renderInputEvents();
     renderToScreen();
 }
@@ -353,12 +358,12 @@ void renderSplashScreen()  // renders the splash screen
 {
     COORD c = g_Console.getConsoleSize();
     c.Y /= 3;
-    c.X = c.X / 2 - 9;
-    g_Console.writeToBuffer(c, "A game in 3 seconds", 0x03);
-    c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 2 - 20;
-    g_Console.writeToBuffer(c, "Press <Space> to change character colour", 0x09);
-    c.Y += 1;
+    c.X = c.X / 2 - 16;
+    g_Console.writeToBuffer(c, "The game will start in 3 seconds", 0x03);
+    c.Y += 2;
+    c.X = g_Console.getConsoleSize().X / 2 - 12;
+    g_Console.writeToBuffer(c, "Use the Arrow keys to move", 0x09);
+    c.Y += 2;
     c.X = g_Console.getConsoleSize().X / 2 - 9;
     g_Console.writeToBuffer(c, "Press 'Esc' to quit", 0x09);
 }
@@ -411,6 +416,8 @@ void renderCharacter()
     g_Console.writeToBuffer(g_sChar.m_cLocation, (char)3, charColor);
 }
 
+
+
 void renderFramerate()
 {
     COORD c;
@@ -418,16 +425,16 @@ void renderFramerate()
     std::ostringstream ss;
     ss << std::fixed << std::setprecision(3);
     ss << 1.0 / g_dDeltaTime << "fps";
-    c.X = g_Console.getConsoleSize().X - 9;
+    c.X = g_Console.getConsoleSize().X - 9; // can prob be taken out
     c.Y = 0;
-    g_Console.writeToBuffer(c, ss.str());
+    g_Console.writeToBuffer(c, ss.str(), 0x0F);
 
     // displays the elapsed time
     ss.str("");
-    ss << g_dElapsedTime << "secs";
+    ss << g_dElapsedTime << "secs"; // the position can be changed according to the UI
     c.X = 0;
     c.Y = 0;
-    g_Console.writeToBuffer(c, ss.str(), 0x59);
+    g_Console.writeToBuffer(c, ss.str(), 0x0F);
 }
 
 // this is an example of how you would use the input events

@@ -46,25 +46,27 @@ void mainLoop( void )
         update(g_Timer.getElapsedTime());
         g_Timer.waitUntil(gc_uFrameTime);
         if (renderMenu() == 1)
-        {
+        {   
+            resetTimer();
+            g_Timer.startTimer();
             while (!gO)
             {
-                CStopWatch h_Timer;
-                h_Timer.startTimer();
                 getInput();
                 render();
-                update(h_Timer.getElapsedTime());
+                update(g_Timer.getElapsedTime());
+                g_Timer.waitUntil(gc_uFrameTime);
             }
         }
         else if (renderMenu() == 2)
         {
+            resetTimer();
+            g_Timer.startTimer();
             while (!gO)
             {
-                CStopWatch h_Timer;
-                h_Timer.startTimer();
                 getInput();
                 render3();
-                update(h_Timer.getElapsedTime());
+                update(g_Timer.getElapsedTime());
+                g_Timer.waitUntil(gc_uFrameTime);
             }
         }
         else if (renderMenu() == 3)
