@@ -6,6 +6,7 @@ Player::Player()
 	setCoordX(0);
 	setCoordY(0);
 	SetFireRate(1);
+	setm_bActive(true);
 	SetFireC(0);
 	mx = 0;
 	my = 0;
@@ -74,6 +75,16 @@ void Player::movement(int dir)
 			mx = 0;
 		}
 	}
+}
+
+void Player::setHp(int h)
+{
+	hp = h;
+}
+
+int Player::getHp()
+{
+	return hp;
 }
 
 
