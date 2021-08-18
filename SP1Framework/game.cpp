@@ -11,7 +11,6 @@
 
 using namespace std;
 
-double timeToMove = 5;
 double  g_dElapsedTime;
 double  g_dDeltaTime;
 SKeyEvent g_skKeyEvent[K_COUNT];
@@ -19,12 +18,14 @@ SMouseEvent g_mouseEvent;
 
 // Game specific variables here
 SGameChar   g_sChar;
-SGameChar   Enemy;
+SGameChar   Enemy[8];
 SGameChar   BulletTest;
 SGameChar   PowerUp;
 
-int number = rand()%37 -2;
+double timeToMove = 5;
 int ekilled = 0;
+int difficulty = 2; //value = number of enemies to spawn
+double start_gameTime = 0;  //Elapsed Time when starting
 
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 
@@ -42,6 +43,8 @@ Console g_Console(40, 30, "SP1 Framework");
 //--------------------------------------------------------------
 void init( void )
 {
+    srand((unsigned)time(0));
+
     // Set precision for floating point output
     g_dElapsedTime = 0.0;    
 
@@ -52,9 +55,22 @@ void init( void )
     g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
     g_sChar.m_bActive = true;
 
-    Enemy.m_cLocation.X = g_Console.getConsoleSize().X - number;
-    Enemy.m_cLocation.Y = g_Console.getConsoleSize().Y - 29;
-    Enemy.m_bActive = true;
+    //Randomize starting spawn points
+    for (int i = 0; i < 6; i++)
+    {
+        int number = rand() % 36 - 2;
+        Enemy[i].m_cLocation.X = g_Console.getConsoleSize().X - number;
+        Enemy[i].m_cLocation.Y = g_Console.getConsoleSize().Y - 29;
+
+        if (i < difficulty)
+        {
+            Enemy[i].m_bActive = true;  //Spawns [number] enemy first
+        }
+        else
+        {
+            Enemy[i].m_bActive = false; //Hides the rest
+        }
+    }
 
     BulletTest.m_cLocation.X = g_sChar.m_cLocation.X;
     BulletTest.m_cLocation.Y = g_sChar.m_cLocation.Y - 1;
@@ -245,15 +261,31 @@ void update(double dt)
     }
 }
 
-
 void splashScreenWait()    // waits for time to pass in splash screen
 {
     if (g_dElapsedTime > 3.0) // wait for 3 seconds to switch to game mode, else do nothing
         g_eGameState = S_GAME;
+        start_gameTime = g_dElapsedTime;
 }
 
 void updateGame()       // gameplay logic
 {
+    if (start_gameTime != 0) 
+    {
+        if (g_dElapsedTime >= start_gameTime + 6.0 && g_dElapsedTime < start_gameTime + 15.0)
+        {
+            difficulty = 3;
+        }
+        else if (g_dElapsedTime >= start_gameTime + 15 && g_dElapsedTime < start_gameTime + 30)
+        {
+            difficulty = 5;
+        }
+        else if (g_dElapsedTime >= start_gameTime + 45)
+        {
+            difficulty = 8;
+        }
+    }
+
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
     moveEnemy();
@@ -298,8 +330,12 @@ void moveEnemy()
 {
     if (g_dElapsedTime >= timeToMove) 
     {
-        timeToMove = g_dElapsedTime + 0.8;
-        Enemy.m_cLocation.Y++;
+        timeToMove = g_dElapsedTime + 0.5;
+
+        for (int i = 0; i < difficulty; i++) 
+        {
+            Enemy[i].m_cLocation.Y++;  
+        }
     }
 }
 
@@ -332,7 +368,7 @@ void render()
         break;
     }
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
-    renderInputEvents();    // renders status of input events
+    //renderInputEvents();    // renders status of input events
     renderGameInfo();
     renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
 }
@@ -375,7 +411,8 @@ void renderGame()
 void renderMap()
 {
     //Set up sample colours, and output shadings
-    const WORD colors[] = {
+    const WORD colors[] = 
+    {
         0x1A, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
         0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6
     };
@@ -415,20 +452,18 @@ void renderMap()
             {
                 c.X = rows;
                 c.Y = columns;
-                g_Console.writeToBuffer(c, " ", colors[2]);
+                g_Console.writeToBuffer(c, " ", colors[0]);
             }
             else if (line_[columns] == '0')
             {
                 c.X = rows;
                 c.Y = columns;
-                g_Console.writeToBuffer(c, " ", colors[1]);
+                g_Console.writeToBuffer(c, " ", colors[4]);
             }
         }
         rows++;
     }
     
-    
-
 }
 
 void renderCharacter()
@@ -540,8 +575,11 @@ void renderInputEvents()
 
 void renderEnemy()
 {
-    g_Console.writeToBuffer(Enemy.m_cLocation, (char)10);
-    
+    for (int i = 0; i < difficulty; i++) 
+    {
+        g_Console.writeToBuffer(Enemy[i].m_cLocation, (char)10);
+    }
+
 }
 
 void renderBullet()
@@ -580,20 +618,26 @@ void checkCollision()
 {
     if (BulletTest.m_bActive == true)
     {
-        if (BulletTest.m_cLocation.X == Enemy.m_cLocation.X && BulletTest.m_cLocation.Y == Enemy.m_cLocation.Y)
+        for (int i = 0; i < 6; i++)
         {
-            Enemy.m_bActive = false;
-            Enemy.m_cLocation.X = g_Console.getConsoleSize().X - rand() % 38 - 2;
-            Enemy.m_cLocation.Y = g_Console.getConsoleSize().Y - 29;
-            Enemy.m_bActive = true;
+            if (i < difficulty) 
+            {
+                if (BulletTest.m_cLocation.X == Enemy[i].m_cLocation.X && BulletTest.m_cLocation.Y == Enemy[i].m_cLocation.Y)
+                {
+                    Enemy[i].m_bActive = false;
+                    Enemy[i].m_cLocation.X = g_Console.getConsoleSize().X - rand() % 38 - 2;
+                    Enemy[i].m_cLocation.Y = g_Console.getConsoleSize().Y - 29;
+                    Enemy[i].m_bActive = true;
 
-            BulletTest.m_cLocation.X = g_sChar.m_cLocation.X;
-            BulletTest.m_cLocation.Y = g_sChar.m_cLocation.Y - 1; // resets the position to front of space ship
-            BulletTest.m_bActive = false; // stops rendering
+                    BulletTest.m_cLocation.X = g_sChar.m_cLocation.X;
+                    BulletTest.m_cLocation.Y = g_sChar.m_cLocation.Y - 1; // resets the position to front of space ship
+                    BulletTest.m_bActive = false; // stops rendering
 
-            ekilled++;
+                    ekilled++;
+                }
+            }
+
         }
-        
     }
    
 }
@@ -604,22 +648,12 @@ void renderGameInfo()
     info.X = g_Console.getConsoleSize().X - 18;
     info.Y = g_Console.getConsoleSize().Y - 1;
     g_Console.writeToBuffer(info, "Enemies killed: " + to_string(ekilled));
-}
 
-void renderPowerUp()
-{
-    if (PowerUp.m_bActive == true)
-    {
-        g_Console.writeToBuffer(Enemy.m_cLocation, (char)16);
-    }
-}
+    COORD gameTimeWhenStart;
+    gameTimeWhenStart.X = g_Console.getConsoleSize().X - 24;
+    gameTimeWhenStart.Y = g_Console.getConsoleSize().Y - 2;
+    g_Console.writeToBuffer(gameTimeWhenStart, "Difficulty: " + to_string(difficulty));
 
-void checkKilled()
-{
-    if (ekilled == 10)
-    {
-        PowerUp.m_bActive = true;
-    }
 }
 
 #pragma endregion
