@@ -26,6 +26,7 @@ double timeToMove = 5;
 int ekilled = 0;
 int difficulty = 2; //value = number of enemies to spawn
 double start_gameTime = 0;  //Elapsed Time when starting
+int life = 10;
 
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 
@@ -43,6 +44,10 @@ Console g_Console(40, 30, "SP1 Framework");
 //--------------------------------------------------------------
 void init( void )
 {
+    life = 3;
+    start_gameTime = 0;
+    difficulty = 2;
+    timeToMove = 5;
     srand((unsigned)time(0));
 
     // Set precision for floating point output
@@ -52,7 +57,7 @@ void init( void )
     g_eGameState = S_SPLASHSCREEN;
 
     g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
-    g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
+    g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y - 5;
     g_sChar.m_bActive = true;
 
     //Randomize starting spawn points
@@ -147,6 +152,7 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
         break;
     case S_GAME: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
         break;
+    case S_GameOver: gameplayKBHandler(keyboardEvent);
     }
 }
 
@@ -291,6 +297,7 @@ void updateGame()       // gameplay logic
     moveEnemy();
     BulletMove();
     checkCollision();
+    renderGameOver();
                         // sound can be played here too.
 }
 
@@ -365,6 +372,8 @@ void render()
     case S_SPLASHSCREEN: renderSplashScreen();
         break;
     case S_GAME: renderGame();
+        break;
+    case S_GameOver: gameoverScene();
         break;
     }
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
@@ -620,7 +629,7 @@ void checkCollision()
     {
         for (int i = 0; i < 6; i++)
         {
-            if (i < difficulty) 
+            if (i < difficulty)
             {
                 if (BulletTest.m_cLocation.X == Enemy[i].m_cLocation.X && BulletTest.m_cLocation.Y == Enemy[i].m_cLocation.Y)
                 {
@@ -636,7 +645,22 @@ void checkCollision()
                     ekilled++;
                 }
             }
+        }
 
+
+    }
+
+    for (int i = 0; i < 6; i++)
+    {
+        if (i < difficulty)
+        {
+            if (Enemy[i].m_cLocation.Y >= g_Console.getConsoleSize().Y - 1)
+            {
+                Enemy[i].m_bActive = false;
+                Enemy[i].m_cLocation.X = g_Console.getConsoleSize().X - rand() % 38 - 2;
+                Enemy[i].m_cLocation.Y = g_Console.getConsoleSize().Y - 29;
+                Enemy[i].m_bActive = true;
+            }
         }
     }
    
@@ -649,12 +673,61 @@ void renderGameInfo()
     info.Y = g_Console.getConsoleSize().Y - 1;
     g_Console.writeToBuffer(info, "Enemies killed: " + to_string(ekilled));
 
+    info.X = g_Console.getConsoleSize().X - 29;
+    info.Y = g_Console.getConsoleSize().Y - 1;
+    g_Console.writeToBuffer(info, "Life: " + to_string(life));
+
     COORD gameTimeWhenStart;
     gameTimeWhenStart.X = g_Console.getConsoleSize().X - 24;
     gameTimeWhenStart.Y = g_Console.getConsoleSize().Y - 2;
     g_Console.writeToBuffer(gameTimeWhenStart, "Difficulty: " + to_string(difficulty));
 
+
 }
+void gameoverScene()
+{
+    COORD c = g_Console.getConsoleSize();
+    c.Y /= 3;
+    c.X = c.X / 2 - 9;
+    g_Console.writeToBuffer(c, "GAMEOVER", 0x03);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 2 - 20;
+    g_Console.writeToBuffer(c, "Press <Space> to Play Again", 0x09);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 2 - 9;
+    g_Console.writeToBuffer(c, "Press 'Esc' to quit", 0x09);
+
+    if (g_skKeyEvent[K_SPACE].keyReleased)
+    {
+        init();
+    }
+    else if (g_skKeyEvent[K_ESCAPE].keyReleased)
+    {
+        g_bQuitGame = true;
+    }
+}
+
+void renderGameOver()
+{
+    for (int i = 0; i < difficulty; i++)
+    {
+        if (g_sChar.m_cLocation.X == Enemy[i].m_cLocation.X && g_sChar.m_cLocation.Y == Enemy[i].m_cLocation.Y)
+        {
+            life -= 1;
+            g_sChar.m_bActive = false;
+            g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
+            g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y - 5;
+            g_sChar.m_bActive = true;
+        }
+        if (life <= 0)
+        {
+            g_eGameState = S_GameOver;
+        }
+    }
+    
+
+}
+
 
 #pragma endregion
 

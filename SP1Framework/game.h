@@ -40,7 +40,8 @@ enum EGAMESTATES
 {
     S_SPLASHSCREEN,
     S_GAME,
-    S_COUNT
+    S_COUNT,
+    S_GameOver
 };
 
 // struct for the game character
@@ -79,7 +80,8 @@ void renderGameInfo();
 void renderPowerUp();
 void movePowerUp();
 void checkKilled();
-
+void gameoverScene();
+void renderGameOver();
 // keyboard and mouse input event managers
 void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent);  // define this function for the console to call when there are keyboard events
 void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent);      // define this function for the console to call when there are mouse events
