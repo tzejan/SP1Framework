@@ -31,7 +31,7 @@ int life = 10;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 
 // Console object
-Console g_Console(40, 30, "SP1 Framework");
+Console g_Console(40, 30, "Space Wars");
 
 #pragma region Startup
 
@@ -61,9 +61,9 @@ void init( void )
     g_sChar.m_bActive = true;
 
     //Randomize starting spawn points
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < (sizeof(Enemy)/sizeof(Enemy[0])); i++)
     {
-        int number = rand() % 36 - 2;
+        int number = rand() % (35 - 5) -5; //from 4 - 34
         Enemy[i].m_cLocation.X = g_Console.getConsoleSize().X - number;
         Enemy[i].m_cLocation.Y = g_Console.getConsoleSize().Y - 29;
 
@@ -278,11 +278,11 @@ void updateGame()       // gameplay logic
 {
     if (start_gameTime != 0) 
     {
-        if (g_dElapsedTime >= start_gameTime + 6.0 && g_dElapsedTime < start_gameTime + 15.0)
+        if (g_dElapsedTime >= start_gameTime + 6.0 && g_dElapsedTime < start_gameTime + 20.0)
         {
             difficulty = 3;
         }
-        else if (g_dElapsedTime >= start_gameTime + 15 && g_dElapsedTime < start_gameTime + 30)
+        else if (g_dElapsedTime >= start_gameTime + 20 && g_dElapsedTime < start_gameTime + 45)
         {
             difficulty = 5;
         }
@@ -337,7 +337,7 @@ void moveEnemy()
 {
     if (g_dElapsedTime >= timeToMove) 
     {
-        timeToMove = g_dElapsedTime + 0.5;
+        timeToMove = g_dElapsedTime + 0.6;
 
         for (int i = 0; i < difficulty; i++) 
         {
@@ -627,40 +627,33 @@ void checkCollision()
 {
     if (BulletTest.m_bActive == true)
     {
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < difficulty; i++)
         {
-            if (i < difficulty)
+            if (BulletTest.m_cLocation.X == Enemy[i].m_cLocation.X && BulletTest.m_cLocation.Y == Enemy[i].m_cLocation.Y)
             {
-                if (BulletTest.m_cLocation.X == Enemy[i].m_cLocation.X && BulletTest.m_cLocation.Y == Enemy[i].m_cLocation.Y)
-                {
-                    Enemy[i].m_bActive = false;
-                    Enemy[i].m_cLocation.X = g_Console.getConsoleSize().X - rand() % 38 - 2;
-                    Enemy[i].m_cLocation.Y = g_Console.getConsoleSize().Y - 29;
-                    Enemy[i].m_bActive = true;
+                Enemy[i].m_bActive = false;
+                Enemy[i].m_cLocation.X = g_Console.getConsoleSize().X - rand() % (35 - 5) - 5; //from 4 - 34
+                Enemy[i].m_cLocation.Y = g_Console.getConsoleSize().Y - 29;
+                Enemy[i].m_bActive = true;
 
-                    BulletTest.m_cLocation.X = g_sChar.m_cLocation.X;
-                    BulletTest.m_cLocation.Y = g_sChar.m_cLocation.Y - 1; // resets the position to front of space ship
-                    BulletTest.m_bActive = false; // stops rendering
+                BulletTest.m_cLocation.X = g_sChar.m_cLocation.X;
+                BulletTest.m_cLocation.Y = g_sChar.m_cLocation.Y - 1; // resets the position to front of space ship
+                BulletTest.m_bActive = false; // stops rendering
 
-                    ekilled++;
-                }
+                ekilled++;
             }
         }
 
-
     }
 
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < difficulty; i++)
     {
-        if (i < difficulty)
+        if (Enemy[i].m_cLocation.Y >= g_Console.getConsoleSize().Y - 1)
         {
-            if (Enemy[i].m_cLocation.Y >= g_Console.getConsoleSize().Y - 1)
-            {
-                Enemy[i].m_bActive = false;
-                Enemy[i].m_cLocation.X = g_Console.getConsoleSize().X - rand() % 38 - 2;
-                Enemy[i].m_cLocation.Y = g_Console.getConsoleSize().Y - 29;
-                Enemy[i].m_bActive = true;
-            }
+            Enemy[i].m_bActive = false;
+            Enemy[i].m_cLocation.X = g_Console.getConsoleSize().X - rand() % (35 - 5) - 5; //from 4 - 34
+            Enemy[i].m_cLocation.Y = g_Console.getConsoleSize().Y - 29;
+            Enemy[i].m_bActive = true;
         }
     }
    
