@@ -19,7 +19,7 @@ SGameChar   g_sChar;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 
 // Console object
-Console g_Console(120, 68, "SP1 Framework");
+Console g_Console(120, 68, "Relic Taker");
 
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -36,7 +36,7 @@ void init( void )
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
 
-    g_sChar.m_cLocation.X = 50;
+    g_sChar.m_cLocation.X = 60;
     g_sChar.m_cLocation.Y = 15;
     g_sChar.m_bActive = true;
     // sets the width, height and the font name to use in the console
@@ -312,7 +312,7 @@ void updateLevelSelect()
     }
     if (g_skKeyEvent[K_ENTER].keyReleased) {
 
-        switch (MenuItem) {
+        switch (levelItem) {
 
         case 0: {
             g_eGameState = S_GAME1;
@@ -619,6 +619,11 @@ void renderCharacter()
     g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
 }
 
+void renderRock()
+{
+   
+}
+
 void renderFramerate()
 {
     COORD c;
@@ -632,17 +637,17 @@ void renderFramerate()
 
     // displays the elapsed time
     ss.str("");
-    ss << g_dElapsedTime << "secs";
+    ss << g_dElapsedTime << "s";
     c.X = 0;
     c.Y = 0;
-    g_Console.writeToBuffer(c, ss.str(), 0x59);
+    g_Console.writeToBuffer(c, ss.str(), 0x0F);
 }
 
 // this is an example of how you would use the input events
 void renderInputEvents()
 {
     // keyboard events
-    COORD startPos = {50, 2};
+    COORD startPos = {98, 2};
     std::ostringstream ss;
     std::string key;
     for (int i = 0; i < K_COUNT; ++i)
@@ -670,13 +675,13 @@ void renderInputEvents()
             ss << key << " not pressed";
 
         COORD c = { startPos.X, startPos.Y + i };
-        g_Console.writeToBuffer(c, ss.str(), 0x17);
+        g_Console.writeToBuffer(c, ss.str(), 0x0F);
     }
 
     // mouse events    
     ss.str("");
     ss << "Mouse position (" << g_mouseEvent.mousePosition.X << ", " << g_mouseEvent.mousePosition.Y << ")";
-    g_Console.writeToBuffer(g_mouseEvent.mousePosition, ss.str(), 0x59);
+    g_Console.writeToBuffer(g_mouseEvent.mousePosition, ss.str(), 0x0F);
     ss.str("");
     switch (g_mouseEvent.eventFlags)
     {
