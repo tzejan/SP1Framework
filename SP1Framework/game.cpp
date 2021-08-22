@@ -9,6 +9,8 @@
 
 double  g_dElapsedTime;
 double  g_dDeltaTime;
+int MenuItem = 0;
+int levelItem = 0;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 
@@ -17,7 +19,7 @@ SGameChar   g_sChar;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 
 // Console object
-Console g_Console(80, 25, "SP1 Framework");
+Console g_Console(120, 68, "SP1 Framework");
 
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -34,8 +36,8 @@ void init( void )
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
 
-    g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
-    g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
+    g_sChar.m_cLocation.X = 50;
+    g_sChar.m_cLocation.Y = 15;
     g_sChar.m_bActive = true;
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
@@ -98,10 +100,33 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
 {    
     switch (g_eGameState)
     {
-    case S_SPLASHSCREEN: // don't handle anything for the splash screen
+    case S_SPLASHSCREEN: gameplayKBHandler(keyboardEvent);
         break;
-    case S_GAME: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
+    case S_MAINMENU: gameplayKBHandler(keyboardEvent);
         break;
+    case S_LEVELSELECT: gameplayKBHandler(keyboardEvent);
+        break;
+    case S_GAME1: gameplayKBHandler(keyboardEvent);
+        break;
+    case S_GAME2: gameplayKBHandler(keyboardEvent);
+        break;
+    case S_GAME3: gameplayKBHandler(keyboardEvent);
+        break;
+    case S_GAME4: gameplayKBHandler(keyboardEvent);
+        break;
+    case S_GAME5: gameplayKBHandler(keyboardEvent);
+        break;
+    case S_GAME6: gameplayKBHandler(keyboardEvent);
+        break;
+    case S_GAME7: gameplayKBHandler(keyboardEvent);
+        break;
+    case S_GAME8: gameplayKBHandler(keyboardEvent);
+        break;
+    case S_GAME9: gameplayKBHandler(keyboardEvent);
+        break;
+    case S_GAME10: gameplayKBHandler(keyboardEvent);
+        break;
+
     }
 }
 
@@ -127,7 +152,7 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
     {
     case S_SPLASHSCREEN: // don't handle anything for the splash screen
         break;
-    case S_GAME: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
+    case S_GAME1: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
         break;
     }
 }
@@ -153,6 +178,7 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent)
     case VK_RIGHT: key = K_RIGHT; break; 
     case VK_SPACE: key = K_SPACE; break;
     case VK_ESCAPE: key = K_ESCAPE; break; 
+    case VK_RETURN: key = K_ENTER; break;
     }
     // a key pressed event would be one with bKeyDown == true
     // a key released event would be one with bKeyDown == false
@@ -208,7 +234,11 @@ void update(double dt)
     {
         case S_SPLASHSCREEN : splashScreenWait(); // game logic for the splash screen
             break;
-        case S_GAME: updateGame(); // gameplay logic when we are in the game
+        case S_MAINMENU: updateMainMenu();
+            break;
+        case S_LEVELSELECT: updateLevelSelect();
+            break;
+        case S_GAME1: updateGame(); // gameplay logic when we are in the game
             break;
     }
 }
@@ -216,8 +246,8 @@ void update(double dt)
 
 void splashScreenWait()    // waits for time to pass in splash screen
 {
-    if (g_dElapsedTime > 3.0) // wait for 3 seconds to switch to game mode, else do nothing
-        g_eGameState = S_GAME;
+    if (g_skKeyEvent[K_ENTER].keyReleased)
+        g_eGameState = S_MAINMENU;
 }
 
 void updateGame()       // gameplay logic
@@ -225,6 +255,116 @@ void updateGame()       // gameplay logic
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
                         // sound can be played here too.
+}
+
+void updateMainMenu()
+{
+    if (g_skKeyEvent[K_DOWN].keyReleased && MenuItem != 3)
+    {
+        MenuItem++;
+    }
+
+    if (g_skKeyEvent[K_UP].keyReleased && MenuItem != 0)
+    {
+        MenuItem--;
+    }
+    if (g_skKeyEvent[K_ENTER].keyReleased) {
+
+        switch (MenuItem) {
+
+        case 0: {
+            g_eGameState = S_GAME1;
+            break;
+        }
+
+        case 1: {
+            g_eGameState = S_LEVELSELECT;
+            break;
+        }
+
+        case 2: {
+
+            break;
+        }
+
+        case 3: {
+            g_bQuitGame = true;
+        }
+        }
+    }
+}
+
+void updateLevelSelect()
+{
+    if (g_skKeyEvent[K_RIGHT].keyReleased && levelItem != 9)
+    {
+        levelItem++;
+    }
+
+    if (g_skKeyEvent[K_LEFT].keyReleased && levelItem != 0)
+    {
+        levelItem--;
+    }
+
+    if (g_skKeyEvent[K_ESCAPE].keyReleased)
+    {
+        g_eGameState = S_MAINMENU;
+    }
+    if (g_skKeyEvent[K_ENTER].keyReleased) {
+
+        switch (MenuItem) {
+
+        case 0: {
+            g_eGameState = S_GAME1;
+            break;
+        }
+
+        case 1: {
+            g_eGameState = S_GAME2;
+            break;
+        }
+
+        case 2: {
+            g_eGameState = S_GAME3;
+            break;
+        }
+
+        case 3: {
+            g_eGameState = S_GAME4;
+            break;
+        }
+
+        case 4: {
+            g_eGameState = S_GAME5;
+            break;
+        }
+
+        case 5: {
+            g_eGameState = S_GAME6;
+            break;
+        }
+
+        case 6: {
+            g_eGameState = S_GAME7;
+            break;
+        }
+
+        case 7: {
+            g_eGameState = S_GAME8;
+            break;
+        }
+
+        case 8: {
+            g_eGameState = S_GAME9;
+            break;
+        }
+
+        case 9: {
+            g_eGameState = S_GAME10;
+            break;
+        }
+        }
+    }
 }
 
 void moveCharacter()
@@ -280,7 +420,11 @@ void render()
     {
     case S_SPLASHSCREEN: renderSplashScreen();
         break;
-    case S_GAME: renderGame();
+    case S_MAINMENU: renderMainMenu();
+        break;
+    case S_LEVELSELECT: renderLevelSelect();
+        break;
+    case S_GAME1: renderGame();
         break;
     }
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
@@ -291,7 +435,7 @@ void render()
 void clearScreen()
 {
     // Clears the buffer with this colour attribute
-    g_Console.clearBuffer(0x1F);
+    g_Console.clearBuffer(0x00);
 }
 
 void renderToScreen()
@@ -303,15 +447,144 @@ void renderToScreen()
 void renderSplashScreen()  // renders the splash screen
 {
     COORD c = g_Console.getConsoleSize();
-    c.Y /= 3;
-    c.X = c.X / 2 - 9;
-    g_Console.writeToBuffer(c, "A game in 3 seconds", 0x03);
+    c.Y = 10;
+    c.X = c.X;
+    g_Console.writeToBuffer(c, "       /$$$$$$$  /$$$$$$$$ /$$       /$$$$$$  /$$$$$$        /$$$$$$$$ /$$$$$$  /$$   /$$ /$$$$$$$$ /$$$$$$$ ", 0x0F);
     c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 2 - 20;
-    g_Console.writeToBuffer(c, "Press <Space> to change character colour", 0x09);
+    c.X = g_Console.getConsoleSize().X;
+    g_Console.writeToBuffer(c, "      | $$__  $$| $$_____/| $$      |_  $$_/ /$$__  $$      |__  $$__//$$__  $$| $$  /$$/| $$_____/| $$__  $$", 0x0F);
     c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 2 - 9;
-    g_Console.writeToBuffer(c, "Press 'Esc' to quit", 0x09);
+    c.X = g_Console.getConsoleSize().X;
+    g_Console.writeToBuffer(c, "      | $$  \\ $$| $$      | $$        | $$  | $$  \\__/         | $$  | $$  \\ $$| $$ /$$/ | $$      | $$  \\ $$", 0x0F);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X;
+    g_Console.writeToBuffer(c, "      | $$$$$$$/| $$$$$   | $$        | $$  | $$               | $$  | $$$$$$$$| $$$$$/  | $$$$$   | $$$$$$$/", 0x0F);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X;
+    g_Console.writeToBuffer(c, "      | $$__  $$| $$__/   | $$        | $$  | $$               | $$  | $$__  $$| $$  $$  | $$__/   | $$__  $$", 0x0F);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X;
+    g_Console.writeToBuffer(c, "      | $$  \\ $$| $$      | $$        | $$  | $$    $$         | $$  | $$  | $$| $$\\  $$ | $$      | $$  \\ $$", 0x0F);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X;
+    g_Console.writeToBuffer(c, "      | $$  | $$| $$$$$$$$| $$$$$$$$ /$$$$$$|  $$$$$$/         | $$  | $$  | $$| $$ \\  $$| $$$$$$$$| $$  | $$", 0x0F);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X;
+    g_Console.writeToBuffer(c, "      |__/  |__/|________/|________/|______/ \\______/          |__/  |__/  |__/|__/  \\__/|________/|__/  |__/", 0x0F);
+    c.X = 46;
+    c.Y += 4;
+    g_Console.writeToBuffer(c, "Press [Enter] to start", 0x0F);
+}
+
+void renderMainMenu()
+{
+    COORD c = g_Console.getConsoleSize();
+    c.Y = 1;
+    c.X = c.X;
+    g_Console.writeToBuffer(c, "       /$$$$$$$  /$$$$$$$$ /$$       /$$$$$$  /$$$$$$        /$$$$$$$$ /$$$$$$  /$$   /$$ /$$$$$$$$ /$$$$$$$ ", 0x0F);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X;
+    g_Console.writeToBuffer(c, "      | $$__  $$| $$_____/| $$      |_  $$_/ /$$__  $$      |__  $$__//$$__  $$| $$  /$$/| $$_____/| $$__  $$", 0x0F);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X;
+    g_Console.writeToBuffer(c, "      | $$  \\ $$| $$      | $$        | $$  | $$  \\__/         | $$  | $$  \\ $$| $$ /$$/ | $$      | $$  \\ $$", 0x0F);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X;
+    g_Console.writeToBuffer(c, "      | $$$$$$$/| $$$$$   | $$        | $$  | $$               | $$  | $$$$$$$$| $$$$$/  | $$$$$   | $$$$$$$/", 0x0F);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X;
+    g_Console.writeToBuffer(c, "      | $$__  $$| $$__/   | $$        | $$  | $$               | $$  | $$__  $$| $$  $$  | $$__/   | $$__  $$", 0x0F);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X;
+    g_Console.writeToBuffer(c, "      | $$  \\ $$| $$      | $$        | $$  | $$    $$         | $$  | $$  | $$| $$\\  $$ | $$      | $$  \\ $$", 0x0F);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X;
+    g_Console.writeToBuffer(c, "      | $$  | $$| $$$$$$$$| $$$$$$$$ /$$$$$$|  $$$$$$/         | $$  | $$  | $$| $$ \\  $$| $$$$$$$$| $$  | $$", 0x0F);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X;
+    g_Console.writeToBuffer(c, "      |__/  |__/|________/|________/|______/ \\______/          |__/  |__/  |__/|__/  \\__/|________/|__/  |__/", 0x0F);
+    c.Y += 6;
+    c.X = 46;
+    g_Console.writeToBuffer(c, "| Play", 0x0F);
+    c.Y = c.Y + MenuItem;
+    c.X = 44;
+    g_Console.writeToBuffer(c, ">>", 0x0F);
+    c.Y = 15;
+    c.X = 46;
+    g_Console.writeToBuffer(c, "| Level Select", 0x0F);
+    c.Y = 16;
+    c.X = 46;
+    g_Console.writeToBuffer(c, "| Options", 0x0F);
+    c.Y = 17;
+    c.X = 46;
+    g_Console.writeToBuffer(c, "| Exit", 0x0F);
+    
+}
+
+void renderLevelSelect()
+{
+    COORD c = g_Console.getConsoleSize();
+    c.Y = 1;
+    c.X = c.X;
+    g_Console.writeToBuffer(c, " $$$$$$\\  $$$$$$$$\\ $$\\       $$$$$$$$\\  $$$$$$\\ $$$$$$$$\\       $$\\       $$$$$$$$\\ $$\\    $$\\ $$$$$$$$\\ $$\\       ", 0x0F);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X;
+    g_Console.writeToBuffer(c, "$$  __$$\\ $$  _____|$$ |      $$  _____|$$  __$$\\\\__$$  __|      $$ |      $$  _____|$$ |   $$ |$$  _____|$$ |      ", 0x0F);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X;
+    g_Console.writeToBuffer(c, "$$ /  \\__|$$ |      $$ |      $$ |      $$ /  \\__|  $$ |         $$ |      $$ |      $$ |   $$ |$$ |      $$ |      ", 0x0F);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X;
+    g_Console.writeToBuffer(c, "\\$$$$$$\\  $$$$$\\    $$ |      $$$$$\\    $$ |        $$ |         $$ |      $$$$$\\    \\$$\\  $$  |$$$$$\\    $$ |     ", 0x0F);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X;
+    g_Console.writeToBuffer(c, " \\____$$\\ $$  __|   $$ |      $$  __|   $$ |        $$ |         $$ |      $$  __|    \\$$\\$$  / $$  __|   $$ |     ", 0x0F);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X;
+    g_Console.writeToBuffer(c, "$$\\   $$ |$$ |      $$ |      $$ |      $$ |  $$\\   $$ |         $$ |      $$ |        \\$$$  /  $$ |      $$ |      ", 0x0F);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X;
+    g_Console.writeToBuffer(c, "\\$$$$$$  |$$$$$$$$\\ $$$$$$$$\\ $$$$$$$$\\ \\$$$$$$  |  $$ |         $$$$$$$$\\ $$$$$$$$\\    \\$  /   $$$$$$$$\\ $$$$$$$$\\ ", 0x0F);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X;
+    g_Console.writeToBuffer(c, " \\______/ \\________|\\________|\\________| \\______/   \\__|         \\________|\\________|    \\_/    \\________|\\________|", 0x0F);
+    c.Y = 13;
+    c.X = 22 + 7 * levelItem;
+    g_Console.writeToBuffer(c, "v", 0x0F);
+    c.Y = 17;
+    c.X = 22 + 7 * levelItem;
+    g_Console.writeToBuffer(c, "^", 0x0F);
+    c.Y = 15;
+    c.X = 20;
+    g_Console.writeToBuffer(c, "| 1 |", 0x0F);
+    c.Y = 15;
+    c.X = 27;
+    g_Console.writeToBuffer(c, "| 2 |", 0x0F);
+    c.Y = 15;
+    c.X = 34;
+    g_Console.writeToBuffer(c, "| 3 |", 0x0F);
+    c.Y = 15;
+    c.X = 41;
+    g_Console.writeToBuffer(c, "| 4 |", 0x0F);
+    c.Y = 15;
+    c.X = 48;
+    g_Console.writeToBuffer(c, "| 5 |", 0x0F);
+    c.Y = 15;
+    c.X = 55;
+    g_Console.writeToBuffer(c, "| 6 |", 0x0F);
+    c.Y = 15;
+    c.X = 62;
+    g_Console.writeToBuffer(c, "| 7 |", 0x0F);
+    c.Y = 15;
+    c.X = 69;
+    g_Console.writeToBuffer(c, "| 8 |", 0x0F);
+    c.Y = 15;
+    c.X = 76;
+    g_Console.writeToBuffer(c, "| 9 |", 0x0F);
+    c.Y = 15;
+    c.X = 83;
+    g_Console.writeToBuffer(c, "| X |", 0x0F);
+
 }
 
 void renderGame()
@@ -324,7 +597,7 @@ void renderMap()
 {
     // Set up sample colours, and output shadings
     const WORD colors[] = {
-        0x1A, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
+        0x00, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
         0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6
     };
 
@@ -334,18 +607,15 @@ void renderMap()
         c.X = 5 * i;
         c.Y = i + 1;
         colour(colors[i]);
-        g_Console.writeToBuffer(c, " °±²Û", colors[i]);
+        g_Console.writeToBuffer(c, " hi", colors[i]);
     }
 }
 
 void renderCharacter()
 {
     // Draw the location of the character
-    WORD charColor = 0x0C;
-    if (g_sChar.m_bActive)
-    {
-        charColor = 0x0A;
-    }
+    WORD charColor = 0x0F;
+    
     g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
 }
 

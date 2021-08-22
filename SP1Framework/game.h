@@ -31,6 +31,7 @@ enum EKEYS
     K_LEFT,
     K_RIGHT,
     K_ESCAPE,
+    K_ENTER,
     K_SPACE,
     K_COUNT
 };
@@ -39,7 +40,18 @@ enum EKEYS
 enum EGAMESTATES
 {
     S_SPLASHSCREEN,
-    S_GAME,
+    S_MAINMENU,
+    S_LEVELSELECT,
+    S_GAME1,
+    S_GAME2,
+    S_GAME3,
+    S_GAME4,
+    S_GAME5,
+    S_GAME6,
+    S_GAME7,
+    S_GAME8,
+    S_GAME9,
+    S_GAME10,
     S_COUNT
 };
 
@@ -58,10 +70,15 @@ void shutdown    ( void );      // do clean up, free memory
 
 void splashScreenWait();    // waits for time to pass in splash screen
 void updateGame();          // gameplay logic
+void updateLevelSelect();
+void updateMainMenu();
 void moveCharacter();       // moves the character, collision detection, physics, etc
+void movePointer();
 void processUserInput();    // checks if you should change states or do something else with the game, e.g. pause, exit
 void clearScreen();         // clears the current screen and draw from scratch 
 void renderSplashScreen();  // renders the splash screen
+void renderMainMenu();
+void renderLevelSelect();
 void renderGame();          // renders the game stuff
 void renderMap();           // renders the map to the buffer first
 void renderCharacter();     // renders the character into the buffer
