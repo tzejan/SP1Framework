@@ -17,25 +17,50 @@ Map::~Map()
 {
 }
 
-void Map::PrintGameMap(void) const
+void Map::PrintGameMap(void) 
 {
 	std::string Output = "";
-	//std::cout << " 12345678901234567890";  //UI
-	for (int i = 1; i < 21; ++i) // x
+	for (int i = 0; i < 20; ++i) // x
 	{
-		//if (i >= 10)
-		//{
-		//	std::cout << std::endl << i % 10; //UI
-		//}
-		//else
-		//{
-		//	std::cout << std::endl << i;  //UI
-		//}
-		for (int i2 = 1; i2 < 21; i2++) // y
+		//Sprite Line 1
+		for (int i2 = 0; i2 < 20; i2++) // y
 		{
-			Output += GameMap[i-1][i2-1];
+			if (GameMap[i][i2] != ' ')
+			{
+				Output += ASCIItoString(DetectSprite(GameMap[i][i2], 1));
+			}
+			else
+			{
+				Output += "       ";
+			}
 		}
-		Output+= "\n";
+		Output += "\n";
+		//Sprite Line 2
+		for (int i2 = 0; i2 < 20; i2++) // y
+		{
+			if (GameMap[i][i2] != ' ')
+			{
+				Output += ASCIItoString(DetectSprite(GameMap[i][i2], 2));
+			}
+			else
+			{
+				Output += "       ";
+			}
+		}
+		Output += "\n";
+		//Sprite Line 3
+		for (int i2 = 0; i2 < 20; i2++) // y
+		{
+			if (GameMap[i][i2] != ' ')
+			{
+				Output += ASCIItoString(DetectSprite(GameMap[i][i2], 3));
+			}
+			else
+			{
+				Output += "       ";
+			}
+		}
+		Output += "\n";
 	}
 	std::cout << Output;
 }
@@ -58,7 +83,7 @@ std::string Map::GetMapChosen(int MapLevel)
 	}
 	else if (MapLevel == 3)
 	{
-		return "WWWWWWWWW,WWWWW P W,WWWWW   W,W  W    W,WK  S   W,W W S   W,WWWWWiIiW,WWWWWIiIW,WWWWWiIiW,WWWWWIiIW,WWWWWiIiW,WWWWWWLWW,WWWWW   W,WWWWW R W,WWWWW   W,WWWWWWWWW";
+		return "WWWWWWWWW,WWWWW P W,WWWWW   W,W  W    W,WK  S   W,W W S   W,WWWWWiIiW,WWWWWIiIW,WWWWWiIiW,WWWWWIiIW,WWWWWiIiW,WWWWWWLWW,WWWWW   W,WWWWW T W,WWWWW   W,WWWWWWWWW";
 	}
 	else if (MapLevel == 4)
 	{
@@ -131,4 +156,42 @@ int Map::GetMapMoves(int MapLevel)
 	}
 }
 
+std::string Map::ASCIItoString(std::string Text)
+{
+	std::string str = Text;
+	std::string StringNum = "";
+	std::string ConvertedText = "";
+	int i;
+	char ch;
+	while (str != "")
+	{
+		//Find the Number 1st
+		for (unsigned int index = 0; index < str.length(); index++)
+		{
+			if (str[index] == ',')
+			{
+				StringNum = str.substr(0, index);
+				i = str.length(); //Break out of for loop
+				str = str.substr(index + 1, str.length()); //Remove the extracted string
+				index = i;
+				i = std::stoi(StringNum);  //Converts string to int
+				ch = i;  //convert number ASCII character
+				ConvertedText += ch;
+
+			}
+			else if (str.length() <= 3) //last part of no comma
+			{
+				StringNum = str;
+				i = str.length(); //Break out of for loop
+				index = str.length(); //Break out of for loop
+				str = "";
+				index = i;
+				i = std::stoi(StringNum);  //Converts string to int
+				ch = i;  //convert number ASCII character
+				ConvertedText += ch;
+			}
+		}
+	}
+	return ConvertedText;
+}
 

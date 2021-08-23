@@ -20,7 +20,8 @@
 int main(void)
 {
     Entity* EntitiesArr[200] = {};
-    int MapLevel = 2;
+    int MapLevel = 0;
+    std::cin >> MapLevel;
     int Moves = Map::GetMapMoves(MapLevel);
     std::string TextMap = Map::GetMapChosen(MapLevel);
     std::string TextMapCommaless = ""; 
