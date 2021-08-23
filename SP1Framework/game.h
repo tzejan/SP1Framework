@@ -81,11 +81,32 @@ void EnemyBMove();
 void BulletMove();
 void checkCollision();
 void renderGameInfo();
-void renderPowerUp();
+
+void renderSpecial();
 void movePowerUp();
 void checkKilled();
 void gameoverScene();
 void renderGameOver();
+
+//Multishot
+void rMultishot();
+void mMultishot();
+void cMultishot();
+
+//Shield
+void rShield();
+void cShield();
+
+//Health
+void cHealth();
+
+//Bomb
+void cBomb();
+
+
+
+
+
 // keyboard and mouse input event managers
 void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent);  // define this function for the console to call when there are keyboard events
 void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent);      // define this function for the console to call when there are mouse events

@@ -21,13 +21,30 @@ SGameChar   g_sChar;
 SGameChar   Enemy[8];
 SGameChar   Enemy2[8];
 SGameChar   BulletTest;
+SGameChar   Multishot[2];
 SGameChar   BulletEnemy[8];
 SGameChar   PowerUp;
+SGameChar Shield[8];
+
 
 double timeToMove = 5;
+double timeToMove2 = 5;
 double timeToMove3 = 5;
 double BulletToMove = 5;
 int ekilled = 0;
+int score = 0;
+int number = rand() % 37 - 2;
+bool PowerEaten = false;
+bool shoot = false;
+
+bool sSound = false;
+int  sCount = 0;
+
+int  kSound = 0;
+
+int Special;
+string SpecialText;
+
 int difficulty = 2; //value = number of enemies to spawn
 double start_gameTime = 0;  //Elapsed Time when starting
 int life = 10;
@@ -48,6 +65,7 @@ Console g_Console(40, 30, "Space Wars");
 //--------------------------------------------------------------
 void init( void )
 {
+    sSound = false;
     life = 3;
     start_gameTime = 0;
     difficulty = 2;
@@ -73,6 +91,13 @@ void init( void )
         Enemy[i].m_cLocation.X = g_Console.getConsoleSize().X - number;
         Enemy[i].m_cLocation.Y = g_Console.getConsoleSize().Y - 29;
 
+        if (Enemy[i].m_cLocation.X == Enemy2[i].m_cLocation.X)
+        {
+            Enemy[i].m_cLocation.X = g_Console.getConsoleSize().X - number;
+        }
+        
+        if (Enemy[i].m_cLocation.X)
+
         if (i < difficulty)
         {
             Enemy[i].m_bActive = true;  //Spawns [number] enemy first
@@ -88,6 +113,11 @@ void init( void )
         Enemy2[i].m_cLocation.X = g_Console.getConsoleSize().X - number;
         Enemy2[i].m_cLocation.Y = g_Console.getConsoleSize().Y - 29;
 
+        if (Enemy2[i].m_cLocation.X == Enemy[i].m_cLocation.X)
+        {
+            Enemy[i].m_cLocation.X = g_Console.getConsoleSize().X - number;
+        }
+
         if (i < difficulty)
         {
             Enemy2[i].m_bActive = true;  //Spawns [number] enemy first
@@ -99,6 +129,8 @@ void init( void )
         BulletEnemy[i].m_cLocation.X = Enemy2[i].m_cLocation.X;
         BulletEnemy[i].m_cLocation.Y = Enemy2[i].m_cLocation.Y - 1;
         BulletEnemy[i].m_bActive = true;
+
+
 
     }
 
@@ -319,12 +351,24 @@ void updateGame()       // gameplay logic
 
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
+    checkCollision();
     moveEnemy();
+    checkCollision();
     BulletMove();
     checkCollision();
+    checkKilled();
+
+    movePowerUp();
+    mMultishot();
+    cMultishot();
+    cShield();
+    cHealth();
+    cBomb();
     renderGameOver();
     moveEnemy2();
     EnemyBMove();
+
+
                         // sound can be played here too.
 }
 
@@ -355,6 +399,13 @@ void moveCharacter()
     if (g_skKeyEvent[K_SPACE].keyDown)
     {
         BulletTest.m_bActive = true;
+        Multishot[0].m_bActive = true;
+        Multishot[1].m_bActive = true;
+        shoot = true;
+    }
+    if (g_skKeyEvent[K_SPACE].keyDown)
+    {
+        sSound = true;
     }
 
    
@@ -456,6 +507,9 @@ void renderGame()
     renderBullet(); //render spaceship bullet
     RbulletEnemy();
     renderEnemy2();
+    rMultishot();
+    rShield();
+    renderSpecial();
 }
 
 void renderMap()
@@ -647,6 +701,12 @@ void renderBullet()
 {
     if (BulletTest.m_bActive == true)
     {
+        if (sSound == true && sCount == 0)
+        {
+            Beep(500, 50);
+            sCount = 1;
+            sSound = false;
+        }
         g_Console.writeToBuffer(BulletTest.m_cLocation, (char)6);
         BulletTest.m_cLocation.Y += 25 * g_dDeltaTime;
     }
@@ -715,6 +775,7 @@ void BulletMove()
             BulletTest.m_cLocation.X = g_sChar.m_cLocation.X;
             BulletTest.m_cLocation.Y = g_sChar.m_cLocation.Y - 1; // resets the position to front of space ship
             BulletTest.m_bActive = false; // stops rendering
+            sCount = 0;
         }
 
     }
@@ -744,6 +805,10 @@ void checkCollision()
                 BulletTest.m_bActive = false; // stops rendering
 
                 ekilled++;
+                score++;
+                sCount = 0;
+
+                Beep(300, 50);
             }
             if (BulletTest.m_cLocation.X == Enemy2[i].m_cLocation.X && BulletTest.m_cLocation.Y == Enemy2[i].m_cLocation.Y)
             {
@@ -757,6 +822,9 @@ void checkCollision()
                 BulletTest.m_bActive = false; // stops rendering
 
                 ekilled++;
+                score++;
+                sCount = 0;
+                Beep(300, 50);
             }
         }
 
@@ -799,7 +867,7 @@ void renderGameInfo()
     COORD info;
     info.X = g_Console.getConsoleSize().X - 18;
     info.Y = g_Console.getConsoleSize().Y - 1;
-    g_Console.writeToBuffer(info, "Enemies killed: " + to_string(ekilled));
+    g_Console.writeToBuffer(info, "Enemies killed: " + to_string(score));
 
     info.X = g_Console.getConsoleSize().X - 29;
     info.Y = g_Console.getConsoleSize().Y - 1;
@@ -846,6 +914,7 @@ void renderGameOver()
             g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
             g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y - 5;
             g_sChar.m_bActive = true;
+            Beep(175, 70);
         }
         if (life <= 0)
         {
@@ -857,6 +926,355 @@ void renderGameOver()
 }
 
 
+void rMultishot()
+{
+    for (int i = 0; i < 2; i++)
+    {
+        if (Multishot[i].m_bActive == true && PowerEaten == true && PowerUp.m_bActive == false && Special == 1)
+        {
+            g_Console.writeToBuffer(Multishot[i].m_cLocation, (char)6);
+            Multishot[i].m_cLocation.Y += 25 * g_dDeltaTime;
+        }
+    }
+}
+
+void mMultishot()
+{
+    if (PowerEaten == true && PowerUp.m_bActive == false && Special == 1)
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            if (Multishot[i].m_bActive == true && shoot == true)
+            {
+                Multishot[i].m_cLocation.Y--;
+                if (Multishot[i].m_cLocation.Y == 0)
+                {
+                    Multishot[i].m_bActive = false;
+                    if (i == 0)
+                    {
+                        Multishot[i].m_cLocation.X = g_sChar.m_cLocation.X - 2;
+                        Multishot[i].m_cLocation.Y = g_sChar.m_cLocation.Y - 1;
+                    }
+                    else if (i == 1)
+                    {
+                        Multishot[i].m_cLocation.X = g_sChar.m_cLocation.X - 2;
+                        Multishot[i].m_cLocation.Y = g_sChar.m_cLocation.Y - 1;
+                    }
+                }
+
+            }
+            else
+            {
+                if (i == 0)
+                {
+                    Multishot[i].m_cLocation.X = g_sChar.m_cLocation.X - 2;
+                    Multishot[i].m_cLocation.Y = g_sChar.m_cLocation.Y - 1;
+                }
+                else if (i == 1)
+                {
+                    Multishot[i].m_cLocation.X = g_sChar.m_cLocation.X + 2;
+                    Multishot[i].m_cLocation.Y = g_sChar.m_cLocation.Y - 1;
+                }
+            }
+
+        }
+    }
+}
+
+void cMultishot()
+{
+    if (PowerEaten == true && PowerUp.m_bActive == false && Special == 1)
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            if (Multishot[i].m_bActive == true)
+            {
+                for (int e = 0; e < difficulty; e++)
+                {
+                    if ((Multishot[i].m_cLocation.X == Enemy[e].m_cLocation.X && Multishot[i].m_cLocation.Y == Enemy[e].m_cLocation.Y) || Multishot[i].m_cLocation.Y <= 0
+                        || (Multishot[i].m_cLocation.X == Enemy2[e].m_cLocation.X && Multishot[i].m_cLocation.Y == Enemy2[e].m_cLocation.Y))
+                    {
+                        if (Multishot[i].m_cLocation.X == Enemy[e].m_cLocation.X && Multishot[i].m_cLocation.Y == Enemy[e].m_cLocation.Y)
+                        {
+
+                            Enemy[e].m_bActive = false;
+
+                            Enemy[e].m_cLocation.X = g_Console.getConsoleSize().X - rand() % 38 - 2;
+                            Enemy[e].m_cLocation.Y = g_Console.getConsoleSize().Y - 29;
+                            Enemy[e].m_bActive = true;
+
+                            ekilled++;
+                            score++;
+                            Beep(350, 50);
+                        }
+
+                        if (Multishot[i].m_cLocation.X == Enemy2[e].m_cLocation.X && Multishot[i].m_cLocation.Y == Enemy2[e].m_cLocation.Y)
+                        {
+                            Enemy2[e].m_bActive = false;
+
+                            Enemy2[e].m_cLocation.X = g_Console.getConsoleSize().X - rand() % 38 - 2;
+                            Enemy2[e].m_cLocation.Y = g_Console.getConsoleSize().Y - 29;
+                            Enemy2[e].m_bActive = true;
+
+                            ekilled++;
+                            score++;
+                            Beep(350, 50);
+                        }
+
+                        if (i == 0)
+                        {
+                            Multishot[i].m_cLocation.X = BulletTest.m_cLocation.X - 2;
+                            Multishot[i].m_cLocation.Y = BulletTest.m_cLocation.Y - 1;
+                        }
+                        else if (i == 1)
+                        {
+                            Multishot[i].m_cLocation.X = BulletTest.m_cLocation.X + 2;
+                            Multishot[i].m_cLocation.Y = BulletTest.m_cLocation.Y - 1;
+                        }
+
+
+                        Multishot[i].m_bActive = false;
+
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        Multishot[0].m_cLocation.X = BulletTest.m_cLocation.X - 2;
+        Multishot[0].m_cLocation.Y = BulletTest.m_cLocation.Y - 1;
+
+        Multishot[1].m_cLocation.X = BulletTest.m_cLocation.X + 2;
+        Multishot[1].m_cLocation.Y = BulletTest.m_cLocation.Y - 1;
+
+    }
+}
+
+void rShield()
+{
+
+    if (PowerEaten == true && PowerUp.m_bActive == false && Special == 4)
+    {
+        Shield[0].m_cLocation.X = g_sChar.m_cLocation.X - 1;
+        Shield[0].m_cLocation.Y = g_sChar.m_cLocation.Y - 1;
+
+        Shield[1].m_cLocation.X = g_sChar.m_cLocation.X;
+        Shield[1].m_cLocation.Y = g_sChar.m_cLocation.Y - 1;
+
+        Shield[2].m_cLocation.X = g_sChar.m_cLocation.X + 1;
+        Shield[2].m_cLocation.Y = g_sChar.m_cLocation.Y - 1;
+
+        Shield[3].m_cLocation.X = g_sChar.m_cLocation.X - 1;
+        Shield[3].m_cLocation.Y = g_sChar.m_cLocation.Y;
+
+        Shield[4].m_cLocation.X = g_sChar.m_cLocation.X + 1;
+        Shield[4].m_cLocation.Y = g_sChar.m_cLocation.Y;
+
+        Shield[5].m_cLocation.X = g_sChar.m_cLocation.X - 1;
+        Shield[5].m_cLocation.Y = g_sChar.m_cLocation.Y + 1;
+
+        Shield[6].m_cLocation.X = g_sChar.m_cLocation.X;
+        Shield[6].m_cLocation.Y = g_sChar.m_cLocation.Y + 1;
+
+        Shield[7].m_cLocation.X = g_sChar.m_cLocation.X + 1;
+        Shield[7].m_cLocation.Y = g_sChar.m_cLocation.Y + 1;
+
+        for (int i = 0; i < 8; i++)
+        {
+            g_Console.writeToBuffer(Shield[i].m_cLocation, 'X');
+        }
+    }
+
+}
+
+void cShield()
+{
+    if (PowerEaten == true && PowerUp.m_bActive == false && Special == 4)
+    {
+        for (int s = 0; s < 8; s++)
+        {
+            for (int e = 0; e < difficulty; e++)
+            {
+
+                if (Shield[s].m_cLocation.X == Enemy[e].m_cLocation.X && Shield[s].m_cLocation.Y == Enemy[e].m_cLocation.Y)
+                {
+                    Enemy[e].m_bActive = false;
+
+                    Enemy[e].m_cLocation.X = g_Console.getConsoleSize().X - rand() % 38 - 2;
+                    Enemy[e].m_cLocation.Y = g_Console.getConsoleSize().Y - 29;
+                    Enemy[e].m_bActive = true;
+
+                    ekilled++;
+                    score++;
+                    Beep(440, 70);
+                }
+
+                if (Shield[s].m_cLocation.X == Enemy2[e].m_cLocation.X && Shield[s].m_cLocation.Y == Enemy2[e].m_cLocation.Y)
+                {
+                    Enemy2[e].m_bActive = false;
+
+                    Enemy2[e].m_cLocation.X = g_Console.getConsoleSize().X - rand() % 38 - 2;
+                    Enemy2[e].m_cLocation.Y = g_Console.getConsoleSize().Y - 29;
+                    Enemy2[e].m_bActive = true;
+
+                    ekilled++;
+                    score++;
+                    Beep(440, 70);
+                }
+
+                if (Shield[s].m_cLocation.X == BulletEnemy[e].m_cLocation.X && Shield[s].m_cLocation.Y == BulletEnemy[e].m_cLocation.Y)
+                {
+                    BulletEnemy[e].m_bActive = false;
+
+                    BulletEnemy[e].m_cLocation.X = Enemy2[e].m_cLocation.X;
+                    BulletEnemy[e].m_cLocation.Y = Enemy2[e].m_cLocation.Y - 1;                    
+                    BulletEnemy[e].m_bActive = true;
+
+                    ekilled++;
+                    Beep(530, 70);
+                }
+            }
+        }
+    }
+}
+
+void cHealth()
+{
+    if (PowerEaten == true && Special == 2)
+    {
+        life = 3;
+        ekilled = 0;
+        Beep(320, 30);
+        Beep(400, 30);
+        PowerEaten = false;
+    }
+}
+
+void cBomb()
+{
+    if (PowerEaten == true && Special == 3)
+    {
+        for (int e = 0; e < difficulty; e++)
+        {
+            Enemy[e].m_bActive = false;
+            Enemy2[e].m_bActive = false;
+            BulletEnemy[e].m_bActive = false;
+
+            Enemy[e].m_cLocation.X = g_Console.getConsoleSize().X - rand() % 38 - 2;
+            Enemy2[e].m_cLocation.X = g_Console.getConsoleSize().X - rand() % 38 - 2;
+            BulletEnemy[e].m_cLocation.X = Enemy2[e].m_cLocation.X;
+
+            BulletEnemy[e].m_cLocation.Y = Enemy2[e].m_cLocation.Y - 1;
+            Enemy[e].m_cLocation.Y = g_Console.getConsoleSize().Y - 29;
+            Enemy2[e].m_cLocation.Y = g_Console.getConsoleSize().Y - 29;
+
+            Enemy[e].m_bActive = true;
+            Enemy2[e].m_bActive = true;
+            BulletEnemy[e].m_bActive = true;
+        }
+
+        PowerEaten = false;
+        ekilled = 0;
+        Beep(200, 100);
+    }
+}
+
+
+
+void movePowerUp()
+{
+    if (g_dElapsedTime >= timeToMove2)
+    {
+        timeToMove2 = g_dElapsedTime + 0.5;
+        PowerUp.m_cLocation.Y++;
+
+        if (PowerUp.m_bActive == true)
+        {
+            if (Special == 4)
+            {
+                Special = 1;
+            }
+            else
+            {
+                Special++;
+            }
+        }
+
+
+    }
+
+    if ((PowerUp.m_cLocation.Y == g_sChar.m_cLocation.Y && PowerUp.m_cLocation.X == g_sChar.m_cLocation.X) || PowerUp.m_cLocation.Y == 29)
+    {
+        if (PowerUp.m_cLocation.Y == 29)
+        {
+            SpecialText = "";
+        }
+        else
+        {
+            PowerEaten = true;
+        }
+        PowerUp.m_bActive = false;
+    }
+}
+
+
+void renderSpecial()
+{
+    if (PowerUp.m_bActive == true)
+    {
+        if (Special == 1)
+        {
+            SpecialText = "Multishot";
+            g_Console.writeToBuffer(PowerUp.m_cLocation, 'M');
+        }
+        else if (Special == 2)
+        {
+            SpecialText = "Health";
+            g_Console.writeToBuffer(PowerUp.m_cLocation, 'H');
+        }
+        else if (Special == 3)
+        {
+            SpecialText = "Bomb";
+            g_Console.writeToBuffer(PowerUp.m_cLocation, 'B');
+        }
+        else if (Special == 4)
+        {
+            SpecialText = "Shield";
+            g_Console.writeToBuffer(PowerUp.m_cLocation, 'S');
+        }
+
+    }
+
+
+}
+
+
+void checkKilled()
+{
+    if ((ekilled % 10 == 0) && (ekilled > 0) && PowerUp.m_bActive == false)
+    {
+        number = rand() % 27 - 2;
+        PowerUp.m_cLocation.X = (g_Console.getConsoleSize().X - number);
+        for (int i = 0; i < difficulty; i++)
+        {
+            if ((PowerUp.m_cLocation.X == Enemy[i].m_cLocation.X) || (PowerUp.m_cLocation.X == Enemy2[i].m_cLocation.X))
+            {
+                number = rand() % 27 - 2;
+                PowerUp.m_cLocation.X = (g_Console.getConsoleSize().X - number);
+                while (PowerUp.m_cLocation.X > 39 || PowerUp.m_cLocation.Y < 1)
+                {
+                    PowerUp.m_cLocation.X = (g_Console.getConsoleSize().X - (rand() % 27 - 2));
+                }
+            }
+        }
+
+        PowerUp.m_cLocation.Y = g_Console.getConsoleSize().Y - 29;
+        ekilled = 0;
+        PowerUp.m_bActive = true;
+
+    }
+}
 #pragma endregion
 
 
