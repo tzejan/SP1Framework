@@ -24,16 +24,17 @@ SGameChar   BulletTest;
 SGameChar   Multishot[2];
 SGameChar   BulletEnemy[8];
 SGameChar   PowerUp;
-SGameChar Shield[8];
-
+SGameChar   Shield[8];
+SGameChar   Boss;
+SGameChar   BossBullet[3];
 
 double timeToMove = 5;
 double timeToMove2 = 5;
 double timeToMove3 = 5;
 double BulletToMove = 5;
-int ekilled = 0;
-int score = 0;
-int number = rand() % 37 - 2;
+int  ekilled = 0;
+int  score = 0;
+int  number = rand() % 37 - 2;
 bool PowerEaten = false;
 bool shoot = false;
 
@@ -48,6 +49,17 @@ string SpecialText;
 int difficulty = 2; //value = number of enemies to spawn
 double start_gameTime = 0;  //Elapsed Time when starting
 int life = 10;
+
+//Boss Variables
+int bosshealth = 30;
+bool moveRight;
+bool bossCanMove = false;
+double bossTime = 60;
+double bossTimeMove = 60;
+double bossBulletTime = 60;
+
+//Bullet Spawn Points
+COORD bulletPoints[3];
 
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 
@@ -72,6 +84,12 @@ void init( void )
     timeToMove = 5;
     timeToMove3 = 5;
     BulletToMove = 5;
+
+    bosshealth = 30;
+    bossCanMove = false;
+    bossTime = start_gameTime + 60;
+    bossTimeMove = 60;
+    bossBulletTime = 60;
     srand((unsigned)time(0));
 
     // Set precision for floating point output
@@ -80,14 +98,35 @@ void init( void )
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
 
-    g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
-    g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y - 5;
-    g_sChar.m_bActive = true;
+    #pragma region BossInit
+    //Boss
+    Boss.m_cLocation.X = g_Console.getConsoleSize().X / 2;
+    Boss.m_cLocation.Y = g_Console.getConsoleSize().Y - 40;
+    Boss.m_bActive = true;
 
-    //Randomize starting spawn points
-    for (int i = 0; i < (sizeof(Enemy)/sizeof(Enemy[0])); i++)
+    //Bullet Spawn Points
+    BossBullet[0].m_cLocation.X = Boss.m_cLocation.X - 2;   //Left
+    BossBullet[0].m_cLocation.Y = Boss.m_cLocation.Y + 4;
+    BossBullet[0].m_bActive = false;
+
+    BossBullet[1].m_cLocation.X = Boss.m_cLocation.X + 5;   //Center
+    BossBullet[1].m_cLocation.Y = Boss.m_cLocation.Y + 4;
+    BossBullet[1].m_bActive = false;
+
+    BossBullet[2].m_cLocation.X = Boss.m_cLocation.X + 13;  //Right
+    BossBullet[2].m_cLocation.Y = Boss.m_cLocation.Y + 4;
+    BossBullet[2].m_bActive = false;
+
+    for (int i = 0; i < 3; i++)
     {
-        int number = rand() % (35 - 5) -5; //from 4 - 34
+        BossBullet[i].m_bActive = true;
+    }
+#pragma endregion
+    #pragma region EnemyInit
+    //Randomize starting spawn points
+    for (int i = 0; i < (sizeof(Enemy) / sizeof(Enemy[0])); i++)
+    {
+        int number = rand() % (35 - 5) - 5; //from 4 - 34
         Enemy[i].m_cLocation.X = g_Console.getConsoleSize().X - number;
         Enemy[i].m_cLocation.Y = g_Console.getConsoleSize().Y - 29;
 
@@ -95,17 +134,17 @@ void init( void )
         {
             Enemy[i].m_cLocation.X = g_Console.getConsoleSize().X - number;
         }
-        
+
         if (Enemy[i].m_cLocation.X)
 
-        if (i < difficulty)
-        {
-            Enemy[i].m_bActive = true;  //Spawns [number] enemy first
-        }
-        else
-        {
-            Enemy[i].m_bActive = false; //Hides the rest
-        }
+            if (i < difficulty)
+            {
+                Enemy[i].m_bActive = true;  //Spawns [number] enemy first
+            }
+            else
+            {
+                Enemy[i].m_bActive = false; //Hides the rest
+            }
     }
     for (int i = 0; i < (sizeof(Enemy2) / sizeof(Enemy2[0])); i++)
     {
@@ -133,12 +172,19 @@ void init( void )
 
 
     }
+#pragma endregion
+    #pragma region PlayerStuffInit
+    g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
+    g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y - 5;
+    g_sChar.m_bActive = true;
 
     BulletTest.m_cLocation.X = g_sChar.m_cLocation.X;
     BulletTest.m_cLocation.Y = g_sChar.m_cLocation.Y - 1;
     BulletTest.m_bActive = false;
 
     PowerUp.m_bActive = false;
+
+#pragma endregion
 
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
@@ -349,6 +395,22 @@ void updateGame()       // gameplay logic
         }
     }
 
+    if (g_dElapsedTime >= bossTime)
+    {
+        bossCanMove = true;
+        bossTime = g_dElapsedTime + 60;
+    }
+
+    //Gonna clean this later on if got time
+    bulletPoints[0].X = Boss.m_cLocation.X - 2;
+    bulletPoints[0].Y = Boss.m_cLocation.Y + 4;
+
+    bulletPoints[1].X = Boss.m_cLocation.X + 5;
+    bulletPoints[1].Y = Boss.m_cLocation.Y + 4;
+
+    bulletPoints[2].X = Boss.m_cLocation.X + 13;
+    bulletPoints[2].Y = Boss.m_cLocation.Y + 4;
+
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
     checkCollision();
@@ -356,7 +418,7 @@ void updateGame()       // gameplay logic
     checkCollision();
     BulletMove();
     checkCollision();
-    checkKilled();
+    checkKilled();  
 
     movePowerUp();
     mMultishot();
@@ -368,6 +430,21 @@ void updateGame()       // gameplay logic
     moveEnemy2();
     EnemyBMove();
 
+    if (bossCanMove == true)
+    {
+        moveBoss();
+        bossBulletMove();
+    }
+    else if (bosshealth <= 0) 
+    {
+        //Reset Boss Bullets
+        for (int i = 0; i < sizeof(BossBullet) / sizeof(BossBullet[0]); i++)
+        {
+            BossBullet[i].m_bActive = false; // rendering
+            BossBullet[i].m_cLocation = bulletPoints[i]; // resets the position to front of space ship
+            BossBullet[i].m_bActive = true; // stops rendering
+        }
+    }
 
                         // sound can be played here too.
 }
@@ -415,7 +492,7 @@ void moveEnemy()
 {
     if (g_dElapsedTime >= timeToMove) 
     {
-        timeToMove = g_dElapsedTime + 0.6;
+        timeToMove = g_dElapsedTime + 0.4;
 
         for (int i = 0; i < difficulty; i++) 
         {
@@ -437,6 +514,40 @@ void moveEnemy2()
 
     }
 }
+void moveBoss()
+{
+    //Boss Patrol Route
+    if (Boss.m_cLocation.X < 6)
+    {
+        moveRight = true;
+    }
+    else if (Boss.m_cLocation.X > 22)
+    {
+        moveRight = false;
+    }
+
+    if (g_dElapsedTime >= bossTimeMove)
+    {
+        bossTimeMove = g_dElapsedTime + 0.2;
+        //Move Boss(Probably Relocate or make this function for all enemies)
+        if (Boss.m_cLocation.Y > 5)
+        {
+            if (moveRight == true)
+            {
+                Boss.m_cLocation.X++;
+            }
+            else
+            {
+                Boss.m_cLocation.X--;
+            }
+        }
+        else
+        {
+            Boss.m_cLocation.Y++;
+        }
+    }
+}
+
 void processUserInput()
 {
     // quits the game if player hits the escape key
@@ -510,6 +621,12 @@ void renderGame()
     rMultishot();
     rShield();
     renderSpecial();
+
+    if (bossCanMove == true)
+    {
+        renderBoss();
+        renderBossBullet();
+    }
 }
 
 void renderMap()
@@ -568,6 +685,16 @@ void renderMap()
         rows++;
     }
     
+    //Laser Sight
+    int playerSight = g_Console.getConsoleSize().Y + (g_sChar.m_cLocation.Y - 1); //distance from (player.x - 1) to top screen
+    for (int i = 0; i < (playerSight - 29); i++)
+    {
+        COORD thisPos;
+        thisPos.X = g_sChar.m_cLocation.X;
+        thisPos.Y = g_sChar.m_cLocation.Y - i;
+        g_Console.writeToBuffer(thisPos, " ", colors[3]);
+    }
+
 }
 
 void renderCharacter()
@@ -696,6 +823,98 @@ void renderEnemy2()
 
     }
 }
+void renderBoss()
+{
+    string bossSprite[4] =
+    { "    (00000000)     ",
+     "  (0000UUUUUU0000)  ",
+     "(00(  )0(UU)0(  )00)",
+     " (U)   (0UU0)   (U) " };
+
+    COORD bossPivot;
+    bossPivot.X = Boss.m_cLocation.X - 4;
+    bossPivot.Y = Boss.m_cLocation.Y;
+
+    if (bosshealth > 0)
+    {
+        for (int row = 0; row < 4; row++)
+        {
+            for (int col = 0; col < bossSprite[row].size(); col++)
+            {
+                g_Console.writeToBuffer(bossPivot, (bossSprite[row])[col]);
+                bossPivot.X++;
+
+                //Player Bullet Collision Detection
+                if (BulletTest.m_bActive == true)
+                {
+                    if (BulletTest.m_cLocation.X == bossPivot.X && BulletTest.m_cLocation.Y == bossPivot.Y)
+                    {
+                        //Damage Boss
+                        bosshealth--;
+
+                        //Bullet Player Collision Reset
+                        BulletTest.m_cLocation.X = g_sChar.m_cLocation.X;
+                        BulletTest.m_cLocation.Y = g_sChar.m_cLocation.Y - 1; // resets the position to front of space ship
+                        BulletTest.m_bActive = false; // stops rendering
+                    }
+                }
+
+                //Multi Shot Power Collision Detection
+                if (PowerEaten == true && PowerUp.m_bActive == false && Special == 1)
+                {
+                    for (int i = 0; i < 2; i++)
+                    {
+                        if (Multishot[i].m_bActive == true)
+                        {
+                            if ((Multishot[i].m_cLocation.X == bossPivot.X
+                                && Multishot[i].m_cLocation.Y == bossPivot.Y))
+                            {
+                                bosshealth -= 1;
+
+                                if (i == 0)
+                                {
+                                    Multishot[i].m_cLocation.X = BulletTest.m_cLocation.X - 2;
+                                    Multishot[i].m_cLocation.Y = BulletTest.m_cLocation.Y - 1;
+                                }
+                                else if (i == 1)
+                                {
+                                    Multishot[i].m_cLocation.X = BulletTest.m_cLocation.X + 2;
+                                    Multishot[i].m_cLocation.Y = BulletTest.m_cLocation.Y - 1;
+                                }
+
+                                Multishot[i].m_bActive = false;
+                            }
+
+                        }
+                    }
+                }
+            }
+
+            bossPivot.X = Boss.m_cLocation.X - 4;
+            bossPivot.Y++;
+        }
+    }
+    else
+    {
+        //Reset Boss Bullets
+        for (int i = 0; i < sizeof(BossBullet)/sizeof(BossBullet[0]); i++) 
+        {
+            BossBullet[i].m_bActive = false; // rendering
+            BossBullet[i].m_cLocation = bulletPoints[i]; // resets the position to front of space ship
+            BossBullet[i].m_bActive = true; // stops rendering
+        }
+
+        //Reset Boss
+        Boss.m_bActive = false;
+        Boss.m_cLocation.X = g_Console.getConsoleSize().X / 2;
+        Boss.m_cLocation.Y = g_Console.getConsoleSize().Y - 40;
+        ekilled++;
+        score += 10;
+        bosshealth = 30;
+        bossCanMove = false;
+        Boss.m_bActive = true;
+    }
+}
 
 void renderBullet()
 {
@@ -708,10 +927,26 @@ void renderBullet()
             sSound = false;
         }
         g_Console.writeToBuffer(BulletTest.m_cLocation, (char)6);
-        BulletTest.m_cLocation.Y += 25 * g_dDeltaTime;
+        BulletTest.m_cLocation.Y += 15 * g_dDeltaTime;
     }
     
 }
+
+void renderBossBullet()
+{
+    if (bosshealth > 0)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            if (BossBullet[i].m_bActive == true)
+            {
+                g_Console.writeToBuffer(BossBullet[i].m_cLocation, (char)6);
+                //BossBullet[i].m_cLocation.Y += 25 * g_dElapsedTime;
+            }
+        }
+    }
+}
+
 void RbulletEnemy()
 {
     for (int i = 0; i < difficulty; i++)
@@ -728,6 +963,38 @@ void RbulletEnemy()
     }
 
 }
+
+void bossBulletMove()
+{
+    if (g_dElapsedTime >= bossBulletTime)
+    {
+        bossBulletTime = g_dElapsedTime + 0.1;
+        if (bosshealth > 0)
+        {
+            //Normal Enemy Bullet Move
+            for (int i = 0; i < 3; i++)
+            {
+                if (BossBullet[i].m_bActive == true)
+                {
+                    BossBullet[i].m_cLocation.Y++;
+
+                    if (BossBullet[i].m_cLocation.Y >= 29) //Border Hit
+                    {
+                        BossBullet[i].m_bActive = false; // rendering
+                        BossBullet[i].m_cLocation = bulletPoints[i]; // resets the position to front of space ship
+                        BossBullet[i].m_bActive = true; // stops rendering
+                    }
+                }
+                else
+                {
+                    BossBullet[i].m_cLocation = bulletPoints[i];
+                }
+            }
+        }
+    }
+
+}
+
 void EnemyBMove()
 {
     for (int i = 0; i < difficulty; i++)
@@ -764,6 +1031,7 @@ void EnemyBMove()
         }
     }
 }
+
 void BulletMove()
 {
     if (BulletTest.m_bActive == true)
@@ -813,7 +1081,7 @@ void checkCollision()
             if (BulletTest.m_cLocation.X == Enemy2[i].m_cLocation.X && BulletTest.m_cLocation.Y == Enemy2[i].m_cLocation.Y)
             {
                 Enemy2[i].m_bActive = false;
-                Enemy2[i].m_cLocation.X = g_Console.getConsoleSize().X - rand() % 38 - 2;
+                Enemy2[i].m_cLocation.X = g_Console.getConsoleSize().X - rand() % (35 - 5) - 5;
                 Enemy2[i].m_cLocation.Y = g_Console.getConsoleSize().Y - 29;
                 Enemy2[i].m_bActive = true;
 
@@ -859,25 +1127,41 @@ void checkCollision()
             Enemy[i].m_bActive = true;
         }
     }
-   
+    for (int i = 0; i < sizeof(BossBullet) / sizeof(BossBullet[0]); i++)
+    {
+        if (BossBullet[i].m_cLocation.X == g_sChar.m_cLocation.X && BossBullet[i].m_cLocation.Y == g_sChar.m_cLocation.Y)
+        {
+            life--;
+            g_sChar.m_bActive = false;
+            g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
+            g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y - 5;
+            g_sChar.m_bActive = true;
+            BossBullet[i].m_bActive = false;
+            BossBullet[i].m_cLocation = bulletPoints[i]; //reset to bullet spawn point
+            BossBullet[i].m_bActive = true;
+        }
+    }   //Boss bullet collision check
+
 }
 
 void renderGameInfo()
 {
     COORD info;
-    info.X = g_Console.getConsoleSize().X - 18;
-    info.Y = g_Console.getConsoleSize().Y - 1;
-    g_Console.writeToBuffer(info, "Enemies killed: " + to_string(score));
+    info.X = g_Console.getConsoleSize().X;
+    info.Y = g_Console.getConsoleSize().Y - 4;
+    g_Console.writeToBuffer(info, "Score: " + to_string(score));
 
-    info.X = g_Console.getConsoleSize().X - 29;
+    info.X = g_Console.getConsoleSize().X - 15;
     info.Y = g_Console.getConsoleSize().Y - 1;
     g_Console.writeToBuffer(info, "Life: " + to_string(life));
 
-    COORD gameTimeWhenStart;
-    gameTimeWhenStart.X = g_Console.getConsoleSize().X - 24;
-    gameTimeWhenStart.Y = g_Console.getConsoleSize().Y - 2;
-    g_Console.writeToBuffer(gameTimeWhenStart, "Difficulty: " + to_string(difficulty));
+    info.X = g_Console.getConsoleSize().X;
+    info.Y = g_Console.getConsoleSize().Y - 2;
+    g_Console.writeToBuffer(info, "Difficulty: " + to_string(difficulty));
 
+    info.X = g_Console.getConsoleSize().X;
+    info.Y = g_Console.getConsoleSize().Y - 3;
+    g_Console.writeToBuffer(info, "Boss Health: " + to_string(bosshealth));
 
 }
 void gameoverScene()
@@ -924,7 +1208,6 @@ void renderGameOver()
     
 
 }
-
 
 void rMultishot()
 {
@@ -1037,6 +1320,7 @@ void cMultishot()
 
                     }
                 }
+
             }
         }
     }
@@ -1134,8 +1418,23 @@ void cShield()
                     ekilled++;
                     Beep(530, 70);
                 }
+                
+            }
+            for (int i = 0; i < sizeof(BossBullet) / sizeof(BossBullet[0]); i++)
+            {
+                if (Shield[s].m_cLocation.X == BossBullet[i].m_cLocation.X
+                    && Shield[s].m_cLocation.Y == BossBullet[i].m_cLocation.Y)
+                {
+                    BossBullet[i].m_bActive = false;
+                    BossBullet[i].m_cLocation = bulletPoints[i]; // resets the position to front of space ship
+                    BossBullet[i].m_bActive = true; // stops rendering
+
+                    ekilled++;
+                    Beep(440, 70);
+                }
             }
         }
+
     }
 }
 
@@ -1174,13 +1473,16 @@ void cBomb()
             BulletEnemy[e].m_bActive = true;
         }
 
+        if (Boss.m_cLocation.Y < g_Console.getConsoleSize().Y - 40) 
+        {
+            bosshealth -= 5;
+        }
+
         PowerEaten = false;
         ekilled = 0;
         Beep(200, 100);
     }
 }
-
-
 
 void movePowerUp()
 {
@@ -1218,7 +1520,6 @@ void movePowerUp()
     }
 }
 
-
 void renderSpecial()
 {
     if (PowerUp.m_bActive == true)
@@ -1249,22 +1550,21 @@ void renderSpecial()
 
 }
 
-
 void checkKilled()
 {
     if ((ekilled % 10 == 0) && (ekilled > 0) && PowerUp.m_bActive == false)
     {
-        number = rand() % 27 - 2;
+        number = rand() % (35 - 5) - 5;
         PowerUp.m_cLocation.X = (g_Console.getConsoleSize().X - number);
         for (int i = 0; i < difficulty; i++)
         {
             if ((PowerUp.m_cLocation.X == Enemy[i].m_cLocation.X) || (PowerUp.m_cLocation.X == Enemy2[i].m_cLocation.X))
             {
-                number = rand() % 27 - 2;
+                number = rand() % (35 - 5) - 5;
                 PowerUp.m_cLocation.X = (g_Console.getConsoleSize().X - number);
                 while (PowerUp.m_cLocation.X > 39 || PowerUp.m_cLocation.Y < 1)
                 {
-                    PowerUp.m_cLocation.X = (g_Console.getConsoleSize().X - (rand() % 27 - 2));
+                    PowerUp.m_cLocation.X = (g_Console.getConsoleSize().X - (rand() % (35 - 5) - 5));
                 }
             }
         }
