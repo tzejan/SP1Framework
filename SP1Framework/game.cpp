@@ -21,6 +21,7 @@ SGameChar   g_sChar;
 SGameChar   Enemy[8];
 SGameChar   Enemy2[8];
 SGameChar   Enemy3[8];
+SGameChar   Rock[8];
 SGameChar   BulletTest;
 SGameChar   Multishot[2];
 SGameChar   BulletEnemy[8];     //Enemy2   Bullet
@@ -58,6 +59,8 @@ int difficulty = 2; //value = number of enemies to spawn
 double start_gameTime = 0;  //Elapsed Time when starting
 int life = 10;
 
+//Rock Health
+int Rockhealth[8];
 //Boss Variables
 int bosshealth = 30;
 bool moveRight;
@@ -91,6 +94,7 @@ void init( void )
     life = 3;
     difficulty = 2;
     timeToMove = 5;
+    timeToMove2 = 5;
     timeToMove3 = 5;
     timeToMove4 = 5;
     timeToMove5 = 5;
@@ -211,6 +215,25 @@ void init( void )
         BulletEnemy3[i].m_cLocation.X = Enemy3[i].m_cLocation.X - 1;
         BulletEnemy3[i].m_cLocation.Y = Enemy3[i].m_cLocation.Y;
         BulletEnemy3[i].m_bActive = true;
+
+
+    }
+    for (int i = 0; i < (sizeof(Rock) / sizeof(Rock[0])); i++)
+    {
+        Rockhealth[i] = 3;
+        int number = rand() % 36 - 2;
+        Rock[i].m_cLocation.X = g_Console.getConsoleSize().X - number;
+        Rock[i].m_cLocation.Y = g_Console.getConsoleSize().Y - 29;
+
+        
+        if (i < difficulty)
+        {
+            Rock[i].m_bActive = true;  //Spawns [number] enemy first
+        }
+        else
+        {
+            Rock[i].m_bActive = false; //Hides the rest
+        }
 
 
     }
@@ -459,6 +482,7 @@ void updateGame()       // gameplay logic
     moveEnemy();
     moveEnemy2();
     moveEnemy3();
+    RockMove();
     checkCollision();
     BulletMove();
     EnemyBMove();
@@ -685,6 +709,7 @@ void renderGame()
     renderEnemy();      //renders the enemy
     renderEnemy2();
     renderEnemy3();
+    renderRock();
     rMultishot();
     rShield();
     renderSpecial();
@@ -904,6 +929,103 @@ void renderEnemy3()
             /*g_Console.writeToBuffer(Enemy3[i].m_cLocation, (char)19);*/
         }
     }
+}
+
+void renderRock()
+{
+    for (int i = 0; i < difficulty; i++)
+    {
+        string RockSprite[3] =
+        { " (*****) ",
+         "(**owo**)",
+         " (*****) " };
+        COORD RockPivot;
+        RockPivot.X = Rock[i].m_cLocation.X;
+        RockPivot.Y = Rock[i].m_cLocation.Y;
+
+        if (Rockhealth[i] > 0)
+        {
+            for (int row = 0; row < sizeof(RockSprite) / sizeof(RockSprite[0]); row++)
+            {
+                for (int col = 0; col < RockSprite[row].size(); col++)
+                {
+
+                    g_Console.writeToBuffer(RockPivot, (RockSprite[row])[col]);
+
+                    if (RockPivot.X == g_sChar.m_cLocation.X && RockPivot.Y == g_sChar.m_cLocation.Y)
+                    {
+                        life--;
+                        g_sChar.m_bActive = false;
+                        g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
+                        g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y - 5;
+                        g_sChar.m_bActive = true;
+                    }
+
+                    //Player Bullet Collision Detection
+                    if (BulletTest.m_bActive == true)
+                    {
+                        if (BulletTest.m_cLocation.X == RockPivot.X && BulletTest.m_cLocation.Y == RockPivot.Y)
+                        {
+                            //Damage Boss
+                            Rockhealth[i] -= 1;
+
+                            //Bullet Player Collision Reset
+                            BulletTest.m_cLocation.X = g_sChar.m_cLocation.X;
+                            BulletTest.m_cLocation.Y = g_sChar.m_cLocation.Y - 1; // resets the position to front of space ship
+                            BulletTest.m_bActive = false; // stops rendering
+                        }
+                    }
+
+                    //Multi Shot Power Collision Detection
+                    if (PowerEaten == true && PowerUp.m_bActive == false && Special == 1)
+                    {
+                        for (int i = 0; i < 2; i++)
+                        {
+                            if (Multishot[i].m_bActive == true)
+                            {
+                                if ((Multishot[i].m_cLocation.X == RockPivot.X
+                                    && Multishot[i].m_cLocation.Y == RockPivot.Y))
+                                {
+                                    Rockhealth[i] -= 1;
+
+                                    if (i == 0)
+                                    {
+                                        Multishot[i].m_cLocation.X = BulletTest.m_cLocation.X - 2;
+                                        Multishot[i].m_cLocation.Y = BulletTest.m_cLocation.Y - 1;
+                                    }
+                                    else if (i == 1)
+                                    {
+                                        Multishot[i].m_cLocation.X = BulletTest.m_cLocation.X + 2;
+                                        Multishot[i].m_cLocation.Y = BulletTest.m_cLocation.Y - 1;
+                                    }
+
+                                    Multishot[i].m_bActive = false;
+                                }
+
+                            }
+                        }
+                    }
+
+                    RockPivot.X++;
+                }
+
+                RockPivot.X = Rock[i].m_cLocation.X;
+                RockPivot.Y++;
+            }
+        }
+        else
+        {
+            Rock[i].m_bActive = false;
+            Rock[i].m_cLocation.X = g_Console.getConsoleSize().X / 2;
+            Rock[i].m_cLocation.Y = g_Console.getConsoleSize().Y - 40;
+            ekilled++;
+            score += 1;
+            Rockhealth[i] = 3;
+
+            Rock[i].m_bActive = true;
+        }
+    }
+
 }
 
 void renderBoss()
@@ -1234,7 +1356,21 @@ void BulletMove()
     }
   
 }
+void RockMove()
+{
+    if (g_dElapsedTime >= timeToMove4)
+    {
+        timeToMove4 = g_dElapsedTime + 0.8;
 
+        for (int i = 0; i < difficulty; i++)
+        {
+            Rock[i].m_cLocation.Y++;
+
+
+        }
+
+    }
+}
 void checkCollision()
 {
     //for player bullets
@@ -1549,7 +1685,10 @@ void cMultishot()
                         || (Multishot[i].m_cLocation.X == Enemy2[e].m_cLocation.X 
                             && Multishot[i].m_cLocation.Y == Enemy2[e].m_cLocation.Y)
                         || (Multishot[i].m_cLocation.X == Enemy3[e].m_cLocation.X 
-                        && Multishot[i].m_cLocation.Y == Enemy3[e].m_cLocation.Y))
+                        && Multishot[i].m_cLocation.Y == Enemy3[e].m_cLocation.Y)
+                        || (Multishot[i].m_cLocation.X == Rock[e].m_cLocation.X
+                            && Multishot[i].m_cLocation.Y == Rock[e].m_cLocation.Y))
+                        
                     {
                         if (Multishot[i].m_cLocation.X == Enemy[e].m_cLocation.X && Multishot[i].m_cLocation.Y == Enemy[e].m_cLocation.Y)
                         {
@@ -1585,6 +1724,18 @@ void cMultishot()
                             Enemy3[e].m_cLocation.X = g_Console.getConsoleSize().X - rand() % 38 - 2;
                             Enemy3[e].m_cLocation.Y = g_Console.getConsoleSize().Y - 29;
                             Enemy3[e].m_bActive = true;
+
+                            ekilled++;
+                            score++;
+                            Beep(350, 50);
+                        }
+                        if (Multishot[i].m_cLocation.X == Rock[e].m_cLocation.X && Multishot[i].m_cLocation.Y == Rock[e].m_cLocation.Y)
+                        {
+                            Rock[e].m_bActive = false;
+
+                            Rock[e].m_cLocation.X = g_Console.getConsoleSize().X - rand() % 38 - 2;
+                            Rock[e].m_cLocation.Y = g_Console.getConsoleSize().Y - 29;
+                            Rock[e].m_bActive = true;
 
                             ekilled++;
                             score++;
@@ -1717,7 +1868,17 @@ void cShield()
                     ekilled++;
                     Beep(530, 70);
                 }
-                
+                if (Shield[s].m_cLocation.X == Rock[e].m_cLocation.X && Shield[s].m_cLocation.Y == Rock[e].m_cLocation.Y)
+                {
+                    Rock[e].m_bActive = false;
+
+                    Rock[e].m_cLocation.X = Enemy2[e].m_cLocation.X;
+                    Rock[e].m_cLocation.Y = Enemy2[e].m_cLocation.Y - 1;
+                    Rock[e].m_bActive = true;
+
+                    ekilled++;
+                    Beep(530, 70);
+                }
             }
             for (int i = 0; i < sizeof(BossBullet) / sizeof(BossBullet[0]); i++)
             {
@@ -1760,6 +1921,7 @@ void cBomb()
             Enemy3[e].m_bActive = false;
             BulletEnemy2[e].m_bActive = false;
             BulletEnemy3[e].m_bActive = false;
+            Rock[e].m_bActive = false;
             
 
             Enemy[e].m_cLocation.X = g_Console.getConsoleSize().X - rand() % (35 - 5) - 5;
@@ -1768,16 +1930,19 @@ void cBomb()
             Enemy3[e].m_cLocation.X = g_Console.getConsoleSize().X - rand() % (35 - 5) - 5;
             BulletEnemy[e].m_cLocation.X = Enemy3[e].m_cLocation.X;
             BulletEnemy[e].m_cLocation.X = Enemy3[e].m_cLocation.X;
+            Rock[e].m_cLocation.X = g_Console.getConsoleSize().X - rand() % (35 - 5) - 5;
 
 
             BulletEnemy[e].m_cLocation.Y = Enemy2[e].m_cLocation.Y - 1;
             Enemy[e].m_cLocation.Y = g_Console.getConsoleSize().Y - 30;
             Enemy2[e].m_cLocation.Y = g_Console.getConsoleSize().Y - 30;
             Enemy3[e].m_cLocation.Y = g_Console.getConsoleSize().Y - 30;
+            Rock[e].m_cLocation.Y = g_Console.getConsoleSize().Y - 30;
 
             Enemy[e].m_bActive = true;
             Enemy2[e].m_bActive = true;
             Enemy3[e].m_bActive = true;
+            Rock[e].m_bActive = true;
             BulletEnemy[e].m_bActive = true;
         }
 
